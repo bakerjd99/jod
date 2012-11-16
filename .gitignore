@@ -1,0 +1,4 @@
+## jod files to ignore
+jodtex/
+*_SYNCAPP/
+*.svn/

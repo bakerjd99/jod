@@ -1,0 +1,7 @@
+(jod.pdf) is not downloaded with the core JOD addon. To 
+enable local (jodhelp) PDF reading use JAL to install
+the JODDOCUMENT addon (general/joddocument).
+
+Intalling JODDOCUMENT places (jod.pdf) in the directory
+
+ ~addons/general/joddocument/pdfdoc/
