@@ -1,0 +1,92 @@
+Mac Specific Notes for JOD
+==========================
+
+This is the first Mac compatible version of JOD.
+Before using JOD on Mac machines please read these notes.
+
+1. JOD PDF documentation is distributed in the 
+   [JODDOCUMENT](http://www.jsoftware.com/jwiki/Addons/general/joddocument) 
+   addon. Install `general/joddocument` to place `jod.pdf` in the directories
+   searched by `jodhelp`.
+
+2. JOD source code is distributed in the 
+   [JODSOURCE](http://www.jsoftware.com/jwiki/Addons/general/jodsource) 
+   addon. Install `general/jodsource` and run the script:
+
+        ~addons/general/jodsource/jodsourcesetup.ijs 
+
+This script installs the JOD development dictionaries using my recommended path structure.
+After running `jodsourcesetup.ijs` you should see directories like: 
+
+        /Users/john/jod/j701/joddev
+        /Users/john/jod/j701/jod
+        /Users/john/jod/j701/utils
+  
+To view verbs described in following items these dictionaries must be available.
+
+WARNING: `jodsourcesetup.ijs` uses the `arc/zip` addon. *This addon may fail
+on 64 bit J systems.*  See [The JOD Page](http://bakerjd99.wordpress.com/the-jod-page)
+for a 64 bit system work-around.
+
+
+### 0.9.75 - June 2012
+
+1. JOD was originally developed on Windows. The Mac port was
+   done on a 32 bit Intel Mac Pro. The only Mac library call
+   made by JOD occurs in the `guids` verb. 
+   `guids` works fine on 32 bit Mac machines. It may work on 64 bit 
+   Macs as well.  The remaining host dependencies derive from shell commands. 
+   JOD makes very limited use of Mac shell commands. Shell commands are 
+   called to move, rename and copy files. They should work on 
+   any Mac. However, JOD has only been tested on 32 bit Intel Macs!
+
+~~~~ { .j }
+NB. to view (guids) (install JODSOURCE)
+od ;:'joddev jod utils' [ 3 od ''
+disp ;:'guids'
+~~~~
+
+2. JOD creates host files and directories and assumes it has the necessary
+   rights to read, write and move these files. During development I put all my
+   JOD dictionaries in my home `/Users/john` directory.
+ 
+~~~~{ .j }
+  NB. to view verbs that manipulate host files (install JODSOURCE)
+  od ;:'joddev jod utils' [ 3 od ''
+  disp ;:'renamefiles copyfiles'
+~~~~
+
+3. Mac JOD requires rooted dictionary paths, i.e., your paths must begin with a slash `/`.
+   This rule matters most when creating and registering dictionaries. For example:
+
+~~~~{ .j }
+NB. create a dictionary named (test0) in specified location
+newd 'test0';'/Users/john/jod/j701/test0';'test0 notes'
+
+NB. register an extant dictionary named (test1)
+regd 'test1';'/Users/john/jod/j701/test1';'test1 notes'
+~~~~
+
+4. The Mac version of JOD uses the shell command "open" to browse
+   URLs and read PDF documents.  Mac JOD ignores the J configured 
+   browser and PDF reader. This limitation might be relaxed if 
+   it proves annoying.
+
+5. **DO NOT USE blanks in Mac JOD paths.** This is an annoying restriction
+   that I will relax in later versions. Blanks may produce errors in 
+   JOD generated shell commands.  On Windows machines you can enclose blank
+   infested paths with double quotes like `"c:\Program Files\"`.  I am not 
+   sure how to do something similiar with Mac paths.
+
+6. JOD tests volume space before creating, copying or restoring backups. On Windows
+   free disk space is returned by an API call.  On Mac's disk space is
+   currently ignored. You will need at least 2mb of free space to create, move
+   or copy JOD dictionaries. Mind you if you only have 2mb free most of your 
+   Mac software will stop working anyway.
+  
+If you encounter problems using JOD please email me at: `bakerjd99@gmail.com`
+
+
+
+
+

@@ -1,6 +1,54 @@
 general/jod - change history
 ============================
 
+### 0.9.90 - January 19, 2013
+
+ *  JOD source code is now available on [GitHub](https://github.com/).
+    The source is distributed in three repositories:
+    
+    1. [jod](https://github.com/bakerjd99/jod) contains the files
+        distributed with JAL. The additional directory `jodijs` 
+        holds fully commented JOD class files.  The standard
+        JAL scripts are "compressed."
+        
+    2. [joddoc](https://github.com/bakerjd99/joddoc) holds all
+       the `LaTeX` and supporting files needed to build the
+       JOD manual `jod.pdf`.
+       
+ * Numerous JOD [working dictionaries](https://github.com/bakerjd99/joddumps) 
+   are now available on GitHub. 
+   
+ * `dpset` bug fixed. It was allowing parameter
+   changes on `READONLY` dictionaries. Dictionaries 
+   must be in a `READWRITE` state to change `dpset ''` parameters. 
+        
+        dpset 'READWRITE' 
+        dpset 'ASCII85';1
+        
+ * fixed missing `(x,8) disp y` argument option where
+   `x` is in `i. 5`. With this change `2 8 disp }.grp''` 
+   now displays short group documents just like 
+   `2 9 disp }.grp''` displays long documents. 
+
+ * `nt` template strings changed to match the
+   strings of `ngc`. `ngc` is a utility verb in the
+   distributed JOD dictionaries: see `disp 'ngc'`.
+   The template strings are: `{~T~}`, `{~A~}`, `{~D~}`, 
+   and `{~SD~}` for  title, author, date (`yyyymondd`) and
+   short date (`yymondd`).
+   
+ * `nt` dyad added.  An `x` argument is 
+   a character list of string replacements
+   that are applied to `teststub`, see `disp 'teststub'`,
+   after template strings are processed. The
+   first character in the string delimits
+   replacement pairs.
+ 
+        '#change#ME#and#YOU' nt 'newtest'
+
+ * `mg`, `mt`, `mj`, and `tt` removed from `jodtools`. These edit helpers
+   are now optionally defined in `~addons/general/jod/jodprofile.ijs`. 
+
 ### 0.9.85 - October 13, 2012
 
  * `jodliterate` group added. See `2 9 disp 'jodliterate'`

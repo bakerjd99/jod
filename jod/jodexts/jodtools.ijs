@@ -1,5 +1,5 @@
 NB. System: jodtools  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.85  Build Number: 12  Date: 13 Oct 2012 14:40:38
+NB. Version: 0.9.90  Build Number: 25  Date: 19 Jan 2013 15:46:09
 (9!:41)0
 coclass'ajodtools'
 coinsert'ajodutil'
@@ -12,11 +12,12 @@ ERR00402=:'cannot write/create startup.ijs file ->'
 ERR00403=:'invalid make load script option (0 or 1)'
 ERR00404=:'J script error in group ->'
 ERR00405=:'words refer to objects/locales ->'
+ERR00406=:'invalid delimiter'
 GROUPSUITES=:<;._1 ' Groups Suites'
-IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mg mj mls mt noexp notgrp nt nw obnames pr refnames revonex swex tt usedby'
+IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
-JODTOOLSVMD=:'0.9.85';12;'13 Oct 2012 14:40:38'
+JODTOOLSVMD=:'0.9.90';25;'19 Jan 2013 15:46:09'
 LF=:10{a.
 OK00400=:'load script saved ->'
 OK00401=:'file saved ->'
@@ -225,8 +226,6 @@ else.
 end.
 )
 ltx=:];22"_;gt
-mg=:2 _1&make
-mj=:];21"_;gt
 mls=:3 :0
 1 mls y
 :
@@ -251,7 +250,6 @@ else.
 v
 end.
 )
-mt=:];25"_;gt
 noexp=:3 :0
 0 noexp y
 :
@@ -275,12 +273,21 @@ case.do.jderr ERR001
 end.
 )
 nt=:3 :0
-b=.y-.' '
+''nt y
+:
+if.badcl y do.jderr ERR002 return.end.
+if.badcl x do.jderr ERR001 return.end.
+c=.y-.' '[b=.{.x,'/'
+if.b e.'{}~ADST'do.jderr ERR00406 return.end.
 'r s'=.2{.t=.1 get TESTSTUB
 if.r do.
-'a d'=.yyyymondd 0
-c=.('/{~T~}/',b,'/{~created~}/',a,'/{~errortime~}/',a,' ',d)changestr>1{,s
-b et c
+'a f'=.yyyymondd 0
+d=.2}.a
+e=.b,'{~T~}',b,c,b,'{~D~}',b,a,b,'{~SD~}',b,d
+if.wex<'CLASSAUTHOR'do.
+if.(-.badcl CLASSAUTHOR )*.-.b e.CLASSAUTHOR do.e=.e,b ,'{~A~}',b ,CLASSAUTHOR end.
+end.
+c et(e,x)changestr>1{,s
 else.
 t
 end.
@@ -340,7 +347,6 @@ n=.+/|:<.36524.25 365.25*"1 y
 n=.n+<.0.41+0 30.6#.(12|m-3),"0 d
 0>.r$n-657378
 )
-tt=:];gt
 updatepublic=:4 :0
 p=.(0{"1 x)i.0{y
 if.p<#x do.

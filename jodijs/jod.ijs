@@ -210,7 +210,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 
-JODVMD=:'0.9.85';16;'13 Oct 2012 14:40:36'
+JODVMD=:'0.9.90';25;'19 Jan 2013 15:46:08'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -875,8 +875,10 @@ elseif.do.
     end.
 
   elseif. -.badbu y do.
+    NB. parameter changes only allowed for put dictionaries
+    if. badrc msg=. checkput__ST 0 do. msg return. end.
     msg=. ERR019  NB. errmsg: invalid name/parameter
-    if. -. (1=#$ y) *. 2=#y do. jderr msg return. end.
+    if. -. (1=#$ y) *. 2=#y do. jderr msg return. end.  
     if. badjr dpt=. jread WF__DL;CNPARMS__ST do. jderr ERR088 return. end.
     usp=. >{:dpt=. >dpt
     if. ({:$usp) = pos=. ({.usp) i. {.y do. jderr msg return. end.

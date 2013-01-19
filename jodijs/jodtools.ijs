@@ -10,8 +10,7 @@ NB.  hlpnl    displays short descriptions of objects on (y)
 NB.  jodage   days since last change and creation of JOD objects
 NB.  jodhelp   display online JOD help                     
 NB.  lg       make and load JOD group                                                 
-NB.  mls      make load script                                                        
-NB.  mt       get macro text from edit window                                         
+NB.  mls      make load script                                                                                               
 NB.  noexp    returns a list of objects with no explanations                          
 NB.  notgrp   words or tests from (y) that are not in groups or suites               
 NB.  nt       gets name and text from edit windows                                    
@@ -48,12 +47,13 @@ ERR00402=:'cannot write/create startup.ijs file ->'
 ERR00403=:'invalid make load script option (0 or 1)'
 ERR00404=:'J script error in group ->'
 ERR00405=:'words refer to objects/locales ->'
+ERR00406=:'invalid delimiter'
 
 NB. locgrp Group Suite display text
 GROUPSUITES=:<;._1 ' Groups Suites'
 
-
-IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mg mj mls mt noexp notgrp nt nw obnames pr refnames revonex swex tt usedby'
+NB. JODTOOLS (ijod) interface words
+IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 
 NB. comment tag marking end of scripts
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
@@ -61,8 +61,8 @@ JODLOADEND=:'NB.</JOD_Load_Scripts>'
 NB. comment tag marking start of scripts
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 
-
-JODTOOLSVMD=:'0.9.85';12;'13 Oct 2012 14:40:38'
+NB. JODTOOLS version, make and date
+JODTOOLSVMD=:'0.9.90';25;'19 Jan 2013 15:46:09'
 
 NB. line feed character
 LF=:10{a.
@@ -556,12 +556,6 @@ end.
 NB. get text from edit window as Latex
 ltx=:] ; 22"_ ; gt
 
-NB. make group
-mg=:2 _1&make
-
-NB. get macro J script from edit window
-mj=:] ; 21"_ ; gt
-
 
 mls=:3 : 0
 
@@ -616,9 +610,6 @@ else.
   v
 end.
 )
-
-NB. get macro text (bytes) from edit window
-mt=:] ; 25"_ ; gt
 
 
 noexp=:3 : 0
@@ -679,18 +670,39 @@ NB.
 NB. This  verb  looks   for  (TESTSTUB)  on  the  path   of  open
 NB. dictionaries allowing easy user defined test script formats.
 NB.
-NB. monad:  nt clTest
+NB. monad:  nt clName
 NB.
 NB.   nt 'scriptname'
+NB.
+NB. dyad:  clSreps nt clName
+NB.
+NB.   NB. the dyad allows more general string
+NB.   NB. replacements to be applied to stubs
+NB.
+NB.   '#{{boo}}#<<newboo>>#{{hoo}}#??newhoo??' nt 'newscript'
 
-name=. y -. ' '
+'' nt y
+:
+if. badcl y do. jderr ERR002 return. end. NB. errmsg: invalid name(s)
+if. badcl x do. jderr ERR001 return. end. NB. errmsg: invalid option(s)
+name=. y -. ' ' [ dl=. {. x,'/'
+
+NB. HARDCODE: invalid delimiters 
+if. dl e. '{}~ADST' do. jderr ERR00406 return. end. NB. errmsg: invalid delimiter
 
 NB. get teststub document from open dictionaries
 'r s'=.2{.t=. 1 get TESTSTUB
 if. r do.
   'datess timess'=.yyyymondd 0
-  test=. ('/{~T~}/',name,'/{~created~}/',datess,'/{~errortime~}/',datess,' ',timess) changestr >1{,s
-  name et test
+  shortdate=. 2 }. datess
+  test=. dl,'{~T~}',dl,name,dl,'{~D~}',dl,datess,dl,'{~SD~}',dl,shortdate
+  NB. insert any visible cl !(*)=. CLASSAUTHOR
+  NB. NOTE: nouns in locale (ijod) are visible here
+  if. wex <'CLASSAUTHOR' do.
+    NB. (CLASSAUTHOR) is a cl without (dl)
+    if. (-.badcl CLASSAUTHOR) *. -.dl e. CLASSAUTHOR do. test=. test,dl,'{~A~}',dl,CLASSAUTHOR end.
+  end.
+  name et (test,x) changestr >1{,s
 else.
   t
 end.
@@ -834,9 +846,6 @@ n=. +/ |: <. 36524.25 365.25 *"1 y
 n=. n + <. 0.41 + 0 30.6 #. (12 | m-3),"0 d
 0 >. r $ n - 657378
 )
-
-NB. get test text from edit window
-tt=:] ; gt
 
 
 updatepublic=:4 : 0

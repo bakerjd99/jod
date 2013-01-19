@@ -85,6 +85,17 @@ showpass=:] [ 1!:2&2
 NB. edit command 
 DOCUMENTCOMMAND=: 'showpass pr ''{~N~}'''
 
+NB. read & write files
+NB. read=:1!:1&(]`<@.(32&>@(3!:0)))
+NB. write=:1!:2 ]`<@.(32&>@(3!:0))
+
+NB. fetch edit text/macros
+NB. tt=:] ; gt
+NB. mt=:] ; 25"_ ; gt   NB. *.txt
+NB. mj=:] ; 21"_ ; gt   NB. *.ijs
+NB. md=:] ; 27"_ ; gt   NB. *.markdown
+NB. mx=:] ; 22"_ ; gt   NB. *.tex
+
 NB. examples of JOD session start ups - shows
 NB. how to open dictionaries and invoke project macros
 

@@ -791,8 +791,8 @@ case.do.
     NB. group and suite headers are frequently edited
     if. badcl y do. jderr ERR0154__MK return. end.
     if. badrc uv=. ({.x) get y do. uv return. else. 'file text'=. , rv uv end.
-  elseif. (<x) e. {OBJECTNC;DOCUMENT do.
-    NB. edit object documentation text
+  elseif. (<x) e. ,{OBJECTNC;DOCUMENT,EXPLAIN do.
+    NB. get object documentation text
     if. badrc uv=. x get y do. uv return.
     else.
       NB. merge all document texts
