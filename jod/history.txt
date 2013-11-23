@@ -1,15 +1,28 @@
 general/jod - change history
 ============================
 
+### 0.9.93 - November 22, 2013
+
+ * `nc` verb changed to trap limit errors for very long names.
+    The standard J definition throws a limit error for names exceeding
+    255 characters. 
+
+### 0.9.92 - March 01, 2013
+
+ * `compj` dyad added. `1 compj ;:'word list'` removes
+   comments, preserves leading whitespace and reduces
+   multiple blanks lines to one blank line. This representation
+   is useful when reading code as it suppresses comment clutter.
+
 ### 0.9.90 - January 19, 2013
 
  *  JOD source code is now available on [GitHub](https://github.com/).
-    The source is distributed in three repositories:
+    The source is distributed in two repositories:
     
     1. [jod](https://github.com/bakerjd99/jod) contains the files
-        distributed with JAL. The additional directory `jodijs` 
-        holds fully commented JOD class files.  The standard
-        JAL scripts are "compressed."
+       distributed with JAL. The additional directory `jodijs` 
+       holds fully commented JOD class files.  The standard
+       JAL scripts are "compressed."
         
     2. [joddoc](https://github.com/bakerjd99/joddoc) holds all
        the `LaTeX` and supporting files needed to build the

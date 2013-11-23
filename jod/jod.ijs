@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.90  Build Number: 25  Date: 19 Jan 2013 15:46:08
+NB. Version: 0.9.93  Build Number: 3  Date: 23 Nov 2013 11:12:19
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -138,7 +138,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.90';25;'19 Jan 2013 15:46:08'
+JODVMD=:'0.9.93';3;'23 Nov 2013 11:12:19'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -678,7 +678,7 @@ end.
 if.badreps(mubmark 0 )jreplace JMASTER;CNMFMARK do.jderr ERR013 else.ok 0 end.
 )
 mubmark=:];[:(6!:0)0:$]
-nc=:4!:0
+nc=:4!:0 ::(_2:)
 newd=:3 :0
 if.badcl y do.
 1 newregdict__ST y
@@ -3028,11 +3028,19 @@ y=.(c$~o*#w)(,p+/i.o)}y
 end.
 end.y
 )
+compclut=:3 :0
+t=.0 decomm y
+LF,~ctl t#~(-.b)+.firstone b=.*./"1' '=t
+)
 compj=:3 :0
-if.badrc a=.(WORD,NVTABLE)get y do.a return.else.a=.rv a end.
-b=.0<;1 {"1 a
-a=.(compressj@:ctit&.>(b#{:"1 a)-.&.>TAB)(<(I.b);2)}a
-(WORD,1)wttext__MK a
+0 compj y
+:
+if.badil x do.jderr ERR001 return.end.
+if.badrc c=.(WORD,NVTABLE)get y do.c return.else.c=.rv c end.
+b=.0<;1 {"1 c
+a=.compressj`compclut@.(1-:x)
+c=.(a@:ctit&.>(b#{:"1 c)-.&.>TAB)(<(I.b);2)}c
+(WORD,1)wttext__MK c
 )
 compressj=:3 :0
 w=.1 e.CWSONLY E.,y
