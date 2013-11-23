@@ -260,6 +260,26 @@ end. y                               NB. altered string
 )
 
 
+compclut=:3 : 0
+
+NB.*compclut  v-- removes  comments and  reduces  multiple  blank
+NB. lines to singles.
+NB.
+NB. This  verb removes  all  comments  from  J code  and  reduces
+NB. multiple blank  lines  to  one.  All  leading  whitespace  is
+NB. preserved.  This representation  is surprisingly  useful when
+NB. debugging and reading  code as it removes  annoying "literary
+NB. artifacts" while preserving the structure of code.
+NB.
+NB. monad:  cl =. compclut ctJcr
+NB.
+NB.  complut jcr 'compclut'
+
+t=. 0 decomm y
+LF ,~ ctl t #~ (-.b) +. firstone b=. *./"1 ' '=t
+)
+
+
 compj=:3 : 0
 
 NB.*compj v-- compresses nonnouns  by removing  white  space and
@@ -277,6 +297,14 @@ NB.
 NB. monad:  cl =. compj blclNames
 NB.
 NB.   compj ;:'the byte diet'
+NB.
+NB. dyad:  cl =. iaOption compj blclNames
+NB.
+NB.   1 compj ;:'remove comments preserving leading whitespace'
+
+0 compj y
+:
+if. badil x do. jderr ERR001 return. end.
 
 NB. get word definitions
 if. badrc dat=. (WORD,NVTABLE) get y do. dat return. else. dat=. rv dat end.
@@ -284,8 +312,11 @@ if. badrc dat=. (WORD,NVTABLE) get y do. dat return. else. dat=. rv dat end.
 NB. mask of non-nouns
 b=. 0 < ; 1 {"1 dat
 
+NB. set compression 
+cv=. compressj`compclut @. (1 -: x)
+
 NB. compress non-nouns - remove any embedded tabs
-dat=. (compressj@:ctit&.> (b#{:"1 dat) -.&.> TAB) (<(I. b);2)} dat
+dat=. (cv@:ctit&.> (b#{:"1 dat) -.&.> TAB) (<(I. b);2)} dat
 
 NB. generate packed script
 (WORD,1) wttext__MK dat

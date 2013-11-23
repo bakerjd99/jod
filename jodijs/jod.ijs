@@ -210,7 +210,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 
-JODVMD=:'0.9.90';25;'19 Jan 2013 15:46:08'
+JODVMD=:'0.9.93';3;'23 Nov 2013 11:12:19'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -1354,8 +1354,8 @@ if. badreps (mubmark 0) jreplace JMASTER;CNMFMARK do. jderr ERR013 else. ok 0 en
 NB. master use bit mark
 mubmark=:] ; [: (6!:0) 0: $ ]
 
-NB. J name class
-nc=:4!:0
+NB. J name class override - traps limit error for very long names
+nc=:4!:0 ::(_2:)
 
 
 newd=:3 : 0
