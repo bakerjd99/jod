@@ -1,4 +1,4 @@
-`jod` README
+![](jodtinycube.png) [`jod` README](http://bakerjd99.wordpress.com/the-jod-page/)
 ============
 
 This repository contains distributed [J language](http://www.jsoftware.com/) 
@@ -19,4 +19,4 @@ directory [`jodijs`](https://github.com/bakerjd99/jod/tree/master/jodijs) contai
 fully commented JOD source. `jodijs` is not distributed by JAL. 
 
 John Baker
-November 17, 2012
+December 31, 2013
