@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.93  Build Number: 3  Date: 23 Nov 2013 11:12:19
+NB. Version: 0.9.94  Build Number: 7  Date: 14 Jun 2014 12:50:17
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -138,7 +138,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.93';3;'23 Nov 2013 11:12:19'
+JODVMD=:'0.9.94';7;'14 Jun 2014 12:50:17'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -2959,7 +2959,7 @@ ERR0251=:'not loaded - load'
 ERR0252=:'not J script(s) ->'
 ERR0253=:'invalid locale name'
 ERR0254=:'unable to get TEMP/*.ijs text'
-ERR0255=:'unable to open TEMP/*ijs for editing'
+ERR0255=:'unable to open TEMP/*.ijs for editing'
 ERR0256=:'J error in script ->'
 ERR0257=:'invalid help word name'
 ERR0258=:'browser not found ->'
@@ -3190,15 +3190,15 @@ EDTEMP et y
 :
 try.
 (toHOST y)write a=.jpath'~temp/',x,IJS
-if.0 e.wex;:'IFJHS IFJ6 IFGTK'do.
-smopen_jijs_ a
-else.
-if.IFJHS do.open_jhs_ a
-elseif.IFGTK do.open_jgtk_ a
-elseif.IFJ6 do.smopen_jijs_ a
-elseif.IFIOS do.je_z_ a
-elseif.do.jderr ERR0262
+if.*/wex;:'IFJ6 IFWIN'do.
+if.IFJ6*IFWIN do.smopen_jijs_ a return.end.
 end.
+if.IFJHS do.open_jhs_ a
+elseif.IFQT do.open a
+elseif.IFIOS do.je_z_ a
+elseif.wex<'IFGTK'do.
+if.IFGTK do.open_jgtk_ a else.jderr ERR0255 end.
+elseif.do.jderr ERR0262
 end.
 catch.jderr ERR0255
 end.

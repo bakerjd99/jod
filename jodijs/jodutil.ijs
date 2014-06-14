@@ -132,7 +132,7 @@ ERR0251=:'not loaded - load'
 ERR0252=:'not J script(s) ->'
 ERR0253=:'invalid locale name'
 ERR0254=:'unable to get TEMP/*.ijs text'
-ERR0255=:'unable to open TEMP/*ijs for editing'
+ERR0255=:'unable to open TEMP/*.ijs for editing'
 ERR0256=:'J error in script ->'
 ERR0257=:'invalid help word name'
 ERR0258=:'browser not found ->'
@@ -688,22 +688,26 @@ EDTEMP et y  NB. default edit file
 :
 NB. write to J temp directory - created by J install
 try.
+
   (toHOST y) write file=. jpath '~temp/' , x , IJS
 
-  if. 0 e. wex ;:'IFJHS IFJ6 IFGTK' do.
-    NB. probably on a J 6.0x system
-    smopen_jijs_ file   NB. J 6.0x 
-  else.
-    NB. open in various J7/6 editors !(*)=. IFJHS IFGTK IFJ6 IFIOS
-    if. IFJHS     do. open_jhs_ file 
-    elseif. IFGTK do. open_jgtk_ file
-    elseif. IFJ6  do. smopen_jijs_ file   NB. J 6.0x 
-    elseif. IFIOS do. je_z_ file          NB. iPhone/iPad
-    elseif.do. jderr ERR0262  NB. errmsg: not supported on current J system
-    end. 
-  end.
+  NB. open in various editors !(*)=. IFJ6 IFWIN IFJHS IFQT IFIOS IFGTK open
+  if. */ wex ;:'IFJ6 IFWIN'  do. 
+    if. IFJ6 * IFWIN do. smopen_jijs_ file return. end. NB. J 6.0x win systems
+  end. 
+  
+  if. IFJHS do. open_jhs_ file 
+  elseif. IFQT  do. open file            
+  elseif. IFIOS do. je_z_ file     NB. iPhone/iPad
+  
+  NB. GTK systems are deprecated
+  elseif. wex <'IFGTK' do.
+    if. IFGTK do. open_jgtk_ file  else. jderr ERR0255 end. NB. GTK 
 
-catch. jderr ERR0255
+  elseif.do. jderr ERR0262  NB. errmsg: not supported on current J system
+  end. 
+ 
+catch. jderr ERR0255  NB. errmsg: unable to open TEMP/*.ijs for editing
 end.
 )
 

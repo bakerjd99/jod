@@ -1,6 +1,10 @@
 general/jod - change history
 ============================
 
+### 0.9.94 - June 14, 2014
+
+ * `et` updated to support J 8.02 editors.
+
 ### 0.9.93 - November 22, 2013
 
  * `nc` verb changed to trap limit errors for very long names.
