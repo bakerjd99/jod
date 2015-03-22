@@ -1,0 +1,346 @@
+general/jod - change history
+============================
+
+### 0.9.97 - March 22, 2015
+
+ * `newd` changed to not check volume sizes when `FREESPACE` is zero.
+   Volume sizing may perform poorly on network volumes and
+   fail entirely on "cloud" platforms.
+
+ * JOD builds modified to run on Win, Mac, Linux systems.
+
+ * Dependence on `zfiles` addon removed. `zfiles` depends on 32 bit
+   Windows and is not portable.
+
+ * `TestDictionaryDump` removed from main JOD dictionary. This single
+   large object bumped up the `jod.ijs` dump script by five megabytes. 
+   `TestDictionaryDump` is now stored in `jodtest.ijs` available on GitHub see:
+   [jodtest.ijs](https://github.com/bakerjd99/joddumps/blob/win7/jodtest.ijs)
+
+ * Revisions made to PDF document `jod.pdf`. 
+
+ * For more details see the blog post
+   [JOD Update: Version 0.9.97*](https://bakerjd99.wordpress.com/2015/03/22/jod-update-version-0-9-97/)
+   
+### 0.9.95 - June 25, 2014
+
+ * `extscopes` changed to handle quoted gerund assignments like:
+        
+        '`this is ok'=: +`-`* 
+        '`more ehh'=. #`$
+
+    this bug resulted in `globs` misclassifying names.
+
+### 0.9.94 - June 14, 2014
+
+ * `et` updated to support J 8.02 editors.
+
+### 0.9.93 - November 22, 2013
+
+ * `nc` verb changed to trap limit errors for very long names.
+    The standard J definition throws a limit error for names exceeding
+    255 characters. 
+
+### 0.9.92 - March 01, 2013
+
+ * `compj` dyad added. `1 compj ;:'word list'` removes
+   comments, preserves leading whitespace and reduces
+   multiple blanks lines to one blank line. This representation
+   is useful when reading code as it suppresses comment clutter.
+
+### 0.9.90 - January 19, 2013
+
+ *  JOD source code is now available on [GitHub](https://github.com/).
+    The source is distributed in two repositories:
+    
+    1. [jod](https://github.com/bakerjd99/jod) contains the files
+       distributed with JAL. The additional directory `jodijs` 
+       holds fully commented JOD class files.  The standard
+       JAL scripts are "compressed."
+        
+    2. [joddoc](https://github.com/bakerjd99/joddoc) holds all
+       the `LaTeX` and supporting files needed to build the
+       JOD manual `jod.pdf`.
+       
+ * Numerous JOD [working dictionaries](https://github.com/bakerjd99/joddumps) 
+   are now available on GitHub. 
+   
+ * `dpset` bug fixed. It was allowing parameter
+   changes on `READONLY` dictionaries. Dictionaries 
+   must be in a `READWRITE` state to change `dpset ''` parameters. 
+        
+        dpset 'READWRITE' 
+        dpset 'ASCII85';1
+        
+ * fixed missing `(x,8) disp y` argument option where
+   `x` is in `i. 5`. With this change `2 8 disp }.grp''` 
+   now displays short group documents just like 
+   `2 9 disp }.grp''` displays long documents. 
+
+ * `nt` template strings changed to match the
+   strings of `ngc`. `ngc` is a utility verb in the
+   distributed JOD dictionaries: see `disp 'ngc'`.
+   The template strings are: `{~T~}`, `{~A~}`, `{~D~}`, 
+   and `{~SD~}` for  title, author, date (`yyyymondd`) and
+   short date (`yymondd`).
+   
+ * `nt` dyad added.  An `x` argument is 
+   a character list of string replacements
+   that are applied to `teststub`, see `disp 'teststub'`,
+   after template strings are processed. The
+   first character in the string delimits
+   replacement pairs.
+ 
+        '#change#ME#and#YOU' nt 'newtest'
+
+ * `mg`, `mt`, `mj`, and `tt` removed from `jodtools`. These edit helpers
+   are now optionally defined in `~addons/general/jod/jodprofile.ijs`. 
+
+### 0.9.85 - October 13, 2012
+
+ * `jodliterate` group added. See `2 9 disp 'jodliterate'`
+   and the blog post [Semi-Literate
+   JOD](http://bakerjd99.wordpress.com/2012/10/01/semi-literate-jod/) 
+   for details
+
+ * `MARKDOWN` macro text code 27 added.
+   
+ * `5 disp ''` now displays any overall put dictionary documentation.
+ 
+ *  minor `jod.pdf` edits and additions.
+ 
+ * Starting the process of converting most JOD document 
+   text to [markdown](http://daringfireball.net/projects/markdown/) 
+   including this document.[^1]
+
+### 0.9.80 - July 12, 2012
+
+ * dictionary documents set and fetched with `5 put 'doc ...'`
+   and `5 get ''` are now saved in dump scripts. `5 put '..'` 
+   is controlled by a new parameter `jodparms.ijs` `DOCUMENTDICT`
+   that determines whether `5 put 'doc ..'` stores text. The
+   default `DOCUMENTDICT=1` stores text.
+
+ * vestigial `z` locale dump script load utilities `sonl_z_,
+   SOLOCALE_z_, soput_z_` and `soclear_z_` are now erased at the
+   end of dump script runs. JOD defines exactly four words
+   in the z locale: `jodoff_z_, jodon_z_, jodsystempath_z_`
+   and `showpass_z_`.
+
+ * `opendict` has been modified to test whether master
+   file paths are prefixes of stored dictionary paths. For 
+   `READWRITE` dictionaries the prefix must match. For `READONLY`
+   dictionaries the master path replaces the stored path in
+   dictionary directory objects if they differ. This allows 
+   `READONLY` dictionaries to be placed on locked down network 
+   drives and accessed by many users that may have different 
+   access paths.  
+   
+ * DEPENDS sections added to JOD and JODSOURCE manifest scripts.
+ 
+ * `jod.pdf` (general/joddocument addon) updated.
+
+### 0.9.75 - June 26, 2012
+
+ * first Mac compatible version of JOD. The Mac version
+   requires J 7.01 or beyond see: 
+
+        ~addons/general/jod/joddoc/macnotes.txt
+   
+ * `jod.pdf` updated and now distributed as a
+   separate JAL addon. Install `general/joddocument`
+   to place `jod.pdf` in the directories searched
+   by `jodhelp`. `jodhelp` no longer looks for an
+   online version of `jod.pdf`. 
+   
+ * fixed a `disp` length error. 
+ 
+ * line ends in all script files set to line feed LF
+ 
+ * labs updated for J 7.01 and Linux/Mac versions
+ 
+ * lab `jodprjm.ijt` removed - this lab referred
+   to an old (pre 7.01) project manager. 
+  
+### 0.9.7 - Jan 16, 2011
+
+ * `jodfork` now calls `fork_jtask_` - done to handle change
+   in main J library. `task` verbs are no longer loaded to `z` locale
+
+### 0.9.65 - Dec 19, 2011
+
+ * `get, put` now fetch and set put dictionary documentation.
+ 
+        5 get '' 
+        5 put 'document this dictionary' 
+
+### 0.9.6 - Dec 12, 2011
+
+ * `jodhelp` pointed to new online version of `jod.pdf`
+   EPS, TEX and HTML document files removed from main jod dictionary
+   to reduce the size of `jodsource.zip`. These files
+   are available in the online JOD svn repository. 
+   See [The JOD Page](http://bakerjd99.wordpress.com/the-jod-page/).
+   
+ * `compj` can now be limited to only white space removal by 
+   inserting the comment tag `(-.)=:` anywhere in the text of
+   an explicit word.
+   
+### 0.9.5 - Dec 4, 2011
+
+ * fixed a `make` bug in `dumpwords` a path of all
+   empty dictionaries failed to make.
+   
+ * fixed an `mls` bug that produced incorrect 
+   JOD `startup.ijs` entries on Linux.
+   
+ * more test cases added.
+
+### 0.9.4 - Nov 25, 2011
+
+ * update `jodindex.html` to reference current online documentation
+ 
+ * fixed a `make` bug - `make` could fail when words with the
+   the same name and different name classes were present on
+   the path.
+   
+ * updating and extending JOD tests.
+   
+### 0.9.3 - Jun 11, 2011
+
+ * online documentation revised and extended. The online documents
+   are hosted by Google Documents and can be read on the web or
+   downloaded in a variety of formats: PDF, ODT, Word, HTML. The
+   offline `jod.pdf` will be revised after collecting user feedback.
+
+### 0.9.2 - May 29, 2011
+
+ * first Linux compatible version of JOD. The Linux version
+   requires J 7.01 or beyond see: 
+
+        ~addons/general/jod/joddoc/linuxnotes.txt
+
+ * online documentation, available via the verb `jodhelp`,
+   has been converted to the new Google Document format. 
+   The conversion process broke all the internal hyperlinks
+   I am slowly fixing them. The offline PDF document 
+   [`jod.pdf`](http://www.box.net/shared/gajfu50gc0)
+   does not show Linux specific examples but is still
+   an accurate description of what JOD is all about.
+
+ * additional information about JOD will be made
+   available on [my blog](http://bakerjd99.wordpress.com)
+   after a round of beta testing in the wild.  
+
+ * this version of JOD runs on windows J 6.0x and J 7.0x systems.
+  
+### 0.9.1 - May 7, 2011
+
+ * minor fix of edit verb `et` to run on both 7.0x and 6.0x J systems.
+
+### 0.9.0 - Feb 18, 2011
+
+ * modified to run under J 7.01 JHS and JGTK. This version
+   also runs on J 6.0x systems.
+   
+ * replaced JOD's `z` locale interface with an `ijod` interface.
+   JOD now defines only three words: `jodon, jodoff` and 
+   `jodsystempath` in the `z` locale.  All other interface
+   words are defined in `ijod` which is placed on the
+   base locale's search path
+   
+ * path and file displays converted to `jpathsep` conventions.
+ 
+ * `jod.pdf` removed from the core JOD addon package.  `jod.pdf`
+   was by far the largest part of the core install package. `jod.pdf`
+   is now browsed on-line by `jodhelp`. You can download `jod.pdf`
+   and place it in `~addons/general/jod/joddoc/pdfdoc/` to enable
+   local PDF reading.
+   
+ * online JOD documentation updated to reflect changes.
+ 
+ * `UTF8` macro script code changed from 26 to 28 (remember 28 for `UTF8`).
+ 
+ * `BYTE` macro script code added with value 26.  
+ 
+### 0.8.0 - Oct 31, 2008
+
+ * added new `jodparms.ijs` parameter `ASCII85` that controls whether
+   dump files use ascii85 for text objects.  Default is 0.
+   The ascii85 representation generally produces smaller 
+   dump files but is slower than the default method.
+   
+ * `jodsource` uses ascii85 for JOD development dictionaries to 
+   reduce the size of the downloads.
+   
+ * minor fixes in `jod.pdf`
+
+### 0.7.3 - Oct 7, 2008
+
+ * forced path comparisons to lower case in JOD Lab #4 and test `'setup_jodproject'`
+ 
+ * fixed a few typos in `jod.pdf`
+
+### 0.7.2 - Sep 25, 2008
+
+ * completed dyadic case of `doc`
+ 
+ * updated `jod.pdf` to describe changes
+
+### 0.7.1 - Sep 24, 2008
+
+ * removed some large EPS files from dictionary to reduce download size
+ 
+ * replaced JOD directory diagram in `jod.pdf` - reduces size of j`od.pdf`
+
+### 0.7.0 - Sep 24, 2008
+
+ * references added to `jod.pdf `
+ 
+ * new jod hardcopy [www.lulu.com](http://www.lulu.com) edition
+ 
+### 0.6.0 - Aug 18, 2008
+
+ * minor jod script edits
+ 
+ * `jod.pdf` index improved 
+ 
+### 0.5.1 - Jul 21, 2008
+
+ * `joduserconfig.ijs` added
+ 
+ * `gdeps` now documented in `jod.pdf`
+ 
+### 0.5.0 - Jul 18, 2008
+
+ * `jod.pdf` documentation complete
+ 
+### 0.4.0 - Jul 10, 2008
+
+ * insure at least one group in `joddevload` for lab
+ 
+ * minor lab edits - refer to `startup.ijs` instead of `scripts.ijs`
+ 
+### 0.3.8 - May 31, 2008
+
+ * minor update to last lab section
+
+### 0.3.7 - May 31, 2008
+
+ * bug fixes in labs - all labs can be run
+
+### 0.3.6 - May 29, 2008
+
+ * first release of fully "addon-ized" JOD - versions prior
+   to this release had to be manually installed by 
+   ad-hoc scripts. Now the JAL system handles JOD installs.
+   
+ 
+[^1]:  This document can be converted to many formats with 
+       [pandoc](http://johnmacfarlane.net/pandoc/).
+       For example the following command produces an HTML version:
+       
+            pandoc -s historyjod.markdown -o historyjod.html
+            
+ 
+ 

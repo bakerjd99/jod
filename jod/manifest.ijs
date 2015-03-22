@@ -1,6 +1,6 @@
 NB. manifest for JOD
 CAPTION=:'JOD J Object Dictionary'
-VERSION=:'0.9.94'
+VERSION=:'0.9.97'
 PLATFORMS=:'win linux darwin'      
 LABCATEGORY=:'General'
 FILES=: 0 : 0
@@ -14,7 +14,6 @@ jodbak/jodprofilebak.ijs
 jodbak/joduserconfigbak.ijs
 joddoc/linuxnotes.txt
 joddoc/macnotes.txt
-joddoc/htmldoc/jodindex.html
 joddoc/pdfdoc/jodpdf.txt
 jodexts/jodtools.ijs
 jodlabs/joddump.ijt
@@ -23,10 +22,9 @@ jodlabs/jodbest.ijt
 jodlabs/labexample001.ijs
 jodlabs/labdump.ijs
 )
-RELEASE=:'j601 j602 j701 j801 j802'
+RELEASE=:'j601 j602 j701 j801 j802 j803 j804'
 DEPENDS=: 0 : 0
 data/jfiles
-general/scriptdoc
 )
 DESCRIPTION=: 0 : 0
 JOD (J Object Dictionary) is a J programming tool. JOD is 
@@ -34,17 +32,21 @@ a word oriented database for all types of J objects. JOD
 supports linked dictionary databases and provides tools for 
 documenting and testing J code. 
 
-J 7.0x/8.0x JOD systems require the following addons:
+J 7.0x/8.0x JOD requires the (data/jfiles) addon.
+Prior versions of J make (jfiles) available from system scripts.
 
-  data/jfiles
-  arc/zip 
+If you install JOD it is highly recommended that you
+install the related addon JODDOCUMENT. JODDOCUMENT 
+installs detailed PDF documentation for JOD. 
 
 For more information see the JOD wiki pages (Info Button),
 run the lab "JOD lab JOD Introduction" - JOD labs are under 
-the General lab category - or visit The JOD Page at:
+the General lab category. If you do not see JOD labs listed
+on the Lab menus use the Lab browse button to access:
 
-http://bakerjd99.wordpress.com/the-jod-page/
+   ~addons/general/jod/jodlabs
 
-John Baker
-bakerjd99@gmail.com
+More information is available on the JOD Page at:
+  
+   http://bakerjd99.wordpress.com/the-jod-page/
 )

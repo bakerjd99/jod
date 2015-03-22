@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.94  Build Number: 7  Date: 14 Jun 2014 12:50:17
+NB. Version: 0.9.97  Build Number: 21  Date: 22 Mar 2015 18:22:55
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -96,7 +96,7 @@ DEPENDENTSSTART=:'dependents'
 DOCUMENT=:9
 DODEPENDENTS=:1
 DPATH=:i.0 4
-DPLIMIT=:16
+DPLIMIT=:32
 ERR001=:'invalid option(s)'
 ERR002=:'invalid name(s)'
 ERR003=:'name(s) to long'
@@ -126,7 +126,7 @@ ERR026=:'error in joduserconfig.ijs - last J error ->'
 ERR027=:'unable to set master parameters ->'
 ERR028=:'not supported on this environment ->'
 EXPLAIN=:8
-FREESPACE=:1048576
+FREESPACE=:0
 IJF=:'.ijf'
 IJS=:'.ijs'
 INCLASS=:12
@@ -138,7 +138,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.94';7;'14 Jun 2014 12:50:17'
+JODVMD=:'0.9.97';21;'22 Mar 2015 18:22:55'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -1262,7 +1262,8 @@ end.
 end.
 )
 freedisk=:3 :0
-if.IFWIN do.freediskwin y
+if.0=FREESPACE do.1
+elseif.IFWIN do.freediskwin y
 elseif.UNAME-:'Linux'do.freedisklinux y
 elseif.IFIOS do.>:FREESPACE
 elseif.UNAME-:'Darwin'do.freediskmac y
@@ -2625,8 +2626,8 @@ if.-.a:e.b do.(x;WORD;f)dumpdoc b else.OK end.
 extscopes=:3 :0
 c=.(}.@:}:)&.>u#~''''={.&>u=.y#~1|.y=<'=.'
 b=.(}.@:}:)&.>u#~''''={.&>u=.y#~1|.y=<'=:'
-if.#c do.c=.jnfrblcl<;._1;' ',&.>c end.
-if.#b do.b=.jnfrblcl<;._1;' ',&.>b end.
+if.#c do.c=.jnfrblcl<;._1;' ',&.>c -.&.>'`'end.
+if.#b do.b=.jnfrblcl<;._1;' ',&.>b -.&.>'`'end.
 a=.''
 if.+./u=.((4&{.&.>y )e.<'for_')*.'.'={:&>y do.
 u=.(4&}.@:}:)&.>u#y
@@ -2887,56 +2888,6 @@ if.c do.ok<d,.y else.ok({.m )}.m jscript y end.
 )
 coclass'ajodutil'
 coinsert'ajod'
-JODHELP=:0 :0 
-AContents;1pR1kc27OwTEGZ4BavhYT4RVvAtlEEUzueT9T-URY9t0
-AJodIndex;1kXc_yzzuHkjnfIp_qU3IIP4lfj06KFgoKbTZEQlyiFA
-BestPractices;1lZ3qI9-AmH8CtuU7m80E5sheQkG73vsLFud1uuytUgc
-Classes;1ko9FlV9fJNH_QCyhUN5XjtjGdX4bmeli-gVXtwgewTs
-Codes;1G3t0L7XRmowiU4wQEL9IvOGPqQ1Kf7h6QXxKIhLxal4
-DependentSection;1tn9qV8Hu-rk_rj70NkwGNmCFHa-VfRAnB3GYzqzpLrw
-Directories;1JMDQaCHiRdmgCOb-4EhOweObiB--34fTYbB4RL65Hi8
-Introduction;11QiWE8qJ0AojDAv2_jiOcPz5kDtI88jUR3vmNqw-pLQ
-ReleaseNotes;1aBdt8rwdOq_CQ52qRQ-js1MwiaovC2pxlQq-Z9VosOg
-addgrp;1e9mEbLASGXvzYNGJcHXI3vzv7Dph9f_HjmNLqg9reWY
-compj;1AieHkq0jGLTJT2UrcwtdAoOZv5Uj8T_0jjOomYLhYSE
-del;1DP-nLxYfs5_QhlhmD9JtpeDQ98fteWp-tSIHMUGtYdg
-delgrp;1pBBfh5UdSq4RZFjagbma7_uZfRnY66Ghn6Ezvvvq5ZY
-did;1y-3Gaov9tW8d-E1uhTNYmFhyJEmmC_N3q4G0t8L7gJM
-disp;1_oZe7JxNR4qK3LwLeDrwarsxvpFkpsUdcViY5KpYAVg
-dnl;1rmg4ErbOxDa3CFJtwUgfWusWKvlzO6ooNhlcd1VxVKg
-doc;1zcZvo1-4f7LLPXrTrJFAYkr6JTtOtGFIsJolylDz234
-dpset;1zEDu9VLz2VY_5wR7hVYbQqrwfUIWw4WK00zmKOKGCJg
-ed;1PdqC8IHhJJrUI59koofhSxgcCDXknI8yFlRHPSTdY4Q
-et;1IYmf8C5eJElstSsdXyui8N0KRKb9yNQTFBU0TgVVWlc
-get;1Vk-PQrdPEISp0SL4eDaGDgg5HpATarPPvXHryC12I8M
-getrx;1gUR9LLIVCPW9hfAXIltyiBuZf1kBURedrRVqmvWXJvQ
-globs;1s4_Af0kZnrfcCBgRDMK2MPMSTGwZb0ZDaFEMi_qXjn8
-grp;1bBeyMbSH_BFBurvnlVnWTf0JLY30LrFTbzgtOGvMyrk
-gt;134EaK4pSHXccvjZTjPS79zsnkXH3im83KJv3ggeUqIs
-hlpnl;1ZjmYZXo_Pruz0KsRENiN-qSryd6medadAbxSmdIu9kA
-jodage;1h5LfaqgO4lrB2RzLWjdaBbNAjfLlAu-eh-LNM9sJPfI
-jodhelp;1p9dyoymZ-q9YEkqS8sZa-VwV2FPxTf8KdlUvqSIkR8w
-lg;1-4OmVkDmg0pijMXXoheS6uUryN5G9OAHDztpgH7vrcM
-locgrp;1BVhp_XrtoU4DEo5rK0sgoBIKoE8XdzL3hPaOOfAFhIE
-make;1mfvL980DNpfoej1KCzgp30CFvRccEHvMqL2nE1oLjWc
-mls;1aREjTasgLz7n9-bPaOQLHG2-Jy1-3YaxKyZIoc3BioU
-newd;12AckZFKDNa0lDAj626Ix2HW8emGldx04YDDJdFxS_eY
-notgrp;1uWBqdrMQK4pa0yUiWN7JD6etgjAZpmXzBU2XLP8WBGQ
-nt;11cOKzEkGwwfmK7CGWsO1znzA_vxxDh-k35qoUNbYkso
-nw;18hgq69AK7m3bik7UTwk82A5Ind2qAD5ZFHjBwAQ2kIw
-od;1sMmIe7ViflORenJaolLE1qj7BB54s7z9Mi9ulV7N7g4
-packd;1dU2chbJBQ5mRTT8GvT6VVPs3FjoD5JxJiUhSxMjXmWc
-pr;1mxDtNJGKztFsQ4RlQb96nGyIaHd15PX-RJYSooJaNbA
-put;1uhZaiNyIHMVqVaa-peCj_sN6JjnuxVdmnODm9uoE66Y
-regd;1OC4UNVCeRpJcLThP5pkYp8Kkxpdi4zz77ZdFgZb1A-g
-restd;1vlRYJrrrxbw4TGNsvHpd8pPVfiYYKn2VDy5DqYU77_s
-revo;1rNe_RB7AXdr2OMNVLtKFCqKwE02jkOH1aiPu7xSl1lA
-revonex;1xEGQPwmyROge9myNW8iC8uCbFYP2kOhd1EwFfqgI5mE
-rm;1PImOwL_PNvyHEkYW205--ukAg-tv9tceMEEZAbgqnbY
-rtt;1WT7bciC3XQRPPrHwy8nQRwNYyV2TSzAXd8j5BZP3nmY
-usedby;1LYQVi-T2sIoCR0BQHiu6y6Cvb_KgZoALXNuAXccspr8
-uses;1NUFFk3ya9iWlT0N6-Ly-vd69MO2Njfqoyul4eBfMW9E
-)
 ASSUMESMARK=:'assumes:'
 AUTHORMARK=:'author:'
 CREATEDMARK=:'created:'
@@ -2945,12 +2896,6 @@ MONADMARK=:'monad:'
 VERBATIMMARK=:'verbatim:'
 ROOTWORDSMARK=:'rootwords:'
 DOCUMENTMARKS=:ASSUMESMARK;AUTHORMARK;CREATEDMARK;DYADMARK;MONADMARK;VERBATIMMARK;ROOTWORDSMARK
-URLPFX=:'https://docs.google.com/document/d/'
-URLSUX=:'/edit?hl=en_US#'
-JODHELP=:|:alltrim&.>(';'&beforestr;';'&afterstr)&>(alltrim&.><;._2 JODHELP-.CR),&.><URLSUX
-JODHELP=:((<URLPFX),&.>1{JODHELP)(1)}JODHELP
-JODHELP=:('AJodPage';'http://bakerjd99.wordpress.com/the-jod-page/'),.JODHELP
-JODHELP=:(/:0{JODHELP){"1 JODHELP
 qt=:]`dblquote@.IFWIN
 CWSONLY=:'(-.)=:'
 EDTEMP=:'99'
@@ -2961,9 +2906,6 @@ ERR0253=:'invalid locale name'
 ERR0254=:'unable to get TEMP/*.ijs text'
 ERR0255=:'unable to open TEMP/*.ijs for editing'
 ERR0256=:'J error in script ->'
-ERR0257=:'invalid help word name'
-ERR0258=:'browser not found ->'
-ERR0259=:'no help for ->'
 ERR0260=:'PDF reader not found'
 ERR0261=:'macro is not a J script - not formatted'
 ERR0262=:'not supported on current J system'
@@ -2972,18 +2914,12 @@ NAMEALPHA=:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
 OK0250=:' documented in ->'
 OK0251=:'edit locale cleared'
 OK0252=:'edit locale ->'
-OK0253=:'starting browser help for ->'
-OK0254=:'starting browser on help index'
 OK0255=:'starting PDF reader'
 OK0256=:'jod.pdf not installed - use JAL to install the addon general/joddocument'
 PDF=:'PDF'
 PDFREADER=:'C:\Program Files\Adobe\Reader 8.0\Reader\acrord32.exe'
 PDFREADERMAC=:'open'
 SCRIPTDOCCHAR=:'*'
-WWW0=:'C:\Program Files\Internet Explorer\IEXPLORE.EXE'
-WWW0linux=:'chromium-browser'
-WWW0mac=:'open'
-WWW1=:'c:\Program Files\Mozilla Firefox\firefox.exe'
 blkaft=:3 :0
 r=.0#~#y
 t=.y
@@ -3066,7 +3002,6 @@ createut=:3 :0
 'JOD ST MK UT SO'=:y
 SHORTNAMES=:,&.><"0[52{.NAMEALPHA
 SHORTNAMES=:SHORTNAMES-.;:'m n x y u v'
-WWWBROWSER=:setwwwbrowser 0
 IZJODALL__JOD=:IZJODALL__JOD,IzJODutinterface
 ".&.>UT defzface IzJODutinterface
 )
@@ -3212,22 +3147,6 @@ end.
 )
 jodfork=:[:fork_jtask_[:;1 0 2{' ';qt
 jodhelp=:3 :0
-e=.wwwbrowser 0
-if.badcl y do.jderr ERR0257
-elseif.IFWIN*.-.fex<e do.(jderr ERR0258),<e 
-elseif.#y do.
-d=.<alltrim y
-if.({:$JODHELP)=c=.(0{JODHELP)i.d do.
-(jderr ERR0259),d
-else.
-jodfork e;c{1{JODHELP
-(ok OK0253),d
-end.
-elseif.do.
-ok OK0254[jodfork e;0{1{JODHELP
-end.
-:
-if.x-:PDF do.
 a=.jpath'~addons\general\joddocument\pdfdoc\jod.pdf'
 if.fex<a do.
 b=.pdfreader 0
@@ -3240,9 +3159,6 @@ elseif.do.
 end.
 else.
 ok OK0256
-end.
-else.
-/:~0{JODHELP
 end.
 )
 ljust=:' '&$: :(]|."_1~i."1&0@(]e.[))
@@ -3355,16 +3271,6 @@ catchd.
 end.
 18!:4 a
 )
-setwwwbrowser=:3 :0
-if.IFWIN do.
-if.fex<WWW0 do.WWW0 
-elseif.fex<WWW1 do.WWW1 
-elseif.do.''
-end.
-else.
-WWW0linux
-end.
-)
 textform2=:63&$: :(4 :0)
 i=.0
 v=.reb,y,"1' '
@@ -3389,14 +3295,6 @@ v=.(>:b)#v
 e=.>:x
 r=.>.(#v)%e
 (r,x){.(r,e)$(e*r){.v
-)
-wwwbrowser=:3 :0
-if.wex<'WWWBROWSER__UT__JODobj'do.a=.WWWBROWSER__UT__JODobj else.a=.''end.
-if.UNAME-:'Darwin'do.a=.WWW0mac
-elseif.wex<'Browser_j_'do.if.0<#Browser_j_ do.a=.Browser_j_ end.
-elseif.wex<'BROWSER_j_'do.if.0<#BROWSER_j_ do.a=.BROWSER_j_ end.
-end.
-a
 )
 cocurrent'base'
 coinsert'ijod'

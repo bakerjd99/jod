@@ -14,6 +14,37 @@ This lab outlines a number of "best practices" or guidelines for using JOD.  I'v
 )
 
 NB. =========================================================
+Lab Section Test for JOD user defined folders
+WARNING: THIS LAB REQUIRES A NUMBER OF USER DEFINED JOD FOLDERS.
+
+This lab requires a number of JOD folders to run. The next step tests for the existence of these folders.
+
+If (TestJODDirectories) lists any undefined JOD directories configure these directories before running this lab. Instructions on how to do this can be found in (jod.pdf). Install the (joddocument) addon to get (jod.pdf).
+)
+TestJODDirectories_ijod_=:3 : 0
+
+NB.*TestJODDirectories v-- test user configured JOD directories.
+NB.
+NB. This  verb  checks  that  required  JOD  lab directories  are
+NB. defined. "Defined" does not mean the  directories  exist only
+NB. that (jpath) expands to something other than its default.
+NB.
+NB. monad:  clMsg =. TestJODDirectories uuIgnore
+
+NB. when a relative directory does not exist (jpath) echoes its argument
+jodudirs =. '~'&,&.> ;:'JOD JODDUMPS JODSOURCE JODTEST'
+jodudefs =. jpath&.> jodudirs  NB. !(*)=. jpath
+mask =. jodudirs = jodudefs
+if. 1 e. mask do.
+  > 'missing JOD folders - define before running JOD labs' ; mask # jodudirs
+else.
+  > 'all JOD folders are defined' ; jodudefs
+end.
+)
+
+TestJODDirectories 0
+
+NB. =========================================================
 Lab Section Lab cleanup
 WARNING: DICTIONARIES CREATED BY PRIOR RUNS OF LAB THIS WILL BE DELETED IN THE NEXT STEP.
 
