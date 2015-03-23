@@ -1,6 +1,36 @@
 general/jod - change history
 ============================
 
+### 0.9.97 - March 22, 2015
+
+ * `newd` changed to not check volume sizes when `FREESPACE` is zero.
+   Volume sizing may perform poorly on network volumes and
+   fail entirely on "cloud" platforms.
+
+ * JOD builds modified to run on Win, Mac, Linux systems.
+
+ * Dependence on `zfiles` addon removed. `zfiles` depends on 32 bit
+   Windows and is not portable.
+
+ * `TestDictionaryDump` removed from main JOD dictionary. This single
+   large object bumped up the `jod.ijs` dump script by five megabytes. 
+   `TestDictionaryDump` is now stored in `jodtest.ijs` available on GitHub see:
+   [jodtest.ijs](https://github.com/bakerjd99/joddumps/blob/win7/jodtest.ijs)
+
+ * Revisions made to PDF document `jod.pdf`. 
+
+ * For more details see the blog post
+   [JOD Update: Version 0.9.97*](https://bakerjd99.wordpress.com/2015/03/22/jod-update-version-0-9-97/)
+   
+### 0.9.95 - June 25, 2014
+
+ * `extscopes` changed to handle quoted gerund assignments like:
+        
+        '`this is ok'=: +`-`* 
+        '`more ehh'=. #`$
+
+    this bug resulted in `globs` misclassifying names.
+
 ### 0.9.94 - June 14, 2014
 
  * `et` updated to support J 8.02 editors.
