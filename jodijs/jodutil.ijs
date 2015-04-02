@@ -14,65 +14,13 @@ NB.   gt       get text out of edit windows
 NB.   revo     list recently revised objects
 NB.   rm       run macros
 NB.   rtt      run tautology tests
-NB.   jodhelp  spawn browser for online help
+NB.   jodhelp  browse PDF online help
 NB.
 NB. Notes:
 NB.   error & ok messages (jodutil range 00250-00399)
 
 coclass 'ajodutil'
 coinsert 'ajod'
-
-NB. current help topics
-JODHELP=: 0 : 0
-AContents ; 1pR1kc27OwTEGZ4BavhYT4RVvAtlEEUzueT9T-URY9t0
-AJodIndex ; 1kXc_yzzuHkjnfIp_qU3IIP4lfj06KFgoKbTZEQlyiFA
-BestPractices ; 1lZ3qI9-AmH8CtuU7m80E5sheQkG73vsLFud1uuytUgc
-Classes   ; 1ko9FlV9fJNH_QCyhUN5XjtjGdX4bmeli-gVXtwgewTs
-Codes     ; 1G3t0L7XRmowiU4wQEL9IvOGPqQ1Kf7h6QXxKIhLxal4
-DependentSection ; 1tn9qV8Hu-rk_rj70NkwGNmCFHa-VfRAnB3GYzqzpLrw
-Directories ; 1JMDQaCHiRdmgCOb-4EhOweObiB--34fTYbB4RL65Hi8
-Introduction ; 11QiWE8qJ0AojDAv2_jiOcPz5kDtI88jUR3vmNqw-pLQ
-ReleaseNotes ; 1aBdt8rwdOq_CQ52qRQ-js1MwiaovC2pxlQq-Z9VosOg
-addgrp    ; 1e9mEbLASGXvzYNGJcHXI3vzv7Dph9f_HjmNLqg9reWY
-compj     ; 1AieHkq0jGLTJT2UrcwtdAoOZv5Uj8T_0jjOomYLhYSE
-del       ; 1DP-nLxYfs5_QhlhmD9JtpeDQ98fteWp-tSIHMUGtYdg
-delgrp    ; 1pBBfh5UdSq4RZFjagbma7_uZfRnY66Ghn6Ezvvvq5ZY
-did       ; 1y-3Gaov9tW8d-E1uhTNYmFhyJEmmC_N3q4G0t8L7gJM
-disp      ; 1_oZe7JxNR4qK3LwLeDrwarsxvpFkpsUdcViY5KpYAVg
-dnl       ; 1rmg4ErbOxDa3CFJtwUgfWusWKvlzO6ooNhlcd1VxVKg
-doc       ; 1zcZvo1-4f7LLPXrTrJFAYkr6JTtOtGFIsJolylDz234
-dpset     ; 1zEDu9VLz2VY_5wR7hVYbQqrwfUIWw4WK00zmKOKGCJg
-ed        ; 1PdqC8IHhJJrUI59koofhSxgcCDXknI8yFlRHPSTdY4Q
-et        ; 1IYmf8C5eJElstSsdXyui8N0KRKb9yNQTFBU0TgVVWlc
-get       ; 1Vk-PQrdPEISp0SL4eDaGDgg5HpATarPPvXHryC12I8M
-getrx     ; 1gUR9LLIVCPW9hfAXIltyiBuZf1kBURedrRVqmvWXJvQ
-globs     ; 1s4_Af0kZnrfcCBgRDMK2MPMSTGwZb0ZDaFEMi_qXjn8
-grp       ; 1bBeyMbSH_BFBurvnlVnWTf0JLY30LrFTbzgtOGvMyrk
-gt        ; 134EaK4pSHXccvjZTjPS79zsnkXH3im83KJv3ggeUqIs
-hlpnl     ; 1ZjmYZXo_Pruz0KsRENiN-qSryd6medadAbxSmdIu9kA
-jodage    ; 1h5LfaqgO4lrB2RzLWjdaBbNAjfLlAu-eh-LNM9sJPfI
-jodhelp   ; 1p9dyoymZ-q9YEkqS8sZa-VwV2FPxTf8KdlUvqSIkR8w
-lg        ; 1-4OmVkDmg0pijMXXoheS6uUryN5G9OAHDztpgH7vrcM
-locgrp    ; 1BVhp_XrtoU4DEo5rK0sgoBIKoE8XdzL3hPaOOfAFhIE
-make      ; 1mfvL980DNpfoej1KCzgp30CFvRccEHvMqL2nE1oLjWc
-mls       ; 1aREjTasgLz7n9-bPaOQLHG2-Jy1-3YaxKyZIoc3BioU
-newd      ; 12AckZFKDNa0lDAj626Ix2HW8emGldx04YDDJdFxS_eY
-notgrp    ; 1uWBqdrMQK4pa0yUiWN7JD6etgjAZpmXzBU2XLP8WBGQ
-nt        ; 11cOKzEkGwwfmK7CGWsO1znzA_vxxDh-k35qoUNbYkso
-nw        ; 18hgq69AK7m3bik7UTwk82A5Ind2qAD5ZFHjBwAQ2kIw
-od        ; 1sMmIe7ViflORenJaolLE1qj7BB54s7z9Mi9ulV7N7g4
-packd     ; 1dU2chbJBQ5mRTT8GvT6VVPs3FjoD5JxJiUhSxMjXmWc
-pr        ; 1mxDtNJGKztFsQ4RlQb96nGyIaHd15PX-RJYSooJaNbA
-put       ; 1uhZaiNyIHMVqVaa-peCj_sN6JjnuxVdmnODm9uoE66Y
-regd      ; 1OC4UNVCeRpJcLThP5pkYp8Kkxpdi4zz77ZdFgZb1A-g
-restd     ; 1vlRYJrrrxbw4TGNsvHpd8pPVfiYYKn2VDy5DqYU77_s
-revo      ; 1rNe_RB7AXdr2OMNVLtKFCqKwE02jkOH1aiPu7xSl1lA
-revonex   ; 1xEGQPwmyROge9myNW8iC8uCbFYP2kOhd1EwFfqgI5mE
-rm        ; 1PImOwL_PNvyHEkYW205--ukAg-tv9tceMEEZAbgqnbY
-rtt       ; 1WT7bciC3XQRPPrHwy8nQRwNYyV2TSzAXd8j5BZP3nmY
-usedby    ; 1LYQVi-T2sIoCR0BQHiu6y6Cvb_KgZoALXNuAXccspr8
-uses      ; 1NUFFk3ya9iWlT0N6-Ly-vd69MO2Njfqoyul4eBfMW9E
-)
 
 NB.*dependents d-- dependent words 
 
@@ -100,21 +48,7 @@ ROOTWORDSMARK=:'rootwords:'
 NB. documentation marks - depends on other marks
 DOCUMENTMARKS=: ASSUMESMARK;AUTHORMARK;CREATEDMARK;DYADMARK;MONADMARK;VERBATIMMARK;ROOTWORDSMARK
 
-NB. help url prefix 
-URLPFX=:'https://docs.google.com/document/d/'
-NB. URLPFX=: 'http://docs.google.com/View?docID='
-
-NB. help urp suffix
-URLSUX=:'/edit?hl=en_US#'
-
-NB. set documented word urls 
-NB. defined in superclasses  !(*)=. CR afterstr beforestr alltrim dblquote  
-JODHELP=: |: alltrim&.> (';'&beforestr  ; ';'&afterstr)&> (alltrim&.> <;._2 JODHELP -. CR) ,&.> <URLSUX
-JODHELP=: ((<URLPFX) ,&.> 1{JODHELP) (1)} JODHELP
-JODHELP=: ('AJodPage';'http://bakerjd99.wordpress.com/the-jod-page/'),.JODHELP
-JODHELP=: (/: 0{JODHELP) {"1 JODHELP
-
-NB. command line quotes OS dependent
+NB. command line quotes OS dependent: jod !(*)=. dblquote 
 qt=: ]`dblquote@.IFWIN
 
 NB.*enddependents
@@ -134,9 +68,6 @@ ERR0253=:'invalid locale name'
 ERR0254=:'unable to get TEMP/*.ijs text'
 ERR0255=:'unable to open TEMP/*.ijs for editing'
 ERR0256=:'J error in script ->'
-ERR0257=:'invalid help word name'
-ERR0258=:'browser not found ->'
-ERR0259=:'no help for ->'
 ERR0260=:'PDF reader not found'
 ERR0261=:'macro is not a J script - not formatted'
 ERR0262=:'not supported on current J system'
@@ -149,8 +80,6 @@ NAMEALPHA=:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
 OK0250=:' documented in ->'
 OK0251=:'edit locale cleared'
 OK0252=:'edit locale ->'
-OK0253=:'starting browser help for ->'
-OK0254=:'starting browser on help index'
 OK0255=:'starting PDF reader'
 OK0256=:'jod.pdf not installed - use JAL to install the addon general/joddocument'
 
@@ -165,18 +94,6 @@ PDFREADERMAC=:'open'
 
 NB. character used to mark scriptdoc headers - currently a '*'
 SCRIPTDOCCHAR=:'*'
-
-NB. first Windows JOD browser
-WWW0=:'C:\Program Files\Internet Explorer\IEXPLORE.EXE'
-
-NB. first linux JOD browser
-WWW0linux=:'chromium-browser'
-
-NB. www mac browser
-WWW0mac=:'open'
-
-NB. second Windows JOD browser
-WWW1=:'c:\Program Files\Mozilla Firefox\firefox.exe'
 
 
 blkaft=:3 : 0
@@ -389,9 +306,6 @@ NB. object references !(*)=. JOD ST MK UT SO
 NB. set shortnames !(*)=. SHORTNAMES
 SHORTNAMES=: ,&.> <"0 [ 52 {. NAMEALPHA
 SHORTNAMES=: SHORTNAMES -. ;:'m n x y u v'
-
-NB. set browser 
-WWWBROWSER=: setwwwbrowser 0
 
 NB. add to overall jod interface
 IZJODALL__JOD=: IZJODALL__JOD,IzJODutinterface
@@ -738,58 +652,28 @@ jodfork=:[: fork_jtask_ [: ; 1 0 2 { ' ' ; qt
 
 jodhelp=:3 : 0
 
-NB.*jodhelp v-- display help for JOD words.
+NB.*jodhelp v-- display JOD help.
 NB.
-NB. monad:  jodhelp zl | cl
+NB. monad:  jodhelp uuIgnore
 NB.
-NB.   jodhelp ''       NB. display help index
-NB.   jodhelp 'get'    NB. (get) help
-NB.
-NB. dyad:  uuIgnore jodhelp uuIgnore
-NB.        clPDF jodhelp uuIgnore
-NB.
-NB.   jodhelp~ 0  NB. list know help topics
-NB.
-NB.   'PDF' jodhelp 0  NB. open PDF
-NB.   jodhelp~ 'PDF'
+NB.   jodhelp ''  NB. display JOD help - start PDF browsing 
 
-www=. wwwbrowser 0
-if. badcl y do. jderr ERR0257 NB. errmsg: invalid help word
-elseif. IFWIN *. -.fex <www do. (jderr ERR0258),<www  NB. errmsg: browser not found
-elseif. #y  do.
-  word=. <alltrim y
-  if. ({:$JODHELP)=pos=. (0{JODHELP) i. word do.
-    (jderr ERR0259),word NB. errmsg: no help for
-  else.
-    jodfork www ; pos{1{JODHELP
-    (ok OK0253),word NB. msg: starting browser help
-  end.
-elseif.do.
-  NB. HARDCODE: jod index is first in list
-  ok OK0254 [ jodfork www ; 0{1{JODHELP 
-end.
-:
-if. x -: PDF do.
-  jodpdf=. jpath '~addons\general\joddocument\pdfdoc\jod.pdf'
-  if. fex<jodpdf do.
-    NB. jod.pdf is installed and local
-    pdfrdr=. pdfreader 0
-    if. UNAME-:'Darwin' do.
-      NB. require 'task' !(*)=. shell
-      ok OK0255 [ shell pdfrdr,' ',qt jodpdf NB. msg starting PDF reader
-    elseif. fex<pdfrdr do.
-      NB. spawn PDF browse task - requires configured PDF reader on host
-      ok OK0255 [ jodfork pdfrdr;jodpdf
-    elseif.do.
-      (jderr ERR0260),<pdfrdr NB. errmsg: PDF reader not found
-    end.
-  else.
-    NB. jod.pdf is not installed advise user to download joddocument addon
-    ok OK0256 NB. msg: jod.pdf not installed - use JAL to install the addon general/joddocument
+jodpdf=. jpath '~addons\general\joddocument\pdfdoc\jod.pdf'
+if. fex<jodpdf do.
+  NB. jod.pdf is installed and local
+  pdfrdr=. pdfreader 0
+  if. UNAME-:'Darwin' do.
+    NB. require 'task' !(*)=. shell
+    ok OK0255 [ shell pdfrdr,' ',qt jodpdf NB. msg starting PDF reader
+  elseif. fex<pdfrdr do.
+    NB. spawn PDF browse task - requires configured PDF reader on host
+    ok OK0255 [ jodfork pdfrdr;jodpdf
+  elseif.do.
+    (jderr ERR0260),<pdfrdr NB. errmsg: PDF reader not found
   end.
 else.
-  NB. display available help topics
-  /:~ 0{JODHELP
+  NB. jod.pdf is not installed advise user to download joddocument addon
+  ok OK0256 NB. msg: jod.pdf not installed - use JAL to install the addon general/joddocument
 end.
 )
 
@@ -991,29 +875,6 @@ NB. back to original locale
 )
 
 
-setwwwbrowser=:3 : 0
-
-NB.*setwwwbrowser v-- tests and sets the WWW browser.
-NB.
-NB. This  verb  performs simple tests on purported  browsers  and
-NB. sets the first browser passing the test. This way you can set
-NB. a preferred browser but also maintain some fall backs.
-NB.
-NB. monad:  clBrowser =. setwwwbrowser uuIgnore
-
-if. IFWIN do.
-  if.     fex <WWW0 do. WWW0
-  elseif. fex <WWW1 do. WWW1
-  elseif.do. ''
-  end.
-else.
-  NB. linux browsers - should open with command lines like:
-  NB.   chrominum-browser http://www.jsoftware.com
-  WWW0linux
-end.
-)
-
-
 textform2=:63&$: :(4 : 0)
 
 NB.*textform2 v-- wraps and justifies character table (y).
@@ -1058,22 +919,4 @@ v=. (>:b) # v
 e=. >: x
 r=. >.(#v) % e
 (r,x) {. (r,e)$(e*r){.v
-)
-
-
-wwwbrowser=:3 : 0
-
-NB.*wwwbrowser v-- returns a www browser from available options.
-NB.
-NB. monad:  clBrowserExe =. wwwbrowser uuIngore
-
-NB. prefer J's live configured browser otherwise take JOD's browser !(*)=. WWWBROWSER
-if. wex<'WWWBROWSER__UT__JODobj' do. www=. WWWBROWSER__UT__JODobj else. www=.'' end.
-
-NB. on Mac's use the open command to start a browser
-if.     UNAME-:'Darwin'  do. www=. WWW0mac
-elseif. wex<'Browser_j_' do. if. 0<#Browser_j_ do. www=. Browser_j_ end.  NB. J 7.0x
-elseif. wex<'BROWSER_j_' do. if. 0<#BROWSER_j_ do. www=. BROWSER_j_ end.  NB. J 6.0x
-end.
-www
 )
