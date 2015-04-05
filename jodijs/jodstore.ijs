@@ -687,7 +687,13 @@ NB.   freedisk '/sd1/dev'  NB. linux file system root - null sums all devices
 
 NB. NOTE: assume enough space for IOS, Android and unknown?
 
-if.     IFWIN            do. freediskwin y
+NB. Default behaviour has been changed to not size volumes
+NB. when FREESPACE is 0. Volume sizing can peform poorly
+NB. on large network volumes and fail completely on cloud drives.
+NB. Empty JOD dictionaries are small (<1mb) - assuming sufficient
+NB. space is safe in all but extreme circumstances.
+if.     0=FREESPACE      do. 1
+elseif. IFWIN            do. freediskwin y
 elseif. UNAME-:'Linux'   do. freedisklinux y
 elseif. IFIOS            do. >:FREESPACE
 elseif. UNAME-:'Darwin'  do. freediskmac y

@@ -25,6 +25,12 @@ NB. email:  bakerjd99@gmail.com
 NB. set white space preservation on
 9!:41 [ 1
 
+NB. minimum print precision to show yyyymmdd dates (see jodage)
+NB. 9!:11 [ 8
+
+NB. set jqt windows console size - automatic for linux/mac/ios
+NB. Cwh_j_=: 158 24
+
 NB. do not reset if you are running more than one JOD instance
 dpset 'RESETME'
 
@@ -88,6 +94,8 @@ DOCUMENTCOMMAND=: 'showpass pr ''{~N~}'''
 NB. read & write files
 NB. read=:1!:1&(]`<@.(32&>@(3!:0)))
 NB. write=:1!:2 ]`<@.(32&>@(3!:0))
+NB. readnoun=:3!:2@(1!:1&(]`<@.(32&>@(3!:0))))
+NB. writenoun=:([: 3!:1 [) (1!:2 ]`<@.(32&>@(3!:0))) ]
 
 NB. fetch edit text/macros
 NB. tt=:] ; gt
@@ -104,7 +112,7 @@ NB. 1 rm 'prjsmughacking' [ smoutput od ;:'smugdev smug utils'
 NB. 1 rm 'prjjod' [ smoutput od ;:'joddev jod utils'
 
 NB. current start up
-NB. smoutput od ;:'mwecc utils'
+NB. smoutput od ;:'bitjd utils'
 
 cocurrent 'base'
 coinsert 'ijod'

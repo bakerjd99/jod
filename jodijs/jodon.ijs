@@ -55,7 +55,7 @@ sp=. ] [ 1!:2&2
 if. jvn <: 601 do.
   msg=. 'JOD requires J 6.01 or later.'
   msg=. msg,LF, 'J is freely available at www.jsoftware.com'
-  0 [ sp msg,LF, 'Download and install J 6.0x/7.0x and then reinstall JOD.'
+  0 [ sp msg,LF, 'Download and install J 6.0x-8.0x and then reinstall JOD.'
   return.
 end.
 

@@ -503,7 +503,9 @@ NB.
 NB. monad:  extscopes blclParsed
 NB.
 NB.   'quoted locals'=.
+NB.   '`acr locals'=.
 NB.   'quoted globals'=:
+NB.   '`acr globlas'=:
 NB.
 NB.   for_loopvar. x do.
 NB.       $ loopvar        NB. implict for. local references
@@ -513,8 +515,8 @@ NB.   end.
 NB. get any quoted assignments from syntactically correct code
 qlocs=. (}.@:}:) &.> u #~ '''' = {.&> u=. y #~ 1|.y = <'=.'
 qgbls=. (}.@:}:) &.> u #~ '''' = {.&> u=. y #~ 1|.y = <'=:'
-if. #qlocs do. qlocs=. jnfrblcl <;._1 ; ' ' ,&.> qlocs end.
-if. #qgbls do. qgbls=. jnfrblcl <;._1 ; ' ' ,&.> qgbls end.
+if. #qlocs do. qlocs=. jnfrblcl <;._1 ; ' ' ,&.> qlocs -.&.> '`' end.
+if. #qgbls do. qgbls=. jnfrblcl <;._1 ; ' ' ,&.> qgbls -.&.> '`' end.
 
 NB. get any implicit for. locals
 flocs=. ''

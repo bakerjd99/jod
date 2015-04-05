@@ -138,7 +138,7 @@ NB. dictionary path table - see long documentation
 DPATH=:i.0 4
 
 NB. maximum dictionary path length
-DPLIMIT=:16
+DPLIMIT=:32
 
 
 ERR001=:'invalid option(s)'
@@ -173,8 +173,8 @@ ERR028=:'not supported on this environment ->'
 NB. explain option code
 EXPLAIN=:8
 
-NB. minimum free space in bytes required to create dictionary
-FREESPACE=:1048576
+NB. space in bytes required to create dictionary (0 turns off volume sizing)
+FREESPACE=:0
 
 NB. database file extension (it's changed in the past)
 IJF=:'.ijf'
@@ -210,7 +210,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.94';7;'14 Jun 2014 12:50:17'
+JODVMD=:'0.9.972';1;'5 Apr 2015 11:30:47'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996

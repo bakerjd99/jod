@@ -3,7 +3,7 @@ LABAUTHOR=: 0 : 0
 John D, Baker 
 bakerjd99@gmail.com
 )
-LABCOMMENTS=: 'Best practices for JOD May 2008'
+LABCOMMENTS=: 'Best practices for JOD - revised for J 8.0x April 2015'
 LABFOCUS=: 1
 
 NB. =========================================================
@@ -12,6 +12,7 @@ Software tools are like loaded guns: powerful weapons for slaying your coding de
 
 This lab outlines a number of "best practices" or guidelines for using JOD.  I've learned the hard way; if you take my advice to heart you might be spared!
 )
+require 'general/jod'
 
 NB. =========================================================
 Lab Section Test for JOD user defined folders
@@ -48,14 +49,16 @@ NB. =========================================================
 Lab Section Lab cleanup
 WARNING: DICTIONARIES CREATED BY PRIOR RUNS OF LAB THIS WILL BE DELETED IN THE NEXT STEP.
 
-When the Best Practices lab runs it creates a number of dictionaries in the 'c:\jodlabs' directory. The next step will remove any of these dictionaries.  IF YOU CARE ABOUT THIS DATA STOP NOW.
+When the Best Practices lab runs it creates a number of dictionaries in the (~JODSOURCE) directory. The next step will remove any of these dictionaries.  IF YOU CARE ABOUT THIS DATA STOP NOW.
 )
 RemoveLabBestDictionaries_ijod_=: 3 : 0
 if. IFWIN do.
-  shell 'rd /s /q "c:\jodlabs"'
-  smoutput 'Lab temporary best practices dictionaries erased'
+  shell 'rd /s /q "',(jpath '~JODSOURCE'),'"'
+  smoutput 'Lab temporary best practices (win) dictionaries erased'
 elseif. IFUNIX do.
-  smoutput 'NIMP: linux/mac erase manually for now.'
+  NB. avoid blanks in Mac and Linux paths
+  shell 'rm -rf ',jpath '~JODSOURCE'
+  smoutput 'Lab temporary best practices (mac/linux) dictionaries erased'
 elseif.do.
   smoutput 'Erase any previous temporary best practices dictionaries manually.'
 end.
@@ -68,7 +71,7 @@ Remove Best Practices lab dictionaries.
 require 'general/jod'
 
 NB. unregister dictionaries - IGNORE ERRORS
-3 regd&> ;:'bpcopy bptest' [ 3 od ''
+0 0 $ 3 regd&> ;:'bpcopy bptest' [ 3 od ''
 
 NB. delete dictionary files
 RemoveLabBestDictionaries 0
@@ -88,7 +91,7 @@ Create a JOD master dictionary directory root that is completely independent of 
 )
 NB. create a master JOD directory root outside of J's directories.
 NB. This creation depend on a configured directory (~JODSOURCE).
-newd 'bptest';(jpath '~JODSOURCE\bptest');'best practices test dictionary'
+newd 'bptest';(jpath '~JODSOURCE/bptest');'best practices test dictionary'
 
 NB. This is an example - use another root for your dictionaries.
 
@@ -105,7 +108,7 @@ NB. open new dictionary
 od 'bptest' [ 3 od ''
 
 NB. load from example dump script
-0!:0 <jpath '~addons\general\jod\jodlabs\labdump.ijs'
+0!:0 <jpath '~addons/general/jod/jodlabs/labdump.ijs'
 
 NB. regenerate all references - show last three messages
 _3 {. 0 globs&> }. revo''
@@ -150,7 +153,7 @@ Lab Section
 Copy a dictionary.
 )
 NB. copy/merge bptest dictionary
-newd 'bpcopy';jpath '~JODSOURCE\bpcopy'
+newd 'bpcopy';jpath '~JODSOURCE/bpcopy'
 od 'bpcopy' [ 3 od ''
 0!:0 {:bptestdump
 
@@ -169,7 +172,7 @@ NB. generate re-register script
 rereg=: showpass_ajod_ ;{: 5 od ''
 
 NB. save it in the master root
-rereg write_ajod_ jpath '~JODSOURCE\jodregister.ijs'
+rereg write_ajod_ jpath '~JODSOURCE/jodregister.ijs'
 
 NB. =========================================================
 Lab Section Set library dictionary to readonly
@@ -325,14 +328,14 @@ NB. =========================================================
 Lab Section Edit your jodprofile.ijs
 "EDIT YOUR jodprofile.ijs"
 
-When JOD loads the script ~addons\general\jod\jodprofile.ijs is executed. This script can be used to set up JOD the way you want. Note how you can execute project macros when JOD loads with sentences like:
+When JOD loads the script ~addons/general/jod/jodprofile.ijs is executed. This script can be used to set up JOD the way you want. Note how you can execute project macros when JOD loads with sentences like:
 
 rm 'prjsunmoon' [ od ;:'bpcopy bptest'
 
 WARNING: store your profile in one of your dictionaries.  This file is reset when JAL updates the JOD addon.
 )
 NB. display jodprofile.ijs
-et read_ajod_ jpath'~addons\general\jod\jodprofile.ijs'
+et read_ajod_ jpath'~addons/general/jod/jodprofile.ijs'
 
 NB. close the jodprofile.ijs window
 
@@ -340,18 +343,13 @@ NB. =========================================================
 Lab Section USE JOD HELP AND DOCUMENTATION
 "USE JOD HELP AND DOCUMENTATION"
 
-JOD documentation is available in two forms.  There is an offline PDF document available in the addon JODDOCUMENT (general/joddocumet). Install (general/joddocument) to use the offline PDF. 
-
-Online help is available with the (jodhelp) verb. Online help uses Google Documents. Some IT departments and some repressive governments block Google Documents. Get the PDF version if you run into censors.
+Install the (general/joddocument) addon to use JOD PDF help. 
 )
-NB. open JOD online help - requires internet connection
-NB. jodhelp 'AContents'
-
 NB. location of jod.pdf - install addon (general/joddocument) with JAL
-jpath '~addons\general\joddocument\pdfdoc\jod.pdf'
+jpath '~addons/general/joddocument/pdfdoc/jod.pdf'
 
 NB. opens jod.pdf if a pdf reader is available on your system
-'PDF' jodhelp ''
+jodhelp 0
 
 NB. =========================================================
 Lab Section Summary and final remarks.
@@ -386,6 +384,8 @@ These are just some of the JOD practices I have found useful.  As you use JOD yo
 
 If you find an a useful method please let me know.  I can be reached at:
 
+John Baker 
+April 2015
 bakerjd99@gmail.com
 )
 
