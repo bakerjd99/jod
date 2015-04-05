@@ -1,6 +1,12 @@
 general/jod - change history
 ============================
 
+### 0.9.972 - April 5, 2015 (Easter Egg Edition)
+
+ * JOD labs updated to run on Win, Mac, Linux systems.
+
+ * Minor changes to `jod.pdf` to support lab changes.
+
 ### 0.9.97 - March 22, 2015
 
  * `newd` changed to not check volume sizes when `FREESPACE` is zero.
