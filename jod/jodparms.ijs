@@ -36,6 +36,13 @@ DOCUMENTDICT ; (+integer) when 1 dictionary document is put (0 or 1)    ; 1
 DOCUMENTWIDTH ; (+integer) width of justified document text  (20<y<255) ; 61
 ASCII85    ; (+integer) when 1 use ascii85 in dumps (0 or 1)            ; 0
 
+NB. ROOTFOLDER is empty by default. If it is set to a (jpath) J configured 
+NB. folder ROOTFOLDER overrides default dictionary locations for (mls) generated scripts 
+ROOTFOLDER ; (character) redirects (mls) scripts to J folder ; 
+
+NB. typical nonempty setting
+NB. ROOTFOLDER ; (character) redirects (mls) scripts to J folder ; ~user/jodroot 
+
 NB. Any added parameters are stored in the master file when
 NB. created and distributed to JOD directory objects.  
 

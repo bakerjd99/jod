@@ -29,7 +29,7 @@ NB. minimum print precision to show yyyymmdd dates (see jodage)
 NB. 9!:11 [ 8
 
 NB. set jqt windows console size - automatic for linux/mac/ios
-NB. Cwh_j_=: 158 24
+NB. Cwh_j_=: 140 24
 
 NB. do not reset if you are running more than one JOD instance
 dpset 'RESETME'
@@ -69,9 +69,14 @@ NB. short help for group words
 hg=: [: hlpnl [: }. grp
 
 NB. short help on put objects in revised order from code:
-NB.   hr 4  NB. macro
-NB.   hr 2  NB. groups
-hr=: 13 : 'y hlpnl }. y revo '''' [ y'
+NB.     hr 4  NB. macro
+NB.     hr 2  NB. groups
+NB.  10 hr 0  NB. last 10 words
+hr=: 3 : 0
+y hlpnl }. y revo ''
+:
+y hlpnl x {. }. y revo ''
+)
 
 NB. single line explanation for nonwords
 NB.  4 slex 'jodregister'  NB. macro

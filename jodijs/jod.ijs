@@ -210,7 +210,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.972';5;'5 Apr 2015 14:43:36'
+JODVMD=:'0.9.973';4;'20 Jun 2015 00:05:39'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -1733,6 +1733,9 @@ tc=:3!:0
 
 NB. removes blanks from items on blcl
 trimnl=:-.&' '&.>
+
+NB. appends trailing / iff last character is not \ or /
+tslash2=:([: - '\/' e.~ {:) }. '/' ,~ ]
 
 
 tstamp=:3 : 0

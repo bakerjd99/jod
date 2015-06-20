@@ -48,6 +48,8 @@ ERR00403=:'invalid make load script option (0 or 1)'
 ERR00404=:'J script error in group ->'
 ERR00405=:'words refer to objects/locales ->'
 ERR00406=:'invalid delimiter'
+ERR00407=:'ROOTFOLDER must be a character list (jpath) expression like: ~user/jodroot'
+ERR00408=:'unable to write load script ->'
 
 NB. locgrp Group Suite display text
 GROUPSUITES=:<;._1 ' Groups Suites'
@@ -62,7 +64,7 @@ NB. comment tag marking start of scripts
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 
 NB. JODTOOLS version, make and date
-JODTOOLSVMD=:'0.9.972';2;'5 Apr 2015 14:43:38'
+JODTOOLSVMD=:'0.9.973';7;'20 Jun 2015 00:05:40'
 
 NB. line feed character
 LF=:10{a.
@@ -600,11 +602,21 @@ if. r do.
   end.
   if. 2-:x do. ok s
   else.
-    pdo=. {:0{DPATH__ST__JODobj      NB. put dictionary directory object
-    lsn=. (SCR__pdo),gn,IJS__JODobj  NB. load script full path name
-    (toHOST s) write lsn
+    pdo=. {:0{DPATH__ST__JODobj   NB. put dictionary directory object
+    gf=. SCR__pdo                 NB. default directory
+
+    NB. redirect script output if ROOTFOLDER exists and is configured - standard profile !(*)=. jpath
+    if. wex <'ROOTFOLDER__pdo' do.
+      NB. errmsg: ROOTFOLDER must be a character list (jpath) expression like: ~user/jodroot
+      if. badcl ROOTFOLDER__pdo do. jderr ERR00407 return. end. 
+      if. 0 < #rf=. alltrim ROOTFOLDER__pdo do. if. -. rf -: gt=. jpath rf do. gf=. tslash2 gt end. end. 	
+    end.
+
+    lsn=. gf,gn,IJS__JODobj  NB. errmsg: unable to write load script 	
+    if. _1 -: (toHOST s) (write :: _1:) lsn do. (jderr ERR00408),<lsn return. end.
     NB. update scripts.ijs
-    x addloadscript gn;(SCR__pdo),gn
+    x addloadscript gn;gf,gn
+    
   end.
 else.
   v

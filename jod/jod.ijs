@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.972  Build Number: 4  Date: 5 Apr 2015 13:06:21
+NB. Version: 0.9.973  Build Number: 4  Date: 20 Jun 2015 00:05:39
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -34,7 +34,7 @@ return.
 end.
 g=.(4!:0)@<
 a=.(4!:55)@<
-if._1 e.(4!:0);:'load conew coclass coerase coinsert copath UNAME IFWIN'do.
+if._1 e.(4!:0);:'load conew coclass coerase coinsert copath jpath UNAME IFWIN'do.
 f=.'JOD depends on core J load and class utilities.'
 0[h f=.f,LF,'Load J with a standard profile to use JOD.'
 return.
@@ -138,7 +138,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.972';4;'5 Apr 2015 13:06:21'
+JODVMD=:'0.9.973';4;'20 Jun 2015 00:05:39'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -856,6 +856,7 @@ b=.~.y,readobid a=.obidfile 0
 second=:1&{
 tc=:3!:0
 trimnl=:-.&' '&.>
+tslash2=:([:-'\/'e.~{:)}.'/',~]
 tstamp=:3 :0
 b=.<.y,(0=#y)#6!:0''
 'b m d h n s'=.6{.b

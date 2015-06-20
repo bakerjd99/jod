@@ -1,6 +1,29 @@
 general/jod - change history
 ============================
 
+### 0.9.973 - XXX
+
+ * `mls` changed to use new `dpset` parameter `ROOTFOLDER`.
+    When `ROOTFOLDER` exists and is a `jpath` J configured 
+    folder `mls` writes generated scripts to the `jpath` folder.
+    If `ROOTFOLDER` does not exist or is not a  configured `jpath` folder
+    generated scripts are written to standard dictionary folders.
+
+    `ROOTFOLDER` is a new parameter and will not exist in
+    dictionaries created before this version. This can be
+    changed by recreating the master file `jmaster.ijf` and reloading
+    dictionaries from dump scripts. See `jod.pdf`
+    for more details.
+
+         dpset '' NB. show put dictionary parameter settings
+
+         NB. set ROOTFOLDER to a J configured folder
+         dpset 'ROOTFOLDER';'~user/jodroot'
+
+         NB. generated scripts are now written to the J folder
+         mls 'jodgroupname'
+
+
 ### 0.9.972 - April 5, 2015 (Easter Egg Edition)
 
  * JOD labs updated to run on Win, Mac, Linux systems.

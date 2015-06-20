@@ -1,5 +1,5 @@
 NB. System: jodtools  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.972  Build Number: 1  Date: 5 Apr 2015 13:06:23
+NB. Version: 0.9.973  Build Number: 7  Date: 20 Jun 2015 00:05:40
 (9!:41)0
 coclass'ajodtools'
 coinsert'ajodutil'
@@ -13,11 +13,13 @@ ERR00403=:'invalid make load script option (0 or 1)'
 ERR00404=:'J script error in group ->'
 ERR00405=:'words refer to objects/locales ->'
 ERR00406=:'invalid delimiter'
+ERR00407=:'ROOTFOLDER must be a character list (jpath) expression like: ~user/jodroot'
+ERR00408=:'unable to write load script ->'
 GROUPSUITES=:<;._1 ' Groups Suites'
 IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
-JODTOOLSVMD=:'0.9.972';1;'5 Apr 2015 13:06:23'
+JODTOOLSVMD=:'0.9.973';7;'20 Jun 2015 00:05:40'
 LF=:10{a.
 OK00400=:'load script saved ->'
 OK00401=:'file saved ->'
@@ -229,22 +231,27 @@ ltx=:];22"_;gt
 mls=:3 :0
 1 mls y
 :
-v=.2 _2 make a=.y-.' '
+v=.2 _2 make b=.y-.' '
 'r s'=.2{.v
 if.r do.
-c=.POSTAMBLEPFX
-if.badrc e =.4 dnl c do.e return.end.
-if.(<d=.c,a)e.}.e do.
-v=.4 get d
+e=.POSTAMBLEPFX
+if.badrc h =.4 dnl e do.h return.end.
+if.(<f=.e,b)e.}.h do.
+v=.4 get f
 'r p'=.2{.v
 if.r do.s=.s,(2#LF),(<0;2){::p else.v return.end.
 end.
 if.2-:x do.ok s
 else.
 pdo=.{:0{DPATH__ST__JODobj
-b=.(SCR__pdo),a,IJS__JODobj
-(toHOST s)write b
-x addloadscript a;(SCR__pdo),a
+a=.SCR__pdo
+if.wex<'ROOTFOLDER__pdo'do.
+if.badcl ROOTFOLDER__pdo do.jderr ERR00407 return.end.
+if.0<#g =.alltrim ROOTFOLDER__pdo do.if.-.g -:c =.jpath g do.a=.tslash2 c end.end.
+end.
+d=.a,b,IJS__JODobj
+if._1-:(toHOST s)(write ::_1:)d do.(jderr ERR00408),<d return.end.
+x addloadscript b;a,b
 end.
 else.
 v
