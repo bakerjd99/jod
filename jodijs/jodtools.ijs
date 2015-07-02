@@ -64,7 +64,7 @@ NB. comment tag marking start of scripts
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 
 NB. JODTOOLS version, make and date
-JODTOOLSVMD=:'0.9.973';7;'20 Jun 2015 00:05:40'
+JODTOOLSVMD=:'0.9.973';51;'2 Jul 2015 14:46:57'
 
 NB. line feed character
 LF=:10{a.
@@ -555,9 +555,6 @@ else.
 end.
 )
 
-NB. get text from edit window as Latex
-ltx=:] ; 22"_ ; gt
-
 
 mls=:3 : 0
 
@@ -808,9 +805,6 @@ elseif.do.
  ok (0 = #&> {:"1 uv) # {."1 uv
 end.
 )
-
-NB. extract single line explanation from word header comment and save
-swex=:0 8&put@:fsen
 
 
 today=:3 : 0

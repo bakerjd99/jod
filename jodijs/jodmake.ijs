@@ -63,6 +63,7 @@ ERR0156=:'unable to create dumpfile ->'
 ERR0157=:'directory-component name class inconsistency -- dump aborted ->'
 ERR0158=:'invalid fully qualified dump file name'
 ERR0159=:'mixed assignments ->'
+ERR0160=:'invalid object timestamp table'
 
 NB. multiplicative factor for small text dumps
 EXPLAINFAC=:10
@@ -329,6 +330,47 @@ if. _1 -: (toHOST head) fap <y do. (jderr ERR0155),<y else. OK end.
 )
 
 
+dumpntstamps=:4 : 0
+
+NB.*dumpntstamps v-- appends object timestamps text to dumpfile.
+NB.
+NB. dyad:  paRag dumpntstamps clPathFile
+NB.
+NB.   1 dumpntstamps'c:\go\ahead\dump\my\dictionary.ijs'
+
+if. x do.
+
+  NB. fetch all object timestamps
+  if. badrc ots=. getallts 0 do. ots return. else. ots=. rv ots end.
+
+  NB. if no objects exist dump nothing
+  if. 0 = >./ , #&> (0 1){ots do. OK return. end.
+
+  tag=. DUMPTAG,LF
+  putso=. LF,SOSWITCH,LF
+
+  NB. make sure older versions of JOD can execute dumps with timestamps without errors.
+  putup=. 'cocurrent ''base'' ',tag
+  putup=. putup, 'puttstamps_ijod_=: (((1;''upgrade JOD'')"_)`putallts__MK__JODobj)@.(3 = (4!:0)<''putallts__MK__JODobj'')',tag
+
+  NB. expression to store timestamps from text in scratch object
+  soputts=. putup,SOPASS,'puttstamps ".".''zz_'',SOLOCALE,''_'' [ cocurrent ''base'' ',tag
+
+  NB. text in scratch object
+  tstext=. putso,(WRAPTMPWID,(getascii85 0);<1) wraplinear 5!:5 <'ots'
+  tstext=. tstext,LF,soputts,SOCLEAR,2#LF
+
+  NB. write to test file 
+  NB. (toHOST tstext) write jpath '~temp/dumpnts.ijs'
+
+  NB. append timestamps msg: unable to append to dumpfile
+  if. _1 -: (toHOST tstext) fap <y do. (jderr ERR0155),<y else. OK end.
+else.
+  OK
+end.
+)
+
+
 dumptext=:4 : 0
 
 NB.*dumptext v-- appends text tables to dump file.
@@ -545,15 +587,7 @@ NB.   ('z';67) fmtdumptext 1 pick 0 8 get }. dnl ''
 NB. remove null entries
 if. #text=. y #~ 0 < #&> {:"1 y do.
  
-  ascii85=. 0 NB. do not use ascii85 default
-
-  NB. if setting exists in class use it
-  if. 0=nc<'ASCII85'     do. ascii85=. 1=ASCII85
-  elseif.
-      NB. if ASCII85 setting exists in put dictionary directory use it
-      do=. {: {.DPATH__ST
-      0=nc<'ASCII85__do' do. ascii85=. 1=ASCII85__do
-  end.
+  ascii85=. getascii85 0 
 
   NB. The (5!:5) representation will produce
   NB. a large a. index representation when any
@@ -590,6 +624,72 @@ b=. 5 | #r
 r=. r,84 #~ b{ 0 4 3 2 1
 r=. a.{~ ,(4#256) #: 85 #. _5 [\ r
 r }.~ - b { 0 0 3 2 1
+)
+
+
+getallts=:3 : 0
+
+NB.*getallts v-- gets all timestamps.
+NB.
+NB. Returns a boxed table of  all object timestamps. The creation
+NB. and lastput dates are fractional  day yyyymmdd.fd floats. The
+NB. (5!:5)  representation  of  floats  includes  all significant
+NB. decimals which can bloat up linear representations. This verb
+NB. applies a simple run  length encoding compression scheme that
+NB. can significantly reduce the  number of (5!:5) bytes when the
+NB. same timestamp value occurs frequently.
+NB.
+NB. monad:  btCts =. getallts uuIgnore
+NB.
+NB.   getallts__MK__JODobj 0
+
+NB. last row of (cts) indicates compression scheme (0=none, 1=rle)
+cts=. ((#OBJECTNC)#<0) (2)} (3,#OBJECTNC)$a:
+inc=. -INPUT
+
+for_obj. OBJECTNC do.
+
+  NB. fetch timestamps - ignore empty object lists
+  if. badrc nts=. (obj,inc) get }. obj dnl '' do. continue. end.
+  nts=. rv nts
+
+  NB. object names and uncompressed timestamps
+  cts=. (<;0{nts) (<0;obj_index)} cts
+  cts=. (<;1{nts) (<1;obj_index)} cts
+  
+  ets=. rlefrnl , sts=. ;1{nts
+  NB. insure rle timestamps decode properly
+  if. (,sts) -: nlfrrle ets do.
+    NB. if run encoded timestamps are smaller use them
+    if. (*/$ets) <: */$sts do.
+      cts=. (<ets) (<1;obj_index)} cts	
+      cts=. (<1) (<2;obj_index)} cts
+    end.
+  end.
+
+end.
+
+ok <cts
+)
+
+
+getascii85=:3 : 0
+
+NB.*getascii85 v-- returns ASCII85 setting (1=On, 0=Off).
+NB.
+NB. monad:  getascii85 uuIgnore
+
+ascii85=. 0 NB. do not use ascii85 default
+
+NB. if setting exists in class use it
+if. 0=nc<'ASCII85'   do. ascii85=. 1-:ASCII85
+elseif.
+  NB. if ASCII85 setting exists in put dictionary directory use it
+  do=. {: {.DPATH__ST
+  0=nc<'ASCII85__do' do. ascii85=. 1-:ASCII85__do
+end.
+
+ascii85
 )
 
 NB. 0's every other 1 in even groups of 1's
@@ -639,6 +739,9 @@ elseif. badcl y do. jderr ERR0158 return. NB. error msg: invalid dump file
 elseif.do. dumpfile=. y
 end.
 
+NB. HARDCODE: are we retaining object age?
+if. 0=nc<'RETAINAGE__DL' do. rag=. 1 -: RETAINAGE__DL  else. rag=. 0 end. 
+
 NB. standardize path character
 dumpfile=. jpathsep dumpfile
 
@@ -649,6 +752,7 @@ elseif. badrc uv=. (df,MACRO) dumptm dumpfile do. uv
 elseif. badrc uv=. (df,GROUP) dumpgs dumpfile do. uv
 elseif. badrc uv=. (df,SUITE) dumpgs dumpfile do. uv
 elseif. badrc uv=. dumpdictdoc dumpfile       do. uv
+elseif. badrc uv=. rag dumpntstamps dumpfile  do. uv
 elseif. badrc uv=. dumptrailer dumpfile       do. uv
 elseif.do.
   (ok OK0151),<dumpfile
@@ -775,6 +879,9 @@ else.
 end.
 )
 
+NB. numeric list from run length encoding table - see (rlefrnl) long document
+nlfrrle=:#~/@:|:
+
 
 nounlrep=:4 : 0
 
@@ -876,6 +983,49 @@ end.
 )
 
 
+putallts=:3 : 0
+
+NB.*putallts v-- puts all timestamps - see (getallts).
+NB.
+NB. monad:  putallts btCts
+NB.
+NB.   cts=. getallts__MK__JODobj 0
+NB.   putallts__MK__JODobj cts
+
+NB. HARDCODE: errmsg: invalid object timestamp table
+if. -.(3,#OBJECTNC) -: $y do. jderr ERR0160 return. end.
+
+NB. put dictionary name and object names
+do=. {:{.DPATH__ST 
+onames=. dnnm__do OBJECTNC [ dname=. DNAME__do 
+
+NB. HARDCODE: shapes
+inc=. -INPUT [ ecb=. ;2{y [ nots=. 0 = #&> 0{y [ msg=. i. 0 4
+
+for_obj. OBJECTNC do.
+
+  NB. empty object timestamps
+  if. obj_index{nots do. continue. end.
+
+  NB. object name timestamps
+  nts=. (<0 1; ,obj_index){y
+  uv=. 2 , #&> 0{nts
+
+  NB. decode any run encodings
+  if. obj_index{ecb do. nts=. (<uv $ nlfrrle ;1{nts) (1)} nts end.
+
+  NB. store timestamps - note errors but proceed
+  msg=. msg , (2 {. (obj,inc) put nts) , (obj_index{onames) , <dname  
+
+end.
+
+msg
+)
+
+NB. run list encoding from numeric list - see long document
+rlefrnl=:(1 ,~ 2&(~:/\)) ({. , #);.2 ]
+
+
 sexpin=:3 : 0
 NB.*sexpin v-- single line explicit definition test.
 if.      EXPPFX0 e.~ 5 {. hd=. alltrim 20 {. ,y  do. 1
@@ -957,17 +1107,19 @@ NB. dyad:  (clTempName ; iaWidth) wraplinear clLinear
 NB.        (clTempName ; iaWidth ; paAscii85) wraplinear clLinear
 NB.
 NB.   ('z';67) wraplinear 5!:5 <'bighonkingarray'
-NB.   ('z';67;1) wraplinear 'uses ascii85',LF,'encoding - better for most texts'
+NB.   ('z';67;1) wraplinear btcl
+NB.   ('z';67;1;1) wraplinear cl
 
 NB. temporary noun name, line length, ascii85 representation
-'temp width ascii85'=. 3 {. x,<0
+'temp width ascii85 tablst'=. 4 {. x,0;<0
 
 if. ascii85 do.
   NB. use ASCII85 encoding.  This representation is
   NB. about three times more compact than the default
   NB. representation but requires roughly three times
   NB. the CPU with current algorithms to encode/decode
-  temp,'=:dec85__MK__JODobj 0 : 0',LF,')' ,~ toascii85 y
+  decoder=. (;tablst{'dec85';'fromascii85'),'__MK__JODobj 0 :'
+  temp,'=:',decoder,' 0',LF,')' ,~ toascii85 y
 else.
   head=. temp,'=:'''''                NB. null header
   tail=. temp,'=:',(":#y),'{.',temp   NB. trim to correct length

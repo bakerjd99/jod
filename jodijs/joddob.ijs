@@ -92,6 +92,8 @@ ERR207=:'missing backup files - restore aborted'
 ERR208=:'unable to copy files: DLL error ->'
 ERR209=:'backup dictionary id number invalid - restore aborted'
 ERR210=:'unable to copy/move/rename files - shell messages ->'
+ERR211=:'unable to read timestamps'
+ERR212=:'timestamp update failure'
 
 NB. object report header names
 HEADNMS=:<;._1 ' Words Tests Groups* Suites* Macros'
@@ -373,6 +375,19 @@ NB. monad:  dropref uuIgnore
 erase REFIX,REFCN,REFTS
 )
 
+
+gettstamps=:3 : 0
+
+NB.*gettstamps v-- reads creation and lastput date timestamps.
+NB.
+NB. monad:  blfl =. gettstamps iaObject
+
+fp=. ". ({.;dnix y),'F'  NB. path file name 
+
+NB. errmsg: unable to read timestamps
+if. badjr dat=. jread fp;CNCREATION,CNPUTDATE do. jderr ERR211 else. ok < >dat end.
+)
+
 NB. extract drive and path from qualified file names
 justdrvpath=:[: }: ] #~ [: +./\. '\'&=
 
@@ -621,6 +636,17 @@ bytes=. +/ ; 2 {"1 ] 1!:0 <SYS,'*',IJF
 
 NB. errmsg: not enough free disk space for operation 
 if. bytes<volfree BAK do. OK else. jderr ERR204 end.
+)
+
+
+puttstamps=:4 : 0
+
+NB.*puttstamps v-- update inverted creation and lastput timestamps.
+NB.
+NB. dyad:  iaObject puttstamps ftTs
+
+fp=. ".({.&>dnix x),'F' NB. dictionary file pointer - errmsg: timestamp update failure
+if. badjr (<"1 y) jreplace fp;CNCREATION,CNPUTDATE do. jderr ERR212 else. OK end. 
 )
 
 

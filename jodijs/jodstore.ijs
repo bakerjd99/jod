@@ -129,6 +129,9 @@ ERR095=:'dictionary file attributes do not allow read/write ->'
 ERR096=:'linux/unix dictionary paths must be / rooted ->'
 ERR097=:'invalid dictionary document must be character list'
 ERR098=:'master/dictionary file path mismatch - name/DIDNUM ->'
+ERR099=:'invalid name/creation/lastput table'
+ERR100=:'name/creation/lastput length mismatch'
+ERR101=:'invalid date(s) name/creation/lastput table'
 
 NB. name.n or name.name separator character
 NDOT=:'.'
@@ -150,6 +153,8 @@ OK060=:' word(s) defined'
 OK061=:'(s) deleted from ->'
 OK062=:'dictionary document updated ->'
 OK063=:'(DOCUMENTDICT = 0) - dictionary document not updated ->'
+OK064=:') timestamps updated - ('
+OK065=:') not in put ->'
 
 NB. path report title
 PATHTIT=:'Path*'
@@ -310,6 +315,43 @@ NB.   bnums BAK NB. (BAK) directory object noun
 
 NB. requires first character of all (JDFILES) to be the same
 \:~ ~. , ". ({.;JDFILES)&beforestr&> {."1 (1!:0) <y,'*',IJF
+)
+
+
+checkntstamp=:3 : 0
+
+NB.*checkntstamp v--  checks name, creation  and  last  put  date
+NB. arrays.
+NB.
+NB. The boxed timestamp array fetched  by the _14 option of (get)
+NB. is one of the most complex and idiosyncratic JOD results. The
+NB. layout was  motivated by  the  need  to  serialize  timestamp
+NB. information so that dump scripts might  preserve the creation
+NB. and last put date of objects.
+NB.
+NB. monad:  checkntstamp btNts
+NB.
+NB.   'rc nts'=. 0 _14 get }. dnl ''
+NB.   checkntstamp__ST__JODobj nts
+
+msg=. ERR099 NB. errmsg: invalid name/creation/lastput table
+if. badbu y do. jderr msg
+elseif. -.2 1 -: $y      do. jderr msg
+elseif. badfl uv=. ;1{y  do. jderr msg
+elseif. (2 ~: #$uv) +. 2 ~: #uv  do. jderr msg
+NB. errmsg: name creation/lastput length mismatch
+elseif. ~:/ {:@$&> y  do. jderr ERR100
+NB. creation must precede or equal last put
+elseif. 0 e. <:/ uv   do. jderr msg
+elseif. badrc tn=. checknames ;0{y  do. jderr msg
+NB. timestamp names must be unique 
+elseif. badunique tn=. }.tn  do. jderr msg
+NB. dates are in fractional day yyyymmdd.fd format
+NB. check that floored numbers are actual Gregorian dates
+NB. errmsg: invalid date(s) name/creation/lastput table
+elseif. 0 e. valdate datefrnum ,uv  do. jderr ERR101
+elseif.do. ok < (<tn) (<0;0)} y  NB. insures deblanked names
+end.
 )
 
 
@@ -690,7 +732,7 @@ NB. NOTE: assume enough space for IOS, Android and unknown?
 NB. Default behaviour has been changed to not size volumes
 NB. when FREESPACE is 0. Volume sizing can peform poorly
 NB. on large network volumes and fail completely on cloud drives.
-NB. Empty JOD dictionaries are small (<1mb) - assuming sufficient
+NB. Empty JOD dictionaries are small (<60k) - assuming sufficient
 NB. space is safe in all but extreme circumstances.
 if.     0=FREESPACE      do. 1
 elseif. IFWIN            do. freediskwin y
@@ -853,6 +895,18 @@ NB.
 NB. dyad:  iaObject getgstext blcl
 
 if. badrc uv=. (x,0) getobjects y do. uv else. ok <0 1 {"1 rv uv end.
+)
+
+
+getntstamp=:4 : 0
+
+NB.*getntstamp v-- fetch name, create and put date array.
+NB.
+NB. dyad:  iaDcode getntstamp blcl
+NB.
+NB.    1 getntstamp__ST__JODobj }. 1 revo  ''
+
+if. badrc uv=. (x,INCREATE,INPUT) invfetch y do. uv else. ok <(<y) ,: 1{uv end.
 )
 
 
@@ -1114,7 +1168,10 @@ NB. validated prior to calling.
 NB.
 NB. dyad:  ilDcodes invfetch blcl
 NB.
-NB.  (INCREATE,INPUT,INSIZE) invfetch ;: 'info about us poor words'
+NB.   NB. first code is JOD object code 
+NB.   0 12 13 14 15 invfetch__ST__JODobj }. dnl'' 
+NB.   2 13 14  invfetch__ST__JODobj }. 2 dnl''
+NB.   (SUITE_ajod_,INCREATE_ajod_,INPUT_ajod_) invfetch__ST__JODobj }. SUITE_ajod_ dnl''
 
 if. badrc y=. checknames y do. y return. end.
 obs=. y=. }.y
@@ -1939,6 +1996,48 @@ if. *./b=. y e. ; }. msg do.
 
 else.
   (jderr ERR083),y #~ -. b  NB. errmsg: not on path
+end.
+)
+
+
+putntstamp=:4 : 0
+
+NB.*putntstamp v-- store name, creation and last put timestamps.
+NB.
+NB. dyad: (iaObject ;< ba) putntstamp btNts
+NB.
+NB.   'rc nts'=: 0 _14 get }. revo ''
+NB.   DL=: {:{:DPATH__ST__JODobj
+NB.   (WORD;<DL) putntstamp__ST__JODobj nts
+
+NB. validate name/creation/lastput array 
+if. badrc uv=. checkntstamp y do. uv return. else. uv=. rv uv end.
+
+NB. directory object !(*)=. DL
+'obj DL'=. x  
+
+NB. timestamp names must exist on current path:  errmsg: not on path ->
+tn=. ;0{uv [ pn=. ; }. pathnl obj
+if. 0 e. bm=. tn e. pn do. (jderr ERR083),(-.bm)#tn return. end.
+
+NB. get current timestamps and object index
+if. badrc cts=. gettstamps__DL obj do. cts return. else. cts=. rv cts end.
+oix=. ".(>dnix__DL obj),'__DL'
+
+pos=. oix i. tn           NB. timestamp name positions in index
+pix=. pos -. #oix         NB. put dictionary name positions
+npn=. (I. pos = #oix){tn  NB. names that are not in put dictionary
+ppn=. pix{oix             NB. names that are in put dictionary
+
+NB. update put dictionary timestamps - insure shape is unchanged
+scts=. $cts
+cts=. ((tn i. ppn) {"1 ;1{uv) pix}"1 cts
+if. -.scts -: $cts do. jderr ERR102 return. end.
+
+NB. attempt to save changes
+if. badrc uv=. obj puttstamps__DL cts do. uv 
+else. 
+  ok ('(',(":#ppn),OK064,(":#npn),OK065);(<ppn),<npn
 end.
 )
 

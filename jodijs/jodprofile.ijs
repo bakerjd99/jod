@@ -26,34 +26,54 @@ NB. set white space preservation on
 9!:41 [ 1
 
 NB. minimum print precision to show yyyymmdd dates (see jodage)
-NB. 9!:11 [ 8
+9!:11 [ 8
 
 NB. set jqt windows console size - automatic for linux/mac/ios
-NB. Cwh_j_=: 140 24
+Cwh_j_=: 140 24
 
 NB. do not reset if you are running more than one JOD instance
 dpset 'RESETME'
 
-NB. JOD interface locale 
+NB. JOD interface locale - (ijod) is a good place for ad hoc JOD addons
 coclass 'ijod'
 
-NB. following are handy (ijod) locale shortcuts:
+NB. (ijod) error/ message text
+ERRIJOD00=: 'current group name (jodg_ijod_) not set'
+ERRIJOD01=: 'current suite name (jods_ijod_) not set'
+OKIJOD00=:  'no matches'
 
-NB. project shortcuts - use explicit 
-NB. defintions so it's easy to reset the group/suite
-ag=: 3 : 'jodg addgrp y'
-as=: 3 : '(jods;3) addgrp y'
-dg=: 3 : 'jodg delgrp y'
-ds=: 3 : '(jods;3) delgrp y'
+NB. add delete objects from current group or current suite
+ag=: 3 : 0
+if. wex_ajod_ <'jodg' do. jodg addgrp y else. jderr_ajod_ ERRIJOD00 end.
+)
+as=: 3 : 0
+if. wex_ajod_ <'jods' do. (jods;3) addgrp y else. jderr_ajod_ ERRIJOD01 end.
+)
+dg=: 3 : 0
+if. wex_ajod_ <'jodg' do. jodg delgrp y else. jderr_ajod_ ERRIJOD00 end.
+)
+ds=: 3 : 0
+if. wex_ajod_ <'jods' do. (jods;3) delgrp y else. jderr_ajod_ ERRIJOD01 end. 
+)
    
-NB. referenced group words not in group
-nx=: 3 : '(allrefs  }. gn) -. gn=. grp jodg'
+NB. referenced words not in current group
+nx=: 3 : 0
+if. -.wex_ajod_ <'jodg' do. jderr_ajod_ ERRIJOD00 return. end.
+if. badrc_ajod_ gn=. grp jodg do. gn return. end.
+(allrefs  }. gn) -. gn
+)
    
-NB. words in group using a word
-ug=: 3 : 'y usedby }. grp jodg'
+NB. words in current group using a word
+ug=: 3 : 0
+if. -.wex_ajod_ <'jodg' do. jderr_ajod_ ERRIJOD00 return. end.
+if. badrc_ajod_ gn=. grp jodg do. gn return. end.
+y usedby }. gn
+)
    
-NB. generate & save load script
-sg=: 3 : 'mls jodg [ y'
+NB. generate current group and save load script
+sg=: 3 : 0
+if. wex_ajod_ <'jodg' do. mls jodg else. jderr_ajod_ ERRIJOD01 end. 
+)
 
 NB. top (put dictionary) words, groups in revision order
 tw=: revo
@@ -71,20 +91,45 @@ hg=: [: hlpnl [: }. grp
 NB. short help on put objects in revised order from code:
 NB.     hr 4  NB. macro
 NB.     hr 2  NB. groups
-NB.  10 hr 0  NB. last 10 words
+NB.  10 hr 0  NB. last ten words
 hr=: 3 : 0
-y hlpnl }. y revo ''
+if. badrc_ajod_ w=. y revo '' do. w return. end.
+y hlpnl }. w
 :
-y hlpnl x {. }. y revo ''
+if. badrc_ajod_ w=. y revo '' do. w return. end.
+y hlpnl x {. }. w
 )
 
-NB. single line explanation for nonwords
+NB. search short help for string and list matching words
+NB.     hss 'see long'   NB. search word short text 
+NB.  2  hss 'see long'   NB. search group short text
+NB.  4  hss 'post'       NB. search macro short text 
+hss=: 3 : 0
+0 hss y
+:
+if. badrc_ajod_ w=. x dnl ''   do. w return. end.
+d=. x hlpnl }. w
+if. 0=#w=. 1 >@{ d             do. ok_ajod_ OKIJOD00 return. end.
+if. 0=#s=. I. (,:y) +./"1@E. w do. ok_ajod_ OKIJOD00 return. end.
+s&{ &.> d
+)
+
+NB. single line explanation 
+NB.    slex 'word'         NB. word
 NB.  4 slex 'jodregister'  NB. macro
 NB.  1 slex 'thistest'     NB. test
-slex=: 4 : '(x,8) put y;firstcomment__JODtools x disp y'
+slex=: 3 : 0
+0 slex y
+:
+if. badcl_ajod_ sl=. x disp y do. sl return. end.
+(x,8) put y;firstcomment__JODtools sl
+)
 
 NB. regenerate put dictionary word cross references
-reref=: 3 : '(n,.s) #~ -.;0{"1 s=.0 globs&>n=.}.revo'''' [ y'
+reref=: 3 : 0
+if. badrc_ajod_ n=. revo '' do. n return. end.
+(n,.s) #~ -.;0{"1 s=.0 globs&> n=.}.n
+)
 
 NB. handy cl doc helpers
 docscr=: 3 : 'ctl_ajod_ (61;0;0;''NB.'') docct2__UT__JODobj ];._1 LF,y-.CR'
@@ -97,17 +142,17 @@ NB. edit command
 DOCUMENTCOMMAND=: 'showpass pr ''{~N~}'''
 
 NB. read & write files
-NB. read=:1!:1&(]`<@.(32&>@(3!:0)))
-NB. write=:1!:2 ]`<@.(32&>@(3!:0))
-NB. readnoun=:3!:2@(1!:1&(]`<@.(32&>@(3!:0))))
-NB. writenoun=:([: 3!:1 [) (1!:2 ]`<@.(32&>@(3!:0))) ]
+read=:1!:1&(]`<@.(32&>@(3!:0)))
+write=:1!:2 ]`<@.(32&>@(3!:0))
+readnoun=:3!:2@(1!:1&(]`<@.(32&>@(3!:0))))
+writenoun=:([: 3!:1 [) (1!:2 ]`<@.(32&>@(3!:0))) ]
 
 NB. fetch edit text/macros
-NB. tt=:] ; gt
-NB. mt=:] ; 25"_ ; gt   NB. *.txt
-NB. mj=:] ; 21"_ ; gt   NB. *.ijs
-NB. md=:] ; 27"_ ; gt   NB. *.markdown
-NB. mx=:] ; 22"_ ; gt   NB. *.tex
+tt=:] ; gt
+mt=:] ; 25"_ ; gt   NB. *.txt
+mj=:] ; 21"_ ; gt   NB. *.ijs
+md=:] ; 27"_ ; gt   NB. *.markdown
+mx=:] ; 22"_ ; gt   NB. *.tex
 
 NB. examples of JOD session start ups - shows
 NB. how to open dictionaries and invoke project macros
@@ -115,9 +160,6 @@ NB. how to open dictionaries and invoke project macros
 NB. set up current project (1 suppress IO, 0 or elided display)
 NB. 1 rm 'prjsmughacking' [ smoutput od ;:'smugdev smug utils'
 NB. 1 rm 'prjjod' [ smoutput od ;:'joddev jod utils'
-
-NB. current start up
-NB. smoutput od ;:'bitjd utils'
 
 cocurrent 'base'
 coinsert 'ijod'

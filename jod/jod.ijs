@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.973  Build Number: 4  Date: 20 Jun 2015 00:05:39
+NB. Version: 0.9.973  Build Number: 51  Date: 2 Jul 2015 14:46:56
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -138,7 +138,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.973';4;'20 Jun 2015 00:05:39'
+JODVMD=:'0.9.973';51;'2 Jul 2015 14:46:56'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -174,6 +174,7 @@ end.
 )
 badbu=:[:32&~:3!:0
 badcl=:-.@(2&=@(3!:0))+.1:<[:#$
+badfl=:[:-.8"_=3!:0
 badil=:-.@((([:#$)e.0 1"_)*.3!:0 e.1 4"_)
 badjr=:[:+./_1 _2&e.
 badlocn=:[>:[:18!:0 ::(_2:)[:<]
@@ -329,6 +330,7 @@ ok{:a
 end.
 )
 ctl=:}.@(,@(1&(,"1)@(-.@(*./\."1@(=&' '@]))))#,@((10{a.)&(,"1)@]))
+datefrnum=:0 100 100&#:@<.
 dblquote=:'"'&,@:(,&'"')&.>
 decomm=:3 :0
 1 decomm y
@@ -515,6 +517,7 @@ case.EXPLAIN do.WORD getexplain__ST y
 case.DOCUMENT do.WORD getdocument__ST y
 case.NVTABLE do.(WORD,0)getobjects__ST y
 case.INCLASS;INCREATE;INPUT;INSIZE do.(2{.x)invfetch__ST y
+case.-INPUT do.WORD getntstamp__ST y
 case.do.jderr b
 end.
 case.TEST do.
@@ -523,6 +526,7 @@ case.DEFAULT do.(TEST,0)getobjects__ST y
 case.EXPLAIN do.TEST getexplain__ST y
 case.DOCUMENT do.TEST getdocument__ST y
 case.INCREATE;INPUT;INSIZE do.(2{.x)invfetch__ST y
+case.-INPUT do.TEST getntstamp__ST y
 case.do.jderr b
 end.
 case.GROUP do.
@@ -531,6 +535,7 @@ case.DEFAULT do.GROUP getgstext__ST y
 case.EXPLAIN do.GROUP getexplain__ST y
 case.DOCUMENT do.GROUP getdocument__ST y
 case.INCREATE;INPUT do.(2{.x)invfetch__ST y
+case.-INPUT do.GROUP getntstamp__ST y
 case.do.jderr b
 end.
 case.SUITE do.
@@ -539,6 +544,7 @@ case.DEFAULT do.SUITE getgstext__ST y
 case.EXPLAIN do.SUITE getexplain__ST y
 case.DOCUMENT do.SUITE getdocument__ST y
 case.INCREATE;INPUT do.(2{.x)invfetch__ST y
+case.-INPUT do.SUITE getntstamp__ST y
 case.do.jderr b
 end.
 case.MACRO do.
@@ -547,6 +553,7 @@ case.DEFAULT do.(MACRO,0)getobjects__ST y
 case.EXPLAIN do.MACRO getexplain__ST y
 case.DOCUMENT do.MACRO getdocument__ST y
 case.INCLASS;INCREATE;INPUT;INSIZE do.(2{.x)invfetch__ST y
+case.-INPUT do.MACRO getntstamp__ST y
 case.do.jderr b
 end.
 case.DICTIONARY do.
@@ -760,6 +767,7 @@ case.EXPLAIN do.(WORD;<DL)putexplain__ST y
 case.DOCUMENT do.(WORD;1;<DL)puttexts__ST y
 case.NVTABLE do.
 if.badrc y=.(i.4)checknttab2 y do.y else.(WORD;<DL)puttable__ST y end.
+case.-INPUT do.(WORD;<DL)putntstamp__ST y
 case.do.jderr b
 end.
 case.TEST do.
@@ -768,6 +776,7 @@ case.DEFAULT do.
 if.badrc y=.checknttab y do.y else.(TEST;<DL)puttable__ST y end.
 case.EXPLAIN do.(TEST;<DL)putexplain__ST y
 case.DOCUMENT do.(TEST;1;<DL)puttexts__ST y
+case.-INPUT do.(TEST;<DL)putntstamp__ST y
 case.do.jderr b
 end.
 case.GROUP do.
@@ -776,6 +785,7 @@ case.DEFAULT do.(GROUP;0;<DL)puttexts__ST y
 case.EXPLAIN do.(GROUP;<DL)putexplain__ST y
 case.DOCUMENT do.(GROUP;1;<DL)puttexts__ST y
 case.1 do.(GROUP;0;<DL)puttexts__ST y
+case.-INPUT do.(GROUP;<DL)putntstamp__ST y
 case.do.jderr b
 end.
 case.SUITE do.
@@ -784,6 +794,7 @@ case.DEFAULT do.(SUITE;0;<DL)puttexts__ST y
 case.EXPLAIN do.(SUITE;<DL)putexplain__ST y
 case.DOCUMENT do.(SUITE;1;<DL)puttexts__ST y
 case.1 do.(SUITE;0;<DL)puttexts__ST y
+case.-INPUT do.(SUITE;<DL)putntstamp__ST y
 case.do.jderr b
 end.
 case.MACRO do.
@@ -792,6 +803,7 @@ case.DEFAULT do.
 if.badrc y=.MACROTYPE checknttab2 y do.y else.(MACRO;<DL)puttable__ST y end.
 case.EXPLAIN do.(MACRO;<DL)putexplain__ST y
 case.DOCUMENT do.(MACRO;1;<DL)puttexts__ST y
+case.-INPUT do.(MACRO;<DL)putntstamp__ST y
 case.do.jderr b
 end.
 case.DICTIONARY do.
@@ -899,6 +911,14 @@ ok<h
 elseif.do.jderr c
 end.
 )
+valdate=:3 :0
+s=.}:$y
+'w m d'=.t=.|:((*/s),3)$,y
+b=.*./(t=<.t),(_1 0 0<t),12>:m
+a=.(13|m){0 31 28 31 30 31 30 31 31 30 31 30 31
+a=.a+(m=2)*-/0=4 100 400|/w
+s$b*d<:a
+)
 wex=:0&<:@:nc
 wrep=:5!:5@<`(3!:1@:".)@.(0&=@(nc@<))
 write=:1!:2]`<@.(32&>@(3!:0))
@@ -973,6 +993,9 @@ ERR095=:'dictionary file attributes do not allow read/write ->'
 ERR096=:'linux/unix dictionary paths must be / rooted ->'
 ERR097=:'invalid dictionary document must be character list'
 ERR098=:'master/dictionary file path mismatch - name/DIDNUM ->'
+ERR099=:'invalid name/creation/lastput table'
+ERR100=:'name/creation/lastput length mismatch'
+ERR101=:'invalid date(s) name/creation/lastput table'
 NDOT=:'.'
 OFFSET=:39
 OK050=:'dictionary created ->'
@@ -988,6 +1011,8 @@ OK060=:' word(s) defined'
 OK061=:'(s) deleted from ->'
 OK062=:'dictionary document updated ->'
 OK063=:'(DOCUMENTDICT = 0) - dictionary document not updated ->'
+OK064=:') timestamps updated - ('
+OK065=:') not in put ->'
 PATHTIT=:'Path*'
 READSTATS=:<;._1 ' ro rw'
 afterlaststr=:]}.~#@[+1&(i:~)@([E.])
@@ -1079,6 +1104,20 @@ end.
 )
 bnums=:3 :0
 \:~~.,".({.;JDFILES)&beforestr&>{."1(1!:0)<y,'*',IJF
+)
+checkntstamp=:3 :0
+a=.ERR099
+if.badbu y do.jderr a
+elseif.-.2 1-:$y do.jderr a
+elseif.badfl c=.;1{y do.jderr a
+elseif.(2~:#$c )+.2~:#c do.jderr a
+elseif.~:/{:@$&>y do.jderr ERR100
+elseif.0 e.<:/c do.jderr a
+elseif.badrc b=.checknames;0{y do.jderr a
+elseif.badunique b=.}.b do.jderr a
+elseif.0 e.valdate datefrnum,c do.jderr ERR101
+elseif.do.ok<(<b)(<0;0)}y
+end.
 )
 checkopen=:3 :0
 if.#DPATH do.OK else.jderr ERR050 end.
@@ -1326,6 +1365,9 @@ end.
 )
 getgstext=:4 :0
 if.badrc a=.(x,0)getobjects y do.a else.ok<0 1{"1 rv a end.
+)
+getntstamp=:4 :0
+if.badrc a=.(x,INCREATE,INPUT)invfetch y do.a else.ok<(<y ),:1{a end.
 )
 getobjects=:4 :0
 if.badrc y=.checknames y do.y return.end.
@@ -1830,6 +1872,25 @@ else.
 (jderr ERR083),y#~-.b
 end.
 )
+putntstamp=:4 :0
+if.badrc l=.checkntstamp y do.l return.else.l=.rv l end.
+'d DL'=.x
+k=.;0{l[g=.;}.pathnl d
+if.0 e.a=.k e.g do.(jderr ERR083),(-.a)#k return.end.
+if.badrc b=.gettstamps__DL d do.b return.else.b=.rv b end.
+e=.".(>dnix__DL d),'__DL'
+h=.e i.k
+f=.h-.#e
+c=.(I.h=#e){k
+i=.f{e
+j=.$b
+b=.((k i.i){"1 ;1 {l)f}"1 b
+if.-.j-:$b do.jderr ERR102 return.end.
+if.badrc l=.d puttstamps__DL b do.l
+else.
+ok('(',(":#i),OK064,(":#c),OK065);(<i),<c
+end.
+)
 puttable=:4 :0
 'c DL'=.x
 if.loaddir__DL c do.
@@ -2052,6 +2113,8 @@ ERR207=:'missing backup files - restore aborted'
 ERR208=:'unable to copy files: DLL error ->'
 ERR209=:'backup dictionary id number invalid - restore aborted'
 ERR210=:'unable to copy/move/rename files - shell messages ->'
+ERR211=:'unable to read timestamps'
+ERR212=:'timestamp update failure'
 HEADNMS=:<;._1 ' Words Tests Groups* Suites* Macros'
 OK200=:'dictionary packed ->'
 OK201=:'dictionary restored ->'
@@ -2148,6 +2211,10 @@ erase((WORD,MACRO)i.y){DIRNC
 )
 dropref=:3 :0
 erase REFIX,REFCN,REFTS
+)
+gettstamps=:3 :0
+b=.".({.;dnix y),'F'
+if.badjr a=.jread b;CNCREATION,CNPUTDATE do.jderr ERR211 else.ok<>a end.
 )
 justdrvpath=:[:}:]#~[:+./\.'\'&=
 libstatus=:3 :0
@@ -2259,6 +2326,10 @@ end.
 packspace=:3 :0
 a=.+/;2{"1]1!:0<SYS,'*',IJF
 if.a<volfree BAK do.OK else.jderr ERR204 end.
+)
+puttstamps=:4 :0
+a=.".({.&>dnix x),'F'
+if.badjr(<"1 y)jreplace a;CNCREATION,CNPUTDATE do.jderr ERR212 else.OK end.
 )
 renamefiles=:4 :0
 if.IFWIN do.
@@ -2429,6 +2500,7 @@ ERR0156=:'unable to create dumpfile ->'
 ERR0157=:'directory-component name class inconsistency -- dump aborted ->'
 ERR0158=:'invalid fully qualified dump file name'
 ERR0159=:'mixed assignments ->'
+ERR0160=:'invalid object timestamp table'
 EXPLAINFAC=:10
 EXPPFX0=:4 5$'1 : ''2 : ''3 : ''4 : '''
 EXPPFX1=:3 8$'3 : ('':''3 : (,'':4 : (,'':'
@@ -2537,6 +2609,22 @@ b=.b,'soput_z_=:SOLOCALE&put',c
 b=.b,'soclear_z_=: ''0 0 $ clearso__MK__JODobj 0''',c
 if._1-:(toHOST b)fap<y do.(jderr ERR0155),<y else.OK end.
 )
+dumpntstamps=:4 :0
+if.x do.
+if.badrc a=.getallts 0 do.a return.else.a=.rv a end.
+if.0=>./,#&>(0 1){a do.OK return.end.
+e=.DUMPTAG,LF
+b=.LF,SOSWITCH,LF
+c=.'cocurrent ''base'' ',e
+c=.c,'puttstamps_ijod_=: (((1;''upgrade JOD'')"_)`putallts__MK__JODobj)@.(3 = (4!:0)<''putallts__MK__JODobj'')',e
+d=.c,SOPASS,'puttstamps ".".''zz_'',SOLOCALE,''_'' [ cocurrent ''base'' ',e
+f=.b,(WRAPTMPWID,(getascii85 0);<1)wraplinear 5!:5<'a'
+f=.f,LF,d,SOCLEAR,2#LF
+if._1-:(toHOST f)fap<y do.(jderr ERR0155),<y else.OK end.
+else.
+OK
+end.
+)
 dumptext=:4 :0
 'b d e'=.x
 e=.<e
@@ -2640,12 +2728,7 @@ end.
 fap=:1!:3 ::(_1:)
 fmtdumptext=:4 :0
 if.#b=.y #~0<#&>{:"1 y do.
-a=.0
-if.0=nc<'ASCII85'do.a=.1=ASCII85
-elseif.
-do=.{:{.DPATH__ST
-0=nc<'ASCII85__do'do.a=.1=ASCII85__do
-end.
+a=.getascii85 0
 if.a do.b=.clfrbtcl":&.>b else.b=.5!:5<'b'end.
 (x,<a)wraplinear b
 else.
@@ -2667,6 +2750,33 @@ r=.r,84#~b{0 4 3 2 1
 r=.a.{~,(4#256)#:85#._5[\r
 r}.~-b{0 0 3 2 1
 )
+getallts=:3 :0
+a=.((#OBJECTNC)#<0)(2)}(3,#OBJECTNC)$a:
+c=.-INPUT
+for_obj.OBJECTNC do.
+if.badrc d=.(obj ,c)get}.obj dnl''do.continue.end.
+d=.rv d
+a=.(<;0{d)(<0;obj_index)}a
+a=.(<;1{d)(<1;obj_index)}a
+b=.rlefrnl,e=.;1{d
+if.(,e)-:nlfrrle b do.
+if.(*/$b)<:*/$e do.
+a=.(<b)(<1;obj_index)}a
+a=.(<1)(<2;obj_index)}a
+end.
+end.
+end.
+ok<a
+)
+getascii85=:3 :0
+a=.0
+if.0=nc<'ASCII85'do.a=.1-:ASCII85
+elseif.
+do=.{:{.DPATH__ST
+0=nc<'ASCII85__do'do.a=.1-:ASCII85__do
+end.
+a
+)
 halfbits=:]*.1 0"_$~#
 htclip=:[(]}.~[:>:]i.[)]}.~[:-[:>:[i.~[:|.]
 jnb=:3 :0
@@ -2677,22 +2787,24 @@ y jnb~masknb y
 jscript=:[:;(([:<"0[)#&.>(10{a.)"_),&.>]
 jscriptdefs=:(([:{."1]),&.>(<'=:')"_),&.>[:{:"1]
 makedump=:3 :0
-if.badrc c=.checkopen__ST 0 do.c return.end.
+if.badrc d=.checkopen__ST 0 do.d return.end.
 DL=.{:{.DPATH__ST
 a=.DUMPFACTOR__DL
 if.isempty y do.b=.DMP__DL,DNAME__DL,IJS
 elseif.badcl y do.jderr ERR0158 return.
 elseif.do.b=.y
 end.
+if.0 =nc<'RETAINAGE__DL'do.c=.1-:RETAINAGE__DL else.c=.0 end.
 b=.jpathsep b
-if.badrc c=.dumpheader b do.c
-elseif.badrc c=.a dumpwords b do.c
-elseif.badrc c=.(a,TEST)dumptm b do.c
-elseif.badrc c=.(a,MACRO)dumptm b do.c
-elseif.badrc c=.(a,GROUP)dumpgs b do.c
-elseif.badrc c=.(a,SUITE)dumpgs b do.c
-elseif.badrc c=.dumpdictdoc b do.c
-elseif.badrc c=.dumptrailer b do.c
+if.badrc d=.dumpheader b do.d
+elseif.badrc d=.a dumpwords b do.d
+elseif.badrc d=.(a,TEST)dumptm b do.d
+elseif.badrc d=.(a,MACRO)dumptm b do.d
+elseif.badrc d=.(a,GROUP)dumpgs b do.d
+elseif.badrc d=.(a,SUITE)dumpgs b do.d
+elseif.badrc d=.dumpdictdoc b do.d
+elseif.badrc d=.c dumpntstamps b do.d
+elseif.badrc d=.dumptrailer b do.d
 elseif.do.
 (ok OK0151),<b
 end.
@@ -2753,6 +2865,7 @@ ok/:~~.d
 end.
 end.
 )
+nlfrrle=:#~/@:|:
 nounlrep=:4 :0
 if.#y do.
 clearso 0
@@ -2805,6 +2918,21 @@ else.
 e=.ok(<a),(<b),<;e
 end.
 )
+putallts=:3 :0
+if.-.(3,#OBJECTNC)-:$y do.jderr ERR0160 return.end.
+do=.{:{.DPATH__ST
+g=.dnnm__do OBJECTNC[a=.DNAME__do
+c=.-INPUT[b=.;2{y[e=.0=#&>0{y[d=.i.0 4
+for_obj.OBJECTNC do.
+if.obj_index{e do.continue.end.
+f=.(<0 1;,obj_index){y
+h=.2,#&>0{f
+if.obj_index{b do.f=.(<h$nlfrrle;1{f )(1)}f end.
+d=.d,(2{.(obj,c)put f),(obj_index{g),<a
+end.
+d
+)
+rlefrnl=:(1,~2&(~:/\))({.,#);.2]
 sexpin=:3 :0
 if.EXPPFX0 e.~5{.a=.alltrim 20{.,y do.1
 elseif.EXPPFX1 e.~8{.a do.1
@@ -2840,15 +2968,16 @@ y
 end.
 )
 wraplinear=:4 :0
-'f g a'=.3{.x,<0
+'h i a f'=.4{.x,0;<0
 if.a do.
-f,'=:dec85__MK__JODobj 0 : 0',LF,')',~toascii85 y
+c=.(;f{'dec85';'fromascii85'),'__MK__JODobj 0 :'
+h,'=:',c,' 0',LF,')',~toascii85 y
 else.
-c=.f,'=:'''''
-e=.f,'=:',(":#y),'{.',f
-d=.f,'=:',f,','
-b=.ctl d,"1 quote"1 (-g)]\y
-c,LF,b,LF,e
+d=.h,'=:'''''
+g=.h,'=:',(":#y),'{.',h
+e=.h,'=:',h,','
+b=.ctl e,"1 quote"1 (-i)]\y
+d,LF,b,LF,g
 end.
 )
 wrdglobals=:4 :0

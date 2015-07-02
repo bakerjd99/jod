@@ -210,7 +210,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.973';4;'20 Jun 2015 00:05:39'
+JODVMD=:'0.9.973';51;'2 Jul 2015 14:46:56'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -293,10 +293,13 @@ badbu=:[: 32&~: 3!:0
 NB. 1 if (y) is not a character list or atom
 badcl=:-.@(2&=@(3!:0)) +. 1: < [: # $
 
+NB. 1 if (y) is not floating
+badfl=:[: -. 8"_ = 3!:0
+
 NB. 1 if (y) is not a list of non-extended integers
 badil=:-.@((([: # $) e. 0 1"_) *. 3!:0 e. 1 4"_)
 
-NB. bad jfile read operation
+NB. bad jfile operation
 badjr=:[: +./ _1 _2&e.
 
 NB. bad locale name
@@ -616,6 +619,9 @@ end.
 
 NB. character table to newline delimited list
 ctl=:}.@(,@(1&(,"1)@(-.@(*./\."1@(=&' '@])))) # ,@((10{a.)&(,"1)@]))
+
+NB. YYYYMMDD to YYYY MM DD - see long document
+datefrnum=:0 100 100&#:@<.
 
 NB. enclose all character lists in blcl in " quotes
 dblquote=:'"'&,@:(,&'"')&.>
@@ -1019,6 +1025,7 @@ case. WORD do.
     case. DOCUMENT do. WORD getdocument__ST y
     case. NVTABLE  do. (WORD,0) getobjects__ST y
     case. INCLASS;INCREATE;INPUT;INSIZE do. (2{.x) invfetch__ST y
+    case. -INPUT   do. WORD getntstamp__ST y
     case.do. jderr msg
   end.
 case. TEST do.
@@ -1027,7 +1034,8 @@ case. TEST do.
     case. EXPLAIN  do. TEST getexplain__ST y
     case. DOCUMENT do. TEST getdocument__ST y
     case. INCREATE;INPUT;INSIZE do. (2{.x) invfetch__ST y
-    case.do. jderr msg
+    case. -INPUT   do. TEST getntstamp__ST y
+    case.do. jderr msg 
   end.
 case. GROUP do.
   select. second x
@@ -1035,6 +1043,7 @@ case. GROUP do.
     case. EXPLAIN  do. GROUP getexplain__ST y
     case. DOCUMENT do. GROUP getdocument__ST y
     case. INCREATE;INPUT do. (2{.x) invfetch__ST y
+    case. -INPUT   do. GROUP getntstamp__ST y
     case.do. jderr msg
   end.
 case. SUITE do.
@@ -1043,6 +1052,7 @@ case. SUITE do.
     case. EXPLAIN  do. SUITE getexplain__ST y
     case. DOCUMENT do. SUITE getdocument__ST y
     case. INCREATE;INPUT do. (2{.x) invfetch__ST y
+    case. -INPUT   do. SUITE getntstamp__ST y
     case.do. jderr msg
   end.
 case. MACRO do.
@@ -1051,6 +1061,7 @@ case. MACRO do.
     case. EXPLAIN  do. MACRO getexplain__ST y
     case. DOCUMENT do. MACRO getdocument__ST y
     case. INCLASS;INCREATE;INPUT;INSIZE do. (2{.x) invfetch__ST y
+    case. -INPUT   do. MACRO getntstamp__ST y
     case.do. jderr msg
   end.
 case. DICTIONARY do.
@@ -1547,6 +1558,7 @@ case. WORD do.
     case. DOCUMENT do. (WORD;1;<DL) puttexts__ST y
     case. NVTABLE  do.
       if. badrc y=. (i. 4) checknttab2 y do. y else. (WORD;<DL) puttable__ST y end.
+    case. -INPUT   do. (WORD;<DL) putntstamp__ST y
     case.do. jderr msg
   end.
 case. TEST do.
@@ -1555,6 +1567,7 @@ case. TEST do.
       if. badrc y=. checknttab y do. y else. (TEST;<DL) puttable__ST y end.
     case. EXPLAIN  do. (TEST;<DL) putexplain__ST y
     case. DOCUMENT do. (TEST;1;<DL) puttexts__ST y
+    case. -INPUT   do. (TEST;<DL) putntstamp__ST y
     case.do. jderr msg
   end.
 case. GROUP do.
@@ -1565,6 +1578,7 @@ case. GROUP do.
     NB. HARDCODE - lines inserted to maintain put/get symmetry for
     NB. the frequent argument cases 2 1 and 3 1 
     case. 1 do. (GROUP;0;<DL) puttexts__ST y
+    case. -INPUT   do. (GROUP;<DL) putntstamp__ST y
     case.do. jderr msg
   end.
 case. SUITE do.
@@ -1573,6 +1587,7 @@ case. SUITE do.
     case. EXPLAIN  do. (SUITE;<DL) putexplain__ST y
     case. DOCUMENT do. (SUITE;1;<DL) puttexts__ST y
     case. 1 do. (SUITE;0;<DL) puttexts__ST y  NB. HARDCODE
+    case. -INPUT   do. (SUITE;<DL) putntstamp__ST y
     case.do. jderr msg
   end.
 case. MACRO do.
@@ -1581,6 +1596,7 @@ case. MACRO do.
       if. badrc y=. MACROTYPE checknttab2 y do. y else. (MACRO;<DL) puttable__ST y end.
     case. EXPLAIN  do. (MACRO;<DL) putexplain__ST y
     case. DOCUMENT do. (MACRO;1;<DL) puttexts__ST y
+    case. -INPUT   do. (MACRO;<DL) putntstamp__ST y
     case.do. jderr msg
   end.
 case. DICTIONARY do.
@@ -1806,6 +1822,25 @@ elseif. x-:UNION do.
 
 elseif.do. jderr msg
 end.
+)
+
+
+valdate=:3 : 0
+
+NB.*valdate v-- validates lists or tables of YYYY MM DD Gregorian
+NB. calendar dates.
+NB.
+NB. monad:  valdate il|it
+NB.
+NB.   valdate 1953 7 2
+NB.   valdate 1953 2 29 ,: 1953 2 28  NB. not a leap year
+
+s=. }:$y
+'w m d'=. t=. |:((*/s),3)$,y
+b=. *./(t=<.t),(_1 0 0<t),12>:m
+day=. (13|m){0 31 28 31 30 31 30 31 31 30 31 30 31
+day=. day+(m=2)*-/0=4 100 400|/w
+s$b*d<:day
 )
 
 NB. 1 when word with name exists 0 otherwise

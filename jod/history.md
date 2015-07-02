@@ -3,26 +3,64 @@ general/jod - change history
 
 ### 0.9.973 - XXX
 
+ * A negative option code `_14` has been added to `get` and `put` to
+   support timestamp serialization. When JOD generates dump scripts
+   with `make` it does not include object creation and last change
+   timestamps. Hence, when the dump script is loaded, it resets
+   object timestamps to when the dump script runs *not when the
+   objects where created or last changed.*  
+
+        NB. name/creation/lastput timestamps
+        'rc wts'=: 0 _14 get }. revo ''
+        'rc gts'=: 2 _14 get }. 2 revo ''
+
+        NB. (wts,gts) are boxed tables with (blcl) names in the first row and
+        NB. floating fractional day (ft) yyyymmdd.fd timestamps in the second
+
+        NB. update put dictionary timestamps 
+        0 _14 put wts 
+        2 _14 put gts  
+        
+ * A new `dpset` parameter `RETAINAGE` has been added to control
+   dumping timestamps. When `RETAINAGE` exists and is set to `1` 
+   timestamps are serialized and appended to dump scripts. The default
+   value is `0`. `RETAINAGE` is a new dictionary parameter and will
+   not exist in dictionaries created before this version.
+   This can be changed by recreating the master file `jmaster.ijf` 
+   and reloading dictionaries from dump scripts. See `jod.pdf`
+   for more details. Update the `joddocument` addon to get 
+   the current `jod.pdf` edition. 
+   
+        dpset '' NB. show put dictionary parameter settings
+
+        NB. add timestamps to dump scripts
+        dpset 'RETAINAGE';1
+
+        NB. dump scripts now contain object timestamps
+        make ''
+
  * `mls` changed to use new `dpset` parameter `ROOTFOLDER`.
-    When `ROOTFOLDER` exists and is a `jpath` J configured 
-    folder `mls` writes generated scripts to the `jpath` folder.
-    If `ROOTFOLDER` does not exist or is not a  configured `jpath` folder
-    generated scripts are written to standard dictionary folders.
+   When `ROOTFOLDER` exists and is a `jpath` J configured 
+   folder `mls` writes generated scripts to the `jpath` folder.
+   If `ROOTFOLDER` does not exist or is not a  configured `jpath` folder
+   generated scripts are written to standard dictionary folders.
+   `ROOTFOLDER` is also a new parameter and will not exist in
+   dictionaries created before this version.  
 
-    `ROOTFOLDER` is a new parameter and will not exist in
-    dictionaries created before this version. This can be
-    changed by recreating the master file `jmaster.ijf` and reloading
-    dictionaries from dump scripts. See `jod.pdf`
-    for more details.
+        dpset '' NB. show put dictionary parameter settings
 
-         dpset '' NB. show put dictionary parameter settings
+        NB. set ROOTFOLDER to a J configured folder
+        dpset 'ROOTFOLDER';'~user/jodroot'
 
-         NB. set ROOTFOLDER to a J configured folder
-         dpset 'ROOTFOLDER';'~user/jodroot'
+        NB. generated scripts are now written to the J folder
+        mls 'jodgroupname'
 
-         NB. generated scripts are now written to the J folder
-         mls 'jodgroupname'
+ * Improved error handling for many `ijod` *ad hoc* words: see `jodprofile.ijs`.
 
+ * `swex` and `ltx` removed from `jodtools` class. Use `slex` instead of `swex`
+   and `mx` for `ltx`. See `jodprofile.ijs`
+
+ * Code formating improved in `jod.pdf` and revisions made for changes to JOD.
 
 ### 0.9.972 - April 5, 2015 (Easter Egg Edition)
 
