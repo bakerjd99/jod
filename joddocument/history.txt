@@ -1,6 +1,14 @@
 general/joddocument - change history
 ====================================
 
+### 0.9.973 - July 4, 2015
+ 
+  * new appendix "Turning JOD Dump Script Tricks" added
+
+  * `get` and `put` changes for new timestamp support
+
+  * improved J code formatting throughout `jod.pdf`
+
 ### 0.9.972 - April 5, 2015
 
   * minor edits to support lab updates

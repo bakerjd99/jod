@@ -1,13 +1,13 @@
 general/jod - change history
 ============================
 
-### 0.9.973 - XXX
+### 0.9.973 - July 4, 2015 (Independence Day Edition)
 
  * A negative option code `_14` has been added to `get` and `put` to
    support timestamp serialization. When JOD generates dump scripts
    with `make` it does not include object creation and last change
-   timestamps. Hence, when the dump script is loaded, it resets
-   object timestamps to when the dump script runs *not when the
+   timestamps. Hence, when a dump script is run, it resets
+   object timestamps to when *it* runs *not when the dictionary
    objects where created or last changed.*  
 
         NB. name/creation/lastput timestamps
