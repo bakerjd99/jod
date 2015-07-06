@@ -997,7 +997,7 @@ if. -.(3,#OBJECTNC) -: $y do. jderr ERR0160 return. end.
 
 NB. put dictionary name and object names
 do=. {:{.DPATH__ST 
-onames=. dnnm__do OBJECTNC [ dname=. DNAME__do 
+onames=. DIRNMS__do [ dname=. DNAME__do 
 
 NB. HARDCODE: shapes
 inc=. -INPUT [ ecb=. ;2{y [ nots=. 0 = #&> 0{y [ msg=. i. 0 4
