@@ -194,7 +194,7 @@ INPUT=:14
 NB. inverted data code: object size in bytes
 INSIZE=:15
 
-
+NB. core JOD interface words - loaded into (ijod) locale
 IzJODinterface=:<;._1 ' bnl del did dnl dpset gdeps get globs grp make newd od packd put regd restd uses'
 
 NB. standard dictionary file names - order matters
@@ -209,7 +209,7 @@ JJODDIR=:'joddicts\'
 NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
-
+NB. version, make and date
 JODVMD=:'0.9.973';57;'4 Jul 2015 00:13:19'
 
 NB. base J version - prior versions not supported by JOD

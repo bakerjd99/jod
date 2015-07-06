@@ -71,6 +71,8 @@ ERR0256=:'J error in script ->'
 ERR0260=:'PDF reader not found'
 ERR0261=:'macro is not a J script - not formatted'
 ERR0262=:'not supported on current J system'
+
+NB. jodutil interface words
 IzJODutinterface=:<;._1 ' compj de disp doc ed et gt jodhelp revo rm rtt'
 
 NB. valid characters in J names
