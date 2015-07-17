@@ -1,4 +1,4 @@
-NB. jod.ijs -- main JOD dictionary class
+NB. *jod c-- main JOD dictionary class.
 NB.
 NB. All other dictionary classes are extensions of the dictionary class.
 NB. They all use standard constants and verbs defined in this class.
@@ -210,7 +210,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.973';57;'4 Jul 2015 00:13:19'
+JODVMD=:'0.9.980';8;'17 Jul 2015 14:24:43'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996

@@ -1,4 +1,4 @@
-NB.*jodtools c-- JOD tools class - extends JOD utility class.
+NB.*jodtools c-- derived tools class: extension of (jodutil).
 NB.
 NB. Interface words:
 NB.  addgrp   add words/tests to group/suite                                          
@@ -64,7 +64,7 @@ NB. comment tag marking start of scripts
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 
 NB. JODTOOLS version, make and date
-JODTOOLSVMD=:'0.9.973';57;'4 Jul 2015 00:13:20'
+JODTOOLSVMD=:'0.9.980';65;'17 Jul 2015 14:24:44'
 
 NB. line feed character
 LF=:10{a.
@@ -504,6 +504,7 @@ NB.
 NB.   2 lg 'group'    NB. no postprocessor
 NB.   lg~  'group'    NB. postprocessor
 
+NB. (/:)=: obfuscate names
 2 lg y
 :
 if. x-:2 do.

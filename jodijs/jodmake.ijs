@@ -1,15 +1,17 @@
-NB. jodmake.ijs -- script making & code manipulation: extension of (JOD)
+NB. *jodmake c-- script making & code manipulation: extension of (jod).
 NB.
 NB. This subclass defines utilities for making scripts from 
 NB. groups and suites.  It also contains code for analyzing 
 NB. name references in J words. 
 NB.
 NB. Interface nouns & verbs:
-NB.   wrdglobals    extracts global names from J code
-NB.   namecats      classifies names in J code
+NB.   getallts      gets all timestamps
 NB.   makedump      dumps objects on path to put dump directory
 NB.   makegs        make group and suite scripts
+NB.   namecats      classifies names in J code
+NB.   putallts      puts all timestamps - see (getallts)
 NB.   wttext        word and test text
+NB.   wrdglobals    extracts global names from J code
 NB.
 NB. Notes:
 NB.   Error messages (jodmake range 150-199)

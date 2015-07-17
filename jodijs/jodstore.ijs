@@ -1,4 +1,4 @@
-NB. jodstore.ijs -- storage object class: extension of (jod)
+NB.*jodstore c-- storage object class: extension of (jod).
 NB.
 NB. Hides the underlying database/file system used to store
 NB. dictionary objects. Replacing this class is all that's
@@ -17,6 +17,7 @@ NB.   dnlsearch    search for name patterns
 NB.   getdocument  get object documentation
 NB.   getexplain   get short object explanations
 NB.   getgstext    get group and suite script text
+NB.   getntstamp   get name, creation and last put timestamps
 NB.   getobjects   get objects
 NB.   getrefs      get references
 NB.   gslistnl     group and suite name lists
@@ -30,6 +31,7 @@ NB.   opendict     open a dictionary
 NB.   pathnl       path name lists
 NB.   putexplain   store short object explanations
 NB.   putgs        store groups and suites
+NB.   putntstamp   store name, creation and last put timestamps
 NB.   puttable     store (name,text) and (name,class,text) tables
 NB.   puttexts     store object documentation and group/suite texts
 NB.   putwords     store words
@@ -900,7 +902,7 @@ if. badrc uv=. (x,0) getobjects y do. uv else. ok <0 1 {"1 rv uv end.
 
 getntstamp=:4 : 0
 
-NB.*getntstamp v-- fetch name, create and put date array.
+NB.*getntstamp v-- get name, creation and last put timestamps.
 NB.
 NB. dyad:  iaDcode getntstamp blcl
 NB.

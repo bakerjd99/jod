@@ -1,4 +1,4 @@
-NB. joddob.ijs -- directory object class: extension of (jodstore)
+NB. *joddob c-- directory object class: extension of (jodstore).
 NB.
 NB. Directory objects are created when dictionaries are opened
 NB. and destroyed when they are closed.  Directory objects contain
@@ -16,12 +16,14 @@ NB.   dnnm        visible object names
 NB.   dropdir     erase directory nouns
 NB.   dropnc      erase class/type nouns
 NB.   dropref     erase reference nouns
+NB.   gettstamps  reads creation and lastput date timestamps
 NB.   loaddir     load directory
 NB.   loadnc      load word and macro class/types
 NB.   loadref     load references
 NB.   loadstamps  load time stamps
 NB.   packdict    packs dictionary and saves old files as a backup
 NB.   packspace   tests for sufficient backup space
+NB.   puttstamps  update inverted creation and lastput timestamps
 NB.   restdict    restores most recent backup created by (packdict)
 NB.   restspace   tests for sufficient restore space
 NB.   savedir     save directory

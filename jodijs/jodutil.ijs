@@ -1,4 +1,4 @@
-NB. jodutil.ijs -- a collection of JOD utility words.
+NB. *jodutil c-- a collection of JOD utility words: extension of (jod).
 NB.
 NB. This subclass defines a set of handy utilites that use the core
 NB. facilities of JOD to perform tasks of general use to J programmers.
@@ -77,6 +77,15 @@ IzJODutinterface=:<;._1 ' compj de disp doc ed et gt jodhelp revo rm rtt'
 
 NB. valid characters in J names
 NAMEALPHA=:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
+
+NB. obfuscate local identifiers tag
+OBFUSCATE=:'(/:)=:'
+
+NB. name obfuscation limit - higher values less likely to clash
+OBFUSCCNT=:100000
+
+NB. obfuscation local identifier prefix
+OBFUSCPFX=:'o_'
 
 
 OK0250=:' documented in ->'
@@ -251,6 +260,9 @@ NB.
 NB. monad:  cl =. compressj ct
 NB.
 NB.   compressj jcr 'verbname'
+NB.
+NB.   NB. call in object context
+NB.   compressj__UT__JODobj jcr_ajod_ 'compressj_base_'
 
 NB. check for presence of white space only removal tag
 w=. 1 e. CWSONLY E. ,y
@@ -264,10 +276,17 @@ NB. reliably classified by the namecats verb.
 if. badrc m=. 1 namecats__MK y do. u return. end.
 d=. ~. ;(<2 3 4;1){m=. rv m
 
-NB. local names less any single char names
-l=. ;(<1;1){m
-s=. l #~ 1 = #&> l
-l=. l -. s
+NB. check for presence of obfuscation tag
+if. o=. 1 e. OBFUSCATE E. ,y do.
+  NB. local names less J arguments
+  l=. ;(<1;1){m
+  l=. l -. JARGS__MK
+else.
+  NB. local names less any single char names
+  l=. ;(<1;1){m
+  s=. l #~ 1 = #&> l
+  l=. l -. s
+end.
 
 NB. remove object references
 l=. l -. exobrefs l,;(<0;1){m
@@ -278,16 +297,22 @@ if. 0=#m=. l -. d do. u return. end.
 NB. remove any names with embedded locale references
 if. 0=#m=. m #~ -. islocref&> m do. u return. end.
 
-NB. form replacements from any remaining chars !(*)=. SHORTNAMES
-NB. J arguments m n x y u v are not on SHORTNAMES
-if. 0=#r=. SHORTNAMES -. ,&.> s do. u return. end.
-if. (#r) < #m do. 
-  NB. we have more replacements than available SHORTNAMES
-  NB. form base (#r) numbers using SHORTNAMES digits
-  bnr=. (#r)&#.@((;r)&i.)^:_1
-  r=. r,<"1(#r) }. bnr i. #m
+if. o do.
+  NB. form obsfucated name replacements - drop trailing _ in (NAMEALPHA)
+  bnr=. (<:#NAMEALPHA)&#.@((}:NAMEALPHA)&i.)^:_1
+  r=. ' ' -.~ ,'/' ,"1  (>m) ,"1 '/' ,"1 OBFUSCPFX ,"1 bnr (#m)?OBFUSCCNT   
+else.
+  NB. form replacements from any remaining chars !(*)=. SHORTNAMES
+  NB. J arguments m n x y u v are not on SHORTNAMES
+  if. 0=#r=. SHORTNAMES -. ,&.> s do. u return. end.
+  if. (#r) < #m do. 
+    NB. we have more replacements than available SHORTNAMES
+    NB. form base (#r) numbers using SHORTNAMES digits
+    bnr=. (#r)&#.@((;r)&i.)^:_1
+    r=. r,<"1(#r) }. bnr i. #m
+  end.
+  r=. ; '/' ,&.> m ,. (#m) {. r
 end.
-r=. ; '/' ,&.> m ,. (#m) {. r
 
 NB. replace tokens
 r changetok u
@@ -796,6 +821,7 @@ NB.
 NB. monad:  rm cl|blcl
 NB. dyad:  pa rm cl|blcl
 
+NB. (/:)=: obfuscate names
 0 rm y
 :
 if. badrc uv=. MACRO get y do. uv return. end.
@@ -843,7 +869,7 @@ NB.   4 rtt 'suite'   NB. make suite and run silently
 0 rtt y
 :
 
-NB. HARDCODE: option codes
+NB. HARDCODE: option codes (/:)=: obfuscate names
 if. (3-:x) +. 4-:x do. 
   if. badrc uv=. (SUITE,_2) make y do. uv return. end.
   scr=.rv uv
