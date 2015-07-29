@@ -582,11 +582,23 @@ end.
 
 ed=:3 : 0
 
-NB.*ed v-- edit dictionary objects
+NB.*ed v-- edit dictionary objects.
 NB.
-NB. monad:  ed cl|blcl
+NB. (ed) typically fetches, formats and places object(s) in an edit window.
+NB.
+NB. monad:  ed cl|blcl|bt
 NB.
 NB.   ed 'wordname'
+NB.
+NB.   ed ;:'many words mashed into one edit script
+NB.
+NB.   NB. edit contents of (name,value) and (name,class,value) tables
+NB.   ed ; }. 0 10 get }. dnl 're'
+NB.   ed ; }. 4 get }. 4 dnl 'build'
+NB.   
+NB.   NB. place many backup versions in edit window
+NB.   ed ; }. bget <;._1 ' word.12 word.11 word.09 word.02'
+NB.   ed ; }. 4 bget <;._1 'macro.9 macro.7 macro.2'
 NB.
 NB. dyad:  iaObject|ilObjOpt ed cl|blcl
 NB.
@@ -597,24 +609,49 @@ NB.   2 1 ed 'grouptext'        NB. edit only group text
 
 0 ed y
 :
-if. badrc uv=. x obtext y do. uv return. else. 'file text'=. }.uv end.
-
-if. wex <'EDLOCALE' do.   NB. !(*)=. EDLOCALE
-  NB. set up to define objects into specified locale if requested
-  pfx=.'18!:4 <''',EDLOCALE,''' [ CRLOC_ajodutil_=: 18!:5 '''' '
-  sfx=. '18!:4 CRLOC_ajodutil_'
-  text=. pfx,LF,LF,text,LF,LF,sfx
+if. 2=#$ y do. 
+  if. badrc uv=. checknttab3 y do. uv return.
+  elseif. 3 = {:$ uv=. rv uv   do.
+    if. 3 >: <./ jc=. ;1{"1 uv do.
+      NB. convert binary nouns to linear representations
+      jc=. I. 0=jc
+      if. badrc nv=. 0 nounlrep__MK jc{uv do. nv return. end.
+      uv=. (rv nv) jc} uv
+      NB. format words for editing
+      text=. _2 }. ; (0 {"1 uv) ,. (<'=:') ,. (2 {"1 uv) ,. <2#LF
+    else.
+      NB. format non words for editing
+      text=. _2 }. ; ({:"1 uv) ,&.>  <2#LF 
+    end.  
+  elseif.do.
+    NB. format non words for editing
+    text=. _2 }. ; ({:"1 uv) ,&.>  <2#LF
+  end.
+  NB. set default object name - if there is more than one 
+  NB. object reset (x) to prevent affixing document command  
+  oname=. ;0{0{uv [ x=.  1 < #uv 	
+elseif. badrc uv=. x obtext y do. uv return. 
+elseif.do. 
+  'oname text'=. }.uv 
 end.
+
+NB. undocumented and seldom used feature - removed unless someone complains
+NB. if. wex <'EDLOCALE' do.   NB. !(*)=. EDLOCALE
+NB.   NB. set up to define objects into specified locale if requested
+NB.   pfx=.'18!:4 <''',EDLOCALE,''' [ CRLOC_ajodutil_=: 18!:5 '''' '
+NB.   sfx=. '18!:4 CRLOC_ajodutil_'
+NB.   text=. pfx,LF,LF,text,LF,LF,sfx
+NB. end.
 
 NB. append user defined document command 
 NB. the pattern {~N~} is a name placeholder, e.g.
 NB.   DOCUMENTCOMMAND_ijod_ =: 'showpass pr ''{~N~}'''
 NB. append only when editing single words
 if. (x -: 0) *. wex <'DOCUMENTCOMMAND_ijod_' do. 
-  text=. text,LF,LF,('/{~N~}/',file) changestr DOCUMENTCOMMAND_ijod_
+  text=. text,LF,LF,('/{~N~}/',oname) changestr DOCUMENTCOMMAND_ijod_
 end.
 
-file et text
+oname et text
 )
 
 
@@ -733,7 +770,7 @@ case. TEST;MACRO do.
   if. badrc text=. x wttext__MK rv text do. text return. else. text=. rv text end.
   file=. >{.y
 case.do.
-  if. (<x) e. {(SUITE,GROUP);1  do.  NB. HARDCODE 1
+  if. (<x) e. {(SUITE,GROUP);HEADER  do. 
     NB. group and suite headers are frequently edited
     if. badcl y do. jderr ERR0154__MK return. end.
     if. badrc uv=. ({.x) get y do. uv return. else. 'file text'=. , rv uv end.
@@ -827,7 +864,7 @@ NB. (/:)=: obfuscate names
 if. badrc uv=. MACRO get y do. uv return. end.
 uv=. rv uv
 
-if. *./m=. JSCRIPT = ; 1 {"1 uv do.
+if. *./um=. JSCRIPT = ; 1 {"1 uv do.
 
   scr=. ;({:"1 uv) ,&.> LF
   curr=. 18!:5 ''
@@ -844,7 +881,7 @@ if. *./m=. JSCRIPT = ; 1 {"1 uv do.
 
 else.
   NB. errmsg: not J script(s)
-  (jderr ERR0252),(-.m)#{."1 uv
+  (jderr ERR0252),(-.um)#{."1 uv
 end.
 )
 

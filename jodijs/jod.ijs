@@ -176,6 +176,9 @@ EXPLAIN=:8
 NB. space in bytes required to create dictionary (0 turns off volume sizing)
 FREESPACE=:0
 
+NB. group and suite header code
+HEADER=:1
+
 NB. database file extension (it's changed in the past)
 IJF=:'.ijf'
 
@@ -194,8 +197,8 @@ INPUT=:14
 NB. inverted data code: object size in bytes
 INSIZE=:15
 
-NB. core JOD interface words - loaded into (ijod) locale
-IzJODinterface=:<;._1 ' bnl del did dnl dpset gdeps get globs grp make newd od packd put regd restd uses'
+NB. core JOD interface - loaded into (ijod) - set (setjodinterface)
+IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make newd od packd put regd restd uses'
 
 NB. standard dictionary file names - order matters
 JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
@@ -210,7 +213,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.980';8;'17 Jul 2015 14:24:43'
+JODVMD=:'0.9.980';22;'29 Jul 2015 10:58:24'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -319,6 +322,112 @@ badunique=:# ~: [: # ~.
 
 NB. retains string before first occurrence of (x)
 beforestr=:] {.~ 1&(i.~)@([ E. ])
+
+
+bget=:3 : 0
+
+NB.*bget v-- retrieves objects from put dictionary backups.
+NB.
+NB. (bget) implements  a subset of (get). (bget) fetches  objects
+NB. from either the last backup or particular backups.
+NB.
+NB. OBJECTS ARE NOT DEFINED IN LOCALES for the simple reason that
+NB. backup fetches may return many versions of the same object.
+NB.
+NB. Only put  dictionary backups  are searched there is no backup
+NB. path.  Also,  there is no corresponding  (bput)  because  the
+NB. files  read  by (bget)  are backups that, once  created,  are
+NB. never altered by JOD.
+NB.
+NB. Also,   certain  objects  are  not  fetched,  name   classes,
+NB. timestamps and sizes.
+NB.
+NB. monad:  bget blcl
+NB.
+NB.   NB. collect from must current backup
+NB.   bget ;: 'shawn of the dead'
+NB.
+NB.   NB. collect objects from particular put dictionary backups
+NB.   bget <;._1 ' us.12 poor.10 little.08 words.08 lastback'
+NB.
+NB.   NB. get many versions of a word
+NB.   bget <;._1 ' me.12 me.09 me.08 me.02'
+NB.
+NB. dyad:  ilCodes bget bluu
+NB.
+NB.   5 bget ''     NB. dictionary document from last backup
+NB.   5 bget '.12'  NB. dictionary document from particular backup
+NB.
+NB.   2   bget <;._1 ' gfoo.12 gfoo.05 gfoo.00'  NB. three versions of a group
+NB.   2 1 bget <;._1 ' gfoo.12 gfoo.05 gfoo.00'  NB. three versions of a group's header
+
+WORD bget y
+:
+msg=. ERR001 [ loc =. <'base' NB. errmsg: invalid option(s)
+
+if. badil x do.
+  NB. errmsg: invalid or missing locale
+  if. _2&badlocn x do. jderr ERR004 return. else. x=. WORD [ loc=. <x-.' ' end.
+end.
+
+NB. do we have a dictionary open?
+if. badrc uv=. checkopen__ST 0 do. uv return. end.
+
+ok 'NIMP bget' return. NB. NIMP out for now
+
+NB. NIMP are the requested backup names valid?
+NB. NIMP are the requested backups present?
+
+NB. format standard (x) options
+x=. x , (-3-#x) {. DEFAULT , 0
+if. -. 0 1 e.~ {: x do. jderr msg return. end.
+
+select. {. x
+case. WORD do.
+  select. second x
+    case. DEFAULT  do. (WORD,0) bgetobjects__ST y
+    case. EXPLAIN  do. WORD bgetexplain__ST y
+    case. DOCUMENT do. WORD bgetdocument__ST y
+    case.do. jderr msg
+  end.
+case. TEST do.
+  select. second x
+    case. DEFAULT  do. (TEST,0) bgetobjects__ST y
+    case. EXPLAIN  do. TEST bgetexplain__ST y
+    case. DOCUMENT do. TEST bgetdocument__ST y
+    case.do. jderr msg
+  end.
+case. GROUP do.
+  select. second x
+    case. HEADER   do. GROUP bgslist__ST y  
+    case. DEFAULT  do. GROUP bgetgstext__ST y
+    case. EXPLAIN  do. GROUP bgetexplain__ST y
+    case. DOCUMENT do. GROUP bgetdocument__ST y
+    case.do. jderr msg
+  end.
+case. SUITE do.
+  select. second x
+    case. HEADER   do. SUITE bgslist__ST y
+    case. DEFAULT  do. SUITE bgetgstext__ST y
+    case. EXPLAIN  do. SUITE bgetexplain__ST y
+    case. DOCUMENT do. SUITE bgetdocument__ST y
+    case.do. jderr msg
+  end.
+case. MACRO do.
+  select. second x
+    case. DEFAULT  do. (MACRO,0) bgetobjects__ST y
+    case. EXPLAIN  do. MACRO bgetexplain__ST y
+    case. DOCUMENT do. MACRO bgetdocument__ST y
+    case.do. jderr msg
+  end.
+case. DICTIONARY do.
+  select. second x
+    case. DEFAULT  do. bgetdicdoc__ST 0
+    case.do. jderr msg
+  end.
+case.do. jderr msg
+end.
+)
 
 
 bnl=:3 : 0
@@ -486,6 +595,30 @@ end.
 )
 
 
+checknttab3=:3 : 0
+
+NB.*checknttab3 v-- checks all three (name,[class],text) tables.
+NB.
+NB. monad:  checknttab3 bt
+
+if. 3 = cols=. {:$y do.  
+  NB. there are two species of three column tables - words 
+  NB. and macros - distingquished by the codes in column 1
+  if. ((i. 4), MACROTYPE) badblia 1 {"1 y do. jderr ERR014
+  NB. macro codes start at 21 much higher than J name class codes
+  elseif. 3 < <./ ;1 {"1 y do.
+    MACROTYPE checknttab2 y
+  elseif. do.
+    (i. 4) checknttab2 y
+  end.
+elseif. 2 = cols do.
+  NB. two column tables 
+  checknttab y
+elseif.do. jderr ERR014
+end.
+)
+
+
 createjod=:3 : 0
 
 NB.*createjod  v--  dictionary  object  creation verb. (y)  is  a
@@ -497,7 +630,6 @@ NB. monad:  paRc =. createjod ba
 NB.
 NB.   JD=: conew 'ajod'
 NB.   createjod__JD JD
-
 
 NB. set default master, profile and user if they don't exist
 if. -.wex <'JMASTER' do. JMASTER=:jodsystempath 'jmaster' end.
@@ -516,7 +648,7 @@ NB. execute any user script - allows for redefintions of various
 NB. class nouns before JOD objects are created - joduserconfig.ijs
 NB. is not installed and must be created by users
 if. fex <JODUSER do.
-  NB. attempt execution of script
+  NB. attempt execution of script - obfuscate names (/:)=: 
   if. (_9 -: ((0!:0) :: _9:) <JODUSER){0 1 do. (jderr ERR026),<13!:12 '' return. end.
 end.
 

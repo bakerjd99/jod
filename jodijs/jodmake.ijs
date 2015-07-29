@@ -899,7 +899,7 @@ if. #y do.
   try.
     (names)=: (3!:2)&.> {:"1 y
     names=. (5!:5@<)&.> names
-  catch. (jderr ERR016),errnames return. end.
+  catch. (jderr ERR016),errnames return. end. NB. retain scratch on failure
   if. x do. names=. names ,&.> LF end.
   y=. names (<a:;2)} y
   clearso 0

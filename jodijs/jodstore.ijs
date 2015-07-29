@@ -1386,14 +1386,14 @@ loadwords=:4 : 0
 
 NB.*loadwords v-- loads dictionary words into target locales.
 
-DL=. {: y  NB. directory object !(*)=. DL
+DL=. {: y  NB. obfuscate (/:)=: directory object !(*)=. DL
 
 NB. NIMP GETFACTOR not used yet
 NB. read words and determine name class
-if. badjr w=. jread WF__DL;x{WORDCN__DL do.
+if. badjr wu=. jread WF__DL;x{WORDCN__DL do.
   jderr ERR088  NB. errmsg: read failure
 else.
-  b=.   0 ~: ; 1&{&> w
+  bu=.   0 ~: ; 1&{&> wu
   loc=. >{. y  NB. target locale
 
   NB. define words that are not nouns
@@ -1403,14 +1403,14 @@ else.
   NB. to each word.
 
   try.
-    if. #v=. b#w do.
-      0!:0  ; (({.&> v) ,&.> <loc,'=:') ,&.> ({:&> v) ,&.> <LF
+    if. #vu=. bu#wu do.
+      0!:0  ; (({.&> vu) ,&.> <loc,'=:') ,&.> ({:&> vu) ,&.> <LF
     end.
 
     NB. define nouns
-    if. #n=. (-.b)#w do.
-      v=. ({.&> n) ,&.> <loc
-      (v)=: (3!:2)&.> {:&> n
+    if. #nu=. (-.bu)#wu do.
+      vu=. ({.&> nu) ,&.> <loc
+      (vu)=: (3!:2)&.> {:&> nu
     end.
   catch. jderr ERR091 return. end.
   OK
