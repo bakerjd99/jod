@@ -1,6 +1,14 @@
 general/joddocument - change history
 ====================================
 
+### 0.9.980 - August 1, 2015
+
+  * new `compj` tag `(/:)=:` described
+  
+  * `ed` example of editing (name,[class],value) tables added
+  
+  * index improvements and minor edits
+
 ### 0.9.973 - July 4, 2015
  
   * new appendix "Turning JOD Dump Script Tricks" added
