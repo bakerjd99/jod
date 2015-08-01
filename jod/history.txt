@@ -1,5 +1,38 @@
+
 general/jod - change history
 ============================
+
+### 0.9.980 - August 1, 2015
+  
+ * A new tag `(/:)=:` is recognized by `compj`. When this tag is present
+   in word code local names are obfuscated by `compj` instead of being shortened. 
+   The tag `(-.)=:` overrides obfuscation. Obfuscation can be useful for
+   words that run general scripts with `0!:0`.  Obfuscation makes name clashes
+   far less likely. The `compj` entry in `jod.pdf` has been updated to
+   describe this change. 
+
+ * obsolete `HTML` document index removed from core JOD.
+
+ * large nouns removed from `utils` to reduce download size.
+
+ * `ed` now handles (name,text) and (name,class,text) tables. 
+
+        NB. fetch backup versions of a word and edit
+        'rc nct'=: bget <;._1 ' reb.21 reb19 reb.09 reb.07'
+        ed nct
+
+        NB. fetch backup group headers and edit
+        'rc nct'=: 2 1 bget <;._1 ' ghead.11 boo.11 ghead.09'
+        ed nct
+
+        NB. fetch backup macros and edit
+        'rc nct'=: 4 bget <;._1 ' we.13 are.09 backed.03 up'
+        ed nct
+
+        NB. fetch path words without defining and edit
+        'rc nct'=: 0 10 get }. dnl 're'
+        ed nct
+
 
 ### 0.9.973 - July 4, 2015 (Independence Day Edition)
 

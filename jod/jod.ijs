@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.973  Build Number: 57  Date: 4 Jul 2015 00:13:19
+NB. Version: 0.9.980  Build Number: 24  Date: 1 Aug 2015 10:18:18
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -127,18 +127,19 @@ ERR027=:'unable to set master parameters ->'
 ERR028=:'not supported on this environment ->'
 EXPLAIN=:8
 FREESPACE=:0
+HEADER=:1
 IJF=:'.ijf'
 IJS=:'.ijs'
 INCLASS=:12
 INCREATE=:13
 INPUT=:14
 INSIZE=:15
-IzJODinterface=:<;._1 ' bnl del did dnl dpset gdeps get globs grp make newd od packd put regd restd uses'
+IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make newd od packd put regd restd uses'
 JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.973';57;'4 Jul 2015 00:13:19'
+JODVMD=:'0.9.980';24;'1 Aug 2015 10:18:18'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -183,6 +184,63 @@ badreps=:0:><./
 badsts=:0:
 badunique=:#~:[:#~.
 beforestr=:]{.~1&(i.~)@([E.])
+bget=:3 :0
+WORD bget y
+:
+b=.ERR001[a=.<'base'
+if.badil x do.
+if._2&badlocn x do.jderr ERR004 return.else.x=.WORD[a=.<x -.' 'end.
+end.
+if.badrc c=.checkopen__ST 0 do.c return.end.
+ok'NIMP bget'return.
+x=.x,(-3-#x){.DEFAULT,0
+if.-.0 1 e.~{:x do.jderr b return.end.
+select.{.x
+case.WORD do.
+select.second x
+case.DEFAULT do.(WORD,0)bgetobjects__ST y
+case.EXPLAIN do.WORD bgetexplain__ST y
+case.DOCUMENT do.WORD bgetdocument__ST y
+case.do.jderr b
+end.
+case.TEST do.
+select.second x
+case.DEFAULT do.(TEST,0)bgetobjects__ST y
+case.EXPLAIN do.TEST bgetexplain__ST y
+case.DOCUMENT do.TEST bgetdocument__ST y
+case.do.jderr b
+end.
+case.GROUP do.
+select.second x
+case.HEADER do.GROUP bgslist__ST y
+case.DEFAULT do.GROUP bgetgstext__ST y
+case.EXPLAIN do.GROUP bgetexplain__ST y
+case.DOCUMENT do.GROUP bgetdocument__ST y
+case.do.jderr b
+end.
+case.SUITE do.
+select.second x
+case.HEADER do.SUITE bgslist__ST y
+case.DEFAULT do.SUITE bgetgstext__ST y
+case.EXPLAIN do.SUITE bgetexplain__ST y
+case.DOCUMENT do.SUITE bgetdocument__ST y
+case.do.jderr b
+end.
+case.MACRO do.
+select.second x
+case.DEFAULT do.(MACRO,0)bgetobjects__ST y
+case.EXPLAIN do.MACRO bgetexplain__ST y
+case.DOCUMENT do.MACRO bgetdocument__ST y
+case.do.jderr b
+end.
+case.DICTIONARY do.
+select.second x
+case.DEFAULT do.bgetdicdoc__ST 0
+case.do.jderr b
+end.
+case.do.jderr b
+end.
+)
 bnl=:3 :0
 WORD bnl y
 :
@@ -264,19 +322,32 @@ elseif.badunique b=.}.b do.jderr ERR020
 elseif.do.ok<y=.b(<a:;0)}y
 end.
 )
+checknttab3=:3 :0
+if.3=a=.{:$y do.
+if.((i.4),MACROTYPE)badblia 1 {"1 y do.jderr ERR014
+elseif.3<<./;1 {"1 y do.
+MACROTYPE checknttab2 y
+elseif.do.
+(i.4)checknttab2 y
+end.
+elseif.2=a do.
+checknttab y
+elseif.do.jderr ERR014
+end.
+)
 createjod=:3 :0
 if.-.wex<'JMASTER'do.JMASTER=:jodsystempath'jmaster'end.
 if.-.wex<'JODPROF'do.JODPROF=:jodsystempath'jodprofile.ijs'end.
 if.-.wex<'JODUSER'do.JODUSER=:jodsystempath'joduserconfig.ijs'end.
 JVERSION_ajod_=:(jvn ::_9:)''
 if.-.fex<JMASTER,IJF do.
-if.badrc a=.createmast JMASTER do.a return.end.
+if.badrc o_a4y=.createmast JMASTER do.o_a4y return.end.
 end.
 if.fex<JODUSER do.
 if.(_9-:((0!:0) ::_9:) <JODUSER) {0 1 do.(jderr ERR026) ,<13!:12''return.end.
 end.
-if.badjr a=.jread JMASTER;CNMFPARMS do.jderr ERR006 return.end.
-MASTERPARMS_ajod_=:>a
+if.badjr o_a4y=.jread JMASTER;CNMFPARMS do.jderr ERR006 return.end.
+MASTERPARMS_ajod_=:>o_a4y
 JODEXT=:0$a:
 IZJODALL=:IzJODinterface,<'JODobj'
 JOD=:y
@@ -285,10 +356,10 @@ MK=:conew'ajodmake'
 UT=:conew'ajodutil'
 SO=:cocreate''
 ('ijod';'z')copath;SO
-b=.JOD;ST;MK;UT;<SO
-createst__ST b
-createmk__MK b
-createut__UT b
+o_nda=.JOD;ST;MK;UT;<SO
+createst__ST o_nda
+createmk__MK o_nda
+createut__UT o_nda
 ".&.>y defzface IzJODinterface
 makedir<jpath'~temp/'
 if.fex<JODPROF do.(_9-:((0!:0) ::_9:) <JODPROF ) {1 0 else.1 end.
@@ -1576,18 +1647,18 @@ OK
 )
 loadwords=:4 :0
 DL=.{:y
-if.badjr w=.jread WF__DL;x{WORDCN__DL do.
+if.badjr o_zkE=.jread WF__DL;x{WORDCN__DL do.
 jderr ERR088
 else.
-b=.0~:;1&{&>w
-a=.>{.y
+o_qOe=.0~:;1&{&>o_zkE
+o_akp=.>{.y
 try.
-if.#v=.b#w do.
-0!:0;(({.&>v),&.><a,'=:'),&.>({:&>v),&.><LF
+if.#o_tPn=.o_qOe#o_zkE do.
+0!:0;(({.&>o_tPn),&.><o_akp,'=:'),&.>({:&>o_tPn),&.><LF
 end.
-if.#n=.(-.b)#w do.
-v=.({.&>n),&.><a
-(v)=:(3!:2)&.>{:&>n
+if.#o_ylU=.(-.o_qOe)#o_zkE do.
+o_tPn=.({.&>o_ylU),&.><o_akp
+(o_tPn)=:(3!:2)&.>{:&>o_ylU
 end.
 catch.jderr ERR091 return.end.
 OK
@@ -3041,6 +3112,9 @@ ERR0261=:'macro is not a J script - not formatted'
 ERR0262=:'not supported on current J system'
 IzJODutinterface=:<;._1 ' compj de disp doc ed et gt jodhelp revo rm rtt'
 NAMEALPHA=:'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'
+OBFUSCATE=:'(/:)=:'
+OBFUSCCNT=:100000
+OBFUSCPFX=:'o_'
 OK0250=:' documented in ->'
 OK0251=:'edit locale cleared'
 OK0252=:'edit locale ->'
@@ -3114,18 +3188,28 @@ u=.dewhitejcr y
 if.w do.u return.end.
 if.badrc m=.1 namecats__MK y do.u return.end.
 d=.~.;(<2 3 4;1){m=.rv m
+if.o=.1 e.OBFUSCATE E.,y do.
+l=.;(<1;1){m
+l=.l-.JARGS__MK
+else.
 l=.;(<1;1){m
 s=.l#~1=#&>l
 l=.l-.s
+end.
 l=.l-.exobrefs l,;(<0;1){m
 if.0=#m=.l-.d do.u return.end.
 if.0=#m=.m #~-.islocref&>m do.u return.end.
+if.o do.
+a=.(<:#NAMEALPHA)&#.@((}:NAMEALPHA)&i.)^:_1
+r=.' '-.~,'/',"1 (>m),"1 '/',"1 OBFUSCPFX,"1 a(#m)?OBFUSCCNT
+else.
 if.0=#r=.SHORTNAMES-.,&.>s do.u return.end.
 if.(#r)<#m do.
 a=.(#r)&#.@((;r)&i.)^:_1
 r=.r,<"1(#r)}.a i.#m
 end.
 r=.;'/',&.>m,.(#m){.r
+end.
 r changetok u
 )
 createut=:3 :0
@@ -3239,16 +3323,29 @@ end.
 ed=:3 :0
 0 ed y
 :
-if.badrc e=.x obtext y do.e return.else.'a d'=.}.e end.
-if.wex<'EDLOCALE'do.
-b=.'18!:4 <''',EDLOCALE,''' [ CRLOC_ajodutil_=: 18!:5 '''' '
-c=.'18!:4 CRLOC_ajodutil_'
-d=.b,LF,LF,d,LF,LF,c
+if.2=#$y do.
+if.badrc e=.checknttab3 y do.e return.
+elseif.3={:$e=.rv e do.
+if.3>:<./a=.;1 {"1 e do.
+a=.I.0=a
+if.badrc b=.0 nounlrep__MK a{e do.b return.end.
+e=.(rv b)a}e
+d=._2}.;(0{"1 e),.(<'=:'),.(2{"1 e),.<2#LF
+else.
+d=._2}.;({:"1 e),&.><2#LF
+end.
+elseif.do.
+d=._2}.;({:"1 e),&.><2#LF
+end.
+c=.;0{0{e[x=.1<#e
+elseif.badrc e=.x obtext y do.e return.
+elseif.do.
+'c d'=.}.e
 end.
 if.(x-:0)*.wex<'DOCUMENTCOMMAND_ijod_'do.
-d=.d,LF,LF,('/{~N~}/',a)changestr DOCUMENTCOMMAND_ijod_
+d=.d,LF,LF,('/{~N~}/',c)changestr DOCUMENTCOMMAND_ijod_
 end.
-a et d
+c et d
 )
 et=:3 :0
 EDTEMP et y
@@ -3312,7 +3409,7 @@ if.badrc b=.x get y do.b return.end.
 if.badrc b=.x wttext__MK rv b do.b return.else.b=.rv b end.
 a=.>{.y
 case.do.
-if.(<x)e.{(SUITE,GROUP);1 do.
+if.(<x)e.{(SUITE,GROUP);HEADER do.
 if.badcl y do.jderr ERR0154__MK return.end.
 if.badrc c=.({.x)get y do.c return.else.'a b'=.,rv c end.
 elseif.(<x)e.,{OBJECTNC;DOCUMENT,EXPLAIN do.
@@ -3356,50 +3453,50 @@ end.
 rm=:3 :0
 0 rm y
 :
-if.badrc c=.MACRO get y do.c return.end.
-c=.rv c
-if.*./m=.JSCRIPT=;1 {"1 c do.
-b=.;({:"1 c),&.>LF
-a=.18!:5''
+if.badrc o_dVP=.MACRO get y do.o_dVP return.end.
+o_dVP=.rv o_dVP
+if.*./o_zv5=.JSCRIPT=;1 {"1 o_dVP do.
+o_cKK=.;({:"1 o_dVP),&.>LF
+o_wfh=.18!:5''
 try.
 18!:4<'base'
-if.x-:1 do.0!:100 b else.0!:101 b end.
-18!:4 a
+if.x-:1 do.0!:100 o_cKK else.0!:101 o_cKK end.
+18!:4 o_wfh
 catchd.
-18!:4 a
+18!:4 o_wfh
 (jderr ERR0256),<13!:12''return.
 end.
 else.
-(jderr ERR0252),(-.m)#{."1 c
+(jderr ERR0252),(-.o_zv5)#{."1 o_dVP
 end.
 )
 rtt=:3 :0
 0 rtt y
 :
 if.(3-:x )+.4-:x do.
-if.badrc c=.(SUITE,_2)make y do.c return.end.
-b=.rv c
+if.badrc o_o8v=.(SUITE,_2)make y do.o_o8v return.end.
+o_i9B=.rv o_o8v
 x=.x-3
 else.
-if.badrc c=.TEST get y do.c return.end.
-c=.rv c
-b=.;({:"1 c),&.>LF
+if.badrc o_o8v=.TEST get y do.o_o8v return.end.
+o_o8v=.rv o_o8v
+o_i9B=.;({:"1 o_o8v),&.>LF
 end.
-a=.18!:5''
+o_uP8=.18!:5''
 18!:4<'base'
 try.
-if.0-:x do.0!:2 b
-elseif.1-:x do.(][1!:2&2)0!:3 b
-elseif.2-:x do.0!:001 b
+if.0-:x do.0!:2 o_i9B
+elseif.1-:x do.(][1!:2&2)0!:3 o_i9B
+elseif.2-:x do.0!:001 o_i9B
 elseif.do.
-18!:4 a
+18!:4 o_uP8
 jderr ERR001 return.
 end.
 catchd.
-18!:4 a
+18!:4 o_uP8
 (jderr ERR0256),<13!:12''return.
 end.
-18!:4 a
+18!:4 o_uP8
 )
 textform2=:63&$: :(4 :0)
 i=.0
