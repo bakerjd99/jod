@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.980  Build Number: 24  Date: 1 Aug 2015 10:18:18
+NB. Version: 0.9.985  Build Number: 22  Date: 9 Aug 2015 10:52:12
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -93,6 +93,7 @@ CNMFTABBCK=:3
 DEFAULT=:7
 DEPENDENTSEND=:'enddependents'
 DEPENDENTSSTART=:'dependents'
+DIGITS=:'0123456789'
 DOCUMENT=:9
 DODEPENDENTS=:1
 DPATH=:i.0 4
@@ -139,7 +140,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.980';24;'1 Aug 2015 10:18:18'
+JODVMD=:'0.9.985';22;'9 Aug 2015 10:52:12'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -246,7 +247,10 @@ WORD bnl y
 :
 if.badrc a=.x nlargs y do.a return.end.
 x=.x,(<:#x)}.1,DEFAULT
-if.({.x )e.OBJECTNC do.x bnlsearch__ST y else.jderr ERR001 end.
+if.((0{x)e.WORD,MACRO)*.-.(2{x)e.DEFAULT,MACROTYPE,i.4 do.jderr ERR001
+elseif.({.x )e.OBJECTNC do.x bnlsearch__ST y
+elseif.do.jderr ERR001
+end.
 )
 boxopen=:<^:(L.=0:)
 catrefs=:3 :0
@@ -804,7 +808,7 @@ ok<(/:0{b){|:b
 case.5 do.
 b=.quote&.>0 2{>b
 b=.ctl;"1(<'regd '),"1|:1 0 2{(<';'),b
-b=.'3 regd&> }. od'''' [ 3 od ''''',LF,b
+b=.'require ''general/jod''',LF,'3 regd&> }. od'''' [ 3 od ''''',LF,b
 ok'NB. JOD registrations: ',(tstamp''),LF,jpathsep b
 case.do.jderr ERR001
 end.
@@ -1067,6 +1071,8 @@ ERR098=:'master/dictionary file path mismatch - name/DIDNUM ->'
 ERR099=:'invalid name/creation/lastput table'
 ERR100=:'name/creation/lastput length mismatch'
 ERR101=:'invalid date(s) name/creation/lastput table'
+ERR102=:'timestamp table shape invalid'
+ERR103=:'no backup(s) to restore or search'
 NDOT=:'.'
 OFFSET=:39
 OK050=:'dictionary created ->'
@@ -1165,12 +1171,33 @@ end.
 )
 badcn=:[:-.[-:[:{.&>]
 bnlsearch=:4 :0
+if.1<+/y e.NDOT do.jderr ERR010 return.end.
+c=.DEFAULT~:2{x
+if.c*.(0{x)e.TEST,GROUP,SUITE do.jderr ERR001 return.end.
 DL=.{:0{DPATH
+if.0=#b=.bnums BAK__DL do.jderr ERR103 return.end.
+'g h'=.(NDOT&beforestr;NDOT&afterstr)y
+if.isempty h do.h=.{.b
+elseif.0 e.h e.DIGITS do.jderr ERR010 return.
+elseif.-.(h=.".h)e.b do.jderr ERR103 return.
+end.
 if.(,NDOT)-:alltrim y do.
-b=.(0<#a=.bnums BAK__DL){'';NDOT
-ok b,&.>'r<0>0.d'8!:0 a
-else.
-ok'NIMP bnlsearch'
+d=.(0<#b){'';NDOT
+ok d,&.>'r<0>0.d'8!:0 b
+elseif.a=.({.x)dbakf__DL h
+badjr i=.jread a;(1{CNDIR),CNCLASS do.(jderr ERR088,' ->'),<a
+elseif.
+f=.i{f[i=./:f['f e'=.i
+if.c*.(0{x)e.WORD,MACRO do.f=.(e =2{x)#f[e=.i{e end.
+isempty g do.ok f
+elseif.0=#f do.ok f 
+elseif.do.
+select.1{x
+case.1 do.ok f nlpfx g
+case.2 do.ok f nlctn g
+case.3 do.ok f nlsfx g
+case.do.jderr ERR010
+end.
 end.
 )
 bnums=:3 :0
@@ -2233,6 +2260,9 @@ RW=:(-.LIBSTATUS)*1=d
 SYS=:((justdrv WF),':',justpath WF),PATHDEL
 SYS=:(':'={.SYS)}.SYS
 if.badjr e=.jread UF;CNRPATH do.0 else.1[RPATH=:>e end.
+)
+dbakf=:4 :0
+BAK,(":y),'j',(;dnnm x),'s',IJF
 )
 dfclose=:3 :0
 a=.y,'P'

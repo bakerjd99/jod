@@ -128,6 +128,9 @@ DEPENDENTSEND=:'enddependents'
 NB. comment tag marking start of dependents section
 DEPENDENTSSTART=:'dependents'
 
+
+DIGITS=:'0123456789'
+
 NB. document option code
 DOCUMENT=:9
 
@@ -213,7 +216,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.980';24;'1 Aug 2015 10:18:18'
+JODVMD=:'0.9.985';20;'9 Aug 2015 10:22:53'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -452,7 +455,10 @@ if. badrc msg=.x nlargs y do. msg return. end.
 
 NB. format standard (bnl) (x) options and search
 x=.  x , (<:#x)}. 1 , DEFAULT
-if. ({. x) e. OBJECTNC do. x bnlsearch__ST y else. jderr ERR001 end.
+if. ((0{x) e. WORD,MACRO) *. -.(2{x) e. DEFAULT,MACROTYPE,i. 4 do. jderr ERR001 
+elseif. ({. x) e. OBJECTNC do. x bnlsearch__ST y 
+elseif.do. jderr ERR001 
+end.
 )
 
 NB. boxes open nouns
@@ -1608,7 +1614,7 @@ case. 5 do.
   mdt=. quote&.> 0 2{>mdt
   mdt=. ctl ;"1 (<'regd ') ,"1 |: 1 0 2{ (<';'),mdt
   NB. prefix command to close and unregister all current dictionaries
-  mdt=. '3 regd&> }. od'''' [ 3 od ''''',LF,mdt
+  mdt=. 'require ''general/jod''',LF,'3 regd&> }. od'''' [ 3 od ''''',LF,mdt
   ok 'NB. JOD registrations: ',(tstamp ''),LF,jpathsep mdt
   
 case.do. jderr ERR001  NB. errmsg: invalid option(s)

@@ -1,6 +1,10 @@
 general/joddocument - change history
 ====================================
 
+### 0.9.985 - August 9, 2015
+
+  * `bnl` backup names lists section added.  
+
 ### 0.9.980 - August 1, 2015
 
   * new `compj` tag `(/:)=:` described

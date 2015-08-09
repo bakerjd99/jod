@@ -134,6 +134,8 @@ ERR098=:'master/dictionary file path mismatch - name/DIDNUM ->'
 ERR099=:'invalid name/creation/lastput table'
 ERR100=:'name/creation/lastput length mismatch'
 ERR101=:'invalid date(s) name/creation/lastput table'
+ERR102=:'timestamp table shape invalid'
+ERR103=:'no backup(s) to restore or search'
 
 NB. name.n or name.name separator character
 NDOT=:'.'
@@ -291,17 +293,55 @@ bnlsearch=:4 : 0
 NB.*bnlsearch  v-- searches put dictionary backup name  lists for
 NB. simple character list patterns.
 NB.
-NB. dyad: ilObjOptNc dnlsearch (clPattern ; clDir)
+NB. dyad: ilObjOptNc bnlsearch clPattern
+
+NB. at most one '.' character errmsg: invalid name pattern
+if. 1 < +/ y e. NDOT do. jderr ERR010 return. end.
+
+NB. maintains argument compatibility with (dnl)
+bv=. DEFAULT ~: 2{x
+if. bv *. (0{x) e. TEST,GROUP,SUITE do. jderr ERR001 return. end.
 
 NB. put dictionary directory object
 DL=. {:0{DPATH
 
-NB. if y is '.' (NDOT) return backup suffixes
+NB. extant backup numbers errmsg: no backup(s) to restore or search
+if. 0=#bn=. bnums BAK__DL do. jderr ERR103 return. end.
+
+NB. search name pattern and requested backup
+'pat rbk'=. (NDOT&beforestr ; NDOT&afterstr) y
+
+NB. use most recent backup if none specified
+if.     isempty rbk           do. rbk=. {.bn
+elseif. 0 e. rbk e. DIGITS    do. jderr ERR010 return. 
+elseif. -.(rbk=. ".rbk) e. bn do. jderr ERR103 return. 
+end.
+
 if. (,NDOT)-:alltrim y do.
- dot=. (0<#bn=. bnums BAK__DL){'';NDOT
- ok dot ,&.> 'r<0>0.d' 8!:0 bn
-else.
- ok 'NIMP bnlsearch'
+  NB. return backup suffixes
+  dot=. (0<#bn){'';NDOT
+  ok dot ,&.> 'r<0>0.d' 8!:0 bn
+
+elseif. bfile=. ({.x) dbakf__DL rbk
+        NB. errmsg: jfile read failure
+ 
+  badjr uv=. jread bfile;(1{CNDIR),CNCLASS do. (jderr ERR088,' ->'),<bfile 
+
+elseif.
+        ol=. uv{ol [ uv=. /: ol [ 'ol oc'=. uv 
+        NB. reduce object list for words and macros if class specified
+        if. bv *. (0{x) e. WORD,MACRO do. ol=. (oc = 2{x)#ol [ oc=. uv{oc end.
+
+  isempty pat do. ok ol  NB. return sorted last backup name list
+
+elseif. 0=#ol do. ok ol  NB. nothing left to match
+elseif. do.              NB. match prefix, infix suffix
+  select. 1{x
+    case. 1 do. ok ol nlpfx pat 
+    case. 2 do. ok ol nlctn pat
+    case. 3 do. ok ol nlsfx pat
+    case. do. jderr ERR010
+  end.
 end.
 )
 

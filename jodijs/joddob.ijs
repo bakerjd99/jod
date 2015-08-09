@@ -223,6 +223,20 @@ if. badjr rp=. jread UF;CNRPATH do. 0 else. 1 [ RPATH=: > rp end.
 )
 
 
+dbakf=:4 : 0
+
+NB.*dbakf v-- fully qualified backup file path.
+NB.
+NB. dyad:  clPath =. iaObjectNc dbakf iaBackupNum
+NB.
+NB.  0 dbakf 17   NB. backup 17 of jwords.ijf
+NB.  4 dbakf 5    NB. backup 5 of jmacros.ijf
+
+NB. !(*)=. BAK
+BAK,(":y),'j',(;dnnm x),'s',IJF 
+)
+
+
 dfclose=:3 : 0
 
 NB.*dfclose v-- close dictionary file.

@@ -2,10 +2,20 @@
 general/jod - change history
 ============================
 
+### 0.9.985 - August 9, 2015
+
+ * `bnl` backup name lists implemented: see `jod.pdf` for details.
+
+ * new test scripts added to `jodsource` dictionaries for `bnl`.
+
+ * `jod.pdf` updated for `bnl`.
+
+ * `od` adjusted to prefix registration commands with `require 'general/jod'`.
+
 ### 0.9.980 - August 1, 2015
   
  * A new tag `(/:)=:` is recognized by `compj`. When this tag is present
-   in word code local names are obfuscated by `compj` instead of being shortened. 
+   in a word local names are obfuscated by `compj` instead of being shortened. 
    The tag `(-.)=:` overrides obfuscation. Obfuscation can be useful for
    words that run general scripts with `0!:0`.  Obfuscation makes name clashes
    far less likely. The `compj` entry in `jod.pdf` has been updated to
