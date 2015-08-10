@@ -2,6 +2,18 @@
 general/jod - change history
 ============================
 
+### 9.9.986 - August 10, 2015
+
+ * `od` readjusted - added `require` commented out as `require`
+    may not always execute.
+
+           1 pick 5 od ''
+        NB. JOD registrations: 10 Aug 2015 12:04:44
+        NB. require 'general/jod'
+        3 regd&> }. od'' [ 3 od ''
+        regd 'utils';'c:/jod/utils/'
+               ....
+
 ### 0.9.985 - August 9, 2015
 
  * `bnl` backup name lists implemented: see `jod.pdf` for details.
