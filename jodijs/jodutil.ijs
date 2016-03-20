@@ -674,9 +674,10 @@ try.
     if. IFJ6 * IFWIN do. smopen_jijs_ file return. end. NB. J 6.0x win systems
   end. 
   
-  if. IFJHS do. open_jhs_ file 
-  elseif. IFQT  do. open file            
-  elseif. IFIOS do. je_z_ file     NB. iPhone/iPad
+  if. IFQT do. open file  NB. jqt ide
+  elseif. IFJHS *. wex <'wwd_qjide_' do. 0 0$(1!:2&2) '$$$edit$$$',file  NB. qjide
+  elseif. IFJHS do. open_jhs_ file  NB. JHS ide            
+  elseif. IFIOS do. je_z_ file      NB. iPhone/iPad
   
   NB. GTK systems are deprecated
   elseif. wex <'IFGTK' do.

@@ -216,7 +216,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.985';20;'9 Aug 2015 10:22:53'
+JODVMD=:'0.9.987';5;'20 Mar 2016 11:51:07'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -1614,7 +1614,7 @@ case. 5 do.
   mdt=. quote&.> 0 2{>mdt
   mdt=. ctl ;"1 (<'regd ') ,"1 |: 1 0 2{ (<';'),mdt
   NB. prefix command to close and unregister all current dictionaries
-  mdt=. 'require ''general/jod''',LF,'3 regd&> }. od'''' [ 3 od ''''',LF,mdt
+  mdt=. 'NB. require ''general/jod''',LF,'3 regd&> }. od'''' [ 3 od ''''',LF,mdt
   ok 'NB. JOD registrations: ',(tstamp ''),LF,jpathsep mdt
   
 case.do. jderr ERR001  NB. errmsg: invalid option(s)

@@ -233,7 +233,7 @@ NB.  0 dbakf 17   NB. backup 17 of jwords.ijf
 NB.  4 dbakf 5    NB. backup 5 of jmacros.ijf
 
 NB. !(*)=. BAK
-BAK,(":y),'j',(;dnnm x),'s',IJF 
+BAK,(":y),(;x{JDFILES),IJF
 )
 
 

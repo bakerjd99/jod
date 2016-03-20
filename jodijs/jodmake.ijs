@@ -994,6 +994,9 @@ NB.
 NB.   cts=. getallts__MK__JODobj 0
 NB.   putallts__MK__JODobj cts
 
+NB. insure dictionaries are open
+if. badrc msg=. checkopen__ST 0 do. msg return. end.
+
 NB. HARDCODE: errmsg: invalid object timestamp table
 if. -.(3,#OBJECTNC) -: $y do. jderr ERR0160 return. end.
 
