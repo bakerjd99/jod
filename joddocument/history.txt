@@ -1,6 +1,10 @@
 general/joddocument - change history
 ====================================
 
+### 0.9.987 - March 20, 2016
+
+  * minor edits
+
 ### 0.9.985 - August 9, 2015
 
   * `bnl` backup names lists section added.  

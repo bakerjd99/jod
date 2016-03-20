@@ -154,12 +154,13 @@ mj=:] ; 21"_ ; gt   NB. *.ijs
 md=:] ; 27"_ ; gt   NB. *.markdown
 mx=:] ; 22"_ ; gt   NB. *.tex
 
+NB. JOD verbs typically run from the base locale 
+cocurrent 'base'
+
 NB. examples of JOD session start ups - shows
 NB. how to open dictionaries and invoke project macros
 
 NB. set up current project (1 suppress IO, 0 or elided display)
 NB. 1 rm 'prjsmughacking' [ smoutput od ;:'smugdev smug utils'
-NB. 1 rm 'prjjod' [ smoutput od ;:'joddev jod utils'
+NB. 1 rm 'prjmep' [ od 'mep'
 
-cocurrent 'base'
-coinsert 'ijod'

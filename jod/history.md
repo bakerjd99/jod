@@ -2,6 +2,16 @@
 general/jod - change history
 ============================
 
+### 0.9.987 - March 20, 2016 (solistice)
+
+ * `et` adjusted to support `qjide`. JOD generated text now
+   opens in `qjide` editor windows. `qjide` must be updated
+   to support this feature.
+   
+        NB. edit in qjide
+        ed 'wordname'
+   
+
 ### 9.9.986 - August 10, 2015
 
  * `od` readjusted - added `require` commented out as `require`

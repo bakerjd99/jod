@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.986  Build Number: 2  Date: 10 Aug 2015 18:22:32
+NB. Version: 0.9.987  Build Number: 5  Date: 20 Mar 2016 11:51:07
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -140,7 +140,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.986';2;'10 Aug 2015 18:22:32'
+JODVMD=:'0.9.987';5;'20 Mar 2016 11:51:07'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -2262,7 +2262,7 @@ SYS=:(':'={.SYS)}.SYS
 if.badjr e=.jread UF;CNRPATH do.0 else.1[RPATH=:>e end.
 )
 dbakf=:4 :0
-BAK,(":y),'j',(;dnnm x),'s',IJF
+BAK,(":y),(;x{JDFILES),IJF
 )
 dfclose=:3 :0
 a=.y,'P'
@@ -3020,6 +3020,7 @@ e=.ok(<a),(<b),<;e
 end.
 )
 putallts=:3 :0
+if.badrc d=.checkopen__ST 0 do.d return.end.
 if.-.(3,#OBJECTNC)-:$y do.jderr ERR0160 return.end.
 do=.{:{.DPATH__ST
 g=.DIRNMS__do[a=.DNAME__do
@@ -3385,8 +3386,9 @@ try.
 if.*/wex;:'IFJ6 IFWIN'do.
 if.IFJ6*IFWIN do.smopen_jijs_ a return.end.
 end.
-if.IFJHS do.open_jhs_ a
-elseif.IFQT do.open a
+if.IFQT do.open a
+elseif.IFJHS*.wex<'wwd_qjide_'do.0 0$(1!:2&2)'$$$edit$$$',a
+elseif.IFJHS do.open_jhs_ a
 elseif.IFIOS do.je_z_ a
 elseif.wex<'IFGTK'do.
 if.IFGTK do.open_jgtk_ a else.jderr ERR0255 end.
