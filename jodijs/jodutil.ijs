@@ -57,6 +57,9 @@ NB.*end-header
 NB. remove only white space tag
 CWSONLY=:'(-.)=:'
 
+NB. text editor to use when running JOD in jconsole on Windows systems
+EDCONSOLE=:'"c:\Program Files (x86)\notepad++\notepad++.exe"'
+
 NB. default edit file name
 EDTEMP=:'99'
 
@@ -268,12 +271,15 @@ NB. check for presence of white space only removal tag
 w=. 1 e. CWSONLY E. ,y
 
 NB. always remove white space
-u=. dewhitejcr y
+u=. dewhitejcr y [ sy=. $y
 if. w do. u return. end.
 
 NB. do not compress identifiers in code that cannot be
 NB. reliably classified by the namecats verb.
-if. badrc m=. 1 namecats__MK y do. u return. end.
+
+NB. BUG: j 8.05 win64 can lose y shapes - sy$,y recovers y's shape
+
+if. badrc m=. 1 namecats__MK sy$,y do. u return. end.
 d=. ~. ;(<2 3 4;1){m=. rv m
 
 NB. check for presence of obfuscation tag
@@ -676,8 +682,18 @@ try.
   
   if. IFQT do. open file  NB. jqt ide
   elseif. IFJHS *. wex <'wwd_qjide_' do. 0 0$(1!:2&2) '$$$edit$$$',file  NB. qjide
-  elseif. IFJHS do. open_jhs_ file  NB. JHS ide            
-  elseif. IFIOS do. je_z_ file      NB. iPhone/iPad
+  elseif. IFJHS do. open_jhs_ file  NB. JHS ide 
+
+  NB. running in jconsole on Windows systems 
+  NB. WARNING: there is no indication of fork failures 
+  NB. testing the existence of (EDCONSOLE) and the alleged
+  NB. (file) for every edit operation would slow down normal use
+  elseif. IFWIN *. IFJHS +: IFQT do. fork_jtask_ EDCONSOLE,' ',file
+
+  NB. remaining editors are marginal, deprecated or rarely used with JOD
+  
+  NB. iPhone/iPad  
+  elseif. IFIOS do. je_z_ file     
   
   NB. GTK systems are deprecated
   elseif. wex <'IFGTK' do.
