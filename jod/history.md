@@ -2,6 +2,18 @@
 general/jod - change history
 ============================
 
+### 0.9.99 - February 25, 2017
+
+ * `et` adjusted to better support editing when running JOD
+    in jconsole.exe sessions. See `joduserconfigbak.ijs`
+    to see how to configure command line editors. 
+
+        NB. Text editor to use when running JOD in (jconsole.exe) on Windows systems
+        NB. QT/JHS configurations are not necessarily applied for (jconsole,exe)
+        EDCONSOLE_ajodutil_=:'"C:\Program Files (x86)\notepad++\notepad++.exe"'
+
+ *  jod.pdf updated.
+
 ### 0.9.987 - March 20, 2016 (solistice)
 
  * `et` adjusted to support `qjide`. JOD generated text now

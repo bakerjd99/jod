@@ -1,6 +1,6 @@
 NB. manifest for JOD
 CAPTION=:'JOD J Object Dictionary'
-VERSION=:'0.9.987'
+VERSION=:'0.9.99'
 PLATFORMS=:'win linux darwin'      
 LABCATEGORY=:'General'
 FILES=: 0 : 0
@@ -22,7 +22,7 @@ jodlabs/jodbest.ijt
 jodlabs/labexample001.ijs
 jodlabs/labdump.ijs
 )
-RELEASE=:'j601 j602 j701 j801 j802 j803 j804'
+RELEASE=:'j601 j602 j701 j801 j802 j803 j804 j805'
 DEPENDS=: 0 : 0
 data/jfiles
 )
@@ -48,5 +48,5 @@ on the Lab menus use the Lab browse button to access:
 
 More information is available on the JOD Page at:
   
-   http://bakerjd99.wordpress.com/the-jod-page/
+   https://analyzethedatanotthedrivel.org/the-jod-page/
 )

@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.987  Build Number: 5  Date: 20 Mar 2016 11:51:07
+NB. Version: 0.9.99  Build Number: 12  Date: 25 Feb 2017 17:03:58
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -140,7 +140,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.987';5;'20 Mar 2016 11:51:07'
+JODVMD=:'0.9.99';12;'25 Feb 2017 17:03:58'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -3130,6 +3130,7 @@ ROOTWORDSMARK=:'rootwords:'
 DOCUMENTMARKS=:ASSUMESMARK;AUTHORMARK;CREATEDMARK;DYADMARK;MONADMARK;VERBATIMMARK;ROOTWORDSMARK
 qt=:]`dblquote@.IFWIN
 CWSONLY=:'(-.)=:'
+EDCONSOLE=:'"c:\Program Files (x86)\notepad++\notepad++.exe"'
 EDTEMP=:'99'
 ERR0250=:' is a noun no internal document'
 ERR0251=:'not loaded - load'
@@ -3215,9 +3216,9 @@ c=.(a@:ctit&.>(b#{:"1 c)-.&.>TAB)(<(I.b);2)}c
 )
 compressj=:3 :0
 w=.1 e.CWSONLY E.,y
-u=.dewhitejcr y
+u=.dewhitejcr y[b=.$y
 if.w do.u return.end.
-if.badrc m=.1 namecats__MK y do.u return.end.
+if.badrc m=.1 namecats__MK b$,y do.u return.end.
 d=.~.;(<2 3 4;1){m=.rv m
 if.o=.1 e.OBFUSCATE E.,y do.
 l=.;(<1;1){m
@@ -3389,6 +3390,7 @@ end.
 if.IFQT do.open a
 elseif.IFJHS*.wex<'wwd_qjide_'do.0 0$(1!:2&2)'$$$edit$$$',a
 elseif.IFJHS do.open_jhs_ a
+elseif.IFWIN*.IFJHS+:IFQT do.fork_jtask_ EDCONSOLE,' ',a
 elseif.IFIOS do.je_z_ a
 elseif.wex<'IFGTK'do.
 if.IFGTK do.open_jgtk_ a else.jderr ERR0255 end.

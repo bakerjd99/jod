@@ -1,6 +1,6 @@
 NB. manifest for JODSOURCE
 CAPTION=:'JOD Object Dictionary Source'
-VERSION=:'0.9.987'
+VERSION=:'0.9.99'
 PLATFORMS=:'win linux darwin'
 LABCATEGORY=:'General'
 FILES=: 0 : 0
@@ -10,7 +10,7 @@ jod.ijs
 utils.ijs
 jodsourcesetup.ijs
 )
-RELEASE=:'j601 j602 j701 j801 j802 j803 j804'
+RELEASE=:'j601 j602 j701 j801 j802 j803 j804 j805'
 DEPENDS=: 0 : 0
 general/jod
 )
@@ -47,5 +47,5 @@ JOD source dictionaries can be set up in two ways:
 
 More information is available on the JOD Page at:
   
-   http://bakerjd99.wordpress.com/the-jod-page/
+   https://analyzethedatanotthedrivel.org/the-jod-page/
 )
