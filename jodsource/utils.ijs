@@ -1,5 +1,5 @@
-NB. JOD dictionary dump: 25 Feb 2017 17:03:59
-NB. Generated with JOD version; 0.9.99; 11; 25 Feb 2017 16:44:27
+NB. JOD dictionary dump: 27 Feb 2017 20:51:37
+NB. Generated with JOD version; 0.9.990; 13; 27 Feb 2017 20:43:43
 NB.
 NB. Names & DidNums on current path
 NB. +-----+---------------------------------------+
@@ -822,8 +822,10 @@ NB.   0 decomm jcr 'decomm'  NB. retain all blank lines
 :
 NB. mask of unquoted comment starts                              
 c=. ($y)$'NB.' E. ,y                                           
-c=. +./\"1 c > ~:/\"1 y e. ''''                                 
-y=. ,y                                                         
+c=. +./\"1 c > ~:/\"1 y e. ''''     
+
+NB. ,, work around for j8.05 bug - remove when fixed                           
+y=. ,,y                                                     
                                                                  
 NB. blank out comments                                           
 y=. ' ' (I. ,c)} y                                     

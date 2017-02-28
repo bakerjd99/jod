@@ -2,10 +2,10 @@
 general/jod - change history
 ============================
 
-### 0.9.99 - February 25, 2017
+### 0.9.990 - February 27, 2017
 
  * `et` adjusted to better support editing when running JOD
-    in jconsole.exe sessions. See `joduserconfigbak.ijs`
+    in `jconsole.exe` sessions. See `joduserconfigbak.ijs`
     to see how to configure command line editors. 
 
         NB. Text editor to use when running JOD in (jconsole.exe) on Windows systems
