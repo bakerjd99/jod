@@ -271,7 +271,7 @@ NB. check for presence of white space only removal tag
 w=. 1 e. CWSONLY E. ,y
 
 NB. always remove white space
-u=. dewhitejcr y [ sy=. $y
+u=. dewhitejcr y
 if. w do. u return. end.
 
 NB. do not compress identifiers in code that cannot be
@@ -279,7 +279,7 @@ NB. reliably classified by the namecats verb.
 
 NB. BUG: j 8.05 win64 can lose y shapes - sy$,y recovers y's shape
 
-if. badrc m=. 1 namecats__MK sy$,y do. u return. end.
+if. badrc m=. 1 namecats__MK y do. u return. end.
 d=. ~. ;(<2 3 4;1){m=. rv m
 
 NB. check for presence of obfuscation tag
