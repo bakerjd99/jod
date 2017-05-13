@@ -867,7 +867,7 @@ else.
   uv1=. uv0 -. uv0 -. uv1
   
   NB. errmsg: mixed scopes
-  if. 0<# uv1 -. ;:')' do. (jderr ERR0159),uv1 return. end.
+  if. 0<# uv1 do. (jderr ERR0159),uv1 return. end.
 
   uv1=. parsed -. uv0
   gbls=. gbls , (jnfrblcl uv1) -. locs,JARGS
