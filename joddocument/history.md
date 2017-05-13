@@ -1,7 +1,9 @@
 general/joddocument - change history
 ====================================
 
-### 0.0.99 - February 25, 2016
+### 0.9.992 - dev
+
+### 0.9.990 - February 27, 2016
 
   * edit `joduserconfigbak.ijs` appendix to better
     support using JOD in jconsole.exe sessions.

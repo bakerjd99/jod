@@ -29,7 +29,7 @@ NB. minimum print precision to show yyyymmdd dates (see jodage)
 9!:11 [ 8
 
 NB. set jqt windows console size - automatic for linux/mac/ios
-Cwh_j_=: 140 24
+Cwh_j_=: 160 24
 
 NB. do not reset if you are running more than one JOD instance
 dpset 'RESETME'
@@ -153,6 +153,15 @@ mt=:] ; 25"_ ; gt   NB. *.txt
 mj=:] ; 21"_ ; gt   NB. *.ijs
 md=:] ; 27"_ ; gt   NB. *.markdown
 mx=:] ; 22"_ ; gt   NB. *.tex
+
+NB. ~user/temp object text - default j script
+os=: 'ijs'&$: : ([: jpath '~user/temp/' , (' ' -.~ ]) , '.' , ' ' -.~ [)
+ 
+NB. read text from j user temp directory
+jt=:[: read os
+ 
+NB.  load j script from j user temp
+jl=: (0!:0)@jt
 
 NB. JOD verbs typically run from the base locale 
 cocurrent 'base'

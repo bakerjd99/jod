@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.990  Build Number: 15  Date: 27 Feb 2017 20:51:37
+NB. Version: 0.9.992 - dev  Build Number: 24  Date: 12 May 2017 21:45:28
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -140,7 +140,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.990';15;'27 Feb 2017 20:51:37'
+JODVMD=:'0.9.992 - dev';24;'12 May 2017 21:45:28'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -345,13 +345,13 @@ if.-.wex<'JODPROF'do.JODPROF=:jodsystempath'jodprofile.ijs'end.
 if.-.wex<'JODUSER'do.JODUSER=:jodsystempath'joduserconfig.ijs'end.
 JVERSION_ajod_=:(jvn ::_9:)''
 if.-.fex<JMASTER,IJF do.
-if.badrc o_gCI=.createmast JMASTER do.o_gCI return.end.
+if.badrc o_nlJ=.createmast JMASTER do.o_nlJ return.end.
 end.
 if.fex<JODUSER do.
 if.(_9-:((0!:0) ::_9:) <JODUSER) {0 1 do.(jderr ERR026) ,<13!:12''return.end.
 end.
-if.badjr o_gCI=.jread JMASTER;CNMFPARMS do.jderr ERR006 return.end.
-MASTERPARMS_ajod_=:>o_gCI
+if.badjr o_nlJ=.jread JMASTER;CNMFPARMS do.jderr ERR006 return.end.
+MASTERPARMS_ajod_=:>o_nlJ
 JODEXT=:0$a:
 IZJODALL=:IzJODinterface,<'JODobj'
 JOD=:y
@@ -360,10 +360,10 @@ MK=:conew'ajodmake'
 UT=:conew'ajodutil'
 SO=:cocreate''
 ('ijod';'z')copath;SO
-o_tcx=.JOD;ST;MK;UT;<SO
-createst__ST o_tcx
-createmk__MK o_tcx
-createut__UT o_tcx
+o_bla=.JOD;ST;MK;UT;<SO
+createst__ST o_bla
+createmk__MK o_bla
+createut__UT o_bla
 ".&.>y defzface IzJODinterface
 makedir<jpath'~temp/'
 if.fex<JODPROF do.(_9-:((0!:0) ::_9:) <JODPROF ) {1 0 else.1 end.
@@ -1674,18 +1674,18 @@ OK
 )
 loadwords=:4 :0
 DL=.{:y
-if.badjr o_fm3=.jread WF__DL;x{WORDCN__DL do.
+if.badjr o_pxH=.jread WF__DL;x{WORDCN__DL do.
 jderr ERR088
 else.
-o_qQz=.0~:;1&{&>o_fm3
-o_aho=.>{.y
+o_uVh=.0~:;1&{&>o_pxH
+o_yau=.>{.y
 try.
-if.#o_aGh=.o_qQz#o_fm3 do.
-0!:0;(({.&>o_aGh),&.><o_aho,'=:'),&.>({:&>o_aGh),&.><LF
+if.#o_mrs=.o_uVh#o_pxH do.
+0!:0;(({.&>o_mrs),&.><o_yau,'=:'),&.>({:&>o_mrs),&.><LF
 end.
-if.#o_e7R=.(-.o_qQz)#o_fm3 do.
-o_aGh=.({.&>o_e7R),&.><o_aho
-(o_aGh)=:(3!:2)&.>{:&>o_e7R
+if.#o_pXo=.(-.o_uVh)#o_pxH do.
+o_mrs=.({.&>o_pXo),&.><o_yau
+(o_mrs)=:(3!:2)&.>{:&>o_pXo
 end.
 catch.jderr ERR091 return.end.
 OK
@@ -2951,10 +2951,11 @@ else.
 'f g c'=.extscopes h
 f=.f-.b[g=.g-.a
 d=.a,f[e=.b,g
+h=.h-.;:')'
 i=.h#~1|.h=<'=.'
 j=.h#~1|.h=<'=:'
 j=.i-.i-.j
-if.0<#j do.(jderr ERR0159),j return.end.
+if.0<#j -.;:')'do.(jderr ERR0159),j return.end.
 j=.h-.i
 d=.d,(jnfrblcl j)-.e,JARGS
 if.x do.
@@ -3487,50 +3488,50 @@ end.
 rm=:3 :0
 0 rm y
 :
-if.badrc o_scI=.MACRO get y do.o_scI return.end.
-o_scI=.rv o_scI
-if.*./o_mPa=.JSCRIPT=;1 {"1 o_scI do.
-o_otW=.;({:"1 o_scI),&.>LF
-o_mzr=.18!:5''
+if.badrc o_ddF=.MACRO get y do.o_ddF return.end.
+o_ddF=.rv o_ddF
+if.*./o_dYM=.JSCRIPT=;1 {"1 o_ddF do.
+o_g5k=.;({:"1 o_ddF),&.>LF
+o_jKe=.18!:5''
 try.
 18!:4<'base'
-if.x-:1 do.0!:100 o_otW else.0!:101 o_otW end.
-18!:4 o_mzr
+if.x-:1 do.0!:100 o_g5k else.0!:101 o_g5k end.
+18!:4 o_jKe
 catchd.
-18!:4 o_mzr
+18!:4 o_jKe
 (jderr ERR0256),<13!:12''return.
 end.
 else.
-(jderr ERR0252),(-.o_mPa)#{."1 o_scI
+(jderr ERR0252),(-.o_dYM)#{."1 o_ddF
 end.
 )
 rtt=:3 :0
 0 rtt y
 :
 if.(3-:x )+.4-:x do.
-if.badrc o_tFa=.(SUITE,_2)make y do.o_tFa return.end.
-o_cGI=.rv o_tFa
+if.badrc o_gtr=.(SUITE,_2)make y do.o_gtr return.end.
+o_wgv=.rv o_gtr
 x=.x-3
 else.
-if.badrc o_tFa=.TEST get y do.o_tFa return.end.
-o_tFa=.rv o_tFa
-o_cGI=.;({:"1 o_tFa),&.>LF
+if.badrc o_gtr=.TEST get y do.o_gtr return.end.
+o_gtr=.rv o_gtr
+o_wgv=.;({:"1 o_gtr),&.>LF
 end.
-o_rDy=.18!:5''
+o_wkR=.18!:5''
 18!:4<'base'
 try.
-if.0-:x do.0!:2 o_cGI
-elseif.1-:x do.(][1!:2&2)0!:3 o_cGI
-elseif.2-:x do.0!:001 o_cGI
+if.0-:x do.0!:2 o_wgv
+elseif.1-:x do.(][1!:2&2)0!:3 o_wgv
+elseif.2-:x do.0!:001 o_wgv
 elseif.do.
-18!:4 o_rDy
+18!:4 o_wkR
 jderr ERR001 return.
 end.
 catchd.
-18!:4 o_rDy
+18!:4 o_wkR
 (jderr ERR0256),<13!:12''return.
 end.
-18!:4 o_rDy
+18!:4 o_wkR
 )
 textform2=:63&$: :(4 :0)
 i=.0

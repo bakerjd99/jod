@@ -2,6 +2,17 @@
 general/jod - change history
 ============================
 
+### 0.9.992 - dev
+
+ * `namecats` changed to fix indirect mixed assignment error.
+ 
+        NB. (globs) was failing on verbs like - there
+        NB. are not mixed assignments		
+        mixedIndirectAssignError=: 4 : 0
+        (MethodArguments)=. 0
+        (func)=: [ + 0 * ]
+        )
+          
 ### 0.9.990 - February 27, 2017
 
  * `et` adjusted to better support editing when running JOD

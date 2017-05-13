@@ -859,12 +859,15 @@ else.
   gbls=. dgbls,mgbls [ locs=. dlocs,mlocs
 
   NB. pick out assignments
+  parsed=. parsed -. ;:')'
   uv0=. parsed #~ 1|.parsed = <'=.'
   uv1=. parsed #~ 1|.parsed = <'=:'
 
+  NB. forbid names from being both local and global
   uv1=. uv0 -. uv0 -. uv1
+  
   NB. errmsg: mixed scopes
-  if. 0<# uv1 do. (jderr ERR0159),uv1 return. end.
+  if. 0<# uv1 -. ;:')' do. (jderr ERR0159),uv1 return. end.
 
   uv1=. parsed -. uv0
   gbls=. gbls , (jnfrblcl uv1) -. locs,JARGS
