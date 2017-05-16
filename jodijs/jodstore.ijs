@@ -1447,7 +1447,7 @@ else.
       0!:0  ; (({.&> vu) ,&.> <loc,'=:') ,&.> ({:&> vu) ,&.> <LF
     end.
 
-    NB. define nouns
+    NB. define nouns - override mixed assignments (^:)=: 
     if. #nu=. (-.bu)#wu do.
       vu=. ({.&> nu) ,&.> <loc
       (vu)=: (3!:2)&.> {:&> nu

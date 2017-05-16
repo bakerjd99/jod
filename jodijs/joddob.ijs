@@ -245,6 +245,7 @@ NB. monad:  dfclose clFilePfx
 NB. 
 NB.   dfclose__DL 'U'  NB. object noun file pointer prefix
 
+NB. allow mixed assignments (^:)=:
 fp=. y,'P'
 (fp)=: ".y,'F' [ jclose_jfiles_ ".fp
 )
@@ -452,6 +453,7 @@ else.
   if. badjr dat=. jread fp;CNDIR do.
     1  NB. cannot load
   else.
+    NB. allow mixed assignments (^:)=:
     NB. HARDCODE: requires two letter TS CN IX suffixes
     dn=. (<_2}.>ix) ,&.> DTSIXCN
     (dn)=: dat
@@ -480,6 +482,7 @@ else.
   if. badjr dat=. jread fp;CNDIR do.
     1  NB. cannot load
   else.
+    NB. allow mixed assignments (^:)=:
     NB. HARDCODE: requires two letter TS CN IX suffixes
     dn=. (<_2}.ix) ,&.> DTSIXCN
     (dn)=: dat
@@ -500,6 +503,7 @@ NB. monad: loadnc iaObject
 NB.
 NB.   loadnc WORD
 
+NB. allow mixed assignments (^:)=:
 if. wex dn=. dnnc y do. 0  NB. class/type loaded
 else.
   fp=. ". ({.dn=. >dn),'F'  NB. path file name
@@ -527,6 +531,7 @@ NB. monad: loadref iaObject
 NB.
 NB.   loadref WORD
 
+NB. allow mixed assignments (^:)=:
 if. wex dn=. dnrn y do. 0  NB. references loaded
 else.
   cn=. ((WORD,TEST) i. y){CNREF
@@ -550,6 +555,7 @@ NB. Result is 0 for success and 1 for failure.
 NB.
 NB. monad: loadstamps uuIgnore
 
+NB. allow mixed assignments (^:)=:
 ts=. DIRTS
 if. *./b=. wex ts do. 0  NB. stamps loaded
 else.

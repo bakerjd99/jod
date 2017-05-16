@@ -12,6 +12,18 @@ general/jod - change history
         (MethodArguments)=. 0
         (func)=: [ + 0 * ]
         )
+		
+ * A new name analysis tag `(^:)=` has been added to `namecats` to
+   override mixed assignments. The following legitimate J pattern 
+   is used in a number of JOD words.
+   
+        NB. override mixed assignments (^:)=:
+		NB. (dn) appears to be both local and global
+        dn=. (<_2}.ix) ,&.> DTSIXCN
+        (dn)=: dat
+		
+   The previous change exposed this issue in JOD code. Override comments
+   have been added to JOD words using this pattern. 		
           
 ### 0.9.990 - February 27, 2017
 

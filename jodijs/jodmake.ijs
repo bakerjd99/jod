@@ -841,6 +841,7 @@ NB.   global           global reference or assignment
 NB.   local            local reference of assignment
 NB.   declared global  names marked with global comment tag (*)=:
 NB.   declared local   names marked with local command tag (*)=.
+NB.   override mixed   allow mixed assignments (^:)=:
 NB.   for. local       implicit for. locals
 NB.
 NB.  0 namecats jcr 'wordname' NB. only globals
@@ -867,7 +868,10 @@ else.
   uv1=. uv0 -. uv0 -. uv1
   
   NB. errmsg: mixed scopes
-  if. 0<# uv1 do. (jderr ERR0159),uv1 return. end.
+  if. 0 < #uv1 do. 
+    NB. check for mixed assignment override
+    if. -.'(^:)=:' +./@E. ,y do. (jderr ERR0159),uv1 return. end.
+  end.
 
   uv1=. parsed -. uv0
   gbls=. gbls , (jnfrblcl uv1) -. locs,JARGS
@@ -896,10 +900,11 @@ NB. nouns.
 NB.
 NB. dyad:  iaNoex nounlrep bt
 
+NB. override mixed assignments (^:)=:
 if. #y do.
   clearso 0
   names=. (errnames=. {."1 y) ,&.> locsfx SO  NB. !(*)=. SO
-  try.
+  try.  
     (names)=: (3!:2)&.> {:"1 y
     names=. (5!:5@<)&.> names
   catch. (jderr ERR016),errnames return. end. NB. retain scratch on failure
