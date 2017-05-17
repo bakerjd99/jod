@@ -216,7 +216,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.992 - dev';26;'15 May 2017 17:58:05'
+JODVMD=:'0.9.992 - dev';29;'16 May 2017 18:48:43'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -957,7 +957,7 @@ NB. monad:  dpset zl | clCommand | (cllParm ; uuValue)
 NB. dyad:  iaCode dpset (clParm ; uuValue)
 
 NB. objects !(*)=. DL ST
-NB. allow mixed assignments (^:)=:
+NB. allow mixed assignments (<:)=:
 
 NB. resets should always work - close any open dictionaries
 if. y -: 'RESETME' do.

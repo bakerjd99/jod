@@ -870,7 +870,7 @@ else.
   NB. errmsg: mixed scopes
   if. 0 < #uv1 do. 
     NB. check for mixed assignment override
-    if. -.'(^:)=:' +./@E. ,y do. (jderr ERR0159),uv1 return. end.
+    if. -.'(<:)=:' +./@E. ,y do. (jderr ERR0159),uv1 return. end.
   end.
 
   uv1=. parsed -. uv0
@@ -900,7 +900,7 @@ NB. nouns.
 NB.
 NB. dyad:  iaNoex nounlrep bt
 
-NB. override mixed assignments (^:)=:
+NB. override mixed assignments (<:)=:
 if. #y do.
   clearso 0
   names=. (errnames=. {."1 y) ,&.> locsfx SO  NB. !(*)=. SO
