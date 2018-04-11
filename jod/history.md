@@ -2,12 +2,14 @@
 general/jod - change history
 ============================
 
-### 0.9.992 - dev
+### 0.9.993 - dev
+  
+ * Support for J 6.01 ended.
 
  * `namecats` changed to fix indirect mixed assignment error.
  
-        NB. (globs) was failing on verbs like - there
-        NB. are not mixed assignments		
+        NB. (globs) was failing on verbs like this 
+        NB. - there are no mixed assignments.		
         mixedIndirectAssignError=: 4 : 0
         (MethodArguments)=. 0
         (func)=: [ + 0 * ]
@@ -18,7 +20,7 @@ general/jod - change history
    is used in a number of JOD words.
    
         NB. override mixed assignments (^:)=:
-		NB. (dn) appears to be both local and global
+        NB. (dn) appears to be both local and global
         dn=. (<_2}.ix) ,&.> DTSIXCN
         (dn)=: dat
 		
