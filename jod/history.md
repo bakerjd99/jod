@@ -2,7 +2,7 @@
 general/jod - change history
 ============================
 
-### 0.9.993 - dev
+### 0.9.993 - May 21, 2018 (test of Jsoftware GIT repos)
 
  * Behaviour of `dpset 'ROOTFOLDER';'~BLOG'` changed. 
    Prior to this release relative root folders were expanded
