@@ -3,7 +3,7 @@ LABAUTHOR=: 0 : 0
 John D. Baker
 bakerjd99@gmail.com
 )
-LABCOMMENTS=: 'This lab demonstrates how to load dump JOD scripts - revised for J 8.0x April 2015'
+LABCOMMENTS=: 'This lab demonstrates how to load dump JOD scripts - revised for J 8.0x March 2018'
 LABFOCUS=: 1
 
 NB. =========================================================
@@ -211,8 +211,8 @@ NB. =========================================================
 Lab Section Summary
 This lab showed how to load dump scripts.  JOD source code dictionaries were loaded.  To use the JOD source dictionaries make sure they are named (joddev), (jod) and (utils).
 
-John D. Baker
-April 2015
+John Baker
+March 2018
 bakerjd99@gmail.com
 )
 

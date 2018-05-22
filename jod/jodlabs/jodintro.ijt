@@ -3,7 +3,7 @@ LABAUTHOR=: 0 : 0
 John D. Baker
 bakerjd99@gmail.com
 )
-LABCOMMENTS=: 'This lab introduces the JOD system - revised for J 8.0x April 2015'
+LABCOMMENTS=: 'This lab introduces the JOD system - revised for J 8.0x March 2018'
 LABERRORS=: 1
 LABFOCUS=: 0
 
@@ -34,7 +34,7 @@ JOD is installed without any dictionaries.   To use JOD you must create some dic
 
 Before creating lab dictionaries remove any prior lab dictionaries. This step defines a utility that will erase dictionaries from default locations. It is run in the next step. 
 
-WARNING: IF THE TEMPORARY LAB DICTIONARIES CONTAIN INFORMARTION YOU CARE ABOUT DO NOT EXECUTE THE NEXT LAB STEP!
+WARNING: IF THE TEMPORARY LAB DICTIONARIES CONTAIN INFORMATION YOU CARE ABOUT DO NOT EXECUTE THE NEXT LAB STEP!
 )
 RemoveLabDictionaries_ijod_=: 3 : 0
 root=. jpath '~user'
@@ -556,9 +556,9 @@ NB. =========================================================
 Lab Section Final words
 You now have some idea of what JOD is all about. To learn more read JOD's documentation and run the other JOD labs. If you have any problems, questions or complaints please email me at bakerjd99@gmail.com
 
-John D. Baker
+John Baker
 bakerjd99@gmail.com
-April 2015
+March 2018
 )
 NB. close any open dictionaries
 3 od ''

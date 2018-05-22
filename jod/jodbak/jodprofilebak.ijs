@@ -37,6 +37,9 @@ dpset 'RESETME'
 NB. JOD interface locale - (ijod) is a good place for ad hoc JOD addons
 coclass 'ijod'
 
+NB. used by some macros: WHEREAMI=: ;0 { ;:'home work test'
+NB. WHEREAMI=: 'home'
+
 NB. (ijod) error/ message text
 ERRIJOD00=: 'current group name (jodg_ijod_) not set'
 ERRIJOD01=: 'current suite name (jods_ijod_) not set'
@@ -147,6 +150,12 @@ write=:1!:2 ]`<@.(32&>@(3!:0))
 readnoun=:3!:2@(1!:1&(]`<@.(32&>@(3!:0))))
 writenoun=:([: 3!:1 [) (1!:2 ]`<@.(32&>@(3!:0))) ]
 
+NB. read TAB delimited table files - faster than (readtd) - see long document in (utils)
+readtd2=:[: <;._2&> (9{a.) ,&.>~ [: <;._2 [: (] , ((10{a.)"_ = {:) }. (10{a.)"_) (13{a.) -.~ 1!:1&(]`<@.(32&>@(3!:0)))
+
+NB. writes tables as TAB delimited LF terminated text - see long document in (utils)
+writetd2=:] (1!:2 ]`<@.(32&>@(3!:0)))~ [: ([: (] , ((10{a.)"_ = {:) }. (10{a.)"_) [: }.@(,@(1&(,"1)@(-.@(*./\."1@(=&' '@])))) # ,@((10{a.)&(,"1)@])) [: }."1 [: ;"1 (9{a.)&,@":&.>) [
+
 NB. fetch edit text/macros
 tt=:] ; gt
 mt=:] ; 25"_ ; gt   NB. *.txt
@@ -163,6 +172,19 @@ jt=:[: read os
 NB.  load j script from j user temp
 jl=: (0!:0)@jt
 
+NB. number of objects - used by various (utils) macros (sizeput, ageput, ...) if present
+NOBS=: 10
+
+NB. dump drive - used by (utils) macro (dumpput) if present
+NB. DUMPWINDRV=: 'h:'
+
+NB. dump paths - used by (utils) macro (dumpput) if present
+NB. DUMPPATH=: '/jod/joddumps/'
+NB. DUMPPRVPATH=: '/jod/jodprvdumps/'
+
+NB. clear dictionaries - used by (utils) macro (clearput) if present
+NB. CLEARJDICS=: ;:''
+
 NB. JOD verbs typically run from the base locale 
 cocurrent 'base'
 
@@ -170,6 +192,6 @@ NB. examples of JOD session start ups - shows
 NB. how to open dictionaries and invoke project macros
 
 NB. set up current project (1 suppress IO, 0 or elided display)
-NB. 1 rm 'prjsmughacking' [ smoutput od ;:'smugdev smug utils'
-NB. 1 rm 'prjmep' [ od 'mep'
+NB. 1 rm 'prjsmughacking' [ smoutput od ;:'smugdev smug utils' [ 3 od ''
+NB. 1 rm 'prjmep' [ od 'mep' [ 3 od ''
 

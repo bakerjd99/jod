@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.992 - dev  Build Number: 24  Date: 12 May 2017 21:45:28
+NB. Version: 0.9.993  Build Number: 19  Date: 21 May 2018 20:06:04
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -26,8 +26,8 @@ e=.9!:14''
 e=.,(e i.'/'){.e 
 if.#e do.e=.0 ".e #~e e.'0123456789'else.e=.0 end.
 h=.][1!:2&2
-if.e<:601 do.
-f=.'JOD requires J 6.01 or later.'
+if.e<602 do.
+f=.'JOD requires J 6.02 or later.'
 f=.f,LF,'J is freely available at www.jsoftware.com'
 0[h f,LF,'Download and install J 6.0x-8.0x and then reinstall JOD.'
 return.
@@ -140,7 +140,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.992 - dev';24;'12 May 2017 21:45:28'
+JODVMD=:'0.9.993';19;'21 May 2018 20:06:04'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -2591,6 +2591,7 @@ DUMPMSG0=:'NB. JOD dictionary dump: '
 DUMPMSG1=:'Names & DidNums on current path'
 DUMPMSG2=:'''NB. end-of-JOD-dump-file regenerate cross references with:  0 globs&> }. revo '''''''' '''
 DUMPMSG3=:'NB. Generated with JOD version'
+DUMPMSG4=:'NB. J version: '
 ERR0150=:'confused declarations ->'
 ERR0151=:'word syntax'
 ERR0152=:'no definition ->'
@@ -2697,6 +2698,7 @@ if._1-:''(write ::_1:)y do.(jderr ERR0156),<y return.end.
 9!:7,PORTCHARS[a=.,9!:6''
 b=.DUMPMSG0,tstamp''
 b=.b,LF,DUMPMSG3,;(<'; '),&.>":&.>JODVMD
+b=.b,LF,DUMPMSG4,":,9!:14''
 b=.b,LF,ctl'NB. ',"1 ' ',DUMPMSG1,":0 1{"1 DPATH__ST
 b=.b,LF,LF
 9!:7 a
@@ -2955,7 +2957,9 @@ h=.h-.;:')'
 i=.h#~1|.h=<'=.'
 j=.h#~1|.h=<'=:'
 j=.i-.i-.j
-if.0<#j -.;:')'do.(jderr ERR0159),j return.end.
+if.0<#j do.
+if.-.'(<:)=:'+./@E.,y do.(jderr ERR0159),j return.end.
+end.
 j=.h-.i
 d=.d,(jnfrblcl j)-.e,JARGS
 if.x do.

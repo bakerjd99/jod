@@ -1,5 +1,5 @@
 NB. System: jodtools  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.992 - dev  Build Number: 23  Date: 12 May 2017 21:45:30
+NB. Version: 0.9.993  Build Number: 19  Date: 21 May 2018 20:06:05
 (9!:41)0
 coclass'ajodtools'
 coinsert'ajodutil'
@@ -13,13 +13,13 @@ ERR00403=:'invalid make load script option (0 or 1)'
 ERR00404=:'J script error in group ->'
 ERR00405=:'words refer to objects/locales ->'
 ERR00406=:'invalid delimiter'
-ERR00407=:'ROOTFOLDER must be a character list (jpath) expression like: ~user/jodroot'
+ERR00407=:'ROOTFOLDER must be a character list configured (jpath) expression like: ~user/jodroot'
 ERR00408=:'unable to write load script ->'
 GROUPSUITES=:<;._1 ' Groups Suites'
 IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
-JODTOOLSVMD=:'0.9.992 - dev';23;'12 May 2017 21:45:30'
+JODTOOLSVMD=:'0.9.993';19;'21 May 2018 20:06:05'
 LF=:10{a.
 OK00400=:'load script saved ->'
 OK00401=:'file saved ->'
@@ -243,14 +243,20 @@ end.
 if.2-:x do.ok s
 else.
 pdo=.{:0{DPATH__ST__JODobj
-a=.SCR__pdo
+g=.a=.SCR__pdo
 if.wex<'ROOTFOLDER__pdo'do.
 if.badcl ROOTFOLDER__pdo do.jderr ERR00407 return.end.
-if.0<#g =.alltrim ROOTFOLDER__pdo do.if.-.g -:c =.jpath g do.a=.tslash2 c end.end.
+if.0<#g=.alltrim ROOTFOLDER__pdo do.
+if.'~'~:{.g do.jderr ERR00407 return.end.
+if.g -:c =.jpath g do.jderr ERR00407 return.else.a=.tslash2 c end.
+g=.tslash2 g
+else.
+g=.a
+end.
 end.
 d=.a,b,IJS__JODobj
 if._1-:(toHOST s)(write ::_1:)d do.(jderr ERR00408),<d return.end.
-x addloadscript b;a,b
+x addloadscript b;g,b
 end.
 else.
 v

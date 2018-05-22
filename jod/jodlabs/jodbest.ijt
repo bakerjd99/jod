@@ -3,7 +3,7 @@ LABAUTHOR=: 0 : 0
 John D, Baker 
 bakerjd99@gmail.com
 )
-LABCOMMENTS=: 'Best practices for JOD - revised for J 8.0x April 2015'
+LABCOMMENTS=: 'Best practices for JOD - revised for J 8.0x March 2018'
 LABFOCUS=: 1
 
 NB. =========================================================
@@ -385,7 +385,7 @@ These are just some of the JOD practices I have found useful.  As you use JOD yo
 If you find an a useful method please let me know.  I can be reached at:
 
 John Baker 
-April 2015
+March 2018
 bakerjd99@gmail.com
 )
 
