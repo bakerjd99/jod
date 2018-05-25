@@ -54,6 +54,9 @@ DUMPMSG2=:'''NB. end-of-JOD-dump-file regenerate cross references with:  0 globs
 NB. version prefix text for JOD dumps
 DUMPMSG3=:'NB. Generated with JOD version'
 
+NB. J version that created this dumpfile
+DUMPMSG4=:'NB. J version: '
+
 
 ERR0150=:'confused declarations ->'
 ERR0151=:'word syntax'
@@ -84,6 +87,9 @@ HEADEND=:'NB.*end-header'
 
 NB. explict J argument names
 JARGS=:<;._1 ' x y u v m n $:'
+
+NB. mixed assignment override tag
+MIXEDOVER=:'(<:)=:'
 
 
 OK0150=:'file saved ->'
@@ -307,6 +313,7 @@ NB. make box characters portable
 NB. format header text
 head=. DUMPMSG0 , tstamp ''
 head=. head,LF,DUMPMSG3 , ;(<'; ') ,&.> ":&.>JODVMD 
+head=. head,LF,DUMPMSG4 , ": , 9!:14 ''
 head=. head,LF,ctl 'NB. ',"1 ' ' , DUMPMSG1 , ": 0 1 {"1 DPATH__ST
 head=. head,LF,LF
 
@@ -841,7 +848,7 @@ NB.   global           global reference or assignment
 NB.   local            local reference of assignment
 NB.   declared global  names marked with global comment tag (*)=:
 NB.   declared local   names marked with local command tag (*)=.
-NB.   override mixed   allow mixed assignments (^:)=:
+NB.   override mixed   allow mixed assignments (<:)=:
 NB.   for. local       implicit for. locals
 NB.
 NB.  0 namecats jcr 'wordname' NB. only globals
@@ -870,7 +877,7 @@ else.
   NB. errmsg: mixed scopes
   if. 0 < #uv1 do. 
     NB. check for mixed assignment override
-    if. -.'(<:)=:' +./@E. ,y do. (jderr ERR0159),uv1 return. end.
+    if. -.MIXEDOVER +./@E. ,y do. (jderr ERR0159),uv1 return. end.
   end.
 
   uv1=. parsed -. uv0
