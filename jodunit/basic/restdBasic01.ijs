@@ -1,16 +1,25 @@
 NB.*restdBasic01 t-- basic (restd) tests.
 NB.
+NB. assumes:
+NB.
+NB.   1) test dictionary (testjod00) exists
+NB.
 NB. author:  John D. Baker
 NB. created: September 2000
 NB. changes: -----------------------------------------------------
 NB. 11nov29 updated for J7/Linux
+NB. 18may23 updated to correspond to: rtt 'createtestdictionaries'
 
-
-clear '' [ cocurrent 'base'
+cocurrent 'base'
 require 'jodtester'
-testenvironment 'good';'JOD'
 
-dict=: 'testjod0'
+coclass tmploc_AAAbasic999_=: 'AAAbasic999' [ coerase <'AAAbasic999'
+coinsert 'ijod'
+
+testenvironment 'good';'JOD'
+NB. -{TEST START}-
+
+dict=: 'testjod00'
 
 NB. open a test dictionary and pack it.
 er od dict
@@ -19,9 +28,9 @@ er packd dict
 NB. now insert some never before seen junk word
 NB. into the test dictionary.
 (newname=: 'a', ": didnum_ajod_ 0) =: 3 : '2 * y'
-er put newname
+er tmploc put newname
 erase newname
-er get newname
+er tmploc get newname
 erase newname
 
 NB. restore the previous backup - it does not contain
@@ -34,7 +43,7 @@ NB. check restores from at least two volumes
 NB. using unique directory and dictionary names
 
 vol1=: 'c:'
-vol2=: '\\meccnas00\users\jdbaker'
+vol2=: '\\pnas02fs2\home\john2000\temp'
 
 NB. NIMP tweak for linux and volume config
 er newd newname;vol1,'/temp/',newname
@@ -44,7 +53,7 @@ er newd newername;vol2,'\temp\',newername
 NB. volume 1
 er od newname
 er packd newname
-er put 'newname'
+er tmploc put 'newname'
 er restd newname
 ner get newname
 er 3 od ''
@@ -52,11 +61,13 @@ er 3 od ''
 NB. volume 2
 er od newername
 er packd newername
-er put 'newername'
+er tmploc put 'newername'
 er restd newername
 ner get newername
 er 3 od ''
 
-NB. TEST SUCCESSFUL
-
+NB. -{TEST SUCCESSFUL}-
 ereopen 0
+
+cocurrent 'base'
+coerase <tmploc_AAAbasic999_

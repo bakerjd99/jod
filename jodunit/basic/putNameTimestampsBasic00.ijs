@@ -1,12 +1,13 @@
-NB.*putNameTimestampsBasic00 t-- basic valid put name timestamps tests.
+NB.*putNameTimestampsBasic00 t-- basic valid (put) name timestamps tests.
 NB.
-NB. verbatim: assumes
+NB. assumes:
 NB. 
-NB. 1) a jpath ~JODTEST directory has been set.
+NB.   1) a jpath ~JODTEST directory has been set.
 NB.  
 NB. author:  John D. Baker
 NB. created: 2015jul02
 NB. changes: -----------------------------------------------------
+NB. 18may24 updated for J 8.07
 
 cocurrent 'base'
 require 'jodtester'
@@ -14,10 +15,8 @@ require 'jodtester'
 NB. we need a configured directory 
 -. (] -: jpath) '~JODTEST'
 
-NB. work in clear base or trash locale
-NB. clear ''
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
+coclass tmploc_AAAbasic999_=: 'AAAbasic999' [ coerase <'AAAbasic999'
 coinsert 'ijod'
 
 testenvironment 'good';'JOD'
@@ -70,7 +69,7 @@ dtpath2=: (tslash2_ajod_ jpath '~JODTEST'),dtname2
 
 NB. load dump of first dictionary
 ((0!:0) :: 0:) {:df
-1 [ cocurrent 'AAAtrash999'
+1 [ cocurrent 'AAAbasic999'
 
 NB. all timestamps from both dictionaries must match
 ts2=: getallts__MK__JODobj 0
@@ -88,4 +87,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <tmploc_AAAbasic999_

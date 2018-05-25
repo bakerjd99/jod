@@ -1,9 +1,15 @@
 general/joddocument - change history
 ====================================
 
-### 0.9.992 - dev
+### 0.9.994 - dev 
 
-### 0.9.990 - February 27, 2016
+  * start of revision cycle for J version 8.07+.
+
+### 0.9.993 - May 21, 2018
+
+  * first commit to new Jsoftware GitHub repositories.
+
+### 0.9.990 - February 27, 2017
 
   * edit `joduserconfigbak.ijs` appendix to better
     support using JOD in jconsole.exe sessions.

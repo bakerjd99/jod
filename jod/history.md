@@ -2,6 +2,10 @@
 general/jod - change history
 ============================
 
+### 0.0.994 - dev
+
+ * added `MIXEDOVER` noun to (namecats) store mixed assignment override tag.
+
 ### 0.9.993 - May 21, 2018 (test of Jsoftware GIT repos)
 
  * Behaviour of `dpset 'ROOTFOLDER';'~BLOG'` changed. 
@@ -32,11 +36,11 @@ general/jod - change history
         (func)=: [ + 0 * ]
         )
 		
- * A new name analysis tag `(^:)=` has been added to `namecats` to
+ * A new name analysis tag `(<:)=:` has been added to `namecats` to
    override mixed assignments. The following legitimate J pattern 
    is used in a number of JOD words.
    
-        NB. override mixed assignments (^:)=:
+        NB. override mixed assignments (<:)=:
         NB. (dn) appears to be both local and global
         dn=. (<_2}.ix) ,&.> DTSIXCN
         (dn)=: dat

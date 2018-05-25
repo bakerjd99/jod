@@ -14,7 +14,8 @@ coinsert  'ajodliterate'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
-1[ 3 od ''
+
+1 [ 3 od ''
 er od ;:'joddev jod utils'
 er setjodliterate 'c:/temp'
 

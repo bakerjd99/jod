@@ -1,29 +1,32 @@
-NB.*bnlBasic01 t-- basic backup name list tests.
+NB.*bnlBasic01 t-- basic (bnl) backup name list tests.
 NB.
-NB. Assumes (testjod1) backups loaded with enough words  to match
-NB. names.
+NB. assumes:
 NB.
-NB. verbatim:
+NB.   1) (testjod01) backups loaded with enough words to match names.
+NB.      (testjod01) is loaded by the test: rtt 'loadtest001dictionary'
 NB.
 NB. author:  John D. Baker
 NB. created: 2011dec20
 NB. changes: -----------------------------------------------------
+NB. 18may24 updated for J 8.07 see: rtt 'createtestdictionaries'
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
+coclass tmploc_AAAbasic999_=: 'AAAbasic999' [ coerase <'AAAbasic999'
 coinsert 'ijod'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
+
+tdict=: 'testjod01'
 
 NB. there must be an open dictionary
 ner bnl ''
 ner bnl '.'
 ner bnl 'reb.14'
 
-er od 'testjod1'
+er od tdict
 NB. words from most current backup
 er bnl ''
 
@@ -64,4 +67,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <tmploc_AAAbasic999_

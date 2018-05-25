@@ -1,8 +1,8 @@
 NB.*delBasic001 t-- basic valid (del) tests.
 NB. 
-NB. verbatim:
+NB. assumes:
 NB.
-NB. ASSUMES: 1) a READWRITE put dictionary (testjod0).
+NB.   1) a READWRITE put dictionary (testjod0).
 NB.
 NB. JOD calls to setup test environment - assumes JODSOURCE 
 NB. addon installed and JOD development dictionaries (joddev/jod/utils)
@@ -19,15 +19,19 @@ NB. 07nov01 converted to j6.02 - renamed
 NB. 11may13 updated for J7/Linux version of JOD
 NB. 11may20 (jodtester) require'd
 NB. 11nov23 changed to use temporary locale
+NB. 18may24 upated for J 8.07
 
 cocurrent 'base'
 require 'jodtester'
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
+
+coclass tmploc_AAAbasic999_=: 'AAAbasic999' [ coerase <'AAAbasic999'
 coinsert 'ijod'
 
 testenvironment 'good';'JOD'
 
-er od 'testjod0'
+tdict=: 'testjod00'
+
+er od tdict
 
 NB. insert a word and delete it
 iamword=: 3 : 0
@@ -64,4 +68,4 @@ NB. reopen any dictionaries
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <tmploc_AAAbasic999_

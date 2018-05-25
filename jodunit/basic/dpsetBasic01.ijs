@@ -1,9 +1,9 @@
-NB.*dpsetBasic01 t-- basic dpset parameter set/change tests.
+NB.*dpsetBasic01 t-- basic (dpset) parameter set/change tests.
 NB.
-NB. Assumes test dictionary (testjod00) exists.
+NB. assumes:
 NB.
-NB. verbatim:
-NB.  
+NB.   1) test dictionary (testjod00) exists.
+NB.
 NB. author:  John D. Baker
 NB. created: 2012nov20
 NB. changes: -----------------------------------------------------
@@ -21,11 +21,13 @@ coinsert 'ijod'
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
 
-er 2 od 'testjod00'     NB. open READONLY
+tdict=: 'testjod00'
+
+er 2 od tdict          NB. open READONLY
 ner dpset 'ASCII85';1  NB. cannot change parameter
 
 NB. reopen insure READWRITE
-er od 'testjod00' [ 3 od ''
+er od tdict [ 3 od ''
 er dpset 'READWRITE'
 er dpset 'ASCII85';1
 er dpset 'RETAINAGE';1
@@ -35,8 +37,8 @@ er dpset 'READONLY'
 ner dpset 'ASCII85';1
 
 NB. reopen - dictionary is READONLY
-er od 'testjod00' [ 3 od ''
-ner dpset 'ASCII85';0  
+er od tdict [ 3 od ''
+ner dpset 'ASCII85';0
 
 NB. insure test group exists
 er dpset 'READWRITE'
