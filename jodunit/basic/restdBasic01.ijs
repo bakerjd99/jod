@@ -9,6 +9,7 @@ NB. created: September 2000
 NB. changes: -----------------------------------------------------
 NB. 11nov29 updated for J7/Linux
 NB. 18may23 updated to correspond to: rtt 'createtestdictionaries'
+NB. 18may26 edit for systems with UNC volumes 
 
 cocurrent 'base'
 require 'jodtester'
@@ -43,12 +44,16 @@ NB. check restores from at least two volumes
 NB. using unique directory and dictionary names
 
 vol1=: 'c:'
-vol2=: '\\pnas02fs2\home\john2000\temp'
+
+NB. UNC paths are not always present
+NB. vol2=: '\\pnas02fs2\home\john2000\temp'
 
 NB. NIMP tweak for linux and volume config
 er newd newname;vol1,'/temp/',newname
 newername=: 'a', ": didnum_ajod_ 0
-er newd newername;vol2,'\temp\',newername
+
+NB. UNC paths
+NB. er newd newername;vol2,'\temp\',newername
 
 NB. volume 1
 er od newname
@@ -58,13 +63,13 @@ er restd newname
 ner get newname
 er 3 od ''
 
-NB. volume 2
-er od newername
-er packd newername
-er tmploc put 'newername'
-er restd newername
-ner get newername
-er 3 od ''
+NB. volume 2 UNC paths
+NB. er od newername
+NB. er packd newername
+NB. er tmploc put 'newername'
+NB. er restd newername
+NB. ner get newername
+NB. er 3 od ''
 
 NB. -{TEST SUCCESSFUL}-
 ereopen 0

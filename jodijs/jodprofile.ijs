@@ -78,9 +78,10 @@ sg=: 3 : 0
 if. wex_ajod_ <'jodg' do. mls jodg else. jderr_ajod_ ERRIJOD01 end. 
 )
 
-NB. top (put dictionary) words, groups in revision order
+NB. top (put dictionary) words, groups, suites in revision order
 tw=: revo
 tg=: 2&revo
+ts=: 3&revo
 
 NB. run tautology as plaintest - does not stop on nonzero results
 rt=: 2&rtt
@@ -88,8 +89,9 @@ rt=: 2&rtt
 NB. run macro silently - will show explict smoutput
 rs=: 1&rm
 
-NB. short help for group words
+NB. short help for groups/suites
 hg=: [: hlpnl [: }. grp
+hs=: 1 hlpnl [: }. 3 grp ]
 
 NB. short help on put objects in revised order from code:
 NB.     hr 4  NB. macro
