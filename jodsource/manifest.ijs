@@ -1,6 +1,7 @@
 NB. manifest for JODSOURCE
 CAPTION=:'JOD Object Dictionary Source'
-VERSION=:'0.9.993'
+VERSION=:'0.9.994'
+FOLDER=:'general/jodsource'
 PLATFORMS=:'win linux darwin'
 LABCATEGORY=:'General'
 FILES=: 0 : 0
@@ -10,7 +11,7 @@ jod.ijs
 utils.ijs
 jodsourcesetup.ijs
 )
-RELEASE=:'j601 j602 j701 j801 j802 j803 j804 j805'
+RELEASE=:'j805'
 DEPENDS=: 0 : 0
 general/jod
 )
@@ -26,8 +27,7 @@ objects into JOD dictionaries when run.
 JOD system dictionaries are good examples of how JOD 
 can be used to build complex J systems.
 
-J 7.0x/8.0x JOD requires the (data/jfiles) addon. Prior 
-versions of J make (jfiles) available from system scripts.
+JOD requires the (data/jfiles) addon. 
 
 JOD source dictionaries can be set up in two ways:
 

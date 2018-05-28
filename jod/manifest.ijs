@@ -1,6 +1,7 @@
 NB. manifest for JOD
 CAPTION=:'JOD J Object Dictionary'
-VERSION=:'0.9.993'
+VERSION=:'0.9.994'
+FOLDER=:'general/jod'
 PLATFORMS=:'win linux darwin'      
 LABCATEGORY=:'General'
 FILES=: 0 : 0
@@ -22,7 +23,7 @@ jodlabs/jodbest.ijt
 jodlabs/labexample001.ijs
 jodlabs/labdump.ijs
 )
-RELEASE=:'j602 j701 j801 j802 j803 j804 j805 j806 j807'
+RELEASE=:'j805'
 DEPENDS=: 0 : 0
 data/jfiles
 )
@@ -31,8 +32,7 @@ JOD (J Object Dictionary) is a J programming and refactoring
 tool. JOD supports linked dictionary databases and provides 
 tools for building, documenting and testing J systems. 
 
-J 7.0x/8.0x JOD requires the (data/jfiles) addon.
-Prior versions of J make (jfiles) available from system scripts.
+JOD requires the (data/jfiles) addon. 
 
 If you install JOD it is highly recommended that you
 install the related addon JODDOCUMENT. JODDOCUMENT 

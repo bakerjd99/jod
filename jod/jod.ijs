@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.993  Build Number: 19  Date: 21 May 2018 20:06:04
+NB. Version: 0.9.994  Build Number: 11  Date: 27 May 2018 18:37:21
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -140,7 +140,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.993';19;'21 May 2018 20:06:04'
+JODVMD=:'0.9.994';11;'27 May 2018 18:37:21'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -2609,6 +2609,7 @@ EXPPFX1=:3 8$'3 : ('':''3 : (,'':4 : (,'':'
 GLOBCATS=:<;._1 ' Global Local (*)=: (*)=. for.'
 HEADEND=:'NB.*end-header'
 JARGS=:<;._1 ' x y u v m n $:'
+MIXEDOVER=:'(<:)=:'
 OK0150=:'file saved ->'
 OK0151=:'object(s) on path dumped ->'
 PORTCHARS=:,:'+++++++++|-'
@@ -2958,7 +2959,7 @@ i=.h#~1|.h=<'=.'
 j=.h#~1|.h=<'=:'
 j=.i-.i-.j
 if.0<#j do.
-if.-.'(<:)=:'+./@E.,y do.(jderr ERR0159),j return.end.
+if.-.MIXEDOVER+./@E.,y do.(jderr ERR0159),j return.end.
 end.
 j=.h-.i
 d=.d,(jnfrblcl j)-.e,JARGS

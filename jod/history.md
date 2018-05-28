@@ -2,9 +2,11 @@
 general/jod - change history
 ============================
 
-### 0.0.994 - dev
+### 0.0.994 - May 27, 2018
 
- * added `MIXEDOVER` noun to (namecats) store mixed assignment override tag.
+ * added `MIXEDOVER` noun to `namecats` - mixed assignment override tag.
+
+ * first JOD release to the new [Jsoftware GitHub](https://github.com/jsoftware) addon repositories.
 
 ### 0.9.993 - May 21, 2018 (test of Jsoftware GIT repos)
 

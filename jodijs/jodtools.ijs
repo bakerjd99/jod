@@ -66,7 +66,7 @@ JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 NB. JODTOOLS version, make and date
 
 
-JODTOOLSVMD=:'0.9.994';8;'26 May 2018 18:22:06'
+JODTOOLSVMD=:'0.9.994';10;'27 May 2018 18:24:36'
 
 NB. line feed character
 LF=:10{a.

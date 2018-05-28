@@ -1,9 +1,15 @@
 general/joddocument - change history
 ====================================
 
-### 0.9.994 - dev 
+### 0.9.994 - May 27, 2018
 
   * start of revision cycle for J version 8.07+.
+
+  * JOD folders and JOD labs screen captures updated
+    for J 8.07 JQT.
+
+  * new `unicode4` type added to Hungarian appendix.
+
 
 ### 0.9.993 - May 21, 2018
 
