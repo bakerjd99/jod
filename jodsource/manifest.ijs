@@ -1,6 +1,6 @@
 NB. manifest for JODSOURCE
 CAPTION=:'JOD Object Dictionary Source'
-VERSION=:'0.9.994'
+VERSION=:'0.9.995'
 FOLDER=:'general/jodsource'
 PLATFORMS=:'win linux darwin'
 LABCATEGORY=:'General'
@@ -11,7 +11,7 @@ jod.ijs
 utils.ijs
 jodsourcesetup.ijs
 )
-RELEASE=:'j805'
+RELEASE=:''
 DEPENDS=: 0 : 0
 general/jod
 )

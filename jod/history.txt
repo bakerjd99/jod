@@ -2,7 +2,7 @@
 general/jod - change history
 ============================
 
-### 0.0.994 - May 27, 2018
+### 0.0.995 - May 28, 2018 (Memorial Day update)
 
  * added `MIXEDOVER` noun to `namecats` - mixed assignment override tag.
 

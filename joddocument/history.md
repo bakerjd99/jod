@@ -1,7 +1,7 @@
 general/joddocument - change history
 ====================================
 
-### 0.9.994 - May 27, 2018
+### 0.9.995 - May 28, 2018 (Memorial Day update)
 
   * start of revision cycle for J version 8.07+.
 

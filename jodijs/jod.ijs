@@ -218,7 +218,7 @@ JNAME=:'[[:alpha:]][[:alnum:]_]*'
 NB. version, make and date
 
 
-JODVMD=:'0.9.994';10;'27 May 2018 18:24:35'
+JODVMD=:'0.9.995';13;'28 May 2018 09:56:56'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
