@@ -8,6 +8,7 @@ NB. 11nov22 updated for JOD 0.9.4+
 NB. 11nov23 (hostsep) removed, (test) deleted - see below
 NB. 15jun26 fetching (TestDictionaryDump) from (jodtest) dictionary
 NB. 17jun20 fetching (JodSourcePathDump) from (jodtest) dictionary
+NB. 18may31 updated for J 8.07
 
 cocurrent 'base'
 require 'jodtester'
@@ -33,7 +34,9 @@ NB. dump scripts in the (jodtest) development dictionary
 
 testenvironment 'good';'JOD'
 
-er od 'testjod01'
+tdict=: 'testjod01'
+
+er od tdict
 
 NB. delete all words, groups, tests, suites, macros
 1 [ obs del&> 1 }.&.> obs dnl&.> (#obs=.<"0 i. 5)#<''
@@ -43,7 +46,7 @@ NB. load test dump script
 cocurrent tmploc_AAAtrash999_
 
 NB. pack dictionary to remove "dead" file components
-er packd 'testjod01'
+er packd tdict
 
 NB. the following inserts many single line descriptions for words without descriptions 
 S=: fsen&> 0 1 3 noexp ''
@@ -70,7 +73,7 @@ NB. Nov 23, 2011
 NB. 1 [ del 'test'
 
 NB. packd and make 
-er packd 'testjod01'
+er packd tdict
 er make ''
 
 NB. show counts

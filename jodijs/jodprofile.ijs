@@ -37,6 +37,11 @@ dpset 'RESETME'
 NB. JOD interface locale - (ijod) is a good place for ad hoc JOD addons
 coclass 'ijod'
 
+NB. override EDCONSOLE - set (jconsole.exe) editor - use full path
+NB. NIMP: currently EDCONSOLE is windows only - see verb (et) 
+EDCONSOLE_ajodutil_=: '"c:\Program Files\Microsoft VS Code\code.exe"'
+NB. EDCONSOLE_ajodutil_=: '"c:\Program Files (x86)\notepad++\notepad++.exe"'
+
 NB. used by some macros: WHEREAMI=: ;0 { ;:'home work test'
 NB. WHEREAMI=: 'home'
 
@@ -196,4 +201,3 @@ NB. how to open dictionaries and invoke project macros
 NB. set up current project (1 suppress IO, 0 or elided display)
 NB. 1 rm 'prjsmughacking' [ smoutput od ;:'smugdev smug utils' [ 3 od ''
 NB. 1 rm 'prjmep' [ od 'mep' [ 3 od ''
-

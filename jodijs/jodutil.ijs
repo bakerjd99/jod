@@ -58,7 +58,7 @@ NB. remove only white space tag
 CWSONLY=:'(-.)=:'
 
 NB. text editor to use when running JOD in jconsole on Windows systems
-EDCONSOLE=:'"c:\Program Files (x86)\notepad++\notepad++.exe"'
+EDCONSOLE=:'"c:\Program Files\Microsoft VS Code\code.exe"'
 
 NB. default edit file name
 EDTEMP=:'99'

@@ -2,6 +2,12 @@
 general/jod - change history
 ============================
 
+### 0.0.996 - dev
+
+ * `mnl` implemented - see `jod.pdf`
+
+ * `EDCONSOLE` set in `profile.ijs` - useful for setting preferred `jconsole.exe` editor.
+
 ### 0.0.995 - May 28, 2018 (Memorial Day update)
 
  * added `MIXEDOVER` noun to `namecats` - mixed assignment override tag.
@@ -60,7 +66,7 @@ general/jod - change history
         NB. QT/JHS configurations are not necessarily applied for (jconsole,exe)
         EDCONSOLE_ajodutil_=:'"C:\Program Files (x86)\notepad++\notepad++.exe"'
 
- *  jod.pdf updated.
+ *  `jod.pdf` updated.
 
 ### 0.9.987 - March 20, 2016 (solistice)
 
