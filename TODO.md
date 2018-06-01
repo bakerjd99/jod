@@ -22,9 +22,7 @@ to finishing the few remaining `JOD` features.
 
 3. `<_dz9ciclzsdnxrcx1m3wxvl2jj_>` Implement `bget` - backup get.
 
-4. `<_2cfgett635dztw96j6x8m1x1g_>` Create master test build macro similiar to `buildjoddistribution` in the `JOD` development dictionaries.
-
-5. `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs
+4. `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs
    have changed in recent J versions.
 
 5. `<_cmual68h5jqlpqz57is84e0j6_>` Revise `jod.pdf` - see related [`joddoc` project](https://github.com/bakerjd99/joddoc).
