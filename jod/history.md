@@ -6,7 +6,13 @@ general/jod - change history
 
  * `mnl` implemented - see `jod.pdf`
 
+ * `et` adjusted to use `edit_jhs_` under `JHS`.
+
  * `EDCONSOLE` set in `profile.ijs` - useful for setting preferred `jconsole.exe` editor.
+
+ * `JSON`, `PYTHON`, `SQL` macro option text codes added. All JOD macro
+    text is stored as bytes. The code is a label. It's useful to apply
+    the labels as `JSCRIPT` text is executed while other types are not.
 
 ### 0.0.995 - May 28, 2018 (Memorial Day update)
 
@@ -94,7 +100,7 @@ general/jod - change history
 
  * `bnl` backup name lists implemented: see `jod.pdf` for details.
 
- * new test scripts added to `jodsource` dictionaries for `bnl`.
+ *  new test scripts added to `jodsource` dictionaries for `bnl`.
 
  * `jod.pdf` updated for `bnl`.
 

@@ -58,9 +58,12 @@ TEXT=:25
 BYTE=:26
 MARKDOWN=:27
 UTF8=:28
+PYTHON=:29
+SQL=:30
+JSON=:31
 
-NB. macro text types, depends: JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8
-MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8
+NB. macro text types
+MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8,PYTHON,SQL,JSON
 
 NB. object codes
 WORD=:0
@@ -128,7 +131,7 @@ DEPENDENTSEND=:'enddependents'
 NB. comment tag marking start of dependents section
 DEPENDENTSSTART=:'dependents'
 
-
+NB. numeral characters
 DIGITS=:'0123456789'
 
 NB. document option code
@@ -200,8 +203,8 @@ INPUT=:14
 NB. inverted data code: object size in bytes
 INSIZE=:15
 
-NB. core JOD interface - loaded into (ijod) - set (setjodinterface)
-IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make newd od packd put regd restd uses'
+NB. core JOD interface - loaded into (ijod) - see (setjodinterface)
+IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make mnl newd od packd put regd restd uses'
 
 NB. standard dictionary file names - order matters
 JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
@@ -216,7 +219,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.996 - dev';15;'31 May 2018 19:16:03'
+JODVMD=:'0.9.996 - dev-f';25;'9 Jul 2018 19:10:34'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -1501,6 +1504,36 @@ end.
 :
 NB. dyad resets the master
 if. badreps (mubmark 0) jreplace JMASTER;CNMFMARK do. jderr ERR013 else. ok 0 end.
+)
+
+
+mnl=:3 : 0
+
+NB.*mnl v-- list objects in all registered dictionaries.
+NB.
+NB. monad:  mnl clStr | zlStr
+NB.
+NB.   mnl ''     NB. list all words in all registered dictionaries
+NB.   mnl 'pfx'  NB. list all words in all registered dictionaries starting with 'pfx'
+NB.
+NB. dyad:  ilCodes mnl clStr | zlStr
+NB.
+NB.   4 2  mnl 'ex'  NB. macros with names containing 'ex' in all registered dictionaries
+NB.   2 3  mnl 'et'  NB. groups with names ending with 'et' in all registered dictionaries
+
+WORD mnl y
+:
+
+NB. (mnl) does not require open dictionaries 
+if.     badcl y do. jderr ERR010  NB. errmsg: invalid name pattern
+elseif. badil x do. jderr ERR001  NB. errmsg: invalid option(s)
+elseif. do.
+
+  NB. format standard (mnl) (x) options and search
+  x=.  x , (<:#x)}. 1 , DEFAULT
+
+  ok 'NIMP mnl'  NB. NIMP out for now
+end.
 )
 
 NB. master use bit mark

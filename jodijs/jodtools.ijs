@@ -54,7 +54,7 @@ ERR00408=:'unable to write load script ->'
 NB. locgrp Group Suite display text
 GROUPSUITES=:<;._1 ' Groups Suites'
 
-NB. JODTOOLS (ijod) interface words  
+NB. JODTOOLS interface - loaded into (ijod) - see (setjodinterface)
 IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 
 NB. comment tag marking end of scripts
@@ -64,7 +64,7 @@ NB. comment tag marking start of scripts
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 
 NB. JODTOOLS version, make and date
-JODTOOLSVMD=:'0.9.996 - dev';15;'31 May 2018 19:16:03'
+JODTOOLSVMD=:'0.9.996 - dev-f';25;'9 Jul 2018 19:10:35'
 
 NB. line feed character
 LF=:10{a.

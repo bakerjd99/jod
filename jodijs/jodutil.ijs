@@ -681,8 +681,12 @@ try.
   end. 
   
   if. IFQT do. open file  NB. jqt ide
-  elseif. IFJHS *. wex <'wwd_qjide_' do. 0 0$(1!:2&2) '$$$edit$$$',file  NB. qjide
-  elseif. IFJHS do. open_jhs_ file  NB. JHS ide 
+
+  NB. JHS on macs - not tested recently
+  NB. elseif. IFJHS *. wex <'wwd_qjide_' do. 0 0$(1!:2&2) '$$$edit$$$',file  NB. qjide
+
+  NB. JHS on win 
+  elseif. IFJHS do. edit_jhs_ file  
 
   NB. running in jconsole on Windows systems 
   NB. WARNING: there is no indication of fork failures 
