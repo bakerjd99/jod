@@ -8,6 +8,8 @@ general/jod - change history
 
  * `et` adjusted to use `edit_jhs_` under `JHS`.
 
+ *  changed `lg`, `jodon` to support changes to `18!:4`.
+
  * `EDCONSOLE` set in `profile.ijs` - useful for setting preferred `jconsole.exe` editor.
 
  * `JSON`, `PYTHON`, `SQL` macro option text codes added. All JOD macro
