@@ -204,7 +204,7 @@ NB. inverted data code: object size in bytes
 INSIZE=:15
 
 NB. core JOD interface - loaded into (ijod) - see (setjodinterface)
-IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make mnl newd od packd put regd restd uses'
+IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make mnl newd od packd put regd restd rxs uses'
 
 NB. standard dictionary file names - order matters
 JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
@@ -219,7 +219,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.996 - dev-f';25;'9 Jul 2018 19:10:34'
+JODVMD=:'0.9.996';42;'14 Oct 2018 14:10:29'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -940,7 +940,7 @@ NB.
 NB. dyad:  ilCodes dnl clStr|zlStr
 NB.
 NB.   4 2  dnl 'ex'  NB. macros with names containing 'ex'
-NB.   0 _1 dnl 'ugh' NB. path order listing of words ending with 'ugh'
+NB.   0 _3 dnl 'ugh' NB. path order listing of words ending with 'ugh'
 
 WORD dnl y
 :
@@ -1520,6 +1520,8 @@ NB. dyad:  ilCodes mnl clStr | zlStr
 NB.
 NB.   4 2  mnl 'ex'  NB. macros with names containing 'ex' in all registered dictionaries
 NB.   2 3  mnl 'et'  NB. groups with names ending with 'et' in all registered dictionaries
+NB.   4 3 25 mnl '_sql' NB. text macros with names ending '_sql'
+NB.   0 _1 mnl 'se'  NB. duplicate words starting with 'se'
 
 WORD mnl y
 :
@@ -1530,9 +1532,29 @@ elseif. badil x do. jderr ERR001  NB. errmsg: invalid option(s)
 elseif. do.
 
   NB. format standard (mnl) (x) options and search
-  x=.  x , (<:#x)}. 1 , DEFAULT
+  x=. 3 {. x , (<:#x)}. 1 , DEFAULT
+  
+  NB. validate options
+  if. -.((1{x) e. PATOPS) *. (0{x) e. OBJECTNC do. jderr ERR001 return. end.
 
-  ok 'NIMP mnl'  NB. NIMP out for now
+  
+  if. WORD = 0{x do.
+ 
+    if. -.(2{x) e. (i. 4),DEFAULT     do. jderr ERR001 return. end.
+    
+  elseif. (0{x) e. TEST,GROUP,SUITE do.
+
+    if. DEFAULT ~: 2{x                do. jderr ERR001 return. end.
+
+  elseif. MACRO = 0{x  do.
+
+    if. -.(2{x) e. MACROTYPE,DEFAULT  do. jderr ERR001 return. end.
+
+  elseif. do. jderr ERR001 return.
+
+  end.
+  
+  x mnlsearch__ST y
 end.
 )
 
@@ -1892,6 +1914,19 @@ if. badrc uv=. restspace__DL 0 do. uv else. (}. uv) restdict__DL y end.
 
 NB. ok return value
 rv=:>@(1&{)
+
+
+rxs=:3 : 0
+
+NB.*rxs v-- regular expression search.
+NB.
+NB. monad:  rxs ??
+NB. dyad:  ?? rxs ??
+
+ok 'NIMP rxs'
+:
+ok 'NIMP rxs'
+)
 
 
 saveobid=:3 : 0

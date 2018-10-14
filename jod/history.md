@@ -1,8 +1,9 @@
 
+
 general/jod - change history
 ============================
 
-### 0.0.996 - dev
+### 0.0.996 - October 14, 2018
 
  * `mnl` implemented - see `jod.pdf`
 

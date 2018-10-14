@@ -136,6 +136,7 @@ ERR100=:'name/creation/lastput length mismatch'
 ERR101=:'invalid date(s) name/creation/lastput table'
 ERR102=:'timestamp table shape invalid'
 ERR103=:'no backup(s) to restore or search'
+ERR104=:'no registered dictionaries'
 
 NB. name.n or name.name separator character
 NDOT=:'.'
@@ -758,6 +759,9 @@ elseif. do.
   end.
 end.
 )
+
+NB. select only duplicate names in table based on first column
+dupnames=:] #~ (0 {"1 ]) e. (0 {"1 ]) #~ [: -. [: ~: 0 {"1 ]
 
 
 freedisk=:3 : 0
@@ -1500,6 +1504,46 @@ end.
 )
 
 
+mnlsearch=:4 : 0
+
+NB.*mnlsearch v-- master name list search.
+NB.
+NB. dyad:  ilOpt mnlsearch clNamePattern
+
+NB. ERR006 cannot read master
+if. badjr d=. >jread (JMASTER,IJF);CNMFTAB do. jderr ERR006 return. end.
+
+NB. ERR104 no registered dictionaries
+if. 0 e. $d do. jderr ERR104 return. end.
+if. fex f=. (tslash2&.> 2{d) ,&.> <(;(0{x){JDFILES),IJF do.
+  r=. 0 2$<'' [ y=. ,y
+  g=. (<: |1{x){nlpfx`nlctn`nlsfx
+
+  NB. read class if not default and WORD or MACRO
+  b=. ((0{x) e. WORD,MACRO) *. DEFAULT ~: 2{x
+
+  for_i. i.#f do.
+    o=. i{f [ n=. i{0{d
+
+    NB. ERR088  jfile read failure
+    if. badjr p=. >jread o;CNLIST do. jderr ERR088 return. end.
+    if. b do.
+      if. badjr s=. >jread o;CNCLASS do. jderr ERR088 return. end.
+      p=. p #~ s = 2{x
+    end.
+
+    if. 0=#p do. continue. end.
+    r=. r , (p (g `: 6) y) ,. n
+  end.
+  r=. /:~ r
+  if. 0 > 1{x do. ok <dupnames r else. ok <r end. 
+else.
+  b=. (1:@(1!:4) ::0:) f
+  (jderr ERR073) , f #~ -. b
+end.
+)
+
+
 newdparms=:3 : 0
 
 NB.*newdparms  v--  sets  the dictionary  parameters  for  a  new
@@ -1696,13 +1740,13 @@ elseif.do.
 end.
 )
 
-NB. names containing substring
+NB. names containing substring: (;:'cats bats') nlctn 'at'
 nlctn=:([: I. [: +./"1 ([: ,: ]) E. [: > [) { [
 
-NB. match prefixes (explore alternatives from large name lists)
+NB. match prefixes (optimize for large lists): (;:'he bo boat') nlpfx 'bo'
 nlpfx=:[ #~ ([: < [: , ]) -:&> ([: # [: , ]) {.&.> [
 
-NB. match name suffixes
+NB. match name suffixes: (;:'yada yada yo') nlsfx 'da'
 nlsfx=:[ #~ ([: < [: , ]) -:&> ([: - [: # [: , ]) {.&.> [
 
 NB. containing pattern in raised and nubbed

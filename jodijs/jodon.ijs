@@ -64,7 +64,7 @@ ex=. (4!:55)@<
 
 NB. spot check of J environment - we need core J utilities
 NB. if the following are not present JOD will not work
-if. _1 e. (4!:0);:'load conew coclass coerase coinsert copath jpath UNAME IFWIN' do.
+if. _1 e. (4!:0);:'load conew coclass coerase coinsert cocurrent copath jpath UNAME IFWIN' do.
   msg=. 'JOD depends on core J load and class utilities.'
   0 [ sp msg=. msg,LF,'Load J with a standard profile to use JOD.'
   return.

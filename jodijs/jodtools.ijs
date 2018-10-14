@@ -64,7 +64,7 @@ NB. comment tag marking start of scripts
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 
 NB. JODTOOLS version, make and date
-JODTOOLSVMD=:'0.9.996 - dev-f';25;'9 Jul 2018 19:10:35'
+JODTOOLSVMD=:'0.9.996';42;'14 Oct 2018 14:10:30'
 
 NB. line feed character
 LF=:10{a.
@@ -518,17 +518,18 @@ else.
   t=. 2 mls y
 end.
 'r s'=. 2{.t
+NB. j profile !(*)=. cocurrent
 if. r do.
   curr=. 18!:5 ''   NB. current locale
-  18!:4 <'base'     NB. run script from base
+  cocurrent 'base'  NB. run script from base
   try. 0!:0 s
   catchd.
-    18!:4 curr      NB. restore locale
+    cocurrent curr  NB. restore locale
     NB. errmsg: J script error in group
     (jderr ERR00404),y;13!:12 ''
     return.
   end.
-  18!:4 curr        NB. restore locale
+  cocurrent curr    NB. restore locale
   ok (y),msg
 else.
   t

@@ -1,5 +1,5 @@
 NB. System: jodtools  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.995  Build Number: 13  Date: 28 May 2018 09:56:57
+NB. Version: 0.9.996  Build Number: 42  Date: 14 Oct 2018 14:10:30
 (9!:41)0
 coclass'ajodtools'
 coinsert'ajodutil'
@@ -19,7 +19,7 @@ GROUPSUITES=:<;._1 ' Groups Suites'
 IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
-JODTOOLSVMD=:'0.9.995';13;'28 May 2018 09:56:57'
+JODTOOLSVMD=:'0.9.996';42;'14 Oct 2018 14:10:30'
 LF=:10{a.
 OK00400=:'load script saved ->'
 OK00401=:'file saved ->'
@@ -203,14 +203,14 @@ end.
 'o_cuS o_sID'=.2{.o_bKg
 if.o_cuS do.
 o_i9p=.18!:5''
-18!:4<'base'
+cocurrent'base'
 try.0 !:0 o_sID
 catchd.
-18!:4 o_i9p
+cocurrent o_i9p
 (jderr ERR00404),y;13!:12''
 return.
 end.
-18!:4 o_i9p
+cocurrent o_i9p
 ok(y),o_jdW
 else.
 o_bKg

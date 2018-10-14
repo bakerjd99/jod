@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.995  Build Number: 13  Date: 28 May 2018 09:56:56
+NB. Version: 0.9.996  Build Number: 42  Date: 14 Oct 2018 14:10:29
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -34,7 +34,7 @@ return.
 end.
 g=.(4!:0)@<
 a=.(4!:55)@<
-if._1 e.(4!:0);:'load conew coclass coerase coinsert copath jpath UNAME IFWIN'do.
+if._1 e.(4!:0);:'load conew coclass coerase coinsert cocurrent copath jpath UNAME IFWIN'do.
 f=.'JOD depends on core J load and class utilities.'
 0[h f=.f,LF,'Load J with a standard profile to use JOD.'
 return.
@@ -67,7 +67,10 @@ TEXT=:25
 BYTE=:26
 MARKDOWN=:27
 UTF8=:28
-MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8
+PYTHON=:29
+SQL=:30
+JSON=:31
+MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8,PYTHON,SQL,JSON
 WORD=:0
 TEST=:1
 GROUP=:2
@@ -135,12 +138,12 @@ INCLASS=:12
 INCREATE=:13
 INPUT=:14
 INSIZE=:15
-IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make newd od packd put regd restd uses'
+IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make mnl newd od packd put regd restd rxs uses'
 JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.995';13;'28 May 2018 09:56:56'
+JODVMD=:'0.9.996';42;'14 Oct 2018 14:10:29'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -759,6 +762,25 @@ end.
 :
 if.badreps(mubmark 0 )jreplace JMASTER;CNMFMARK do.jderr ERR013 else.ok 0 end.
 )
+mnl=:3 :0
+WORD mnl y
+:
+if.badcl y do.jderr ERR010
+elseif.badil x do.jderr ERR001
+elseif.do.
+x=.3{.x,(<:#x)}.1,DEFAULT
+if.-.((1{x)e.PATOPS)*.(0{x)e.OBJECTNC do.jderr ERR001 return.end.
+if.WORD=0{x do.
+if.-.(2{x)e.(i.4),DEFAULT do.jderr ERR001 return.end.
+elseif.(0{x)e.TEST,GROUP,SUITE do.
+if.DEFAULT~:2{x do.jderr ERR001 return.end.
+elseif.MACRO=0{x do.
+if.-.(2{x)e.MACROTYPE,DEFAULT do.jderr ERR001 return.end.
+elseif.do.jderr ERR001 return.
+end.
+x mnlsearch__ST y
+end.
+)
 mubmark=:];[:(6!:0)0:$]
 nc=:4!:0 ::(_2:)
 newd=:3 :0
@@ -936,6 +958,11 @@ DL=.1{a
 if.badrc a=.restspace__DL 0 do.a else.(}.a )restdict__DL y end.
 )
 rv=:>@(1&{)
+rxs=:3 :0
+ok'NIMP rxs'
+:
+ok'NIMP rxs'
+)
 saveobid=:3 :0
 b=.~.y,readobid a=.obidfile 0
 ((30<.#b){.b)(writenoun ::_1:)a
@@ -1073,6 +1100,7 @@ ERR100=:'name/creation/lastput length mismatch'
 ERR101=:'invalid date(s) name/creation/lastput table'
 ERR102=:'timestamp table shape invalid'
 ERR103=:'no backup(s) to restore or search'
+ERR104=:'no registered dictionaries'
 NDOT=:'.'
 OFFSET=:39
 OK050=:'dictionary created ->'
@@ -1399,6 +1427,7 @@ case.do.jderr d
 end.
 end.
 )
+dupnames=:]#~(0{"1])e.(0{"1])#~[:-.[:~:0{"1]
 freedisk=:3 :0
 if.0=FREESPACE do.1
 elseif.IFWIN do.freediskwin y
@@ -1707,6 +1736,30 @@ elseif.makedir"0}:b
 1=makedir{:b do.ok y
 elseif.do.
 (jderr ERR060),<y
+end.
+)
+mnlsearch=:4 :0
+if.badjr d=.>jread(JMASTER,IJF);CNMFTAB do.jderr ERR006 return.end.
+if.0 e.$d do.jderr ERR104 return.end.
+if.fex f=.(tslash2&.>2{d),&.><(;(0{x){JDFILES),IJF do.
+r=.0 2$<''[y=.,y
+g=.(<:|1{x){nlpfx`nlctn`nlsfx
+b=.((0{x)e.WORD,MACRO)*.DEFAULT~:2{x
+for_i.i.#f do.
+o=.i{f[n=.i{0{d
+if.badjr p=.>jread o;CNLIST do.jderr ERR088 return.end.
+if.b do.
+if.badjr s=.>jread o;CNCLASS do.jderr ERR088 return.end.
+p=.p#~s=2{x
+end.
+if.0=#p do.continue.end.
+r=.r,(p(g`:6)y),.n
+end.
+r=./:~r
+if.0>1{x do.ok<dupnames r else.ok<r end.
+else.
+b=.(1:@(1!:4) ::0:) f
+(jderr ERR073),f#~-.b
 end.
 )
 newdparms=:3 :0
@@ -3136,7 +3189,7 @@ ROOTWORDSMARK=:'rootwords:'
 DOCUMENTMARKS=:ASSUMESMARK;AUTHORMARK;CREATEDMARK;DYADMARK;MONADMARK;VERBATIMMARK;ROOTWORDSMARK
 qt=:]`dblquote@.IFWIN
 CWSONLY=:'(-.)=:'
-EDCONSOLE=:'"c:\Program Files (x86)\notepad++\notepad++.exe"'
+EDCONSOLE=:'"c:\Program Files\Microsoft VS Code\code.exe"'
 EDTEMP=:'99'
 ERR0250=:' is a noun no internal document'
 ERR0251=:'not loaded - load'
@@ -3394,8 +3447,7 @@ if.*/wex;:'IFJ6 IFWIN'do.
 if.IFJ6*IFWIN do.smopen_jijs_ a return.end.
 end.
 if.IFQT do.open a
-elseif.IFJHS*.wex<'wwd_qjide_'do.0 0$(1!:2&2)'$$$edit$$$',a
-elseif.IFJHS do.open_jhs_ a
+elseif.IFJHS do.edit_jhs_ a
 elseif.IFWIN*.IFJHS+:IFQT do.fork_jtask_ EDCONSOLE,' ',a
 elseif.IFIOS do.je_z_ a
 elseif.wex<'IFGTK'do.
