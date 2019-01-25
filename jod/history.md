@@ -3,6 +3,10 @@
 general/jod - change history
 ============================
 
+### 0.0.998 - dev
+
+ * `rxs` implemented - see `jod.pdf`
+
 ### 0.0.996 - October 14, 2018
 
  * `mnl` implemented - see `jod.pdf`

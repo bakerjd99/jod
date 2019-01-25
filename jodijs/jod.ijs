@@ -10,7 +10,7 @@ NB. Contains: dictionary utilities, constants, interface verbs
 NB.
 NB. Interface: (verbs made available by ijod locale)
 NB.   bget    NIMP: get objects from put dictionary backups 
-NB.   bnl     NIMP: backup name lists from patterns
+NB.   bnl     backup name lists from patterns
 NB.   del     delete words, tests, groups, macros, et cetera
 NB.   did     dictionary identification
 NB.   dnl     dictionary name lists from patterns
@@ -20,7 +20,7 @@ NB.   get     get words, tests, macros, et cetera from dictionary
 NB.   globs   word and test global name references
 NB.   grp     create and query groups and suites
 NB.   make    generate J scripts and database dumps
-NB.   mnl     NIMP: many dictionary name lists from patterns
+NB.   mnl     many dictionary name lists from patterns
 NB.   newd    create new dictionary
 NB.   od      opens and closes dictionaries
 NB.   packd   pack dictionaries
@@ -219,7 +219,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.996';42;'14 Oct 2018 14:10:29'
+JODVMD=:'0.9.998 - dev';2;'6 Nov 2018 13:44:39'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
