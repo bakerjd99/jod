@@ -1,5 +1,5 @@
 ![](jodtinycube.png) [`jod` README](http://bakerjd99.wordpress.com/the-jod-page/)
-============
+================================================================================
 
 This repository contains distributed [J language](http://www.jsoftware.com/) 
 [JOD addon](http://www.jsoftware.com/jwiki/Addons/general/jod) source code.
@@ -11,6 +11,13 @@ the J addon code distributed by [JAL](http://www.jsoftware.com/jwiki/JAL/User%20
 [`jod`](http://www.jsoftware.com/jwiki/Addons/general/jod) and 
 [`jodsource`](http://www.jsoftware.com/jwiki/Addons/general/jodsource) addons.
 
+
+You can get a "taste" of JOD by browsing the Jupyter notebooks.
+
+1. [JOD Introduction Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/JOD%20Introduction%20Lab.ipynb)
+2. [JOD Source Code Dump Scripts Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/JOD%20Source%20Code%20Dump%20Scripts%20Lab.ipynb)
+3. [JOD Best Practices Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/JOD%20Best%20Practices%20Lab.ipynb)
+
 JOD addon code is "compressed": whitespace and comments have been removed
 and *safe local identifiers* have been reduced to single characters. Compression
 significantly reduces the size of code at the expense of *readability.* To
@@ -19,4 +26,4 @@ directory [`jodijs`](https://github.com/bakerjd99/jod/tree/master/jodijs) contai
 fully commented JOD source. `jodijs` is not distributed by JAL. 
 
 John Baker
-April 2, 2015
+January 27, 2019
