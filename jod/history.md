@@ -5,7 +5,10 @@ general/jod - change history
 
 ### 0.0.998 - dev
 
- * `rxs` implemented - see `jod.pdf`
+ * `rxs` implemented - see `jod.pdf
+
+ * Jupyter notebook versions of JOD labs see:
+   [JOD lab notebooks](https://github.com/bakerjd99/jod/tree/master/jodnotebooks)
 
 ### 0.0.996 - October 14, 2018
 
