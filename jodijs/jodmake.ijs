@@ -671,7 +671,7 @@ for_obj. OBJECTNC do.
   if. (,sts) -: nlfrrle ets do.
     NB. if run encoded timestamps are smaller use them
     if. (*/$ets) <: */$sts do.
-      cts=. (<ets) (<1;obj_index)} cts	
+      cts=. (<ets) (<1;obj_index)} cts
       cts=. (<1) (<2;obj_index)} cts
     end.
   end.

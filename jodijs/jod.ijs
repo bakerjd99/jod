@@ -219,7 +219,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.998 - dev';2;'6 Nov 2018 13:44:39'
+JODVMD=:'0.9.998 - dev';16;'12 Feb 2019 14:40:15'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -1143,7 +1143,9 @@ NB.   get ;: 'us poor little words'
 NB.
 NB. dyad:  ilCodes get bluu
 NB.
-NB.   2 7 put 'GroupName';'Group documentation text ....'
+NB.   2 8 put 'GroupName';'Group documentation text ....'
+NB.   2 8 get 'GroupName'  
+NB.   4 get 'MacroText'
 
 WORD get y
 :
@@ -1916,16 +1918,166 @@ NB. ok return value
 rv=:>@(1&{)
 
 
-rxs=:3 : 0
+rxs=:''&$: :(4 : 0)
 
 NB.*rxs v-- regular expression search.
 NB.
-NB. monad:  rxs ??
-NB. dyad:  ?? rxs ??
+NB. monad:  rxs blclNames
+NB.
+NB.   NB. display all WORD regx search text
+NB.   NB.  '' rxs }. dnl 're'
+NB.
+NB.   rxs }. dnl 're'  
+NB.
+NB. dyad:  (clPatten ; ilCodes) rxs blclNames
+NB.        clPattern rxs blclNames
 
-ok 'NIMP rxs'
-:
-ok 'NIMP rxs'
+
+NB. do we have a dictionary open? 
+if. badrc uv=. checkopen__ST 0 do. uv return. end.
+
+NB. (x) is either cl or (cl ; il)  errmsg: invalid option(s)
+msg=. ERR001
+if. 1 < L. x do. jderr msg return. end.
+if. 0 = L. x do. x=. x ; WORD,DEFAULT,1
+else.
+  if. (1 ~: $$,x) *. 2 ~: #,x do. jderr msg return. end.
+end.
+
+NB. regular expression and object options
+'pat opts'=. x
+if. badcl pat  do. jderr msg return. end.
+if. badil opts do. jderr msg return. end.
+
+NB. format options HARDCODE: codes and positions
+opts=. opts , (-3-#opts) {. DEFAULT , 1
+if. -. 1 2 3 e.~ {: opts do. jderr msg return. end.
+
+if. DICTIONARY=0{opts do.
+  NB. no short and long texts for dictionary documents
+  if. DEFAULT ~: 1{opts do. jderr msg return. end.
+  NB. tolerate any (y) for dictionary text case
+  uv=. opts rxsget 0
+else.
+
+  NB. are names valid?
+  if. badrc y=.checknames y do. y return. else. y=. }.y end.
+
+  NB. remove nouns - they are not searched for patterns
+  NB. return nothing found if all names are nouns
+  if. WORD = 0{opts do.
+    if. badrc uv=. (WORD,INCLASS) invfetch__ST y do. uv return. end.
+    if. 0 = #y=. y #~ 0 ~: >1{uv do. ok <0 2$<'' return. end.
+  end.
+
+  if. badrc uv=. opts rxsget y do. uv return. end.
+end. 
+
+NB. empty patterns mean return all nonempty text to be searched
+NB. handy for complex pattern debugging and verification
+if. #pat do. (pat;opts) rxssearch >1{uv else. uv  end.
+)
+
+
+rxsget=:4 : 0
+
+NB.*rxsget v-- retrieves  text  objects from dictionary  database
+NB. files.
+NB.
+NB. A  variation of (get) that only retrieves  text  objects from
+NB. dictionary  database  files. (rxsget)  returns the texts that
+NB. are searched for regular expression patterns by (rxs).
+NB.
+NB. Note:  binary objects (nouns)  are  eliminated from the  name
+NB. list (y) by the caller of this verb.
+NB.
+NB. dyad:  ilCodes rxsget bluu
+NB.
+NB.   2 8 1 rxsget 'GroupName'
+NB.   4 7 1 rxsget 'MacroText'
+
+select. {. x
+case. WORD do.
+  select. second x
+    case. DEFAULT  do. txt=. (WORD,0) getobjects__ST y
+    case. EXPLAIN  do. txt=. WORD getexplain__ST y
+    case. DOCUMENT do. txt=. WORD getdocument__ST y
+    case.do. jderr msg return.
+  end.
+case. TEST do.
+  select. second x
+    case. DEFAULT  do. txt=. (TEST,0) getobjects__ST y
+    case. EXPLAIN  do. txt=. TEST getexplain__ST y
+    case. DOCUMENT do. txt=. TEST getdocument__ST y
+    case.do. jderr msg  return.
+  end.
+case. GROUP do.
+  select. second x
+    case. DEFAULT  do. txt=. GROUP getgstext__ST y
+    case. EXPLAIN  do. txt=. GROUP getexplain__ST y
+    case. DOCUMENT do. txt=. GROUP getdocument__ST y
+    case.do. jderr msg return.
+  end.
+case. SUITE do.
+  select. second x
+    case. DEFAULT  do. txt=. SUITE getgstext__ST y
+    case. EXPLAIN  do. txt=. SUITE getexplain__ST y
+    case. DOCUMENT do. txt=. SUITE getdocument__ST y
+    case.do. jderr msg return.
+  end.
+case. MACRO do.
+  select. second x
+    case. DEFAULT  do. txt=. (MACRO,0) getobjects__ST y
+    case. EXPLAIN  do. txt=. MACRO getexplain__ST y
+    case. DOCUMENT do. txt=. MACRO getdocument__ST y
+    case.do. jderr msg return.
+  end.
+case. DICTIONARY do.
+  select. second x
+    case. DEFAULT  do. txt=. getdicdoc__ST 0
+    case.do. jderr msg return.
+  end.
+case.do. jderr msg return.
+end.
+
+if. badrc txt do. txt
+else.
+  NB. form two column (name,text) table remove 0 length texts
+  if. badcl txt=. >1{txt do.
+    txt=. (0,<:{:$txt) {"1 txt
+    ok <txt #~ 0 < #&> 1 {"1 txt
+  else.
+    NB. dictionary documentation case often empty - only unnamed text  
+    ok <((0<#txt),2)$'';txt
+  end.
+end.
+)
+
+
+rxssearch=:4 : 0
+
+NB.*rxssearch v-- search (name, text) table for regex matches.
+NB.
+NB. dyad:  (clPat ; ilOpts) rxssearch btNameText
+
+NB. all arguments validated by callers
+'pat opts'=. x
+
+NB. require 'regex' !(*)=. rxfirst rxall rxmatches
+NB. HARDCODE: option codes
+select. {:opts
+case. 1 do.
+  h=. pat&rxfirst&.> 1 {"1 y
+  ok  <((0 {"1 y) ,. h) #~ 0 < #&> h
+case. 2 do.
+  h=. pat&rxall&.> 1 {"1 y
+  ok  <((0 {"1 y) ,. h) #~ 0 < #&> h
+case. 3 do.
+  h=. pat&rxmatches&.> 1 {"1 y
+  b=. 0 < #&> h
+  ok  <(b # 0 {"1 y) ,. (b # h) ,. b # 1 {"1 y
+case.do. jderr ERR001
+end.
 )
 
 

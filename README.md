@@ -17,6 +17,7 @@ You can get a "taste" of JOD by browsing the Jupyter notebooks.
 1. [JOD Introduction Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/JOD%20Introduction%20Lab.ipynb)
 2. [JOD Source Code Dump Scripts Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/JOD%20Source%20Code%20Dump%20Scripts%20Lab.ipynb)
 3. [JOD Best Practices Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/JOD%20Best%20Practices%20Lab.ipynb)
+4. [Building JOD Addons](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/Building%20JOD%20Addons.ipynb)
 
 JOD addon code is "compressed": whitespace and comments have been removed
 and *safe local identifiers* have been reduced to single characters. Compression
@@ -26,4 +27,4 @@ directory [`jodijs`](https://github.com/bakerjd99/jod/tree/master/jodijs) contai
 fully commented JOD source. `jodijs` is not distributed by JAL. 
 
 John Baker
-January 27, 2019
+February 13, 2019
