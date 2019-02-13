@@ -1,11 +1,11 @@
-NB. JOD dictionary dump: 14 Oct 2018 11:50:01
-NB. Generated with JOD version; 0.9.996; 40; 14 Oct 2018 11:27:55
-NB. J version: j807/j64/windows/release/commercial/www.jsoftware.com/2018-10-05T10:39:42
+NB. JOD dictionary dump: 12 Feb 2019 14:40:16
+NB. Generated with JOD version; 0.9.998 - dev; 15; 12 Feb 2019 11:00:00
+NB. J version: j807/j64/windows/release-b/commercial/www.jsoftware.com/2019-01-22T18:51:16
 NB.
 NB. Names & DidNums on current path
-NB. +---+---------------------------------------+
-NB. |jod|150437487969232305338530111782486348726|
-NB. +---+---------------------------------------+
+NB. +---+--------------------------------------+
+NB. |jod|37115972353353495552867226151648859536|
+NB. +---+--------------------------------------+
 
 9!:41 [ 1 NB.{*JOD*}
 cocurrent 'base' NB.{*JOD*}
@@ -3741,7 +3741,7 @@ if. 2=#$ y do.
   end.
   NB. set default object name - if there is more than one 
   NB. object reset (x) to prevent affixing document command  
-  oname=. ;0{0{uv [ x=.  1 < #uv 	
+  oname=. ;0{0{uv [ x=.  1 < #uv 
 elseif. badrc uv=. x obtext y do. uv return. 
 elseif.do. 
   'oname text'=. }.uv 
@@ -4285,7 +4285,7 @@ for_obj. OBJECTNC do.
   if. (,sts) -: nlfrrle ets do.
     NB. if run encoded timestamps are smaller use them
     if. (*/$ets) <: */$sts do.
-      cts=. (<ets) (<1;obj_index)} cts	
+      cts=. (<ets) (<1;obj_index)} cts
       cts=. (<1) (<2;obj_index)} cts
     end.
   end.
