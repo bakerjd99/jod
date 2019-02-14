@@ -14,6 +14,7 @@ NB. created: 2018nov09
 NB. changes: -----------------------------------------------------
 NB. 19jan07 add short/long document text tests
 NB. 19feb12 add empty pattern - empty dictionary tests
+NB. 19feb13 add more search patterns
 
 cocurrent 'base'
 
@@ -55,6 +56,9 @@ NB. search patterns
 pat00=: 'ab[0-9aeiou]c'
 pat01=: '[[:digit:]]+'
 pat02=: '[[:digit:]]+'
+pat03=: '''(''''|[^''])*'''  NB. quoted J text
+pat04=: '''(''''|[^''])'''   NB. single quoted J character
+pat05=: '[[:alpha:]][[:alnum:]_]*'  NB. J names 
 
 
 NB. empty patterns with empty dictionaries
@@ -80,7 +84,6 @@ er rxs }. dnl ''
 er ('';0) rxs }. dnl ''
 er ('';0 7 3) rxs }. dnl 's' NB. many words in (z) start with 's'
 
-TESTSOFF=: (0 : 0)
 
 er od tdict [ 3 od ''
 
@@ -89,56 +92,58 @@ NB. Option 1: search for and return first match in texts
 NB. basic search of nonbinary word text
 NB. (rxs) only search texts - ignore binary data
 NB. default is first match 
-er pat00 rxs }. dnl '' 
+er pat04 rxs }. dnl '' 
 
 NB. same as previous
-er (pat00;0) rxs }. dnl '' 
-er (pat00;0 7) rxs }. dnl '' 
-er (pat00;0 7 1) rxs }. dnl '' 
+er (pat04;0) rxs }. dnl '' 
+er (pat04;0 7) rxs }. dnl '' 
+er (pat04;0 7 1) rxs }. dnl '' 
 
 NB. search of word short and long document texts
-er (pat00;0 8) rxs }. dnl ''    NB. first match short text
-er (pat00;0 8 1) rxs }. dnl ''  NB. first match short text
-er (pat00;0 8 2) rxs }. dnl ''  NB. all matches short text
-er (pat00;0 8 3) rxs }. dnl ''  NB. all match array and short text
-er (pat00;0 9) rxs }. dnl ''    NB. first match long text
-er (pat00;0 9 1) rxs }. dnl ''  NB. first match long text
-er (pat00;0 9 2) rxs }. dnl ''  NB. all matches long text
-er (pat00;0 9 3) rxs }. dnl ''  NB. all match array and long text
+er (pat05;0 8) rxs }. dnl ''    NB. first match short text
+er (pat05;0 8 1) rxs }. dnl ''  NB. first match short text
+er (pat05;0 8 2) rxs }. dnl ''  NB. all matches short text
+er (pat05;0 8 3) rxs }. dnl ''  NB. all match array and short text
+er (pat05;0 9) rxs }. dnl ''    NB. first match long text
+er (pat05;0 9 1) rxs }. dnl ''  NB. first match long text
+er (pat05;0 9 2) rxs }. dnl ''  NB. all matches long text
+er (pat05;0 9 3) rxs }. dnl ''  NB. all match array and long text
+
 
 NB. search test text
-er (pat00;1) rxs }. 1 dnl ''
+er (pat03;1) rxs }. 1 dnl ''
 
 NB. same as previous
-er (pat00;1 7) rxs }. 1 dnl ''
-er (pat00;1 7 1) rxs }. 1 dnl ''
+er (pat03;1 7) rxs }. 1 dnl ''
+er (pat03;1 7 1) rxs }. 1 dnl ''
 
 NB. search of test short and long document texts
-er (pat00;1 8) rxs }. dnl ''    NB. first match short text
-er (pat00;1 8 1) rxs }. dnl ''  NB. first match short text
-er (pat00;1 8 2) rxs }. dnl ''  NB. all matches short text
-er (pat00;1 8 3) rxs }. dnl ''  NB. all match array and short text
-er (pat00;1 9) rxs }. dnl ''    NB. first match long text
-er (pat00;1 9 1) rxs }. dnl ''  NB. first match long text
-er (pat00;1 9 2) rxs }. dnl ''  NB. all matches long text
-er (pat00;1 9 3) rxs }. dnl ''  NB. all match array and long text
+er (pat00;1 8) rxs }. 1 dnl ''    NB. first match short text
+er (pat00;1 8 1) rxs }. 1 dnl ''  NB. first match short text
+er (pat00;1 8 2) rxs }. 1 dnl ''  NB. all matches short text
+er (pat00;1 8 3) rxs }. 1 dnl ''  NB. all match array and short text
+er (pat00;1 9) rxs }. 1 dnl ''    NB. first match long text
+er (pat00;1 9 1) rxs }. 1 dnl ''  NB. first match long text
+er (pat00;1 9 2) rxs }. 1 dnl ''  NB. all matches long text
+er (pat00;1 9 3) rxs }. 1 dnl ''  NB. all match array and long text
+
 
 NB. search group header texts for first match
-er (pat00;2) rxs }. 2 dnl ''
+er (pat04;2) rxs }. 2 dnl ''
 
 NB. same as previous
-er (pat00;2 7) rxs }. 2 dnl ''
-er (pat00;2 7 1) rxs }. 2 dnl ''
+er (pat04;2 7) rxs }. 2 dnl ''
+er (pat04;2 7 1) rxs }. 2 dnl ''
 
 NB. search of group short and long document texts
-er (pat00;2 8) rxs }. dnl ''    NB. first match short text
-er (pat00;2 8 1) rxs }. dnl ''  NB. first match short text
-er (pat00;2 8 2) rxs }. dnl ''  NB. all matches short text
-er (pat00;2 8 3) rxs }. dnl ''  NB. all match array and short text
-er (pat00;2 9) rxs }. dnl ''    NB. first match long text
-er (pat00;2 9 1) rxs }. dnl ''  NB. first match long text
-er (pat00;2 9 2) rxs }. dnl ''  NB. all matches long text
-er (pat00;2 9 3) rxs }. dnl ''  NB. all match array and long text
+er (pat04;2 8) rxs }. 2 dnl ''    NB. first match short text
+er (pat04;2 8 1) rxs }. 2 dnl ''  NB. first match short text
+er (pat04;2 8 2) rxs }. 2 dnl ''  NB. all matches short text
+er (pat04;2 8 3) rxs }. 2 dnl ''  NB. all match array and short text
+er (pat04;2 9) rxs }. 2 dnl ''    NB. first match long text
+er (pat04;2 9 1) rxs }. 2 dnl ''  NB. first match long text
+er (pat04;2 9 2) rxs }. 2 dnl ''  NB. all matches long text
+er (pat04;2 9 3) rxs }. 2 dnl ''  NB. all match array and long text
 
 NB. search suite header texts for first match
 er (pat00;3) rxs }. 3 dnl '' 
@@ -148,41 +153,48 @@ er (pat00;3 7) rxs }. 3 dnl ''
 er (pat00;3 7 1) rxs }. 3 dnl '' 
 
 NB. search of suite short and long document texts
-er (pat00;3 8) rxs }. dnl ''    NB. first match short text
-er (pat00;3 8 1) rxs }. dnl ''  NB. first match short text
-er (pat00;3 8 2) rxs }. dnl ''  NB. all matches short text
-er (pat00;3 8 3) rxs }. dnl ''  NB. all match array and short text
-er (pat00;3 9) rxs }. dnl ''    NB. first match long text
-er (pat00;3 9 1) rxs }. dnl ''  NB. first match long text
-er (pat00;3 9 2) rxs }. dnl ''  NB. all matches long text
-er (pat00;3 9 3) rxs }. dnl ''  NB. all match array and long text
+er (pat00;3 8) rxs }. 3 dnl ''    NB. first match short text
+er (pat00;3 8 1) rxs }. 3 dnl ''  NB. first match short text
+er (pat00;3 8 2) rxs }. 3 dnl ''  NB. all matches short text
+er (pat00;3 8 3) rxs }. 3 dnl ''  NB. all match array and short text
+er (pat00;3 9) rxs }. 3 dnl ''    NB. first match long text
+er (pat00;3 9 1) rxs }. 3 dnl ''  NB. first match long text
+er (pat00;3 9 2) rxs }. 3 dnl ''  NB. all matches long text
+er (pat00;3 9 3) rxs }. 3 dnl ''  NB. all match array and long text
+
 
 NB. search macro texts for first match
-er (pat00;4) rxs }. 4 dnl '' 
+er (pat05;4) rxs }. 4 dnl '' 
 
 NB. same as previous
-er (pat00;4 7) rxs }. 4 dnl '' 
-er (pat00;4 7 1) rxs }. 4 dnl '' 
+er (pat05;4 7) rxs }. 4 dnl '' 
+er (pat05;4 7 1) rxs }. 4 dnl '' 
+
+NB. insure text exists for following
+er 4 put 'btext0';25;'some stuff to search'
+er 4 put 'btext1';TEXT_ajod_;'some text'
+er 4 put 'bsqlcode';SQL_ajod_;'select * from thistable'
+er 4 put 'latexstuff';LATEX_ajod_;'\emph{I cannot stress this enough}'
+er 4 put 'markme';MARKDOWN_ajod_;'I do what I do because I am what I am'
 
 NB. more search macro texts 
-er (pat00;4) rxs }. 4 1 25 dnl 'b' 
-er (pat00;4 7) rxs }. 4 1 25 dnl 'b'              NB. same as previous
-er (pat00;4) rxs }. (4 1,TEXT_ajod) dnl 'b'       NB. same as previous
-er (pat00;4 7 1) rxs }. 4 1 25 dnl 'b'            NB. same as previous
-er (pat00;4) rxs }. (4 1,SQL_ajod_) dnl 'b'       NB. first match sql macros
-er (pat00;4 7 2) rxs }. (4 2,LATEX_ajod_) dnl ''     NB. all matches from select latex macros
-er (pat00;4 7 3) rxs }. (4 2,MARKDOWN_ajod_) dnl ''  NB. all matches from select markdown macros
+er (pat05;4) rxs }. 4 1 25 dnl 'b' 
+er (pat05;4 7) rxs }. 4 1 25 dnl 'b'              NB. same as previous
+er (pat05;4) rxs }. (4 1,TEXT_ajod_) dnl 'b'      NB. same as previous
+er (pat05;4 7 1) rxs }. 4 1 25 dnl 'b'            NB. same as previous
+er (pat05;4) rxs }. (4 1,SQL_ajod_) dnl 'b'       NB. first match sql macros
+er (pat05;4 7 2) rxs }. (4 2,LATEX_ajod_) dnl ''     NB. all matches from select latex macros
+er (pat05;4 7 3) rxs }. (4 2,MARKDOWN_ajod_) dnl ''  NB. all matches from select markdown macros
 
 NB. search of macro short and long document texts
-er (pat00;4 8) rxs }. dnl ''    NB. first match short text
-er (pat00;4 8 1) rxs }. dnl ''  NB. first match short text
-er (pat00;4 8 2) rxs }. dnl ''  NB. all matches short text
-er (pat00;4 8 3) rxs }. dnl ''  NB. all match array and short text
-er (pat00;4 9) rxs }. dnl ''    NB. first match long text
-er (pat00;4 9 1) rxs }. dnl ''  NB. first match long text
-er (pat00;4 9 2) rxs }. dnl ''  NB. all matches long text
-er (pat00;4 9 3) rxs }. dnl ''  NB. all match array and long text
-
+er (pat00;4 8) rxs }. 4 dnl ''    NB. first match short text
+er (pat00;4 8 1) rxs }. 4 dnl ''  NB. first match short text
+er (pat00;4 8 2) rxs }. 4 dnl ''  NB. all matches short text
+er (pat00;4 8 3) rxs }. 4 dnl ''  NB. all match array and short text
+er (pat00;4 9) rxs }. 4 dnl ''    NB. first match long text
+er (pat00;4 9 1) rxs }. 4 dnl ''  NB. first match long text
+er (pat00;4 9 2) rxs }. 4 dnl ''  NB. all matches long text
+er (pat00;4 9 3) rxs }. 4 dnl ''  NB. all match array and long text
 
 NB. Basic (rxs) search matches the first pattern in a text.
 NB. This is the default option 1. 
@@ -204,11 +216,10 @@ er (pat01;3 9) rxs }. 3 dnl ''
 er (pat01;4 8) rxs }. 4 dnl ''
 er (pat01;4 9) rxs }. 4 dnl ''
 
-
 NB. dictionary documents do not have short and long text
 NB. an empty (rxs) (y) argument indicates - search dictionary document
 NB. when the object code is 5
-er (oat00;5) rxs ''
+er (pat00;5) rxs ''
 er (pat02;5 7)  rxs ''
 er (pat02;5 7 1)  rxs ''  NB. first match
 er (pat02;5 7 2)  rxs ''  NB. all matches
@@ -228,13 +239,14 @@ er (pat02;0 7 2) rxs }. dnl ''
 
 NB. Option 3: search for and return pattern array and texts
 
-NB. search macro texts and return patterb table and text with matches
-er (pat00;4 7 3) rxs }. 4 1 25 dnl 'b' 
+NB. search macro texts and return pattern table and text with matches
+er 4 put 'bcode25';25;'some stuff to search'
+er (pat05;4 7 3) rxs }. 4 1 25 dnl 'b'
+
 er (pat01;3 8 3) rxs }. 3 dnl ''
-er (pat01;3 9 3) rxs }. 3 dnl ''
+er (pat03;3 9 3) rxs }. 3 dnl ''
 er (pat00;5 7 3) rxs ''
 er (pat02;0 7 3) rxs }. dnl '' 
-)
 
 
 NB. -{TEST SUCCESSFUL}-
