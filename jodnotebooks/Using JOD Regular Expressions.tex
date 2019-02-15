@@ -1,0 +1,916 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt,letter,landscape]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Using JOD Regular Expressions}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{Using JOD Regular
+Expressions}\label{using-jod-regular-expressions}
+
+\begin{figure}
+\centering
+\includegraphics{inclusions/jodtinycube.png}
+\caption{}
+\end{figure}
+
+    \subsubsection{Introduction}\label{introduction}
+
+JOD's regular expressions are built on J's \texttt{regex} class.
+\href{https://code.jsoftware.com/wiki/Guides/Regular_Expressions/Verbs}{\texttt{regex}
+is documented on the J wiki}. I would recommend familiarizing yourself
+with J's \texttt{regex} facilities before using \texttt{rxs}.
+
+\texttt{rxs} calls only three \texttt{regex} verbs: \texttt{rxfirst},
+\texttt{rxall} and \texttt{rxmatches}. If you understand how to use
+these verbs you will quickly master \texttt{rxs}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. load JOD in a clear base locale}
+        \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{n+nv}{clear} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. The distributed JOD profile automatically RESETME\PYZsq{}s.}
+        \PY{c+c1}{NB. To safely use dictionaries with many J tasks they must}
+        \PY{c+c1}{NB. be READONLY. To prevent opening the same put dictionary}
+        \PY{c+c1}{NB. READWRITE comment out (dpset) and restart this notebook.}
+        \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{S}\PY{l+s}{E}\PY{l+s}{T}\PY{l+s}{M}\PY{l+s}{E}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. Converting Jupyter notebooks to LaTeX is }
+        \PY{c+c1}{NB. simplified by ASCII box characters.}
+        \PY{n+nv}{portchars} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. Verb to show large boxed displays in}
+        \PY{c+c1}{NB. the notebook without ugly wrapping.}
+        \PY{n+nv}{sbx}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{\PYZsq{}} \PY{o}{,}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{\PYZti{}} \PY{l+m+mi}{90}\PY{o}{\PYZam{}}\PY{o}{\PYZob{}}\PY{o}{.}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{@}\PY{o}{\PYZdq{}}\PY{o}{:}
+        
+        \PY{c+c1}{NB. Create a test put dictionary for this notebook.}
+        \PY{c+c1}{NB. The use of (didnum) insures it does not exist.}
+        \PY{n+nv}{rxsDemo}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{o}{\PYZdq{}}\PY{o}{:}\PY{n+nv}{didnum\PYZus{}ajod\PYZus{}}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        \PY{n+nv}{newd} \PY{n+nv}{rxsDemo}
+        
+        \PY{c+c1}{NB. unregisters any extant rxsdemo\PYZsq{}s}
+        \PY{c+c1}{NB. 3 regd\PYZam{}\PYZgt{} s \PYZsh{}\PYZti{} (s=. \PYZcb{}. od \PYZsq{}\PYZsq{}) +./@E.\PYZam{}\PYZgt{}\PYZti{} \PYZlt{}\PYZsq{}rxsdemo\PYZsq{}}
+        
+        \PY{c+c1}{NB. open some JOD dictionaries to search}
+        \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{n+nv}{rxsDemo}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        \PY{n+nv}{did} \PY{o}{\PYZti{}} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------------------------------------------------------------------------------+
+|1|+----------------------------------------------+--+-----+-----+-------+-------+------+-----------------+|
+| ||                                              |--|Words|Tests|Groups*|Suites*|Macros|Path*            ||
+| |+----------------------------------------------+--+-----+-----+-------+-------+------+-----------------+|
+| ||rxsdemo289988915136451023714074325723742283149|rw|0    |0    |0      |0      |0     |/                ||
+| |+----------------------------------------------+--+-----+-----+-------+-------+------+-----------------+|
+| ||joddev                                        |rw|74   |41   |7      |9      |18    |/joddev/jod/utils||
+| |+----------------------------------------------+--+-----+-----+-------+-------+------+-----------------+|
+| ||jod                                           |ro|768  |54   |22     |12     |61    |/jod/utils       ||
+| |+----------------------------------------------+--+-----+-----+-------+-------+------+-----------------+|
+| ||utils                                         |ro|391  |7    |21     |0      |17    |/utils           ||
+| |+----------------------------------------------+--+-----+-----+-------+-------+------+-----------------+|
++-+--------------------------------------------------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{\texttt{rxs} searches only nonnoun JOD
+text
+objects}{rxs searches only nonnoun JOD text objects}}\label{rxs-searches-only-nonnoun-jod-text-objects}
+
+JOD dictionaries can store all types of J objects. It's not unusual to
+store binary data in JOD. The following saves some nouns in the demo
+dictionary.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n+nv}{charMerxsDemo}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{g}\PY{l+s}{h}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{a}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
+        \PY{n+nv}{intTablerxsDemo}\PY{o}{=:} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{2} \PY{l+m+mi}{3} \PY{l+m+mi}{4}
+        \PY{n+nv}{floatMerxsDemo}\PY{o}{=:} \PY{p}{(}\PY{l+m+mi}{100}\PY{n}{?}\PY{l+m+mi}{100}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{l+m+mf}{7.}\PY{l+m+mi}{71}
+        \PY{n+nv}{boxMerxsDemo}\PY{o}{=:} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{a}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{\PYZsq{}}
+        \PY{n+nv}{smoutput} \PY{n+nv}{bigNumsrxsDemo}\PY{o}{=:} \PY{p}{(}\PY{n+nd}{x}\PY{o}{:} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{10}\PY{p}{)} \PY{o}{\PYZca{}} \PY{l+m+mi}{300}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0 1 2037035976334486086268445688409378161051468393665936250636140449354381299763336706183397376 136891479058588375991326027382088315966463695625337436471480190078368997177499076593800206155688941388250484440597994042813512732765695774566001 414951556888099{\ldots}
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{NB. store nouns}
+        \PY{n+nv}{put} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{M}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{t}\PY{l+s}{T}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{l}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{f}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{M}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{x}\PY{l+s}{M}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{i}\PY{l+s}{g}\PY{l+s}{N}\PY{l+s}{u}\PY{l+s}{m}\PY{l+s}{s}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------+----------------------------------------------+
+|1|5 word(s) put in ->|rxsdemo289988915136451023714074325723742283149|
++-+-------------------+----------------------------------------------+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. list all objects with suffix rxsDemo}
+        \PY{l+m+mi}{0} \PY{l+m+mi}{3} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------+------------+-------------+--------------+---------------+
+|1|bigNumsrxsDemo|boxMerxsDemo|charMerxsDemo|floatMerxsDemo|intTablerxsDemo|
++-+--------------+------------+-------------+--------------+---------------+
+
+    \end{Verbatim}
+
+    Search for the string \texttt{rxs} in all nonnoun path words.
+\texttt{rxs} only displays hits in nonempty text. Observe that
+\texttt{charMerxsDemo} is not in the match table.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------+
+|1|+---------+---+|
+| ||rxs      |rxs||
+| |+---------+---+|
+| ||rxsget   |rxs||
+| |+---------+---+|
+| ||rxssearch|rxs||
+| |+---------+---+|
++-+---------------+
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{Empty \texttt{rxs} patterns return all
+nonempty search
+text}{Empty rxs patterns return all nonempty search text}}\label{empty-rxs-patterns-return-all-nonempty-search-text}
+
+If \texttt{rxs} is given an empty pattern it returns all the text that
+would be searched by a nonempty pattern. This is useful for debugging
+complex regular expressions.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{NB. all nonempty short (EXPLAIN\PYZus{}ajod\PYZus{} = 8) explanation texts}
+        \PY{n+nv}{smoutput} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0} \PY{l+m+mi}{8} \PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{i}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. all nonempty long (DOCUMENT\PYZus{}ajod\PYZus{} = 9) test documents}
+        \PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{1} \PY{l+m+mi}{9} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+----------------------+
+|1|+----+---------------+|
+| ||sin |sine radians   ||
+| |+----+---------------+|
+| ||sind|sin degrees    ||
+| |+----+---------------+|
+| ||sinh|hyperbolic sine||
+| |+----+---------------+|
++-+----------------------+
++-+--------------------------------------------------------------------------------------- {\ldots} 
+|1|+-------+------------------------------------------------------------------------------ {\ldots} 
+| ||doctest|*doctest v-- test text for documentation (doc) verb.  This text is associated  {\ldots} 
+| |+-------+------------------------------------------------------------------------------ {\ldots} 
++-+--------------------------------------------------------------------------------------- {\ldots} 
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{\texttt{rxs} searches word text by
+default}{rxs searches word text by default}}\label{rxs-searches-word-text-by-default}
+
+If \texttt{rxs} is given a character list (\texttt{x}) argument it
+searches word text. To search documents, tests and macros \texttt{rxs}
+requires option codes.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{NB. words starting with s with at least one occurrence of string ex}
+        \PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------+
+|1|+--------------+--+|
+| ||setbuilddirs  |ex||
+| |+--------------+--+|
+| ||setifacelinks |ex||
+| |+--------------+--+|
+| ||setifacetargs |ex||
+| |+--------------+--+|
+| ||setjodliterate|ex||
+| |+--------------+--+|
+| ||setwwwbrowser |ex||
+| |+--------------+--+|
+| ||sexpin        |ex||
+| |+--------------+--+|
+| ||strexp        |ex||
+| |+--------------+--+|
++-+-------------------+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{NB. show all ex matches (option 2) for words starting with s}
+        \PY{n+nv}{smoutput} \PY{n+nv}{opts}\PY{o}{=:} \PY{n+nv}{WORD\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{n+nv}{DEFAULT\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{2}
+        \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{opts}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0 7 2
++-+------------------------------------+
+|1|+--------------+-------------------+|
+| ||setbuilddirs  |+--+               ||
+| ||              ||ex|               ||
+| ||              |+--+               ||
+| |+--------------+-------------------+|
+| ||setifacelinks |+--+--+--+--+--+--+||
+| ||              ||ex|ex|ex|ex|ex|ex|||
+| ||              |+--+--+--+--+--+--+||
+| |+--------------+-------------------+|
+| ||setifacetargs |+--+--+--+--+      ||
+| ||              ||ex|ex|ex|ex|      ||
+| ||              |+--+--+--+--+      ||
+| |+--------------+-------------------+|
+| ||setjodliterate|+--+--+--+         ||
+| ||              ||ex|ex|ex|         ||
+| ||              |+--+--+--+         ||
+| |+--------------+-------------------+|
+| ||setwwwbrowser |+--+--+            ||
+| ||              ||ex|ex|            ||
+| ||              |+--+--+            ||
+| |+--------------+-------------------+|
+| ||sexpin        |+--+--+            ||
+| ||              ||ex|ex|            ||
+| ||              |+--+--+            ||
+| |+--------------+-------------------+|
+| ||strexp        |+--+--+--+         ||
+| ||              ||ex|ex|ex|         ||
+| ||              |+--+--+--+         ||
+| |+--------------+-------------------+|
++-+------------------------------------+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{NB. repeat previous search but now show position array (option 3) with matched text}
+        \PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0} \PY{l+m+mi}{7} \PY{l+m+mi}{3}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------------------------------------------------------------- {\ldots} 
+|1|+--------------+-----+----------------------------------------------------------------- {\ldots} 
+| ||setbuilddirs  |669 2|3 : 0  NB.*setbuilddirs v-- sets paths used by JOD build words. N {\ldots} 
+| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
+| ||setifacelinks |162 2|4 : 0  NB.*setifacelinks  v--  set  hyperref   links  in   any  o {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |175 2|                                                                  {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |229 2|                                                                  {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |255 2|                                                                  {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |303 2|                                                                  {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |376 2|                                                                  {\ldots} 
+| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
+| ||setifacetargs | 63 2|4 : 0  NB.*setifacetargs v-- set hyperlink targets in group latex {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |116 2|                                                                  {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |177 2|                                                                  {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |272 2|                                                                  {\ldots} 
+| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
+| ||setjodliterate|419 2|3 : 0  NB.*setjodliterate v-- prepare for processing. NB. NB. mon {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |483 2|                                                                  {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |494 2|                                                                  {\ldots} 
+| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
+| ||setwwwbrowser |334 2|3 : 0  NB.*setwwwbrowser v-- tests and sets the WWW browser. NB.  {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |363 2|                                                                  {\ldots} 
+| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
+| ||sexpin        |11 2 |3 : 0 NB.*sexpin v-- single line explicit definition test. if.    {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |33 2 |                                                                  {\ldots} 
+| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
+| ||strexp        | 14 2|3 : 0  NB.*strexp v-- returns a boxed list of words containing st {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |127 2|                                                                  {\ldots} 
+| ||              |     |                                                                  {\ldots} 
+| ||              |150 2|                                                                  {\ldots} 
+| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
++-+--------------------------------------------------------------------------------------- {\ldots} 
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{c+c1}{NB. show first J quoted text in JOD tests with names that begin with r and t}
+         \PY{p}{(}\PY{n+nv}{Jchar\PYZus{}jregex\PYZus{}}\PY{o}{;}\PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{p}{(}\PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{)} \PY{o}{,} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+------------------------------------------------+
+|1|+-------------------+--------------------------+|
+| ||releasejod         |'ijod'                    ||
+| |+-------------------+--------------------------+|
+| ||restdBasic01       |'createtestdictionaries'  ||
+| |+-------------------+--------------------------+|
+| ||rxsBadSmoke00      |'base'                    ||
+| |+-------------------+--------------------------+|
+| ||rxsSmoke00         |'testjod00'               ||
+| |+-------------------+--------------------------+|
+| ||rxsgetSmoke00      |'base'                    ||
+| |+-------------------+--------------------------+|
+| ||testdictionarypaths|'base'                    ||
+| |+-------------------+--------------------------+|
+| ||teststub           |'/AAAtrash999/AAAsmoke999'||
+| |+-------------------+--------------------------+|
+| ||teststubClassGroup |'\{\textasciitilde{}T\textasciitilde{}\}'                   ||
+| |+-------------------+--------------------------+|
++-+------------------------------------------------+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{NB. show all J quoted text in JOD tests with names that begin with r and t}
+         \PY{n+nv}{sbx} \PY{p}{(}\PY{n+nv}{Jchar\PYZus{}jregex\PYZus{}}\PY{o}{;}\PY{l+m+mi}{1} \PY{l+m+mi}{7} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{p}{(}\PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{)} \PY{o}{,} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------------------------------------------------------------- {\ldots} 
+|1|+-------------------+------------------------------------------------------------------ {\ldots} 
+| ||releasejod         |+------+------+-------------+-------------+------+--+------------- {\ldots} 
+| ||                   ||'ijod'|'base'|'AAAtrash999'|'AAAtrash999'|'ijod'|''|'joddev jod u {\ldots} 
+| ||                   |+------+------+-------------+-------------+------+--+------------- {\ldots} 
+| |+-------------------+------------------------------------------------------------------ {\ldots} 
+| ||restdBasic01       |+------------------------+----------+------+-----------+---------- {\ldots} 
+| ||                   ||'createtestdictionaries'|'\textasciitilde{}JODTEST'|'base'|'jodtester'|'\textasciitilde{}JODTEST' {\ldots} 
+| ||                   |+------------------------+----------+------+-----------+---------- {\ldots} 
+| |+-------------------+------------------------------------------------------------------ {\ldots} 
+| ||rxsBadSmoke00      |+------+----------+----------+-----------+-------------+---------- {\ldots} 
+| ||                   ||'base'|'\textasciitilde{}JODTEST'|'\textasciitilde{}JODTEST'|'jodtester'|'AAAsmoke999'|'AAAsmoke9 {\ldots} 
+| ||                   |+------+----------+----------+-----------+-------------+---------- {\ldots} 
+| |+-------------------+------------------------------------------------------------------ {\ldots} 
+| ||rxsSmoke00         |+-----------+--------------------+------+----------+----------+--- {\ldots} 
+| ||                   ||'testjod00'|'\textasciitilde{}JODTEST/testjod00'|'base'|'\textasciitilde{}JODTEST'|'\textasciitilde{}JODTEST'|'jo {\ldots} 
+| ||                   |+-----------+--------------------+------+----------+----------+--- {\ldots} 
+| |+-------------------+------------------------------------------------------------------ {\ldots} 
+| ||rxsgetSmoke00      |+------+----------+----------+-----------+-------------+---------- {\ldots} 
+| ||                   ||'base'|'\textasciitilde{}JODTEST'|'\textasciitilde{}JODTEST'|'jodtester'|'AAAtrash999'|'AAAtrash9 {\ldots} 
+| ||                   |+------+----------+----------+-----------+-------------+---------- {\ldots} 
+| |+-------------------+------------------------------------------------------------------ {\ldots} 
+| ||testdictionarypaths|+------+-----------+-------------+-------------+------+------+---- {\ldots} 
+| ||                   ||'base'|'jodtester'|'AAAtrash999'|'AAAtrash999'|'ijod'|'good'|'JOD {\ldots} 
+| ||                   |+------+-----------+-------------+-------------+------+------+---- {\ldots} 
+| |+-------------------+------------------------------------------------------------------ {\ldots} 
+| ||teststub           |+--------------------------+---------+------+-----------+--------- {\ldots} 
+| ||                   ||'/AAAtrash999/AAAsmoke999'|'newtest'|'base'|'jodtester'|'JODCLEAR {\ldots} 
+| ||                   |+--------------------------+---------+------+-----------+--------- {\ldots} 
+| |+-------------------+------------------------------------------------------------------ {\ldots} 
+| ||teststubClassGroup |+-------+                                                          {\ldots} 
+| ||                   ||'\{\textasciitilde{}T\textasciitilde{}\}'|                                                          {\ldots} 
+| ||                   |+-------+                                                          {\ldots} 
+| |+-------------------+------------------------------------------------------------------ {\ldots} 
++-+--------------------------------------------------------------------------------------- {\ldots} 
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{\texttt{rxs} can search short and long
+object
+documents}{rxs can search short and long object documents}}\label{rxs-can-search-short-and-long-object-documents}
+
+JOD words, test, groups, suites and macros are often associated with
+short and long documents.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{NB. search all short (EXPLAIN\PYZus{}ajod\PYZus{} = 8) texts for words starting with wr}
+         \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{[}\PY{l+s}{a}\PY{l+s}{e}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{]}\PY{l+s}{b}\PY{l+s}{*}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0}\PY{o}{,}\PY{n+nv}{EXPLAIN\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{w}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-----------------------------------+
+|1|+----------------+----------------+|
+| ||wraplinear      |+--+--+--+--+--+||
+| ||                ||ra|re|re|ri|ri|||
+| ||                |+--+--+--+--+--+||
+| |+----------------+----------------+|
+| ||wrapvrblong     |+--+            ||
+| ||                ||ra|            ||
+| ||                |+--+            ||
+| |+----------------+----------------+|
+| ||wrapwords       |+--+            ||
+| ||                ||ra|            ||
+| ||                |+--+            ||
+| |+----------------+----------------+|
+| ||wrdglobals      |+--+--+         ||
+| ||                ||ra|ro|         ||
+| ||                |+--+--+         ||
+| |+----------------+----------------+|
+| ||wrdglobalsOLD000|+--+--+         ||
+| ||                ||ra|ro|         ||
+| ||                |+--+--+         ||
+| |+----------------+----------------+|
+| ||wrep            |+--+--+--+      ||
+| ||                ||ra|re|re|      ||
+| ||                |+--+--+--+      ||
+| |+----------------+----------------+|
+| ||write           |+--+            ||
+| ||                ||ri|            ||
+| ||                |+--+            ||
+| |+----------------+----------------+|
+| ||writeas         |+--+--+--+--+   ||
+| ||                ||ri|ro|ro|re|   ||
+| ||                |+--+--+--+--+   ||
+| |+----------------+----------------+|
+| ||writeijs        |+--+--+         ||
+| ||                ||ri|re|         ||
+| ||                |+--+--+         ||
+| |+----------------+----------------+|
+| ||writenoun       |+--+            ||
+| ||                ||ri|            ||
+| ||                |+--+            ||
+| |+----------------+----------------+|
+| ||writetd         |+--+            ||
+| ||                ||ri|            ||
+| ||                |+--+            ||
+| |+----------------+----------------+|
+| ||writetd2        |+--+            ||
+| ||                ||ri|            ||
+| ||                |+--+            ||
+| |+----------------+----------------+|
++-+-----------------------------------+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{NB. search group (GROUP\PYZus{}ajod\PYZus{} = 2) long document (DOCUMENT\PYZus{}ajod\PYZus{} = 9) texts for all patterns}
+         \PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{*}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{GROUP\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{n+nv}{DOCUMENT\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{2} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------------------------------------------------------------- {\ldots} 
+|1|+-----------+-------------------------------------------------------------------------- {\ldots} 
+| ||doctest    |+--------------------------+---------------------------------------------- {\ldots} 
+| ||           ||long documentation of a te|lobyte strings typical operations  complete is {\ldots} 
+| ||           |+--------------------------+---------------------------------------------- {\ldots} 
+| |+-----------+-------------------------------------------------------------------------- {\ldots} 
+| ||jodliterate|+------------+------------------------------------------+-----------+----- {\ldots} 
+| ||           ||lot more use|lows pandoc source code highlighting conve|loaded like|load  {\ldots} 
+| ||           |+------------+------------------------------------------+-----------+----- {\ldots} 
+| |+-----------+-------------------------------------------------------------------------- {\ldots} 
+| ||sunmoon    |+-------------------------+----------------------------------------------- {\ldots} 
+| ||           ||loating point table where|longitude in degrees with western longitudes ne {\ldots} 
+| ||           |+-------------------------+----------------------------------------------- {\ldots} 
+| |+-----------+-------------------------------------------------------------------------- {\ldots} 
++-+--------------------------------------------------------------------------------------- {\ldots} 
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{\texttt{rxs} can search the dictionary
+document}{rxs can search the dictionary document}}\label{rxs-can-search-the-dictionary-document}
+
+\texttt{rxs} can search the dictionary document.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{NB. save a dictionary document (DICTIONARY\PYZus{}ajod\PYZus{} = 5) for the rxs demo dictionary}
+         \PY{n+nv}{DICTIONARY\PYZus{}ajod\PYZus{}} \PY{n+nv}{put} \PY{o}{;}\PY{l+m+mi}{25} \PY{o}{\PYZsh{}} \PY{o}{\PYZlt{}}\PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{u}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{u}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{LF}
+         \PY{l+m+mi}{5} \PY{n+nv}{disp} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+ all work and no play make jack a dull boy all work and no play make jack a dull boy
+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{c+c1}{NB. all the dull boys}
+         \PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{5} \PY{l+m+mi}{7} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------------------------------------------------------------- {\ldots} 
+|1|++------------------------------------------------------------------------------------- {\ldots} 
+| |||+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---- {\ldots} 
+| ||||jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack {\ldots} 
+| |||+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---- {\ldots} 
+| |++------------------------------------------------------------------------------------- {\ldots} 
++-+--------------------------------------------------------------------------------------- {\ldots} 
+
+    \end{Verbatim}
+
+    \subsubsection{Final remarks}\label{final-remarks}
+
+\texttt{rxs} performs well for "reasonable" numbers of JOD objects. If
+you search for a complex pattern in very large dictionaries without
+restricting your search object list \texttt{rxs} may take some time.
+It's a good idea to restrict the list of searched objects whenever
+feasible. Typical uses of \texttt{rxs} search groups, suites and
+particular macro types.
+
+The following are typical \texttt{rxs} searches.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{c+c1}{NB. search group }
+         \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{D}\PY{l+s}{E}\PY{l+s}{F}\PY{l+s}{A}\PY{l+s}{U}\PY{l+s}{L}\PY{l+s}{T}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0} \PY{l+m+mi}{7} \PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------+
+|1|+---------+-------+|
+| ||bnlsearch|DEFAULT||
+| |+---------+-------+|
+| ||dnlsearch|DEFAULT||
+| |+---------+-------+|
+| ||mnlsearch|DEFAULT||
+| |+---------+-------+|
++-+-------------------+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{c+c1}{NB. search test suite for all negative expected (ner) results}
+         \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{1} \PY{l+m+mi}{7} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{3} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------------------------------------------------------------------+
+|1|+-------------------+---------------------------------------------------------+|
+| ||compjSmoke00       |+---+                                                    ||
+| ||                   ||ner|                                                    ||
+| ||                   |+---+                                                    ||
+| |+-------------------+---------------------------------------------------------+|
+| ||dnlSmoke00         |+---+---+---+---+---+---+---+---+                        ||
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|                        ||
+| ||                   |+---+---+---+---+---+---+---+---+                        ||
+| |+-------------------+---------------------------------------------------------+|
+| ||globsSmokeAssign000|+---+---+                                                ||
+| ||                   ||ner|ner|                                                ||
+| ||                   |+---+---+                                                ||
+| |+-------------------+---------------------------------------------------------+|
+| ||globsSmokeDoc00    |+---+                                                    ||
+| ||                   ||ner|                                                    ||
+| ||                   |+---+                                                    ||
+| |+-------------------+---------------------------------------------------------+|
+| ||mnlSmokeArgs00     |+---+---+---+---+---+---+---+---+                        ||
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|                        ||
+| ||                   |+---+---+---+---+---+---+---+---+                        ||
+| |+-------------------+---------------------------------------------------------+|
+| ||rxsBadSmoke00      |+---+---+---+---+---+---+---+---+---+---+---+---+        ||
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|        ||
+| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+        ||
+| |+-------------------+---------------------------------------------------------+|
+| ||rxsSmoke00         |+---+---+---+---+---+---+---+                            ||
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|                            ||
+| ||                   |+---+---+---+---+---+---+---+                            ||
+| |+-------------------+---------------------------------------------------------+|
+| ||rxsgetSmoke00      |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+||
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|||
+| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+||
+| |+-------------------+---------------------------------------------------------+|
++-+-------------------------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{c+c1}{NB. search all (MARKDOWN\PYZus{}ajod\PYZus{} = 27) macros (MACRO\PYZus{}ajod\PYZus{} = 4) for J quoted text}
+         \PY{n+nv}{sbx} \PY{p}{(}\PY{n+nv}{Jchar\PYZus{}jregex\PYZus{}}\PY{o}{;}\PY{l+m+mi}{4} \PY{l+m+mi}{7} \PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{p}{(}\PY{n+nv}{MACRO\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{1}\PY{o}{,}\PY{n+nv}{MARKDOWN\PYZus{}ajod\PYZus{}}\PY{p}{)} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------------------------------------------------------------- {\ldots} 
+|1|+--------------+----------------------------------------------------------------------- {\ldots} 
+| ||historyjod    |'s Day)     * `rxs` implemented - see `jod.pdf     * [`rxs` Jupyter Lab {\ldots} 
+| |+--------------+----------------------------------------------------------------------- {\ldots} 
+| ||historyjoddoc |'s Day)      * `rxs` section added.     \#\#\# 0.9.996 - October 14, 2018  {\ldots} 
+| |+--------------+----------------------------------------------------------------------- {\ldots} 
+| ||linuxnotes\_TXT|'john'                                                                  {\ldots} 
+| |+--------------+----------------------------------------------------------------------- {\ldots} 
+| ||macnotes\_TXT  |'joddev jod utils'                                                      {\ldots} 
+| |+--------------+----------------------------------------------------------------------- {\ldots} 
++-+--------------------------------------------------------------------------------------- {\ldots} 
+
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

@@ -3,9 +3,11 @@
 general/jod - change history
 ============================
 
-### 0.0.998 - dev
+### 0.0.998 - February 14, 2019 (Valentine's Day)
 
  * `rxs` implemented - see `jod.pdf
+
+ * [`rxs` Jupyter Lab]()
 
  * Jupyter notebook versions of JOD labs see:
    [JOD lab notebooks](https://github.com/bakerjd99/jod/tree/master/jodnotebooks)
