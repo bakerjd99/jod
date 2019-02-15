@@ -3,6 +3,16 @@
 general/jod - change history
 ============================
 
+### 0.0.998 - February 14, 2019 (Valentine's Day)
+
+ * `rxs` implemented - see `jod.pdf
+
+ * `rxs` examples in a 
+   [Jupyter notebook](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/Using%20JOD%20Regular%20Expressions.ipynb)
+
+ * Jupyter notebook versions of JOD labs see:
+   [JOD lab notebooks](https://github.com/bakerjd99/jod/tree/master/jodnotebooks)
+
 ### 0.0.996 - October 14, 2018
 
  * `mnl` implemented - see `jod.pdf`

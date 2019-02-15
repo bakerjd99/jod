@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.996  Build Number: 42  Date: 14 Oct 2018 14:10:29
+NB. Version: 0.9.998  Build Number: 22  Date: 14 Feb 2019 22:32:19
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
 jodsystempath_z_=:3 :0
@@ -143,7 +143,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.996';42;'14 Oct 2018 14:10:29'
+JODVMD=:'0.9.998';22;'14 Feb 2019 22:32:19'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -958,10 +958,101 @@ DL=.1{a
 if.badrc a=.restspace__DL 0 do.a else.(}.a )restdict__DL y end.
 )
 rv=:>@(1&{)
-rxs=:3 :0
-ok'NIMP rxs'
-:
-ok'NIMP rxs'
+rxs=:''&$: :(4 :0)
+if.badrc d=.checkopen__ST 0 do.d return.end.
+a=.ERR001
+if.1<L.x do.jderr a return.end.
+if.0=L.x do.x=.x ;WORD,DEFAULT,1
+else.
+if.(1~:$$,x )*.2~:#,x do.jderr a return.end.
+end.
+'c b'=.x
+if.badcl c do.jderr a return.end.
+if.badil b do.jderr a return.end.
+b=.b,(-3-#b){.DEFAULT,1
+if.-.1 2 3 e.~{:b do.jderr a return.end.
+if.DICTIONARY=0{b do.
+if.DEFAULT~:1{b do.jderr a return.end.
+d=.b rxsget 0
+else.
+if.badrc y=.checknames y do.y return.else.y=.}.y end.
+if.WORD=0{b do.
+if.badrc d=.(WORD,INCLASS)invfetch__ST y do.d return.end.
+if.0=#y=.y#~0~:>1{d do.ok<0 2$<''return.end.
+end.
+if.badrc d=.b rxsget y do.d return.end.
+end.
+if.#c do.(c ;b)rxssearch>1{d else.d end.
+)
+rxsget=:4 :0
+select.{.x
+case.WORD do.
+select.second x
+case.DEFAULT do.a=.(WORD,0)getobjects__ST y
+case.EXPLAIN do.a=.WORD getexplain__ST y
+case.DOCUMENT do.a=.WORD getdocument__ST y
+case.do.jderr msg return.
+end.
+case.TEST do.
+select.second x
+case.DEFAULT do.a=.(TEST,0)getobjects__ST y
+case.EXPLAIN do.a=.TEST getexplain__ST y
+case.DOCUMENT do.a=.TEST getdocument__ST y
+case.do.jderr msg return.
+end.
+case.GROUP do.
+select.second x
+case.DEFAULT do.a=.GROUP getgstext__ST y
+case.EXPLAIN do.a=.GROUP getexplain__ST y
+case.DOCUMENT do.a=.GROUP getdocument__ST y
+case.do.jderr msg return.
+end.
+case.SUITE do.
+select.second x
+case.DEFAULT do.a=.SUITE getgstext__ST y
+case.EXPLAIN do.a=.SUITE getexplain__ST y
+case.DOCUMENT do.a=.SUITE getdocument__ST y
+case.do.jderr msg return.
+end.
+case.MACRO do.
+select.second x
+case.DEFAULT do.a=.(MACRO,0)getobjects__ST y
+case.EXPLAIN do.a=.MACRO getexplain__ST y
+case.DOCUMENT do.a=.MACRO getdocument__ST y
+case.do.jderr msg return.
+end.
+case.DICTIONARY do.
+select.second x
+case.DEFAULT do.a=.getdicdoc__ST 0
+case.do.jderr msg return.
+end.
+case.do.jderr msg return.
+end.
+if.badrc a do.a 
+else.
+if.badcl a=.>1{a do.
+a=.(0,<:{:$a){"1 a
+ok<a#~0<#&>1 {"1 a
+else.
+ok<((0<#a),2)$'';a
+end.
+end.
+)
+rxssearch=:4 :0
+'c a'=.x
+select.{:a
+case.1 do.
+h=.c&rxfirst&.>1 {"1 y
+ok<((0{"1 y),.h)#~0<#&>h
+case.2 do.
+h=.c&rxall&.>1 {"1 y
+ok<((0{"1 y),.h)#~0<#&>h
+case.3 do.
+h=.c&rxmatches&.>1 {"1 y
+b=.0<#&>h
+ok<(b#0{"1 y),.(b#h),.b#1 {"1 y
+case.do.jderr ERR001
+end.
 )
 saveobid=:3 :0
 b=.~.y,readobid a=.obidfile 0

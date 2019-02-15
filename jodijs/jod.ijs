@@ -219,7 +219,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.998 - dev';16;'12 Feb 2019 14:40:15'
+JODVMD=:'0.9.998';22;'14 Feb 2019 22:32:19'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996

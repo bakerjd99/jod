@@ -148,6 +148,12 @@ doctxt=: 3 : 'ctl_ajod_ (61;0;0;'''') docct2__UT__JODobj ];._1 LF,y-.CR'
 NB. display noun on screen and return noun value
 showpass=:] [ 1!:2&2
 
+NB. portable box drawing characters
+portchars=:[: 9!:7 '+++++++++|-'"_ [ ]
+
+NB. windows lucida console box drawing characters
+winlcchars=:[: 9!:7 (a.{~16+i.11)"_ [ ]
+
 NB. edit command 
 DOCUMENTCOMMAND=: 'showpass pr ''{~N~}'''
 
@@ -181,6 +187,9 @@ jl=: (0!:0)@jt
 
 NB. number of objects - used by various (utils) macros (sizeput, ageput, ...) if present
 NOBS=: 10
+
+NB. where am I used by some macros values 'work' or 'home'
+NB. WHEREAMI=: 'work'
 
 NB. dump drive - used by (utils) macro (dumpput) if present
 NB. DUMPWINDRV=: 'h:'

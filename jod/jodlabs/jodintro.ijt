@@ -396,7 +396,7 @@ NB. byte size of macro
 4 15 get 'BIN'
 
 NB. macro text types are contants in the main JOD class
-JSCRIPT_ajod_, LATEX_ajod_, HTML_ajod_, XML_ajod_, TEXT_ajod_, BYTE_ajod_, MARKDOWN_ajod_, UTF8_ajod_
+JSCRIPT_ajod_, LATEX_ajod_, HTML_ajod_, XML_ajod_, TEXT_ajod_, BYTE_ajod_, MARKDOWN_ajod_, UTF8_ajod_, PYTHON_ajod_, SQL_ajod_, JSON_ajod_
 
 NB. =========================================================
 Lab Section Loading dictionary dump script
@@ -558,7 +558,7 @@ You now have some idea of what JOD is all about. To learn more read JOD's docume
 
 John Baker
 bakerjd99@gmail.com
-March 2018
+Janurary 2019
 )
 NB. close any open dictionaries
 3 od ''

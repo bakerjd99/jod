@@ -7,7 +7,8 @@ general/jod - change history
 
  * `rxs` implemented - see `jod.pdf
 
- * [`rxs` Jupyter Lab]()
+ * `rxs` examples in a 
+   [Jupyter notebook](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/Using%20JOD%20Regular%20Expressions.ipynb)
 
  * Jupyter notebook versions of JOD labs see:
    [JOD lab notebooks](https://github.com/bakerjd99/jod/tree/master/jodnotebooks)
