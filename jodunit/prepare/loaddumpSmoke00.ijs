@@ -9,6 +9,7 @@ NB. author:  John D. Baker
 NB. created: 2015oct05
 NB. changes: -----------------------------------------------------
 NB. 18may26 updated for J 8.07 see: rtt 'createtestdictionaries'
+NB. 19mar14 adjusted for 18!:4 change
 
 cocurrent 'base'
 require 'jodtester'
@@ -47,5 +48,5 @@ df=: make ''
 NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
-(18!:4) <'base'
+cocurrent 'base'
 coerase <tmploc_AAAsmoke999_

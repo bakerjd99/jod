@@ -83,6 +83,16 @@ er (pat00;5 7 3) rxs ''
 ner (pat00;5 8 1) rxs ''
 ner (pat00;5 9 3) rxs ''
 
+NB. insert some objects in empty dictionary for nearly correct tests
+er 4 put 'MACRO00';21;'NB. test macro'
+er 1 put 'TEST00';'NB. test test'
+er 'ajod' put nl_ajod_ i. 4
+
+NB. nearly correct patterns 
+ner ('somepat';4 1) rxs }. 4 dnl ''
+ner ('somepat';0 1 3) rxs }. dnl ''
+ner ('somepat';1 2) rxs }. 1 dnl ''
+
 
 NB. -{TEST SUCCESSFUL}-
 ereopen 0

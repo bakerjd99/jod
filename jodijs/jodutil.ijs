@@ -641,14 +641,6 @@ elseif.do.
   'oname text'=. }.uv 
 end.
 
-NB. undocumented and seldom used feature - removed unless someone complains
-NB. if. wex <'EDLOCALE' do.   NB. !(*)=. EDLOCALE
-NB.   NB. set up to define objects into specified locale if requested
-NB.   pfx=.'18!:4 <''',EDLOCALE,''' [ CRLOC_ajodutil_=: 18!:5 '''' '
-NB.   sfx=. '18!:4 CRLOC_ajodutil_'
-NB.   text=. pfx,LF,LF,text,LF,LF,sfx
-NB. end.
-
 NB. append user defined document command 
 NB. the pattern {~N~} is a name placeholder, e.g.
 NB.   DOCUMENTCOMMAND_ijod_ =: 'showpass pr ''{~N~}'''
@@ -891,12 +883,13 @@ if. *./um=. JSCRIPT = ; 1 {"1 uv do.
   curr=. 18!:5 ''
 
   try.
+    NB. j profile !(*)=. cocurrent
     NB. run from base, (display default, suppress x.-:1) stop on errors
-    18!:4 <'base'
+    cocurrent 'base'
     if. x-:1 do. 0!:100 scr else. 0!:101 scr end.
-    18!:4 curr
+    cocurrent curr
   catchd.
-    18!:4 curr  NB. restore locale
+    cocurrent curr  NB. restore locale
     (jderr ERR0256),<13!:12 '' return.
   end.
 
@@ -940,24 +933,25 @@ end.
 
 curr=. 18!:5 ''
 
+NB. j profile !(*)=. cocurrent
 NB. run from base, (display default, suppress x-:1), stop on errors
-18!:4 <'base'
+cocurrent 'base'  
 try.
   if. 0-:x     do. 0!:2 scr
   NB. Note: silent execution that fails suppresses all output
   elseif. 1-:x do. (] [ 1!:2&2) 0!:3 scr 
   elseif. 2-:x do. 0!:001 scr
   elseif.do.
-    18!:4 curr
+    cocurrent curr
     jderr ERR001 return.
   end.
 catchd.
-  18!:4 curr
+  cocurrent curr
   (jderr ERR0256),<13!:12 '' return. 
 end.
 
 NB. back to original locale
-18!:4 curr
+cocurrent curr
 )
 
 

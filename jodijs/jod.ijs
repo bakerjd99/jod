@@ -219,7 +219,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'0.9.998';22;'14 Feb 2019 22:32:19'
+JODVMD=:'1.0.0 - dev';18;'22 Mar 2019 11:55:35'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -231,7 +231,7 @@ NB. maximum length of short explanation text
 MAXEXPLAIN=:80
 
 NB. maximum length of dictionary names
-MAXNAME=:60
+MAXNAME=:128
 
 NB. (name,[class],value) option code
 NVTABLE=:10
@@ -364,22 +364,23 @@ NB.
 NB.   5 bget ''     NB. dictionary document from last backup
 NB.   5 bget '.12'  NB. dictionary document from particular backup
 NB.
-NB.   2   bget <;._1 ' gfoo.12 gfoo.05 gfoo.00'  NB. three versions of a group
-NB.   2 1 bget <;._1 ' gfoo.12 gfoo.05 gfoo.00'  NB. three versions of a group's header
+NB.   NB. three versions of a group's header - similar to (get) where
+NB.   NB. (2 get 'group') returns the group header
+NB.   2   bget <;._1 ' gfoo.12 gfoo.05 gfoo.00'  
+NB.   
+NB.   2 1 bget <;._1 ' gfoo.12 gfoo.05 gfoo.00'  NB. three versions of a group's word list
 
 WORD bget y
 :
-msg=. ERR001 [ loc =. <'base' NB. errmsg: invalid option(s)
+msg=. ERR001
 
-if. badil x do.
-  NB. errmsg: invalid or missing locale
-  if. _2&badlocn x do. jderr ERR004 return. else. x=. WORD [ loc=. <x-.' ' end.
-end.
+if. badil x do. jderr msg return. end.
 
 NB. do we have a dictionary open?
 if. badrc uv=. checkopen__ST 0 do. uv return. end.
 
-ok 'NIMP bget' return. NB. NIMP out for now
+NB. are backups present?
+if. badrc uv=. checkback__ST {:0{DPATH__ST do. uv return. else. bn=. rv uv end.
 
 NB. NIMP are the requested backup names valid?
 NB. NIMP are the requested backups present?
@@ -451,6 +452,8 @@ NB. dyad:  ilCodes bnl clStr | zlStr
 NB.
 NB.   4 2  bnl 'ex'     NB. macros with names containing 'ex' in last backup
 NB.   2 3  bnl 'et.13'  NB. groups with names ending with 'et' in backup 13
+NB.
+NB.   14 bnl '.'  NB. display pack/backup dates
 
 WORD bnl y
 :
@@ -458,6 +461,10 @@ if. badrc msg=.x nlargs y do. msg return. end.
 
 NB. format standard (bnl) (x) options and search
 x=.  x , (<:#x)}. 1 , DEFAULT
+
+NB. special list backup dates case first
+if. (INPUT=0{x) *. (,NDOT__ST)-:alltrim y do. x bnlsearch__ST y return. end.
+
 if. ((0{x) e. WORD,MACRO) *. -.(2{x) e. DEFAULT,MACROTYPE,i. 4 do. jderr ERR001 
 elseif. ({. x) e. OBJECTNC do. x bnlsearch__ST y 
 elseif.do. jderr ERR001 
@@ -1996,6 +2003,8 @@ NB.
 NB.   2 8 1 rxsget 'GroupName'
 NB.   4 7 1 rxsget 'MacroText'
 
+msg=. ERR001 NB. errmsg: invalid option(s)
+
 select. {. x
 case. WORD do.
   select. second x
@@ -2116,14 +2125,27 @@ tslash2=:([: - '\/' e.~ {:) }. '/' ,~ ]
 
 
 tstamp=:3 : 0
-NB.*tstamp v-- time stamp
-yy=. <.y,(0=#y)#6!:0 ''
-'yy m d h n s'=. 6{.yy
+
+NB.*tstamp v-- standard j 8.07 library timestamp.
+NB.
+NB. A renamed version of the standard  J 8.07 era  timestamp. JOD
+NB. used an earlier version of this verb, see (tstamp2), that did
+NB. not handle all zero timestamps.
+NB.
+NB. monad:  clDate =. tstamp il | fl
+NB.
+NB.   tstamp '' NB. now timestamp
+NB.   tstamp 0 0 0 0 0 0  NB. zero stamp
+
+if. 0 = #y do. w=. 6!:0'' else. w=. y end.
+r=. }: $ w
+t=. 2 1 0 3 4 5 {"1 [ _6 [\ , 6 {."1 <. w
+d=. '+++::' 2 6 11 14 17 }"1 [ 2 4 5 3 3 3 ": t
 mth=. _3[\'   JanFebMarAprMayJunJulAugSepOctNovDec'
-f=. _2: {. '0'&,@":
-t=. (2":d),(m{mth),(":yy),;f&.>h,n,s
-r=. 'xx xxx xxxx xx:xx:xx'
-t (I. r='x') } r
+d=. ,((1 {"1 t) { mth) 3 4 5 }"1 d
+d=. '0' (I. d=' ') } d
+d=. ' ' (I. d='+') } d
+(r,20) $ d
 )
 
 

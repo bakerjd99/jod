@@ -9,6 +9,7 @@ NB. author:  John D. Baker
 NB. created: 2011dec20
 NB. changes: -----------------------------------------------------
 NB. 18may24 updated for J 8.07 see: rtt 'createtestdictionaries'
+NB. 18mar22 added (packd) to insure enough backups exist for test
 
 cocurrent 'base'
 require 'jodtester'
@@ -47,6 +48,9 @@ er 2 2 bnl 'od'    NB. groups containing substring 'od' in current backup
 er 0 1 0 bnl ''    NB. all nouns in current backup
 er 0 1 1 bnl ''    NB. all adverbs in current backup
 
+NB. insure enough backups exist for this test
+er packd tdict
+er packd tdict
 
 NB. words from particular backups
 NB. blcl of backup number dots, eg: <;.1 '.23.17.16.15.14.13.12.04'

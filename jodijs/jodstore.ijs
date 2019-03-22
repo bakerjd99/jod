@@ -137,6 +137,7 @@ ERR101=:'invalid date(s) name/creation/lastput table'
 ERR102=:'timestamp table shape invalid'
 ERR103=:'no backup(s) to restore or search'
 ERR104=:'no registered dictionaries'
+ERR105=:'unreadable or missing backup timestamp'
 
 NB. name.n or name.name separator character
 NDOT=:'.'
@@ -285,8 +286,109 @@ else.
 end.
 )
 
+
+backupdates=:4 : 0
+
+NB.*backupdates v-- scans put dictionary backup files and returns
+NB. backup dates.
+NB.
+NB. This  verb  attempts  to   read  component  index  1  of  put
+NB. dictionary  (jwords)  backup files.  The resulting data takes
+NB. these possible forms.
+NB.
+NB. verbatim:
+NB.
+NB.   1. bnum,timestamp - pack count and timestamp
+NB.   2. bnum,0         - pack count and 0
+NB.   3. _1`            - jread error - probably an older unreadable binary
+NB.   4. _2             - trapped jread error - serious problemos
+NB.
+NB. dyad:  bt =. blObj backupdates ilBnums
+NB.
+NB.   NB. DL is put dictionary object
+NB.   NB. bnums is a list of put dictionary backup numbers
+NB.
+NB.   DL backupdates bnums
+
+NB. HARDCODE: component 1
+uv=. >jread"1 (<1) ,.~  (<BAK__x) ,&.> (":&.> <"0 y) ,&.> 0{JDFILES
+bstamps=. }."1 uv [ bn=. 0 {"1 uv
+
+NB. format timestamps
+bstamps=. (<"0 bn) ,. <"1 tstamp"1 bstamps
+
+NB. errmsg: unreadable or missing backup timestamp
+bstamps=. (<ERR105) (<(I. 0>bn);1)} bstamps
+)
+
 NB. bad jfile components - first names do not match list
 badcn=:[: -. [ -: [: {.&> ]
+
+
+bgetdicdoc=:3 : 0
+
+NB.*bgetdicdoc v-- get backup versions of the dictionary document.
+NB.
+NB. monad:  bgetdicdoc ??
+NB. dyad:  ?? bgetdicdoc ??
+
+ok 'NIMP bgetdicdoc'
+)
+
+
+bgetdocument=:4 : 0
+
+NB.*bgetdocument v-- get backup versions of object documents. 
+NB.
+NB. monad:  bgetdocument ??
+NB. dyad:  ?? bgetdocument ??
+
+ok 'NIMP bgetdocument'
+)
+
+
+bgetexplain=:4 : 0
+
+NB.*bgetexplain v-- get backup versions of short object explanations.
+NB.
+NB. monad:  bgetexplain ??
+NB. dyad:  ?? bgetexplain ??
+
+ok 'NIMP bgetexplain'
+)
+
+
+bgetgstext=:4 : 0
+
+NB.*bgetgstext v-- get backup versions of group/suite headers.
+NB.
+NB. monad:  bgetgstext ??
+NB. dyad:  ?? bgetgstext ??
+
+ok 'NIMP bgetgstext'
+)
+
+
+bgetobjects=:4 : 0
+
+NB.*bgetobjects v-- get objects from backups.
+NB.
+NB. monad:  bgetobjects ??
+NB. dyad:  ?? bgetobjects ??
+
+ok 'NIMP bgetobjects'
+)
+
+
+bgslist=:4 : 0
+
+NB.*bgslist v-- get backup versions of group/suite lists.
+NB.
+NB. monad:  bgslist ??
+NB. dyad:  ?? bgslist ??
+
+ok 'NIMP bgslist'
+)
 
 
 bnlsearch=:4 : 0
@@ -307,7 +409,7 @@ NB. put dictionary directory object
 DL=. {:0{DPATH
 
 NB. extant backup numbers errmsg: no backup(s) to restore or search
-if. 0=#bn=. bnums BAK__DL do. jderr ERR103 return. end.
+if. badrc uv=. checkback DL do. uv return. else. bn=. rv uv end.
 
 NB. search name pattern and requested backup
 'pat rbk'=. (NDOT&beforestr ; NDOT&afterstr) y
@@ -318,7 +420,15 @@ elseif. 0 e. rbk e. DIGITS    do. jderr ERR010 return.
 elseif. -.(rbk=. ".rbk) e. bn do. jderr ERR103 return. 
 end.
 
-if. (,NDOT)-:alltrim y do.
+bdot=. (,NDOT)-:alltrim y 
+
+if. bdot *. INPUT={.x do.
+
+  NB. show pack/backup dates
+  ok <DL backupdates bn
+
+elseif. bdot do.
+
   NB. return backup suffixes
   dot=. (0<#bn){'';NDOT
   ok dot ,&.> 'r<0>0.d' 8!:0 bn
@@ -358,6 +468,19 @@ NB.   bnums BAK NB. (BAK) directory object noun
 
 NB. requires first character of all (JDFILES) to be the same
 \:~ ~. , ". ({.;JDFILES)&beforestr&> {."1 (1!:0) <y,'*',IJF
+)
+
+
+checkback=:3 : 0
+
+NB.*checkback v-- return list of put dictionary backup numbers.
+NB.
+NB. monad:  ilbn checkback baObj
+NB.
+NB.   checkback {:0{DPATH  
+
+NB. extant backup numbers errmsg: no backup(s) to restore or search
+if. 0=#bn=. bnums BAK__y do. jderr ERR103 else. ok bn end.
 )
 
 

@@ -119,15 +119,17 @@ TEMPFX=:'tmp'
 
 backnum=:3 : 0
 
-NB.*backnum v-- increments backup and pack counts.
+NB.*backnum v-- increments backup pack count and backup/restoration timestamp.
 NB.
 NB. monad:  backnum ia
+NB.
+NB.   backnum 0 NB. typical call
 
 NB. HARDCODE pack counter is in component 1
 nums=.> jread WF;1  NB. object noun !(*)=. WF
-if. #nums do. nums=. (>:y{nums) y}nums else. nums=. 0 0 end.
-nums jreplace WF;1
-y{nums
+if. #nums do. nums=. (>:y{nums) y}nums else. nums=. 0 , 6!:0'' end.
+((0{nums) , 6!:0'') jreplace WF;1
+<.y{nums NB. integer result
 )
 
 
