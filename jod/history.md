@@ -6,10 +6,12 @@ general/jod - change history
 ### 1.0.0 dev - (Feature Complete Release)
 
  * `bget` implemented - see `jod.pdf`
+
+ *  special `bnl` case added to display backup file dates - see `jod.pdf`
  
  * [`bget` Jupyter Lab]()
 
- *  rm`, `rtt` adjusted to support changes to `18!:4`.
+ *  `rm`, `rtt` adjusted to support changes to `18!:4`.
 
  * `MAXNAME` increased to 128 from 60. This parameter controls the maximum
     length of j names that can be stored in JOD. It can be set to
@@ -19,7 +21,7 @@ general/jod - change history
 
 ### 0.0.998 - February 14, 2019 (Valentine's Day)
 
- * `rxs` implemented - see `jod.pdf
+ * `rxs` implemented - see `jod.pdf`
 
  * [`rxs` Jupyter Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/Using%20JOD%20Regular%20Expressions.ipynb)
 
