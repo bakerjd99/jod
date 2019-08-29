@@ -32,6 +32,7 @@ NB. set jqt windows console size - automatic for linux/mac/ios
 Cwh_j_=: 160 24
 
 NB. do not reset if you are running more than one JOD instance
+NB. multiple JOD instances are permitted but not recommended
 dpset 'RESETME'
 
 NB. JOD interface locale - (ijod) is a good place for ad hoc JOD addons
@@ -169,11 +170,12 @@ readtd2=:[: <;._2&> (9{a.) ,&.>~ [: <;._2 [: (] , ((10{a.)"_ = {:) }. (10{a.)"_)
 NB. writes tables as TAB delimited LF terminated text - see long document in (utils)
 writetd2=:] (1!:2 ]`<@.(32&>@(3!:0)))~ [: ([: (] , ((10{a.)"_ = {:) }. (10{a.)"_) [: }.@(,@(1&(,"1)@(-.@(*./\."1@(=&' '@])))) # ,@((10{a.)&(,"1)@])) [: }."1 [: ;"1 (9{a.)&,@":&.>) [
 
-NB. fetch edit text/macros
+NB. fetch edit text/macros and associate code
 tt=:] ; gt
 mt=:] ; 25"_ ; gt   NB. *.txt
 mj=:] ; 21"_ ; gt   NB. *.ijs
 md=:] ; 27"_ ; gt   NB. *.markdown
+mq=:] ; 30"_ ; gt   NB. *.sql
 mx=:] ; 22"_ ; gt   NB. *.tex
 
 NB. ~user/temp object text - default j script
@@ -184,6 +186,9 @@ jt=:[: read os
  
 NB.  load j script from j user temp
 jl=: (0!:0)@jt
+
+NB. load j script from configured j path
+jp=: [: 0!:0 [: < jpath
 
 NB. number of objects - used by various (utils) macros (sizeput, ageput, ...) if present
 NOBS=: 10

@@ -1,5 +1,5 @@
 NB. System: jodtools  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.998  Build Number: 22  Date: 14 Feb 2019 22:32:20
+NB. Version: 0.9.999  Build Number: 5  Date: 29 Aug 2019 14:36:37
 (9!:41)0
 coclass'ajodtools'
 coinsert'ajodutil'
@@ -19,7 +19,7 @@ GROUPSUITES=:<;._1 ' Groups Suites'
 IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
-JODTOOLSVMD=:'0.9.998';22;'14 Feb 2019 22:32:20'
+JODTOOLSVMD=:'0.9.999';5;'29 Aug 2019 14:36:37'
 LF=:10{a.
 OK00400=:'load script saved ->'
 OK00401=:'file saved ->'
@@ -194,26 +194,26 @@ lg=:3 :0
 2 lg y
 :
 if.x-:2 do.
-o_jdW=.OK00404
-o_bKg=.2 _2 make y
+o_vrR=.OK00404
+o_fE1=.2 _2 make y
 else.
-o_jdW=.OK00405
-o_bKg=.2 mls y
+o_vrR=.OK00405
+o_fE1=.2 mls y
 end.
-'o_cuS o_sID'=.2{.o_bKg
-if.o_cuS do.
-o_i9p=.18!:5''
+'o_qo5 o_dSG'=.2{.o_fE1
+if.o_qo5 do.
+o_yef=.18!:5''
 cocurrent'base'
-try.0 !:0 o_sID
+try.0 !:0 o_dSG
 catchd.
-cocurrent o_i9p
+cocurrent o_yef
 (jderr ERR00404),y;13!:12''
 return.
 end.
-cocurrent o_i9p
-ok(y),o_jdW
+cocurrent o_yef
+ok(y),o_vrR
 else.
-o_bKg
+o_fE1
 end.
 )
 locgrp=:3 :0

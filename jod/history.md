@@ -3,7 +3,7 @@
 general/jod - change history
 ============================
 
-### 1.0.0 dev - (Feature Complete Release)
+### 1.0.0 dev - (Feature Complete Release - not released yet)
 
  * `bget` implemented - see `jod.pdf`
 
@@ -11,15 +11,19 @@ general/jod - change history
  
  * [`bget` Jupyter Lab]()
 
- *  `rm`, `rtt` adjusted to support changes to `18!:4`.
+ * some macros and tests adjusted to support 18!:4 changes.
+
+### 0.9.999 - August 29, 2019
+
+ * patch release fixes startup failure for J 9.01 beta-h and beyond.
 
  * `MAXNAME` increased to 128 from 60. This parameter controls the maximum
     length of j names that can be stored in JOD. It can be set to
     values between 1 and 255.
 
- * some macros and tests adjusted to support 18!:4 changes.
+ *  `rm`, `rtt` adjusted to support changes to `18!:4`.
 
-### 0.0.998 - February 14, 2019 (Valentine's Day)
+### 0.9.998 - February 14, 2019 (Valentine's Day)
 
  * `rxs` implemented - see `jod.pdf`
 
@@ -28,7 +32,7 @@ general/jod - change history
  * Jupyter notebook versions of JOD labs see:
    [JOD lab notebooks](https://github.com/bakerjd99/jod/tree/master/jodnotebooks)
 
-### 0.0.996 - October 14, 2018
+### 0.9.996 - October 14, 2018
 
  * `mnl` implemented - see `jod.pdf`
 

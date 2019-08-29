@@ -1,6 +1,10 @@
 general/joddocument - change history
 ====================================
 
+### 0.9.999 - August 29, 2019
+
+  * version bump for J 9.01 beta patch.
+
 ### 0.9.998 - February 14, 2019 (Valentine's Day)
 
   * `rxs` section added. 

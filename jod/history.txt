@@ -3,17 +3,36 @@
 general/jod - change history
 ============================
 
-### 0.0.998 - February 14, 2019 (Valentine's Day)
+### 1.0.0 dev - (Feature Complete Release - not released yet)
 
- * `rxs` implemented - see `jod.pdf
+ * `bget` implemented - see `jod.pdf`
 
- * `rxs` examples in a 
-   [Jupyter notebook](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/Using%20JOD%20Regular%20Expressions.ipynb)
+ *  special `bnl` case added to display backup file dates - see `jod.pdf`
+ 
+ * [`bget` Jupyter Lab]()
+
+ * some macros and tests adjusted to support 18!:4 changes.
+
+### 0.9.999 - August 29, 2019
+
+ * patch release fixes startup failure for J 9.01 beta-h and beyond.
+
+ * `MAXNAME` increased to 128 from 60. This parameter controls the maximum
+    length of j names that can be stored in JOD. It can be set to
+    values between 1 and 255.
+
+ *  `rm`, `rtt` adjusted to support changes to `18!:4`.
+
+### 0.9.998 - February 14, 2019 (Valentine's Day)
+
+ * `rxs` implemented - see `jod.pdf`
+
+ * [`rxs` Jupyter Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/Using%20JOD%20Regular%20Expressions.ipynb)
 
  * Jupyter notebook versions of JOD labs see:
    [JOD lab notebooks](https://github.com/bakerjd99/jod/tree/master/jodnotebooks)
 
-### 0.0.996 - October 14, 2018
+### 0.9.996 - October 14, 2018
 
  * `mnl` implemented - see `jod.pdf`
 
