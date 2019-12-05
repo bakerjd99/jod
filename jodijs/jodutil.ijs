@@ -596,7 +596,7 @@ NB. monad:  ed cl|blcl|bt
 NB.
 NB.   ed 'wordname'
 NB.
-NB.   ed ;:'many words mashed into one edit script
+NB.   ed ;:'many words mashed into one edit script'
 NB.
 NB.   NB. edit contents of (name,value) and (name,class,value) tables
 NB.   ed ; }. 0 10 get }. dnl 're'

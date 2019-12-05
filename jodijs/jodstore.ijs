@@ -71,10 +71,16 @@ INVMACROS=: CNCLASS,CNPUTDATE,CNCREATION,CNSIZE,CNEXPLAIN
 INVWORDS=:  INVMACROS
 
 NB. inverted test data
-INVTESTS=: CNPUTDATE,CNCREATION,CNSIZE,CNEXPLAIN 
+INVTESTS=: CNPUTDATE,CNCREATION,CNSIZE,CNEXPLAIN
+
+NB. name.n or name.name separator character
+NDOT=:'.' 
 
 NB. trim right (trailing) path delimiters !(*)=. PATHDEL
 rpdtrim=:] #~ [: -. [: *./\. PATHDEL"_ = ]
+
+NB. split backup name pattern cl
+splitbname=: (NDOT&beforestr ; NDOT&afterstr)
 
 NB.*enddependents
 NB.*end-header
@@ -138,9 +144,8 @@ ERR102=:'timestamp table shape invalid'
 ERR103=:'no backup(s) to restore or search'
 ERR104=:'no registered dictionaries'
 ERR105=:'unreadable or missing backup timestamp'
-
-NB. name.n or name.name separator character
-NDOT=:'.'
+ERR106=:'invalid backup number(s)'
+ERR107=:'not in backup(s) -> '
 
 NB. directory and reserved components in *.ijf files
 OFFSET=:39
@@ -325,14 +330,82 @@ NB. bad jfile components - first names do not match list
 badcn=:[: -. [ -: [: {.&> ]
 
 
+bchecknames=:4 : 0
+
+NB.*bchecknames v-- checks backup name patterns.
+NB.
+NB. dyad:  ilObjBn bchecknames blclBnames
+NB.
+NB.   NB. valid ordered put dictionary backup numbers
+NB.   bn=. rv_ajod_ checkback__ST__JODobj _1{0{DPATH__ST__JODobj
+NB.
+NB.   NB. first item of (x) is a dictionary object code
+NB.   (WORD,bn) bchecknames__ST__JODobj <;._1' booo hhh re.12 bx.14 er.99'
+NB.
+NB.   NB. names are not required for the special DICTIONARY case
+NB.   (DICTIONARY,bn) bchecknames__ST__JODobj <;._1' .71 .73 .65'
+
+NB. errmsg: invalid name pattern(s)
+if. +./ badcl&> y do. jderr ERR010 return. end.
+
+NB. split backup name patterns
+nbk=. (splitbname&> y) -.&.> ' '
+
+NB. if backup number is absent use most recent
+nbk=. (<":1{x) (<(I. 0 = #&> 1 {"1 nbk);1)} nbk
+
+NB. names must be valid
+if. DICTIONARY = 0{x do. bnm=. 0 {"1 nbk 
+elseif. badrc bnm=. checknames 0 {"1 nbk do. bnm return. 
+elseif.do. bnm=. }.bnm 
+end.
+
+NB. backup numbers must be valid
+if. 0 e. (1 {"1 nbk) *./@e.&> <DIGITS do. jderr ERR106 return. end.
+bn=. , _1&".&> 1 {"1 nbk
+
+NB. errmsg: invalid backup number(s)
+if. 0 e. bn e. x do. jderr ERR106 return. end.  
+
+NB. return unique checked names and backup numbers
+ok <~.bnm ,. <"0 bn
+)
+
+
 bgetdicdoc=:3 : 0
 
 NB.*bgetdicdoc v-- get backup versions of the dictionary document.
 NB.
-NB. monad:  bgetdicdoc ??
-NB. dyad:  ?? bgetdicdoc ??
+NB. monad:  bgetdicdoc btNameBn
 
-ok 'NIMP bgetdicdoc'
+NB. there is only one document per dictionary unique 
+NB. dictionary backup numbers insure no redundant file reads
+bn=. ~.1 {"1 y 
+
+NB. put dictionary object  !(*)=. doj
+doj=. {:{.DPATH
+
+NB. dictionary document results combine dictionary name 
+NB. with backup numbers to differentiate versions
+NB. NOTE: the resulting label may not be a valid J name
+ro=. ((<DNAME__doj) ,&.> ":&.> bn) ,. a:
+
+NB. backup path and file suffix
+'pth fsx'=. bpathsfx WORD 
+
+ubn=. ;bn
+for_bob. ubn do.
+
+  fn=. pth,(":bob),fsx NB. backup file    
+
+  NB. read document component 
+  if. badjr dat=. jread fn;CNDICDOC do. jderr ERR088 return. end.
+ 
+  NB. update results
+  ro=. dat (<(I. bob=ubn);1)} ro
+
+end.
+ok <ro  NB. return object table 
 )
 
 
@@ -343,18 +416,43 @@ NB.
 NB. monad:  bgetdocument ??
 NB. dyad:  ?? bgetdocument ??
 
-ok 'NIMP bgetdocument'
+ok (<'NIMP bgetdocument'),<y
 )
 
 
 bgetexplain=:4 : 0
 
-NB.*bgetexplain v-- get backup versions of short object explanations.
+NB.*bgetobjects v-- get short explanations from backups.
 NB.
-NB. monad:  bgetexplain ??
-NB. dyad:  ?? bgetexplain ??
+NB. dyad: il bgetobjects btNameBn
 
-ok 'NIMP bgetexplain'
+NB. object names 
+nnm=. 0 {"1 y [ obj=. 0{x
+
+NB. results are boxed name value tables
+ro=. nnm ,. a:
+
+'pth fsx'=. bpathsfx obj
+
+NB. fetch backup objects by backup number - optimizes file reads
+cpm=. CNLIST,CNEXPLAIN
+ubn=. ~.bn=. ; 1 {"1 y
+for_bob. ubn do.
+
+  fn=. pth,(":bob),fsx NB. backup file
+
+  NB. read backup explanations errmsg: read failure
+  if. badjr 'ixn sex'=. jread fn;cpm do. jderr ERR088 return. end.
+
+  NB. explanations must exist in backup(s) errmsg: not in backups ->
+  sn=. nnm {~ rx=. I. bob=bn
+  if. 0 e. uv=. sn e. ixn do. (jderr ERR107),(sn #~ -.uv) ,&.> <NDOT,":bob return. end.
+
+  NB. update results
+  ro=. (sex {~ ixn i. sn) (<rx;1)} ro
+
+end.
+ok <ro  NB. return object table 
 )
 
 
@@ -365,7 +463,7 @@ NB.
 NB. monad:  bgetgstext ??
 NB. dyad:  ?? bgetgstext ??
 
-ok 'NIMP bgetgstext'
+ok (<'NIMP bgetgstext'),<y
 )
 
 
@@ -373,10 +471,43 @@ bgetobjects=:4 : 0
 
 NB.*bgetobjects v-- get objects from backups.
 NB.
-NB. monad:  bgetobjects ??
-NB. dyad:  ?? bgetobjects ??
+NB. dyad: il bgetobjects btNameBn
 
-ok 'NIMP bgetobjects'
+NB. object code, offset and names
+nnm=. 0 {"1 y [ 'obj offset'=. x 
+
+NB. results are boxed name value tables
+NB. words & macro have three columns
+ro=. nnm ,"0 1 (1 + (offset=0) * obj e. WORD,MACRO)$a:
+
+NB. long document results are column subsets 
+if. 0=offset do. cols=. i. {:$ro else. cols=. 0 _1 end.
+
+NB. backup path and file suffix
+'pth fsx'=. bpathsfx obj
+
+NB. fetch backup objects by backup number - optimizes file reads
+cpm=. CNLIST,CNCOMPS
+ubn=. ~.bn=. ; 1 {"1 y
+for_bob. ubn do.
+
+  fn=. pth,(":bob),fsx NB. backup file
+
+  NB. read backup directory index  errmsg: read failure
+  if. badjr 'ixn ixc'=. jread fn;cpm do. jderr ERR088 return. end.
+
+  NB. objects must exist in backup(s) errmsg: not in backups ->
+  sn=. nnm {~ rx=. I. bob=bn
+  if. 0 e. uv=. sn e. ixn do. (jderr ERR107),(sn #~ -.uv) ,&.> <NDOT,":bob return. end.
+
+  NB. read object components
+  if. badjr dat=. jread fn;offset+(ixn i. sn){ixc do. jderr ERR088 return. end.
+
+  NB. update results
+  ro=. (cols {"1 >dat) rx} ro
+
+end.
+ok <ro  NB. return object table 
 )
 
 
@@ -387,7 +518,7 @@ NB.
 NB. monad:  bgslist ??
 NB. dyad:  ?? bgslist ??
 
-ok 'NIMP bgslist'
+ok (<'NIMP bgslist'),<y
 )
 
 
@@ -412,12 +543,17 @@ NB. extant backup numbers errmsg: no backup(s) to restore or search
 if. badrc uv=. checkback DL do. uv return. else. bn=. rv uv end.
 
 NB. search name pattern and requested backup
-'pat rbk'=. (NDOT&beforestr ; NDOT&afterstr) y
+'pat rbk'=. splitbname y
 
 NB. use most recent backup if none specified
 if.     isempty rbk           do. rbk=. {.bn
 elseif. 0 e. rbk e. DIGITS    do. jderr ERR010 return. 
 elseif. -.(rbk=. ".rbk) e. bn do. jderr ERR103 return. 
+end.
+
+NB. nonempty patterns must be valid J names without embedded locales
+if. #uv=. pat -. ' ' do.
+  if. badrc uv=. checknames pat do. uv return. end. 
 end.
 
 bdot=. (,NDOT)-:alltrim y 
@@ -468,6 +604,28 @@ NB.   bnums BAK NB. (BAK) directory object noun
 
 NB. requires first character of all (JDFILES) to be the same
 \:~ ~. , ". ({.;JDFILES)&beforestr&> {."1 (1!:0) <y,'*',IJF
+)
+
+
+bpathsfx=:3 : 0
+
+NB.*bpathsfx v-- backup file path and file name suffix.
+NB.
+NB. monad:  (clPath ; clSfx) =. bpathsfx iaObj
+NB. 
+NB.   NB. calls in object context
+NB.   bpathsfx__ST__JODobj WORD_ajod_
+NB.   bpathsfx__ST__JODobj MACRO_ajod_
+
+doj=. {:{.DPATH         NB. put dictionary object 
+fsx=. (;y{JDFILES),IJF  NB. backup file name suffix
+
+NB. backup file path !(*)=. doj
+pth=. ". ({.;dncn__doj y),'P__doj'
+pth=. (>:pth i: PATHDEL) {. pth
+
+NB. return path and suffix
+(pth , (;{:JDSDIRS) , PATHDEL);fsx
 )
 
 

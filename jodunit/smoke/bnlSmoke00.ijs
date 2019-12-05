@@ -9,6 +9,7 @@ NB. author:  John D. Baker
 NB. created: 2015jul31
 NB. changes: -----------------------------------------------------
 NB. 18oct12 adjusted for 18!:4 change
+NB. 19dec03 test for invalid J names and embedded locales added
 
 cocurrent 'base'
 require 'jodtester'
@@ -78,6 +79,18 @@ ner 4 bnl '.-1'
 ner 2 bnl '..'
 ner bnl 0
 ner bnl <''
+
+NB. J names with embedded locales are not in JOD dictionaries
+ner bnl 'is__wrong'
+ner bnl 'is__even__wronger'
+ner bnl 'still_wrong_'
+ner bnl 'a&'      NB. not a J name
+
+NB. appends current first backup number 
+LASTBNUM=: '.', ;1 { bnl '.' 
+ner bnl 'my_bad_',LASTBNUM
+ner bnl 'my__bad',LASTBNUM
+ner bnl 'just&^^awful',LASTBNUM
 
 NB. some basic identities 
 (bnl '') -: bnl ;1{bnl '.' 

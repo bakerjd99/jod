@@ -35,7 +35,9 @@ NB.   Error messages (JOD errors 000-049)
 
 coclass  'ajod'
 coinsert 'ijod'
-require 'jfiles regex task'
+
+NB. task addon loaded first for J 9.01 
+require 'jfiles regex'  
 
 NB.*dependents x-- words defined in this section have related definitions
 
@@ -141,7 +143,7 @@ NB. controls dependent block processing - (1) process (0) do not process
 DODEPENDENTS=:1
 
 NB. dictionary path table - see long documentation
-DPATH=:i.0 4
+DPATH=:0 4$00
 
 NB. maximum dictionary path length
 DPLIMIT=:32
@@ -156,7 +158,7 @@ ERR006=:'cannot read master'
 ERR007=:'cannot read master documentation'
 ERR008=:'invalid names(s) - embedded locale references'
 ERR009=:'no documentation text for ->'
-ERR010=:'invalid name pattern'
+ERR010=:'invalid name pattern(s)'
 ERR011=:'error(s) creating dictionary master file'
 ERR012=:'master in use - wait or try (dpset)'
 ERR013=:'cannot mark master'
@@ -219,7 +221,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.0.0 - dev';18;'22 Mar 2019 11:55:35'
+JODVMD=:'1.0.0 - dev';19;'05 Dec 2019 14:02:18'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -348,9 +350,12 @@ NB.
 NB. Also,   certain  objects  are  not  fetched,  name   classes,
 NB. timestamps and sizes.
 NB.
-NB. monad:  bget blcl
+NB. monad:  bget cl|blcl
 NB.
-NB.   NB. collect from must current backup
+NB.   NB. get last word backup
+NB.   bget 'oops'
+NB.
+NB.   NB. collect from most current backup
 NB.   bget ;: 'shawn of the dead'
 NB.
 NB.   NB. collect objects from particular put dictionary backups
@@ -359,10 +364,20 @@ NB.
 NB.   NB. get many versions of a word
 NB.   bget <;._1 ' me.12 me.09 me.08 me.02'
 NB.
-NB. dyad:  ilCodes bget bluu
+NB. dyad:  ilCodes bget cl|bluu
 NB.
 NB.   5 bget ''     NB. dictionary document from last backup
 NB.   5 bget '.12'  NB. dictionary document from particular backup
+NB.   5 bget }. bnl '.'  NB. dictionary document versions in all backups
+NB.
+NB.   NB. get a suite header from particular backup
+NB.   3 bget 'sweet.04'
+NB.
+NB.   NB. get long documents of an object
+NB.   2 9 bget <;._1 ' gfoo.12 gfoo.05 gfoo.00'  
+NB.   
+NB.   NB. all short explanations of words in last backup
+NB.   0 8 get }. revo ''
 NB.
 NB.   NB. three versions of a group's header - similar to (get) where
 NB.   NB. (2 get 'group') returns the group header
@@ -374,7 +389,7 @@ WORD bget y
 :
 msg=. ERR001
 
-if. badil x do. jderr msg return. end.
+if. (2<#x) +. badil x do. jderr msg return. end.
 
 NB. do we have a dictionary open?
 if. badrc uv=. checkopen__ST 0 do. uv return. end.
@@ -382,54 +397,53 @@ if. badrc uv=. checkopen__ST 0 do. uv return. end.
 NB. are backups present?
 if. badrc uv=. checkback__ST {:0{DPATH__ST do. uv return. else. bn=. rv uv end.
 
-NB. NIMP are the requested backup names valid?
-NB. NIMP are the requested backups present?
-
 NB. format standard (x) options
-x=. x , (-3-#x) {. DEFAULT , 0
-if. -. 0 1 e.~ {: x do. jderr msg return. end.
+x=. x , (-2-#x) {. DEFAULT 
+
+NB. are backup names and numbers valid?
+if. badrc bnm=. (({.x),bn) bchecknames__ST ,boxopen y do. bnm return. else. bnm=. rv bnm end.
 
 select. {. x
 case. WORD do.
   select. second x
-    case. DEFAULT  do. (WORD,0) bgetobjects__ST y
-    case. EXPLAIN  do. WORD bgetexplain__ST y
-    case. DOCUMENT do. WORD bgetdocument__ST y
+    case. DEFAULT  do. (WORD,0) bgetobjects__ST bnm
+    case. EXPLAIN  do. WORD bgetexplain__ST bnm
+    case. DOCUMENT do. (WORD,1) bgetobjects__ST bnm
     case.do. jderr msg
   end.
 case. TEST do.
   select. second x
-    case. DEFAULT  do. (TEST,0) bgetobjects__ST y
-    case. EXPLAIN  do. TEST bgetexplain__ST y
-    case. DOCUMENT do. TEST bgetdocument__ST y
+    case. DEFAULT  do. (TEST,0) bgetobjects__ST bnm
+    case. EXPLAIN  do. TEST bgetexplain__ST bnm
+    case. DOCUMENT do. (TEST,1) bgetobjects__ST bnm
     case.do. jderr msg
   end.
 case. GROUP do.
   select. second x
-    case. HEADER   do. GROUP bgslist__ST y  
-    case. DEFAULT  do. GROUP bgetgstext__ST y
-    case. EXPLAIN  do. GROUP bgetexplain__ST y
-    case. DOCUMENT do. GROUP bgetdocument__ST y
+    case. HEADER   do. GROUP bgslist__ST bnm  
+    case. DEFAULT  do. GROUP bgetgstext__ST bnm
+    case. EXPLAIN  do. GROUP bgetexplain__ST bnm
+    case. DOCUMENT do. (GROUP,1) bgetobjects__ST bnm
     case.do. jderr msg
   end.
 case. SUITE do.
   select. second x
-    case. HEADER   do. SUITE bgslist__ST y
-    case. DEFAULT  do. SUITE bgetgstext__ST y
-    case. EXPLAIN  do. SUITE bgetexplain__ST y
-    case. DOCUMENT do. SUITE bgetdocument__ST y
+    case. HEADER   do. SUITE bgslist__ST bnm
+    case. DEFAULT  do. SUITE bgetgstext__ST bnm
+    case. EXPLAIN  do. SUITE bgetexplain__ST bnm
+    case. DOCUMENT do. (SUITE,1) bgetobjects__ST bnm
     case.do. jderr msg
   end.
 case. MACRO do.
   select. second x
-    case. DEFAULT  do. (MACRO,0) bgetobjects__ST y
-    case. EXPLAIN  do. MACRO bgetexplain__ST y
-    case. DOCUMENT do. MACRO bgetdocument__ST y
+    case. DEFAULT  do. (MACRO,0) bgetobjects__ST bnm
+    case. EXPLAIN  do. MACRO bgetexplain__ST bnm
+    case. DOCUMENT do. (MACRO,1) bgetobjects__ST bnm
     case.do. jderr msg
   end.
 case. DICTIONARY do.
   select. second x
-    case. DEFAULT  do. bgetdicdoc__ST 0
+    case. DEFAULT  do. bgetdicdoc__ST bnm
     case.do. jderr msg
   end.
 case.do. jderr msg
@@ -2126,7 +2140,7 @@ tslash2=:([: - '\/' e.~ {:) }. '/' ,~ ]
 
 tstamp=:3 : 0
 
-NB.*tstamp v-- standard j 8.07 library timestamp.
+NB.*tstamp v-- standard j 8_07 library timestamp.
 NB.
 NB. A renamed version of the standard  J 8.07 era  timestamp. JOD
 NB. used an earlier version of this verb, see (tstamp2), that did
