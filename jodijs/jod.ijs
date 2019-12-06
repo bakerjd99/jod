@@ -221,7 +221,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.0.0 - dev';19;'05 Dec 2019 14:02:18'
+JODVMD=:'1.0.0 - dev';21;'06 Dec 2019 11:40:08'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.0199999999999996
@@ -420,7 +420,7 @@ case. TEST do.
   end.
 case. GROUP do.
   select. second x
-    case. HEADER   do. GROUP bgslist__ST bnm  
+    case. HEADER   do. (GROUP,2) bgetobjects__ST bnm
     case. DEFAULT  do. GROUP bgetgstext__ST bnm
     case. EXPLAIN  do. GROUP bgetexplain__ST bnm
     case. DOCUMENT do. (GROUP,1) bgetobjects__ST bnm
@@ -428,7 +428,7 @@ case. GROUP do.
   end.
 case. SUITE do.
   select. second x
-    case. HEADER   do. SUITE bgslist__ST bnm
+    case. HEADER   do. (SUITE,2) bgetobjects__ST bnm
     case. DEFAULT  do. SUITE bgetgstext__ST bnm
     case. EXPLAIN  do. SUITE bgetexplain__ST bnm
     case. DOCUMENT do. (SUITE,1) bgetobjects__ST bnm

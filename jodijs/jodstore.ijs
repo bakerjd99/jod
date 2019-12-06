@@ -409,17 +409,6 @@ ok <ro  NB. return object table
 )
 
 
-bgetdocument=:4 : 0
-
-NB.*bgetdocument v-- get backup versions of object documents. 
-NB.
-NB. monad:  bgetdocument ??
-NB. dyad:  ?? bgetdocument ??
-
-ok (<'NIMP bgetdocument'),<y
-)
-
-
 bgetexplain=:4 : 0
 
 NB.*bgetobjects v-- get short explanations from backups.
@@ -460,10 +449,9 @@ bgetgstext=:4 : 0
 
 NB.*bgetgstext v-- get backup versions of group/suite headers.
 NB.
-NB. monad:  bgetgstext ??
-NB. dyad:  ?? bgetgstext ??
+NB. dyad: il bgetobjects btNameBn
 
-ok (<'NIMP bgetgstext'),<y
+if. badrc uv=. (x,0) bgetobjects y do. uv else. ok <0 1 {"1 rv uv end.
 )
 
 
@@ -476,12 +464,16 @@ NB. dyad: il bgetobjects btNameBn
 NB. object code, offset and names
 nnm=. 0 {"1 y [ 'obj offset'=. x 
 
+NB. HARDCODE: 2 indicates fetching group/suite list(s)
+offset=. (bgslist=. offset=2){offset,0
+
 NB. results are boxed name value tables
 NB. words & macro have three columns
 ro=. nnm ,"0 1 (1 + (offset=0) * obj e. WORD,MACRO)$a:
 
-NB. long document results are column subsets 
-if. 0=offset do. cols=. i. {:$ro else. cols=. 0 _1 end.
+NB. HARDCODE: result columns
+cols=. 0 _1
+if. (0=offset) *. -.bgslist do. cols=. i. {:$ro end.
 
 NB. backup path and file suffix
 'pth fsx'=. bpathsfx obj
@@ -508,17 +500,6 @@ for_bob. ubn do.
 
 end.
 ok <ro  NB. return object table 
-)
-
-
-bgslist=:4 : 0
-
-NB.*bgslist v-- get backup versions of group/suite lists.
-NB.
-NB. monad:  bgslist ??
-NB. dyad:  ?? bgslist ??
-
-ok (<'NIMP bgslist'),<y
 )
 
 

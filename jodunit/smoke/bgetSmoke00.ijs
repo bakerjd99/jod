@@ -4,13 +4,20 @@ NB. assumes:
 NB. 
 NB.   1) (testjod00) dictionary 
 NB.      regd 'testjod00';jpath '~JODTEST/testjod00'
+NB.
+NB.   2) (jodtester) is a load script
 NB.  
 NB. author:  John D. Baker
 NB. created: 2019dec04
 NB. changes: -----------------------------------------------------
 
 cocurrent 'base'
-require 'jodtester'
+
+NB. make jodtester from JOD distribution dictionaries
+NB.
+NB.   od ;:'joddev jod utils' [ 3 od ''
+NB.   mls 'jodtester'
+load 'jodtester'
 
 coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
 coinsert 'ijod'
@@ -143,7 +150,12 @@ NB. some short and long test explanations
 er 4 8 put 'MacroText0';'mini macro explanation'
 er 4 9 put 'MacroText0';AllWorkNoPlay
 
-NB. insert dictionary document - insure test dictionary document is writeable
+NB. some groups and suites
+er grp MyStuffGroup=: ;:'MyStuffGroup MyTacitVerb MyExplicitVerb'
+er grp JustGroup=: ;:'JustGroup JustPeachey HunkeyDory GodTwilight'
+er 3 grp TestSmokeSuite=: ;:'TestSmokeSuite TestText0 TestText2'
+
+NB. insert dictionary document - insure test dictionary document is writeableT
 tdict -: ;1{did 0 
 er dpset 'DOCUMENTDICT';1
 er 5 put DicDocText=: 'dictionary document text made unique to this test: ',":didnum_ajod_''
@@ -163,28 +175,32 @@ er 0 bget (;:'HunkeyDory GodTwilight') ,&.> <LASTBNUM
 er 1 bget 'TestText0'        
 er 1 bget 'TestText1',LASTBNUM  
 er 1 bget ;:'TestText0 TestText2'   
- 
-NB. 2 bget 'name'        
-NB. 2 bget 'name.count'  
-NB. 2 bget blclBNames    
+er 2 bget 'JustGroup'        
+er 2 bget 'JustGroup',LASTBNUM
+er 2 bget ;:'JustGroup MyStuffGroup'
+  
 NB. 3 bget 'name'        
 NB. 3 bget 'name.count'  
 NB. 3 bget blclBNames  
   
 er 4 bget 'MacroText0'      
 er 4 bget 'MacroText0',LASTBNUM
+er 4 bget ;:'MacroText0 MacroText0'  
   
-NB. 4 bget blclBNames    
-NB. 5 bget 'name'        
-NB. 5 bget 'name.count'  
-NB. 5 bget blclBNames  
+NB. some don't care cases 
+er 5 bget 'ValidNamesAccepted'     NB. put dictionary document returned   
+er 5 bget 'IamSoIgnored',LASTBNUM  NB. if backup number is present it must be ok  
+er 5 bget ;:'valid names ignored'  NB. put dictionary document returned 
+
+NB. out of range backup numbers error out
+ner 5 bget (;:'invalid backup number') ,&.> <'.',":10 + ".}.LASTBNUM  
   
 er 0 8 bget 'MyExplicitVerb'     
 er 0 8 bget 'MyExplicitVerb',LASTBNUM
 er 0 8 bget ;:'MyExplicitVerb GodTwilight'
-er 0 9 bget 'GodTwilight'  
-    
-NB. 0 9 bget 'name.count'
+er 0 9 bget 'GodTwilight'   
+er 0 9 bget 'GodTwilight',LASTBNUM
+
 NB. 0 9 bget blclBNames  
 NB. 1 8 bget 'name'      
 NB. 1 8 bget 'name.count'
@@ -219,8 +235,13 @@ NB. document texts must match
 er 5 bget LASTBNUM      
 er 5 bget }. bnl '.'  NB. documents from all backups
   
-NB. 2 1 bget 'name'      
-NB. 2 1 bget 'name.count'
+er GroupDat=: 2 1 bget 'MyStuffGroup'  
+
+NB. group lists must match - order is irrelevant
+(/:~ ;{:, > }. GroupDat) -: /:~ }.MyStuffGroup
+    
+er 2 1 bget 'MyStuffGroup',LASTBNUM
+
 NB. 2 1 bget blclBNames  
 NB. 3 1 bget 'name'      
 NB. 3 1 bget 'name.count'
