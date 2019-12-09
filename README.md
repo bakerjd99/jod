@@ -29,4 +29,4 @@ directory [`jodijs`](https://github.com/bakerjd99/jod/tree/master/jodijs) contai
 fully commented JOD source. `jodijs` is not distributed by JAL. 
 
 John Baker
-February 15, 2019
+December 9, 2019
