@@ -3,14 +3,14 @@
 general/jod - change history
 ============================
 
-### 1.0.0 - December 7, 2019 (Feature Complete Release)
+### 1.0.0 - December 9, 2019 (Feature Complete Release)
 
  * `bget` implemented - see `jod.pdf` With this addition all
     planned JOD features are complete. From now on JOD
     changes will consist of bug fixes and optimizations.
     Stability is now the goal.
 
- * [`bget` Jupyter Lab]()
+ * [`bget` Jupyter Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/Using%20JOD%20Backup%20Get.ipynb)
 
  * some macros and tests adjusted to support 18!:4 changes.
 

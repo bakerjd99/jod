@@ -5,6 +5,13 @@ NB. dictionary objects. Replacing this class is all that's
 NB. required to change the dictionary storage system.
 NB.
 NB. Verb interface:
+NB.   bchecknames  checks backup name patterns                                                   │
+NB.   bgetdicdoc   get backup versions of the dictionary document                                │
+NB.   bgetexplain  get backup versions of short object explanations                              │
+NB.   bgetgstext   get backup versions of group/suite headers                                    │
+NB.   bgetobjects  get objects from backups                                                      │
+NB.   bnlsearch    searches put dictionary backup name lists for simple character list patterns  │
+NB.   bnums        returns unique backup ordered list of dictionary backup numbers               │
 NB.   checkopen    checks if any dictionary is open
 NB.   checkpath    checks current path against dictionary path
 NB.   checkput     checks if first path dictionary is a put dictionary
@@ -388,7 +395,8 @@ doj=. {:{.DPATH
 NB. dictionary document results combine dictionary name 
 NB. with backup numbers to differentiate versions
 NB. NOTE: the resulting label may not be a valid J name
-ro=. ((<DNAME__doj) ,&.> ":&.> bn) ,. a:
+NB. unless the JOD dictionary name is a valid J name.
+ro=. ((<DNAME__doj) ,&.> '_' ,&.> ":&.> bn) ,. a:
 
 NB. backup path and file suffix
 'pth fsx'=. bpathsfx WORD 
@@ -405,21 +413,23 @@ for_bob. ubn do.
   ro=. dat (<(I. bob=ubn);1)} ro
 
 end.
-ok <ro  NB. return object table 
+
+NB. insure any empty documents have literal datatype
+ok <btextlit ro
 )
 
 
 bgetexplain=:4 : 0
 
-NB.*bgetobjects v-- get short explanations from backups.
+NB.*bgetexplain v-- get short explanations from backups.
 NB.
-NB. dyad: il bgetobjects btNameBn
+NB. dyad: il bgetexplain btNameBn
 
 NB. object names 
 nnm=. 0 {"1 y [ obj=. 0{x
 
-NB. results are boxed name value tables
-ro=. nnm ,. a:
+NB. results are boxed name literal value tables
+ro=. nnm ,. <,''
 
 'pth fsx'=. bpathsfx obj
 
@@ -440,8 +450,13 @@ for_bob. ubn do.
   NB. update results
   ro=. (sex {~ ixn i. sn) (<rx;1)} ro
 
+  NB. distinquish object names with backup number suffix
+  ro=. (((<rx;0){ro) ,&.> <'_',":bob) (<rx;0)} ro
+
 end.
-ok <ro  NB. return object table 
+
+NB. insure any empty explanations have literal datatype
+ok <btextlit ro
 )
 
 
@@ -498,7 +513,14 @@ for_bob. ubn do.
   NB. update results
   ro=. (cols {"1 >dat) rx} ro
 
+  NB. distinquish object names with backup number suffix
+  ro=. (((<rx;0){ro) ,&.> <'_',":bob) (<rx;0)} ro
+
 end.
+
+NB. for nonwords insure any empty texts have literal datatype
+if. obj~:WORD do. ro=. btextlit ro end.
+
 ok <ro  NB. return object table 
 )
 
@@ -607,6 +629,21 @@ pth=. (>:pth i: PATHDEL) {. pth
 
 NB. return path and suffix
 (pth , (;{:JDSDIRS) , PATHDEL);fsx
+)
+
+
+btextlit=:3 : 0
+
+NB.*btextlit v-- force any empty backup text to literal datatype.
+NB.
+NB. To insure that (ed) can always edit  (bget) backup name value
+NB. tables force any empty texts to a literal dataype. If this is
+NB. not done the result may  fail the name, value argument  tests
+NB. of (ed).
+NB.
+NB. monad:  bt =. btextlit bt
+
+(<'') (<(I. 0 = #&> _1 {"1 y);_1)} y
 )
 
 
