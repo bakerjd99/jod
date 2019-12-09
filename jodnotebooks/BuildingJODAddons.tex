@@ -9,8 +9,8 @@
 
 
 
-    
-\documentclass[11pt,letter,landscape]{article}
+\documentclass[11pt,letter,landscape]{article}    
+%\documentclass[11pt]{article}
 
     
     
@@ -65,7 +65,6 @@
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
-    \usepackage{mathrsfs}
     
 
     
@@ -92,8 +91,6 @@
     \definecolor{ansi-cyan-intense}{HTML}{258F8F}
     \definecolor{ansi-white}{HTML}{C5C1B4}
     \definecolor{ansi-white-intense}{HTML}{A1A6B2}
-    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
-    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
 
     % commands and environments needed by pandoc snippets
     % extracted from the output of `pandoc -s`
@@ -140,18 +137,11 @@
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
-    % Math Jax compatibility definitions
+    % Math Jax compatability definitions
     \def\gt{>}
     \def\lt{<}
-    \let\Oldtex\TeX
-    \let\Oldlatex\LaTeX
-    \renewcommand{\TeX}{\textrm{\Oldtex}}
-    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
-    % Document title
     \title{Building JOD Addons}
-    
-    
     
     
     
@@ -294,7 +284,7 @@
 
 \begin{figure}
 \centering
-\includegraphics{inclusions/jodtinycube.png}
+\includegraphics{inclusions/jodteenytinycube.png}
 \caption{}
 \end{figure}
 
@@ -330,6 +320,17 @@ To insure that all the required JOD addon files are generated and placed
 correctly you run a JOD macro script.
 
 \textbf{\emph{Yes, JOD builds itself!}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. display J version}
+        \PY{l+m+mi}{9}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{14} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+j901/j64avx/windows/beta-s/commercial/www.jsoftware.com/2019-12-02T12:51:33
+
+    \end{Verbatim}
 
     \subsubsection{\texorpdfstring{Running
 \texttt{buildjodistribution}}{Running buildjodistribution}}\label{running-buildjodistribution}
@@ -368,14 +369,22 @@ NB. JODDOCUMENT addon
 ~JOD/joddev/alien/stage/joddocument/pdfdoc
 \end{verbatim}
 \item
-  jod.pdf - built separately - is in
+  jod.pdf - is built from LaTeX source
+  \href{https://github.com/bakerjd99/joddoc}{(see this GitHub
+  repository)} and copied to the
+  \texttt{\textasciitilde{}JOD/joddev/alien/stage/joddocument/pdfdoc}
+  directory.
+
+\begin{verbatim}
+https://github.com/bakerjd99/joddoc
+\end{verbatim}
 \end{enumerate}
 
 If these conditions are satisfied the following builds all JOD addons.
 When the macro runs it displays all the generated output files.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}1}]:} \PY{n+nv}{clear} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n+nv}{clear} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
         \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
         \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{S}\PY{l+s}{E}\PY{l+s}{T}\PY{l+s}{M}\PY{l+s}{E}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{n+nv}{portchars} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
         
@@ -386,12 +395,14 @@ When the macro runs it displays all the generated output files.
         \PY{n+nv}{rm} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{u}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{d}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{b}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
 
+
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+--------------------+------+---+-----+
 |1|opened (rw/ro/ro) ->|joddev|jod|utils|
 +-+--------------------+------+---+-----+
    NB.*buildjoddistribution s-- full JOD distribution build.
    
+   NB. create temporary working locale
    cocurrent 'base'
    coclass tmploc\_AAAjodbuild999\_=: 'AAAjodbuild999' [ coerase <'AAAjodbuild999'
    coinsert 'ijod'
@@ -409,35 +420,39 @@ When the macro runs it displays all the generated output files.
 |1|57 word(s) defined|
 +-+------------------+
    
-   'JODSTAGEDIR JODGITDIR JODSOURCESTAGEDIR JODSTAGEPDFDIR JODSTAGEDOCDIR JODGITDOCDIR JODADDONDIR JODSCRIPTDIR JODEXTSDIR'=: setbuilddirs 0
+   NB. set distribution directories
+   jddir=: 'JODSTAGEDIR JODGITDIR JODSOURCESTAGEDIR JODSTAGEPDFDIR JODSTAGEDOCDIR'
+   jddir=: jddir , ' JODGITDOCDIR JODADDONDIR JODSCRIPTDIR JODEXTSDIR' 
+   (jddir)=: setbuilddirs 0
    
+   NB. generate distribution scripts
    updatejodmanifest 0
 setting standard JOD interface
-/VERSION=:'0.9.998 - dev'/VERSION=:'0.9.998 - dev'
-/VERSION=:'0.9.998 - dev'/VERSION=:'0.9.998 - dev'
-/VERSION=:'0.9.995'/VERSION=:'0.9.998 - dev'
+/VERSION=:'1.0.0'/VERSION=:'1.0.0'
+/VERSION=:'1.0.0'/VERSION=:'1.0.0'
+/VERSION=:'1.0.0'/VERSION=:'1.0.0'
 JOD manifests updated
    JODVMD buildjodcompressed JODSTAGEDIR;JODGITDIR;JODADDONDIR;JODSCRIPTDIR
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.998 - dev  Build Number: 12  Date: 29 Jan 2019 18:54:14
+NB. Version: 1.0.0  Build Number: 32  Date: 09 Dec 2019 09:24:19
 
 compressing {\ldots} 
 output file locations:
-c:/j64/j64-807/addons/general/jod/jod.ijs
+c:/j64/j64-901beta/addons/general/jod/jod.ijs
 c:/jod/joddev/script/jod.ijs
 c:/jod/joddev/alien/stage/jod/jod.ijs
-77597 script bytes
+82147 script bytes
 JOD compressed build complete
    JODTOOLSVMD buildjodtoolscompressed JODSTAGEDIR;JODEXTSDIR;JODSCRIPTDIR
 NB. System: jodtools  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.998 - dev  Build Number: 12  Date: 29 Jan 2019 18:54:14
+NB. Version: 1.0.0  Build Number: 32  Date: 09 Dec 2019 09:24:20
 
 compressing jodtools {\ldots}
 output file locations:
-c:/j64/j64-807/addons/general/jod/jodexts/jodtools.ijs
+c:/j64/j64-901beta/addons/general/jod/jodexts/jodtools.ijs
 c:/jod/joddev/script/jodtools.ijs
 c:/jod/joddev/alien/stage/jod/jodexts/jodtools.ijs
-8078 script bytes
+8062 script bytes
 JODTOOLS compressed build complete
    JODVMD updatejoddistribution JODSTAGEDIR;JODGITDIR
 c:/jod/joddev/alien/stage/jod/jodparms.ijs
@@ -472,6 +487,7 @@ c:/jod/joddev/alien/stage/joddocument/pdfdoc/jod.pdf
 JODDOCUMENT updated
 JOD distribution build complete
    
+   NB. destroy build locale
    cocurrent 'base'
    coerase <tmploc\_AAAjodbuild999\_
 1
@@ -515,9 +531,10 @@ The following code fragment is found in a number of build macros.
 \end{verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{NB. summary of group (buildjod) contents}
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{NB. summary of group (buildjod) contents}
         \PY{n+nv}{hg} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{u}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{d}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-----------------------+-------------------------------------------------------------------------+
@@ -559,7 +576,7 @@ The following code fragment is found in a number of build macros.
 |md5fromstring          |computer md5 hash from character list                                    |
 |md5manifest            |compute md5 checksums from manifest files                                |
 |read                   |reads a file as a list of bytes                                          |
-|releasejod             |final JOD replease steps                                                 |
+|releasejod             |final JOD release steps                                                  |
 |setbuilddirs           |sets paths used by JOD build words                                       |
 |setjaddoncopy          |set distribution zip copy command for host OS                            |
 |setjaddonpaths         |sets jaddon paths for host OS                                            |
@@ -570,7 +587,7 @@ The following code fragment is found in a number of build macros.
 |toCRLF                 |converts character strings to CRLF delimiter                             |
 |toHOST                 |converts character strings to host delimiter                             |
 |toJ                    |converts character strings to J delimiter LF                             |
-|tstamp                 |time stamp                                                               |
+|tstamp                 |standard j 8\_07 library timestamp                                        |
 |updateJODTOOLSfiles    |updates additional JOD addon locations with JODTOOLS script text         |
 |updateJODfiles         |updates additional JOD addon locations with JOD script text              |
 |updatejoddistribution  |updates files in JOD distribution                                        |
@@ -589,7 +606,7 @@ Each J addon has a manifest file that lists the contents of the addon.
 The following is the manifest for jod.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{NB. manifest for JOD}
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. manifest for JOD}
         \PY{n+nv}{CAPTION}\PY{o}{=:}\PY{l+s}{\PYZsq{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{ }\PY{l+s}{J}\PY{l+s}{ }\PY{l+s}{O}\PY{l+s}{b}\PY{l+s}{j}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{D}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
         \PY{n+nv}{VERSION}\PY{o}{=:}\PY{l+s}{\PYZsq{}}\PY{l+s}{0}\PY{l+s}{.}\PY{l+s}{9}\PY{l+s}{.}\PY{l+s}{9}\PY{l+s}{9}\PY{l+s}{8}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}
         \PY{n+nv}{FOLDER}\PY{o}{=:}\PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
@@ -643,6 +660,7 @@ The following is the manifest for jod.
         \PY{n+nl}{)}
 \end{Verbatim}
 
+
     \subsubsection{\texorpdfstring{\texttt{buildjodcompressed}}{buildjodcompressed}}\label{buildjodcompressed}
 
 All the code required to build JOD is available in the jodsource
@@ -651,7 +669,7 @@ the "compressed" JOD load script. \textbf{\emph{It calls many JOD
 verbs.}}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{n+nv}{buildjodcompressed}\PY{o}{=:}\PY{n+nf}{4 : 0}
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n+nv}{buildjodcompressed}\PY{o}{=:}\PY{n+nf}{4 : 0}
         
         \PY{c+c1}{NB.*buildjodcompressed v\PYZhy{}\PYZhy{} builds a fully compressed JOD load test script.}
         \PY{c+c1}{NB.}
@@ -759,6 +777,7 @@ verbs.}}
         \PY{n+nv}{erase} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{u}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{d}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{c}\PY{l+s}{o}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
 
+
     \begin{Verbatim}[commandchars=\\\{\}]
 1
 
@@ -771,12 +790,13 @@ The following displays all the words on the \texttt{buildjodcompressed}
 call tree. All of these words are in the source dictionaries.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{NB. find the uses union \PYZhy{} unique list of words on the call tree}
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{NB. find the uses union \PYZhy{} unique list of words on the call tree}
         \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{x}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{o}{=.} \PY{l+m+mi}{31} \PY{n+nv}{uses} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{u}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{d}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{c}\PY{l+s}{o}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
         
         \PY{c+c1}{NB. display all the words called by (buildjodcompressed)}
         \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{D}\PY{l+s}{i}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{L}\PY{l+s}{o}\PY{l+s}{c}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{v}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{ }\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}\PY{p}{)} \PY{o}{,}\PY{o}{:} \PY{l+m+mi}{40}\PY{o}{\PYZam{}}\PY{n+nv}{list} \PY{o}{\PYZam{}}\PY{o}{.}\PY{o}{\PYZgt{}} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{o}{,}\PY{n+nv}{xr}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +--------------------------------+--------------------------------+
@@ -785,12 +805,12 @@ call tree. All of these words are in the source dictionaries.
 |ALPHA           CR              |GROUP\_ajod\_     MACRO\_ajod\_     |
 |CRLF            CWSONLY         |NVTABLE\_ajod\_   TEXT\_ajod\_      |
 |DEFAULT         DEPENDENTSEND   |WORD\_ajod\_      wrep\_ajodstore\_ |
-|DEPENDENTSSTART DICTIONARY      |checkopen\_\_ST   defwords\_\_ST    |
-|DOCUMENT        ERR001          |getdicdoc\_\_ST   getdocument\_\_ST |
-|ERR002          ERR003          |getexplain\_\_ST  getgstext\_\_ST   |
-|ERR004          ERR008          |getntstamp\_\_ST  getobjects\_\_ST  |
-|ERR010          ERR014          |invfetch\_\_ST    wttext\_\_MK      |
-|ERR015          ERR020          |namecats\_\_MK    obtext\_\_UT      |
+|DEPENDENTSSTART DICTIONARY      |wttext\_\_MK      namecats\_\_MK    |
+|DOCUMENT        ERR001          |obtext\_\_UT      checkopen\_\_ST   |
+|ERR002          ERR003          |defwords\_\_ST    getdicdoc\_\_ST   |
+|ERR004          ERR008          |getdocument\_\_ST getexplain\_\_ST  |
+|ERR010          ERR014          |getgstext\_\_ST   getntstamp\_\_ST  |
+|ERR015          ERR020          |getobjects\_\_ST  invfetch\_\_ST    |
 |ERR023          ERR024          |checkput\_\_ST    putdicdoc\_\_ST   |
 |ERR025          EXPLAIN         |putexplain\_\_ST  putntstamp\_\_ST  |
 |GROUP           INCLASS         |puttable\_\_ST    puttexts\_\_ST    |
@@ -833,10 +853,6 @@ call tree. All of these words are in the source dictionaries.
 +--------------------------------+--------------------------------+
 
     \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} 
-\end{Verbatim}
 
 
     % Add a bibliography block to the postdoc

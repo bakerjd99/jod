@@ -3,15 +3,18 @@
 general/jod - change history
 ============================
 
-### 1.0.0 dev - (Feature Complete Release - not released yet)
+### 1.0.0 - December 7, 2019 (Feature Complete Release)
 
- * `bget` implemented - see `jod.pdf`
+ * `bget` implemented - see `jod.pdf` With this addition all
+    planned JOD features are complete. From now on JOD
+    changes will consist of bug fixes and optimizations.
+    Stability is now the goal.
 
- *  special `bnl` case added to display backup file dates - see `jod.pdf`
- 
  * [`bget` Jupyter Lab]()
 
  * some macros and tests adjusted to support 18!:4 changes.
+
+ * new `bget` test cases in JOD source dictionaries.
 
 ### 0.9.999 - August 29, 2019
 

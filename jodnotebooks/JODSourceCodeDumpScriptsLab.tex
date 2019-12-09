@@ -9,8 +9,8 @@
 
 
 
-    
-\documentclass[11pt,letter,landscape]{article}
+\documentclass[11pt,letter,landscape]{article}    
+%\documentclass[11pt]{article}
 
     
     
@@ -65,7 +65,6 @@
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
-    \usepackage{mathrsfs}
     
 
     
@@ -92,8 +91,6 @@
     \definecolor{ansi-cyan-intense}{HTML}{258F8F}
     \definecolor{ansi-white}{HTML}{C5C1B4}
     \definecolor{ansi-white-intense}{HTML}{A1A6B2}
-    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
-    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
 
     % commands and environments needed by pandoc snippets
     % extracted from the output of `pandoc -s`
@@ -140,18 +137,11 @@
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
-    % Math Jax compatibility definitions
+    % Math Jax compatability definitions
     \def\gt{>}
     \def\lt{<}
-    \let\Oldtex\TeX
-    \let\Oldlatex\LaTeX
-    \renewcommand{\TeX}{\textrm{\Oldtex}}
-    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
-    % Document title
     \title{JOD Source Code Dump Scripts Lab}
-    
-    
     
     
     
@@ -295,7 +285,7 @@ Lab}\label{jod-source-code-dump-scripts-lab}
 
 \begin{figure}
 \centering
-\includegraphics{inclusions/jodtinycube.png}
+\includegraphics{inclusions/jodteenytinycube.png}
 \caption{}
 \end{figure}
 
@@ -311,12 +301,24 @@ supporting addons can be installed with the
 manager}.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. to use a dump script JOD must be active}
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. show J version}
+        \PY{l+m+mi}{9}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{14} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+j901/j64avx/windows/beta-s/commercial/www.jsoftware.com/2019-12-02T12:51:33
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{NB. to use a dump script JOD must be active}
         \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
         
         \PY{c+c1}{NB. use portable characters \PYZhy{} simplifies converting notebooks to *.tex and other formats}
         \PY{n+nv}{portchars} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 
@@ -353,7 +355,7 @@ STEP.}
 This step defines a verb that removes lab source dictionaries.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}2}]:} \PY{n+nv}{RemoveLabSourceDictionaries\PYZus{}ijod\PYZus{}}\PY{o}{=:} \PY{n+nf}{3 : 0}
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n+nv}{RemoveLabSourceDictionaries\PYZus{}ijod\PYZus{}}\PY{o}{=:} \PY{n+nf}{3 : 0}
         \PY{n+nl}{if.} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{\PYZsq{}} \PY{o}{\PYZhy{}}\PY{o}{:} \PY{n+nv}{root}\PY{o}{=.} \PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{\PYZsq{}} \PY{n+nl}{do.}
           \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{A}\PY{l+s}{ }\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{t}\PY{l+s}{u}\PY{l+s}{p}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{t}\PY{l+s}{u}\PY{l+s}{p}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{g}\PY{l+s}{a}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
         \PY{n+nl}{elseif.} \PY{o}{\PYZhy{}}\PY{o}{.}\PY{n+nv}{fexist} \PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{n+nl}{do.}
@@ -376,16 +378,18 @@ This step defines a verb that removes lab source dictionaries.
         \PY{n+nl}{)}
 \end{Verbatim}
 
+
     \subsubsection{Remove any previous lab
 dictionaries.}\label{remove-any-previous-lab-dictionaries.}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{NB. unregister \PYZhy{} ignore errors}
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. unregister \PYZhy{} ignore errors}
         \PY{l+m+mi}{0} \PY{l+m+mi}{0} \PY{o}{\PYZdl{}} \PY{l+m+mi}{3} \PY{n+nv}{regd}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
         
         \PY{c+c1}{NB. clear out dictionary directories}
         \PY{n+nv}{RemoveLabSourceDictionaries} \PY{l+m+mi}{0}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 Lab temporary (win) source dictionaries erased
@@ -399,7 +403,7 @@ Dump scripts are loaded into dictionaries. Create a (\texttt{utilsload})
 dictionary.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. create a new utils directory in (\PYZti{}JODSOURCE) \PYZhy{} it will be renamed later}
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{NB. create a new utils directory in (\PYZti{}JODSOURCE) \PYZhy{} it will be renamed later}
         \PY{c+c1}{NB. You must configure (\PYZti{}JODSOURCE) and point to an actual empty directory.}
         
         \PY{n+nv}{smoutput} \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{p}{(}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{/}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{i}\PY{l+s}{t}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
@@ -407,6 +411,7 @@ dictionary.
         \PY{c+c1}{NB. close any open dictionaries and open}
         \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+---------------------+---------+--------------------------------+
@@ -431,9 +436,10 @@ editors can crash J for very large scripts.
 dictionary}{Load the utilsload dictionary}}\label{load-the-utilsload-dictionary}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{NB. run the utils dump script}
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{NB. run the utils dump script}
         \PY{l+m+mi}{0}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{0} \PY{o}{\PYZlt{}}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{/}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+--------------------+---------+
@@ -461,10 +467,10 @@ dictionary}{Load the utilsload dictionary}}\label{load-the-utilsload-dictionary}
 |1|50 word(s) put in ->|utilsload|
 +-+--------------------+---------+
 +-+--------------------+---------+
-|1|12 word(s) put in ->|utilsload|
+|1|17 word(s) put in ->|utilsload|
 +-+--------------------+---------+
 +-+---------------------------------+---------+
-|1|387 word explanation(s) put in ->|utilsload|
+|1|392 word explanation(s) put in ->|utilsload|
 +-+---------------------------------+---------+
 +-+----------------------------+---------+
 |1|3 word document(s) put in ->|utilsload|
@@ -479,7 +485,7 @@ dictionary}{Load the utilsload dictionary}}\label{load-the-utilsload-dictionary}
 |1|5 word document(s) put in ->|utilsload|
 +-+----------------------------+---------+
 +-+----------------------------+---------+
-|1|3 word document(s) put in ->|utilsload|
+|1|2 word document(s) put in ->|utilsload|
 +-+----------------------------+---------+
 +-+-----------------------------+---------+
 |1|10 word document(s) put in ->|utilsload|
@@ -488,7 +494,7 @@ dictionary}{Load the utilsload dictionary}}\label{load-the-utilsload-dictionary}
 |1|1 word document(s) put in ->|utilsload|
 +-+----------------------------+---------+
 +-+----------------------------+---------+
-|1|4 word document(s) put in ->|utilsload|
+|1|5 word document(s) put in ->|utilsload|
 +-+----------------------------+---------+
 +-+-------------------+---------+
 |1|7 test(s) put in ->|utilsload|
@@ -497,10 +503,10 @@ dictionary}{Load the utilsload dictionary}}\label{load-the-utilsload-dictionary}
 |1|7 test explanation(s) put in ->|utilsload|
 +-+-------------------------------+---------+
 +-+---------------------+---------+
-|1|16 macro(s) put in ->|utilsload|
+|1|17 macro(s) put in ->|utilsload|
 +-+---------------------+---------+
 +-+---------------------------------+---------+
-|1|16 macro explanation(s) put in ->|utilsload|
+|1|17 macro explanation(s) put in ->|utilsload|
 +-+---------------------------------+---------+
 +-+--------------------------------+---------+
 |1|group <base64> put in ->        |utilsload|
@@ -570,25 +576,26 @@ are used in many ways. The cross references are not stored in dumps and
 must be recreated afterwards.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{NB. regenerate utilities cross references and show first 5 messages}
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{NB. regenerate utilities cross references and show first 5 messages}
         \PY{n+nv}{smoutput} \PY{l+m+mi}{5} \PY{o}{\PYZob{}}\PY{o}{.} \PY{l+m+mi}{0} \PY{n+nv}{globs}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{revo} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
         
         \PY{c+c1}{NB. make utilities a read only dictionary}
         \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{A}\PY{l+s}{D}\PY{l+s}{O}\PY{l+s}{N}\PY{l+s}{L}\PY{l+s}{Y}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
 
+
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+-----------------------------------+---------+
-|1|<weeksbetween> references put in ->|utilsload|
-+-+-----------------------------------+---------+
-|1|<weeksinyear> references put in -> |utilsload|
-+-+-----------------------------------+---------+
-|1|<wfl> references put in ->         |utilsload|
-+-+-----------------------------------+---------+
-|1|<winlcchars> references put in ->  |utilsload|
-+-+-----------------------------------+---------+
-|1|<winpathsep> references put in ->  |utilsload|
-+-+-----------------------------------+---------+
++-+----------------------------------+---------+
+|1|<volumes> references put in ->    |utilsload|
++-+----------------------------------+---------+
+|1|<wd> references put in ->         |utilsload|
++-+----------------------------------+---------+
+|1|<weekday> references put in ->    |utilsload|
++-+----------------------------------+---------+
+|1|<weeknumber> references put in -> |utilsload|
++-+----------------------------------+---------+
+|1|<weeknumber2> references put in ->|utilsload|
++-+----------------------------------+---------+
 +-+--------------------------------------------+---------+
 |1|put dictionary is now a read/only library ->|utilsload|
 +-+--------------------------------------------+---------+
@@ -603,10 +610,11 @@ updated. To complete the restoration of JOD source code we now create
 and load (\texttt{jodload}) and (\texttt{joddevload)}.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{NB. create dictionaries}
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{NB. create dictionaries}
         \PY{n+nv}{smoutput} \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{p}{(}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
         \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{p}{(}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{e}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{p}\PY{l+s}{m}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+---------------------+-------+------------------------------+
@@ -622,7 +630,7 @@ and load (\texttt{jodload}) and (\texttt{joddevload)}.
 relationship is maintained by the path order of dictionaries.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{NB. close any open dictionaries }
+{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{NB. close any open dictionaries }
         \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
         
         \PY{c+c1}{NB. open (jodload) and (utilsload)}
@@ -632,6 +640,7 @@ relationship is maintained by the path order of dictionaries.
         \PY{n+nv}{did}\PY{o}{\PYZti{}}  \PY{l+m+mi}{0}
 \end{Verbatim}
 
+
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+------------------------------------------------------------+
 |1|+---------+--+-----+-----+-------+-------+------+----------+|
@@ -639,7 +648,7 @@ relationship is maintained by the path order of dictionaries.
 | |+---------+--+-----+-----+-------+-------+------+----------+|
 | ||jodload  |rw|0    |0    |0      |0      |0     |/         ||
 | |+---------+--+-----+-----+-------+-------+------+----------+|
-| ||utilsload|ro|387  |7    |21     |0      |16    |/utilsload||
+| ||utilsload|ro|392  |7    |21     |0      |17    |/utilsload||
 | |+---------+--+-----+-----+-------+-------+------+----------+|
 +-+------------------------------------------------------------+
 
@@ -650,9 +659,10 @@ contains a substantial amount of documentation and test data. It may
 take a few moments to load.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{NB. load jod}
-        \PY{l+m+mi}{0}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{0} \PY{o}{\PYZlt{}}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+{\color{incolor}In [{\color{incolor}10}]:} \PY{c+c1}{NB. load jod}
+         \PY{l+m+mi}{0}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{0} \PY{o}{\PYZlt{}}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+--------------------+-------+
@@ -677,7 +687,7 @@ take a few moments to load.
 |1|50 word(s) put in ->|jodload|
 +-+--------------------+-------+
 +-+--------------------+-------+
-|1|42 word(s) put in ->|jodload|
+|1|47 word(s) put in ->|jodload|
 +-+--------------------+-------+
 +-+--------------------+-------+
 |1|50 word(s) put in ->|jodload|
@@ -701,13 +711,13 @@ take a few moments to load.
 |1|50 word(s) put in ->|jodload|
 +-+--------------------+-------+
 +-+--------------------+-------+
-|1|26 word(s) put in ->|jodload|
+|1|35 word(s) put in ->|jodload|
 +-+--------------------+-------+
 +-+---------------------------------+-------+
 |1|319 word explanation(s) put in ->|jodload|
 +-+---------------------------------+-------+
 +-+---------------------------------+-------+
-|1|268 word explanation(s) put in ->|jodload|
+|1|282 word explanation(s) put in ->|jodload|
 +-+---------------------------------+-------+
 +-+----------------------------+-------+
 |1|1 word document(s) put in ->|jodload|
@@ -718,11 +728,11 @@ take a few moments to load.
 +-+--------------------+-------+
 |1|50 test(s) put in ->|jodload|
 +-+--------------------+-------+
-+-+-------------------+-------+
-|1|4 test(s) put in ->|jodload|
-+-+-------------------+-------+
++-+--------------------+-------+
+|1|17 test(s) put in ->|jodload|
++-+--------------------+-------+
 +-+--------------------------------+-------+
-|1|39 test explanation(s) put in ->|jodload|
+|1|54 test explanation(s) put in ->|jodload|
 +-+--------------------------------+-------+
 +-+----------------------------+-------+
 |1|1 test document(s) put in ->|jodload|
@@ -807,6 +817,8 @@ take a few moments to load.
 +-+---------------------------------------+-------+
 |1|suite <jodpreparetests> put in ->      |jodload|
 +-+---------------------------------------+-------+
+|1|suite <jodpurgetests> put in ->        |jodload|
++-+---------------------------------------+-------+
 |1|suite <jodsmoketests> put in ->        |jodload|
 +-+---------------------------------------+-------+
 |1|suite <jodstresstests> put in ->       |jodload|
@@ -819,7 +831,7 @@ take a few moments to load.
 |1|4 suite text(s) put in ->|jodload|
 +-+-------------------------+-------+
 +-+--------------------------------+-------+
-|1|7 suite explanation(s) put in ->|jodload|
+|1|9 suite explanation(s) put in ->|jodload|
 +-+--------------------------------+-------+
 +-+-----------------------------+-------+
 |1|1 suite document(s) put in ->|jodload|
@@ -839,18 +851,19 @@ Before regenerating cross references look at the open dictionaries. The
 (\texttt{utilsload}).
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}10}]:} \PY{c+c1}{NB. note the (jodload) path}
+{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{NB. note the (jodload) path}
          \PY{n+nv}{did}\PY{o}{\PYZti{}} \PY{l+m+mi}{0}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+--------------------------------------------------------------------+
 |1|+---------+--+-----+-----+-------+-------+------+------------------+|
 | ||         |--|Words|Tests|Groups*|Suites*|Macros|Path*             ||
 | |+---------+--+-----+-----+-------+-------+------+------------------+|
-| ||jodload  |rw|768  |54   |22     |12     |61    |/jodload/utilsload||
+| ||jodload  |rw|782  |67   |22     |13     |61    |/jodload/utilsload||
 | |+---------+--+-----+-----+-------+-------+------+------------------+|
-| ||utilsload|ro|387  |7    |21     |0      |16    |/utilsload        ||
+| ||utilsload|ro|392  |7    |21     |0      |17    |/utilsload        ||
 | |+---------+--+-----+-----+-------+-------+------+------------------+|
 +-+--------------------------------------------------------------------+
 
@@ -859,25 +872,26 @@ Before regenerating cross references look at the open dictionaries. The
     JOD cross references will depend on utilities.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{NB. regenerate (jodload) cross references and show first 5 messages}
+{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{NB. regenerate (jodload) cross references and show first 5 messages}
          \PY{n+nv}{smoutput} \PY{l+m+mi}{5} \PY{o}{\PYZob{}}\PY{o}{.} \PY{l+m+mi}{0} \PY{n+nv}{globs}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{revo} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
          
          \PY{c+c1}{NB. make (jodload) a read only dictionary}
          \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{A}\PY{l+s}{D}\PY{l+s}{O}\PY{l+s}{N}\PY{l+s}{L}\PY{l+s}{Y}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
 
+
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+---------------------------------+-------+
-|1|<putntstamp> references put in ->|jodload|
-+-+---------------------------------+-------+
-|1|<puttable> references put in ->  |jodload|
-+-+---------------------------------+-------+
-|1|<puttexts> references put in ->  |jodload|
-+-+---------------------------------+-------+
-|1|<puttstamps> references put in ->|jodload|
-+-+---------------------------------+-------+
-|1|<putwords> references put in ->  |jodload|
-+-+---------------------------------+-------+
++-+--------------------------------+-------+
+|1|<sortdnub> references put in -> |jodload|
++-+--------------------------------+-------+
+|1|<splithref> references put in ->|jodload|
++-+--------------------------------+-------+
+|1|<strexp> references put in ->   |jodload|
++-+--------------------------------+-------+
+|1|<swex> references put in ->     |jodload|
++-+--------------------------------+-------+
+|1|<tc> references put in ->       |jodload|
++-+--------------------------------+-------+
 +-+--------------------------------------------+-------+
 |1|put dictionary is now a read/only library ->|jodload|
 +-+--------------------------------------------+-------+
@@ -887,17 +901,18 @@ Before regenerating cross references look at the open dictionaries. The
     \subsubsection{\texorpdfstring{Load
 \texttt{joddevload}}{Load joddevload}}\label{load-joddevload}
 
-Now let's load and cross reference (\texttt{joddevload}).
+Now load and cross reference (\texttt{joddevload}).
 (\texttt{joddevload}) is what I call the "dev-layer". The dev-layer is a
 put dictionary that sits on top of a number of stable dictionaries.
 During development only the dev-layer changes. You can easily revoke a
 dev-layer dictionary by closing it.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{NB. close open dictionaries and open in correct path order}
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{NB. close open dictionaries and open in correct path order}
          \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
          \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+--------------------+----------+-------+---------+
@@ -909,7 +924,7 @@ dev-layer dictionary by closing it.
     Load and cross reference.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{NB. load (joddevload)}
+{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{NB. load (joddevload)}
          \PY{l+m+mi}{0}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{0} \PY{o}{\PYZlt{}}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
          
          \PY{c+c1}{NB. insure at least one group exists \PYZhy{} defines put dictionary path}
@@ -922,98 +937,58 @@ dev-layer dictionary by closing it.
          \PY{n+nv}{did}\PY{o}{\PYZti{}} \PY{l+m+mi}{0}
 \end{Verbatim}
 
+
     \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------+----------+
+|1|7 word(s) put in ->|joddevload|
++-+-------------------+----------+
 +-+--------------------+----------+
-|1|23 word(s) put in ->|joddevload|
-+-+--------------------+----------+
-+-+--------------------+----------+
-|1|48 word(s) put in ->|joddevload|
-+-+--------------------+----------+
-+-+--------------------------------+----------+
-|1|68 word explanation(s) put in ->|joddevload|
-+-+--------------------------------+----------+
-+-+--------------------+----------+
-|1|38 test(s) put in ->|joddevload|
+|1|15 word(s) put in ->|joddevload|
 +-+--------------------+----------+
 +-+--------------------------------+----------+
-|1|38 test explanation(s) put in ->|joddevload|
+|1|13 word explanation(s) put in ->|joddevload|
 +-+--------------------------------+----------+
-+-+---------------------+----------+
-|1|18 macro(s) put in ->|joddevload|
-+-+---------------------+----------+
-+-+---------------------------------+----------+
-|1|18 macro explanation(s) put in ->|joddevload|
-+-+---------------------------------+----------+
-+-+--------------------------+----------+
-|1|group <buildjod> put in ->|joddevload|
++-+-------------------+----------+
+|1|5 test(s) put in ->|joddevload|
++-+-------------------+----------+
++-+-------------------------------+----------+
+|1|1 test explanation(s) put in ->|joddevload|
++-+-------------------------------+----------+
++-+--------------------+----------+
+|1|9 macro(s) put in ->|joddevload|
++-+--------------------+----------+
 +-+--------------------------+----------+
 |1|group <jod> put in ->     |joddevload|
 +-+--------------------------+----------+
-|1|group <joddob> put in ->  |joddevload|
-+-+--------------------------+----------+
-|1|group <jodmake> put in -> |joddevload|
-+-+--------------------------+----------+
 |1|group <jodstore> put in ->|joddevload|
 +-+--------------------------+----------+
-|1|group <jodtools> put in ->|joddevload|
-+-+--------------------------+----------+
-|1|group <jodutil> put in -> |joddevload|
-+-+--------------------------+----------+
 +-+-------------------------+----------+
-|1|6 group text(s) put in ->|joddevload|
+|1|2 group text(s) put in ->|joddevload|
 +-+-------------------------+----------+
-+-+--------------------------------+----------+
-|1|7 group explanation(s) put in ->|joddevload|
-+-+--------------------------------+----------+
-+-+---------------------------------------+----------+
-|1|suite <jodbasictests> put in ->        |joddevload|
-+-+---------------------------------------+----------+
-|1|suite <jodcrushtests> put in ->        |joddevload|
-+-+---------------------------------------+----------+
-|1|suite <jodextensiontests> put in ->    |joddevload|
-+-+---------------------------------------+----------+
-|1|suite <jodlargetests> put in ->        |joddevload|
-+-+---------------------------------------+----------+
-|1|suite <jodpreparetests> put in ->      |joddevload|
-+-+---------------------------------------+----------+
-|1|suite <jodpurgetests> put in ->        |joddevload|
-+-+---------------------------------------+----------+
-|1|suite <jodsmoketests> put in ->        |joddevload|
-+-+---------------------------------------+----------+
-|1|suite <jodstresstests> put in ->       |joddevload|
-+-+---------------------------------------+----------+
-|1|suite <loadlargefeasiblecase> put in ->|joddevload|
-+-+---------------------------------------+----------+
-+-+-------------------------+----------+
-|1|1 suite text(s) put in ->|joddevload|
-+-+-------------------------+----------+
-+-+--------------------------------+----------+
-|1|9 suite explanation(s) put in ->|joddevload|
-+-+--------------------------------+----------+
-+-+------------------------------+----------+
-|1|dictionary document updated ->|joddevload|
-+-+------------------------------+----------+
++-+-------------------------------+----------+
+|1|suite <jodsmoketests> put in ->|joddevload|
++-+-------------------------------+----------+
 NB. end-of-JOD-dump-file regenerate cross references with:  0 globs\&> \}. revo '' 
-+-+----------------------------------------------+----------+
-|1|<bget> references put in ->                   |joddevload|
-+-+----------------------------------------------+----------+
-|1|<bnl> references put in ->                    |joddevload|
-+-+----------------------------------------------+----------+
-|1|<bnlsearch> references put in ->              |joddevload|
-+-+----------------------------------------------+----------+
-|1|<buildjodcompressed> references put in ->     |joddevload|
-+-+----------------------------------------------+----------+
-|1|<buildjodtoolscompressed> references put in ->|joddevload|
-+-+----------------------------------------------+----------+
++-+-----------------------------------+----------+
+|1|<backnum> references put in ->     |joddevload|
++-+-----------------------------------+----------+
+|1|<backupdates> references put in -> |joddevload|
++-+-----------------------------------+----------+
+|1|<bget> references put in ->        |joddevload|
++-+-----------------------------------+----------+
+|1|<bgetdicdoc> references put in ->  |joddevload|
++-+-----------------------------------+----------+
+|1|<bgetdocument> references put in ->|joddevload|
++-+-----------------------------------+----------+
 +-+--------------------------------------------------------------------------------+
 |1|+----------+--+-----+-----+-------+-------+------+-----------------------------+|
 | ||          |--|Words|Tests|Groups*|Suites*|Macros|Path*                        ||
 | |+----------+--+-----+-----+-------+-------+------+-----------------------------+|
-| ||joddevload|rw|71   |38   |8      |9      |18    |/joddevload/jodload/utilsload||
+| ||joddevload|rw|22   |5    |3      |1      |9     |/joddevload/jodload/utilsload||
 | |+----------+--+-----+-----+-------+-------+------+-----------------------------+|
-| ||jodload   |ro|768  |54   |22     |12     |61    |/jodload/utilsload           ||
+| ||jodload   |ro|782  |67   |22     |13     |61    |/jodload/utilsload           ||
 | |+----------+--+-----+-----+-------+-------+------+-----------------------------+|
-| ||utilsload |ro|387  |7    |21     |0      |16    |/utilsload                   ||
+| ||utilsload |ro|392  |7    |21     |0      |17    |/utilsload                   ||
 | |+----------+--+-----+-----+-------+-------+------+-----------------------------+|
 +-+--------------------------------------------------------------------------------+
 
@@ -1029,12 +1004,13 @@ components of the JOD system you can run a script stored in the JOD
 dictionaries. This step runs this script.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{NB. generate JOD script files in fully commented form.}
+{\color{incolor}In [{\color{incolor}15}]:} \PY{c+c1}{NB. generate JOD script files in fully commented form.}
          \PY{n+nv}{rm} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{u}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{d}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}
          
          \PY{c+c1}{NB. close dictionaries}
          \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
    NB.*buildjodsource s--  generates fully commented JOD source files.
@@ -1080,7 +1056,7 @@ the following lines to copy and rename the load dictionaries.
 (\texttt{joddev}) (\texttt{jod}) AND (\texttt{utils}) DICTIONARIES.}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}15}]:} \PY{c+c1}{NB. unregister}
+{\color{incolor}In [{\color{incolor}16}]:} \PY{c+c1}{NB. unregister}
          \PY{c+c1}{NB. 3 regd\PYZam{}\PYZgt{} ;:\PYZsq{}utilsload jodload joddevload utils jod joddev\PYZsq{}}
          
          \PY{c+c1}{NB. clear any jod source dictionaries}
@@ -1101,6 +1077,7 @@ the following lines to copy and rename the load dictionaries.
          \PY{c+c1}{NB. regd \PYZsq{}joddev\PYZsq{};(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}joddev\PYZsq{});\PYZsq{}jod development\PYZsq{}}
 \end{Verbatim}
 
+
     \subsubsection{Dump Scripts Galore!}\label{dump-scripts-galore}
 
 Dump scripts are the best way to save, share and version control JOD
@@ -1117,13 +1094,9 @@ To use the JOD source dictionaries make sure they are named
 
 \begin{verbatim}
 John Baker
-January 2019
+December 2019
 bakerjd99@gmail.com
 \end{verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} 
-\end{Verbatim}
 
 
     % Add a bibliography block to the postdoc

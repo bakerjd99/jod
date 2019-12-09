@@ -1,6 +1,10 @@
 general/joddocument - change history
 ====================================
 
+### 1.0.0 - December 7, 2019 (Feature Complete Release)
+
+  * `bget` backup get section added. 
+
 ### 0.9.999 - August 29, 2019
 
   * version bump for J 9.01 beta patch.

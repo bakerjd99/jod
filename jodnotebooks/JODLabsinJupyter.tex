@@ -9,8 +9,8 @@
 
 
 
-    
-\documentclass[11pt,letter,landscape]{article}
+\documentclass[11pt,letter,landscape]{article}   
+%\documentclass[11pt]{article}
 
     
     
@@ -65,7 +65,6 @@
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
-    \usepackage{mathrsfs}
     
 
     
@@ -92,8 +91,6 @@
     \definecolor{ansi-cyan-intense}{HTML}{258F8F}
     \definecolor{ansi-white}{HTML}{C5C1B4}
     \definecolor{ansi-white-intense}{HTML}{A1A6B2}
-    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
-    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
 
     % commands and environments needed by pandoc snippets
     % extracted from the output of `pandoc -s`
@@ -140,18 +137,11 @@
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
-    % Math Jax compatibility definitions
+    % Math Jax compatability definitions
     \def\gt{>}
     \def\lt{<}
-    \let\Oldtex\TeX
-    \let\Oldlatex\LaTeX
-    \renewcommand{\TeX}{\textrm{\Oldtex}}
-    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
-    % Document title
     \title{JOD Labs in Jupyter}
-    
-    
     
     
     
@@ -294,7 +284,7 @@
 
 \begin{figure}
 \centering
-\includegraphics{inclusions/jodtinycube.png}
+\includegraphics{inclusions/jodteenytinycube.png}
 \caption{}
 \end{figure}
 
@@ -396,6 +386,17 @@ Jupyter notebooks.
   Best Practices Lab}
 \end{enumerate}
 
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. show J version}
+        \PY{l+m+mi}{9}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{14} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+j901/j64avx/windows/beta-s/commercial/www.jsoftware.com/2019-12-02T12:51:33
+
+    \end{Verbatim}
+
     \subsubsection{Some differences between JOD labs in J and
 Jupyter.}\label{some-differences-between-jod-labs-in-j-and-jupyter.}
 
@@ -418,11 +419,12 @@ characters. (\texttt{portchars}) defines a set of box characters that
 work in most contexts.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. use portable box drawing characters }
+{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{NB. use portable box drawing characters }
         \PY{c+c1}{NB. simplifies rendering notebooks as (*.tex)}
         \PY{n+nv}{portchars\PYZus{}ijod\PYZus{}}\PY{o}{=:}\PY{o}{[}\PY{o}{:} \PY{l+m+mi}{9}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{7} \PY{l+s}{\PYZsq{}}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{|}\PY{l+s}{\PYZhy{}}\PY{l+s}{\PYZsq{}}\PY{o}{\PYZdq{}}\PY{l+m}{\PYZus{}} \PY{o}{[} \PY{o}{]}
         \PY{n+nv}{portchars\PYZus{}ijod\PYZus{}} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 
@@ -443,12 +445,13 @@ directory.
 block.}\label{jupyter-only-displays-the-last-result-of-a-code-block.}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{NB. no visible ouput}
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{NB. no visible ouput}
         \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{i}\PY{l+s}{r}\PY{l+s}{ }\PY{l+s}{o}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{n}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
         
         \PY{c+c1}{NB. only the last statement displays output}
         \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{2} \PY{l+m+mi}{3}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 0 1 2
@@ -460,12 +463,13 @@ block.}\label{jupyter-only-displays-the-last-result-of-a-code-block.}
 \texttt{smoutput}}{To see other statements use smoutput}}\label{to-see-other-statements-use-smoutput}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{NB. use smoutput to show result}
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. use smoutput to show result}
         \PY{n+nv}{smoutput} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{i}\PY{l+s}{r}\PY{l+s}{ }\PY{l+s}{o}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{n}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
         
         \PY{c+c1}{NB. only the last statement displays output}
         \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{2} \PY{l+m+mi}{3}
 \end{Verbatim}
+
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +---+--+---+----+--+--+------+----+----+
@@ -480,16 +484,22 @@ block.}\label{jupyter-only-displays-the-last-result-of-a-code-block.}
 poorly}\label{large-deeply-nested-outputs-may-wrap-poorly}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. \PYZlt{}\PYZca{}:10 ] (i. 30 50) ; \PYZlt{} ;:\PYZsq{}+/@, 34 5\PYZsq{}}
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{NB. \PYZlt{}\PYZca{}:10 ] (i. 30 50) ; \PYZlt{} ;:\PYZsq{}+/@, 34 5\PYZsq{}}
 \end{Verbatim}
+
 
     \paragraph{J plot graphics work but forms that request user input may
 not}\label{j-plot-graphics-work-but-forms-that-request-user-input-may-not}
 
+J graphics in Jupyter depend on J's JHS IDE. If a graphic works in JHS
+and does not require user input there is a good chance it will work in
+Jupyter notebooks.
+
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
         \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{\PYZsq{}} \PY{n+nv}{plot} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{5}
 \end{Verbatim}
+
 
     
     
@@ -503,10 +513,6 @@ since both J labs and Jupyter notebooks are stored as simple text it
 wouldn't be difficult to implement an addon that converted J labs to
 Jupyter notebooks. The inverse, while more challenging, is also
 feasible.
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor} }]:} 
-\end{Verbatim}
 
 
     % Add a bibliography block to the postdoc
