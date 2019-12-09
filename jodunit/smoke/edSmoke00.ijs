@@ -13,12 +13,18 @@ NB. author:  John D. Baker
 NB. created: 2015jul29
 NB. changes: -----------------------------------------------------
 NB. 18may23 updated to correspond to: rtt 'createtestdictionaries'
+NB. 19dec07 ed/bget tests added 
 
 cocurrent 'base'
 require 'jodtester'
 
 coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
 coinsert 'ijod'
+
+NB. save smoke load test scripts
+rc [ 'rc loadSmoke'=: 1 get ;:'loadSmoketest0 loadSmoketest1'
+({."1 loadSmoke)=: {:"1 loadSmoke
+(4!:55) ;:'rc loadSmoke'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -36,6 +42,8 @@ amperdot=: &.
 wnames=: ;:'boolboy floatme IhaveCharacter doubleplusungood amperdot'
 >0{tmploc put wnames
 >0{t0=: 0 10 get wnames
+
+NB. this test require manual inspection of J editor windows
 
 NB. edit word (name,class,text) table
 1 [ showpass 'check editor 1 - ',;0{wnames [ ed ;1{t0
@@ -56,6 +64,27 @@ NB. edit test(name,text) table
 
 NB. edit macro (name,code,text) table
 1 [ showpass 'check editor 3 - ',;0{mnames [ ed ;1{t2
+
+NB. create three backups
+
+NB. first object collection - empty
+>0{packd tdict
+
+NB. second object collection
+1 [ ((0!:100) :: _1:) loadSmoketest0
+>0{packd tdict
+ 
+NB. third object collection
+1 [ ((0!:100) :: _1:) loadSmoketest1
+>0{packd tdict
+
+NB. opens a single edit window with text representations of all words in last backup
+er uv=: bget }. bnl ''
+1 [ showpass 'check editor 4 -', ;0{,0{>1{uv [ ed >1{uv
+
+NB. opens a single edit window with text representations of all tests in last backup
+er uv=: 1 bget }. 1 bnl ''
+1 [ showpass 'check editor 5 -', ;0{,0{>1{uv [ ed >1{uv
 
 
 er 3 od tdict

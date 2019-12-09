@@ -9,7 +9,7 @@ NB.
 NB. Contains: dictionary utilities, constants, interface verbs
 NB.
 NB. Interface: (verbs made available by ijod locale)
-NB.   bget    NIMP: get objects from put dictionary backups 
+NB.   bget    get objects from put dictionary backups 
 NB.   bnl     backup name lists from patterns
 NB.   del     delete words, tests, groups, macros, et cetera
 NB.   did     dictionary identification
