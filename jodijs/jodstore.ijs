@@ -5,13 +5,13 @@ NB. dictionary objects. Replacing this class is all that's
 NB. required to change the dictionary storage system.
 NB.
 NB. Verb interface:
-NB.   bchecknames  checks backup name patterns                                                   │
-NB.   bgetdicdoc   get backup versions of the dictionary document                                │
-NB.   bgetexplain  get backup versions of short object explanations                              │
-NB.   bgetgstext   get backup versions of group/suite headers                                    │
-NB.   bgetobjects  get objects from backups                                                      │
-NB.   bnlsearch    searches put dictionary backup name lists for simple character list patterns  │
-NB.   bnums        returns unique backup ordered list of dictionary backup numbers               │
+NB.   bchecknames  checks backup name patterns                                                  
+NB.   bgetdicdoc   get backup versions of the dictionary document                               
+NB.   bgetexplain  get backup versions of short object explanations                             
+NB.   bgetgstext   get backup versions of group/suite headers                                  
+NB.   bgetobjects  get objects from backups                                                    
+NB.   bnlsearch    searches put dictionary backup name lists for simple character list patterns
+NB.   bnums        returns unique backup ordered list of dictionary backup numbers             
 NB.   checkopen    checks if any dictionary is open
 NB.   checkpath    checks current path against dictionary path
 NB.   checkput     checks if first path dictionary is a put dictionary

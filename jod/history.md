@@ -3,6 +3,8 @@
 general/jod - change history
 ============================
 
+### 1.0.1 - (unreleasd) 
+
 ### 1.0.0 - December 9, 2019 (Feature Complete Release)
 
  * `bget` implemented - see `jod.pdf` With this addition all
