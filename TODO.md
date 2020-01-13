@@ -14,17 +14,7 @@ to finishing the few remaining `JOD` features.
 
 `[begin-todo]`
 
-1. `<_8ib1gwadc5e4dw109amx1vqr1_>` Implement `mnl` - master name list.
-
-2. `<_3c2m67nzdf32oe27ta7r2e0hj_>` Implement `rxs` - regular expression search. J 8.07 has replaced PCRE with
-   [PCRE2](https://pcre.org/current/doc/html/index.html). This change may result
-   in `rxs` requiring new versions of J.
-
-3. `<_dz9ciclzsdnxrcx1m3wxvl2jj_>` Implement `bget` - backup get.
-
-4. `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs
+1. `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs
    have changed in recent J versions.
-
-5. `<_cmual68h5jqlpqz57is84e0j6_>` Revise `jod.pdf` - see related [`joddoc` project](https://github.com/bakerjd99/joddoc).
 
 `[end-todo]`
