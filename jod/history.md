@@ -5,6 +5,16 @@ general/jod - change history
 
 ### 1.0.1 - (unreleasd) 
 
+ * `jodcube.ico` and `jodcube.png`added.
+    
+    see: `jpath '~/addons/general/jod/joddoc'`
+
+    Useful for setting OS icons that brand JOD directories.
+
+ *  (setbuilddirs) modified to create all the directories
+    required by the macro (buildjoddistribution). This simplifies
+    setting up new machines for building JOD addons.  
+
 ### 1.0.0 - December 9, 2019 (Feature Complete Release)
 
  * `bget` implemented - see `jod.pdf` With this addition all
