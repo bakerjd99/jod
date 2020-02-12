@@ -27,7 +27,7 @@ NB.   packd   pack dictionaries
 NB.   put     put words, tests, macros, et cetera into dictionary
 NB.   regd    register/unregister a dictionary
 NB.   restd   restore last backup created by (packd)
-NB.   rxs     NIMP: regular expression search
+NB.   rxs     regular expression search
 NB.   uses    words used by words and tests
 NB.
 NB. Notes:
