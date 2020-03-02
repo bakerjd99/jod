@@ -7,7 +7,7 @@ More information about JOD is available on [The JOD Page](http://bakerjd99.wordp
 
 The directories [`jod`](https://github.com/bakerjd99/jod/tree/master/jod) and 
 [`jodsource`](https://github.com/bakerjd99/jod/tree/master/jodsource) contain
-the J addon code distributed by [JAL](http://www.jsoftware.com/jwiki/JAL/User%20Guide) in the
+the J addon code distributed by [Pacman](https://code.jsoftware.com/wiki/Pacman) in the
 [`jod`](http://www.jsoftware.com/jwiki/Addons/general/jod) and 
 [`jodsource`](http://www.jsoftware.com/jwiki/Addons/general/jodsource) addons.
 
@@ -29,4 +29,4 @@ directory [`jodijs`](https://github.com/bakerjd99/jod/tree/master/jodijs) contai
 fully commented JOD source. `jodijs` is not distributed by JAL. 
 
 John Baker
-December 9, 2019
+March 2, 2020
