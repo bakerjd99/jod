@@ -13,7 +13,10 @@ general/jod - change history
 
  *  (setbuilddirs) modified to create all the directories
     required by the macro (buildjoddistribution). This simplifies
-    setting up new machines for building JOD addons.  
+    setting up new machines for building JOD addons. 
+
+ *  `addloadscript1` now insures scripts added to `~config\startup.ijs`
+    have `.ijs` extensions. 
 
 ### 1.0.0 - December 9, 2019 (Feature Complete Release)
 

@@ -64,7 +64,7 @@ NB. comment tag marking start of scripts
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 
 NB. JODTOOLS version, make and date
-JODTOOLSVMD=:'1.0.1 - dev';4;'22 Jan 2020 17:52:58'
+JODTOOLSVMD=:'1.0.1 - dev';5;'25 Mar 2020 14:23:48'
 
 NB. line feed character
 LF=:10{a.
@@ -197,6 +197,9 @@ if. 1 >: +/msk do.
 
   NB. load script name and path
   scr=. <;(<'  ') (1)} 1 0 1 #^:_1 y
+
+  NB. add extension if missing
+  if. -.IJS -: ;(-#IJS) {.&.> scr do. scr=. scr ,&.> <IJS end.
 
   NB. if name exists replace it else add it at end
   if. +./msk do.
