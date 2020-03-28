@@ -3,7 +3,7 @@
 general/jod - change history
 ============================
 
-### 1.0.1 - (unreleasd) 
+### 1.0.1 - March 28, 2020 (Social Distancing Edition)
 
  * `jodcube.ico` and `jodcube.png`added.
     

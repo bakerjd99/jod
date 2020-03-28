@@ -3,15 +3,33 @@
 general/jod - change history
 ============================
 
-### 1.0.0 dev - (Feature Complete Release - not released yet)
+### 1.0.1 - March 28, 2020 (Social Distancing Edition)
 
- * `bget` implemented - see `jod.pdf`
+ * `jodcube.ico` and `jodcube.png`added.
+    
+    see: `jpath '~/addons/general/jod/joddoc'`
 
- *  special `bnl` case added to display backup file dates - see `jod.pdf`
- 
- * [`bget` Jupyter Lab]()
+    Useful for setting OS icons that brand JOD directories.
+
+ *  (setbuilddirs) modified to create all the directories
+    required by the macro (buildjoddistribution). This simplifies
+    setting up new machines for building JOD addons. 
+
+ *  `addloadscript1` now insures scripts added to `~config\startup.ijs`
+    have `.ijs` extensions. 
+
+### 1.0.0 - December 9, 2019 (Feature Complete Release)
+
+ * `bget` implemented - see `jod.pdf` With this addition all
+    planned JOD features are complete. From now on JOD
+    changes will consist of bug fixes and optimizations.
+    Stability is now the goal.
+
+ * [`bget` Jupyter Lab](https://github.com/bakerjd99/jod/blob/master/jodnotebooks/Using%20JOD%20Backup%20Get.ipynb)
 
  * some macros and tests adjusted to support 18!:4 changes.
+
+ * new `bget` test cases in JOD source dictionaries.
 
 ### 0.9.999 - August 29, 2019
 

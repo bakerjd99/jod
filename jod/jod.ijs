@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 0.9.999  Build Number: 5  Date: 29 Aug 2019 14:36:35
+NB. Version: 1.0.1  Build Number: 7  Date: 28 Mar 2020 13:01:05
 load 'task'
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
@@ -100,7 +100,7 @@ DEPENDENTSSTART=:'dependents'
 DIGITS=:'0123456789'
 DOCUMENT=:9
 DODEPENDENTS=:1
-DPATH=:i.0 4
+DPATH=:0 4$00
 DPLIMIT=:32
 ERR001=:'invalid option(s)'
 ERR002=:'invalid name(s)'
@@ -111,7 +111,7 @@ ERR006=:'cannot read master'
 ERR007=:'cannot read master documentation'
 ERR008=:'invalid names(s) - embedded locale references'
 ERR009=:'no documentation text for ->'
-ERR010=:'invalid name pattern'
+ERR010=:'invalid name pattern(s)'
 ERR011=:'error(s) creating dictionary master file'
 ERR012=:'master in use - wait or try (dpset)'
 ERR013=:'cannot mark master'
@@ -144,7 +144,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'0.9.999';5;'29 Aug 2019 14:36:35'
+JODVMD=:'1.0.1';7;'28 Mar 2020 13:01:05'
 JVERSION=:,6.0199999999999996
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -192,56 +192,56 @@ beforestr=:]{.~1&(i.~)@([E.])
 bget=:3 :0
 WORD bget y
 :
-b=.ERR001
-if.badil x do.jderr b return.end.
-if.badrc c=.checkopen__ST 0 do.c return.end.
-if.badrc c=.checkback__ST{:0{DPATH__ST do.c return.else.a=.rv c end.
-x=.x,(-3-#x){.DEFAULT,0
-if.-.0 1 e.~{:x do.jderr b return.end.
+c=.ERR001
+if.(2<#x )+.badil x do.jderr c return.end.
+if.badrc d=.checkopen__ST 0 do.d return.end.
+if.badrc d=.checkback__ST{:0{DPATH__ST do.d return.else.a=.rv d end.
+x=.x,(-2-#x){.DEFAULT
+if.badrc b=.(({.x),a)bchecknames__ST,boxopen y do.b return.else.b=.rv b end.
 select.{.x
 case.WORD do.
 select.second x
-case.DEFAULT do.(WORD,0)bgetobjects__ST y
-case.EXPLAIN do.WORD bgetexplain__ST y
-case.DOCUMENT do.WORD bgetdocument__ST y
-case.do.jderr b
+case.DEFAULT do.(WORD,0)bgetobjects__ST b
+case.EXPLAIN do.WORD bgetexplain__ST b
+case.DOCUMENT do.(WORD,1)bgetobjects__ST b
+case.do.jderr c
 end.
 case.TEST do.
 select.second x
-case.DEFAULT do.(TEST,0)bgetobjects__ST y
-case.EXPLAIN do.TEST bgetexplain__ST y
-case.DOCUMENT do.TEST bgetdocument__ST y
-case.do.jderr b
+case.DEFAULT do.(TEST,0)bgetobjects__ST b
+case.EXPLAIN do.TEST bgetexplain__ST b
+case.DOCUMENT do.(TEST,1)bgetobjects__ST b
+case.do.jderr c
 end.
 case.GROUP do.
 select.second x
-case.HEADER do.GROUP bgslist__ST y
-case.DEFAULT do.GROUP bgetgstext__ST y
-case.EXPLAIN do.GROUP bgetexplain__ST y
-case.DOCUMENT do.GROUP bgetdocument__ST y
-case.do.jderr b
+case.HEADER do.(GROUP,2)bgetobjects__ST b
+case.DEFAULT do.GROUP bgetgstext__ST b
+case.EXPLAIN do.GROUP bgetexplain__ST b
+case.DOCUMENT do.(GROUP,1)bgetobjects__ST b
+case.do.jderr c
 end.
 case.SUITE do.
 select.second x
-case.HEADER do.SUITE bgslist__ST y
-case.DEFAULT do.SUITE bgetgstext__ST y
-case.EXPLAIN do.SUITE bgetexplain__ST y
-case.DOCUMENT do.SUITE bgetdocument__ST y
-case.do.jderr b
+case.HEADER do.(SUITE,2)bgetobjects__ST b
+case.DEFAULT do.SUITE bgetgstext__ST b
+case.EXPLAIN do.SUITE bgetexplain__ST b
+case.DOCUMENT do.(SUITE,1)bgetobjects__ST b
+case.do.jderr c
 end.
 case.MACRO do.
 select.second x
-case.DEFAULT do.(MACRO,0)bgetobjects__ST y
-case.EXPLAIN do.MACRO bgetexplain__ST y
-case.DOCUMENT do.MACRO bgetdocument__ST y
-case.do.jderr b
+case.DEFAULT do.(MACRO,0)bgetobjects__ST b
+case.EXPLAIN do.MACRO bgetexplain__ST b
+case.DOCUMENT do.(MACRO,1)bgetobjects__ST b
+case.do.jderr c
 end.
 case.DICTIONARY do.
 select.second x
-case.DEFAULT do.bgetdicdoc__ST 0
-case.do.jderr b
+case.DEFAULT do.bgetdicdoc__ST b
+case.do.jderr c
 end.
-case.do.jderr b
+case.do.jderr c
 end.
 )
 bnl=:3 :0
@@ -1139,7 +1139,9 @@ INVSUITES=:INVGROUPS
 INVMACROS=:CNCLASS,CNPUTDATE,CNCREATION,CNSIZE,CNEXPLAIN
 INVWORDS=:INVMACROS
 INVTESTS=:CNPUTDATE,CNCREATION,CNSIZE,CNEXPLAIN
+NDOT=:'.'
 rpdtrim=:]#~[:-.[:*./\.PATHDEL"_=]
+splitbname=:(NDOT&beforestr;NDOT&afterstr)
 DOCINIT=:<;._1 '   '
 ERR050=:'no dictionaries open'
 ERR051=:'not a put dictionary ->'
@@ -1196,7 +1198,8 @@ ERR102=:'timestamp table shape invalid'
 ERR103=:'no backup(s) to restore or search'
 ERR104=:'no registered dictionaries'
 ERR105=:'unreadable or missing backup timestamp'
-NDOT=:'.'
+ERR106=:'invalid backup number(s)'
+ERR107=:'not in backup(s) -> '
 OFFSET=:39
 OK050=:'dictionary created ->'
 OK051=:' word(s) put in ->'
@@ -1299,23 +1302,71 @@ b=.(<"0 a),.<"1 tstamp"1 b
 b=.(<ERR105)(<(I.0>a);1)}b
 )
 badcn=:[:-.[-:[:{.&>]
-bgetdicdoc=:3 :0
-ok'NIMP bgetdicdoc'
+bchecknames=:4 :0
+if.+./badcl&>y do.jderr ERR010 return.end.
+c=.(splitbname&>y)-.&.>' '
+c=.(<":1 {x)(<(I.0=#&>1 {"1 c);1 )}c
+if.DICTIONARY=0{x do.b=.0{"1 c
+elseif.badrc b=.checknames 0{"1 c do.b return.
+elseif.do.b=.}.b
+end.
+if.0 e.(1 {"1 c)*./@e.&><DIGITS do.jderr ERR106 return.end.
+a=.,_1&".&>1 {"1 c
+if.0 e.a e.x do.jderr ERR106 return.end.
+ok<~.b,.<"0 a
 )
-bgetdocument=:4 :0
-ok'NIMP bgetdocument'
+bgetdicdoc=:3 :0
+a=.~.1 {"1 y
+doj=.{:{.DPATH
+f=.((<DNAME__doj),&.>'_',&.>":&.>a),.a:
+'e d'=.bpathsfx WORD
+g=.;a
+for_bob.g do.
+c=.e,(":bob),d
+if.badjr b=.jread c;CNDICDOC do.jderr ERR088 return.end.
+f=.b(<(I.bob=g);1)}f
+end.
+ok<btextlit f
 )
 bgetexplain=:4 :0
-ok'NIMP bgetexplain'
+f=.0{"1 y[g=.0{x
+i=.f,.<,''
+'h d'=.bpathsfx g
+b=.CNLIST,CNEXPLAIN
+o=.~.a=.;1 {"1 y
+for_bob.o do.
+c=.h,(":bob),d
+if.badjr'e k'=.jread c;b do.jderr ERR088 return.end.
+l=.f{~j=.I.bob=a
+if.0 e.p=.l e.e do.(jderr ERR107),(l #~-.p),&.><NDOT,":bob return.end.
+i=.(k{~e i.l)(<j;1)}i
+i=.(((<j;0){i),&.><'_',":bob)(<j;0)}i
+end.
+ok<btextlit i
 )
 bgetgstext=:4 :0
-ok'NIMP bgetgstext'
+if.badrc a=.(x,0)bgetobjects y do.a else.ok<0 1{"1 rv a end.
 )
 bgetobjects=:4 :0
-ok'NIMP bgetobjects'
-)
-bgslist=:4 :0
-ok'NIMP bgslist'
+j=.0{"1 y['k l'=.x
+l=.(a=.l=2){l,0
+p=.j,"0 1(1+(l=0)*k e.WORD,MACRO)$a:
+c=.0 _1
+if.(0=l)*.-.a do.c=.i.{:$p end.
+'o g'=.bpathsfx k
+d=.CNLIST,CNCOMPS
+s=.~.b=.;1 {"1 y
+for_bob.s do.
+f=.o,(":bob),g
+if.badjr'i h'=.jread f;d do.jderr ERR088 return.end.
+r=.j{~q=.I.bob=b
+if.0 e.t=.r e.i do.(jderr ERR107),(r #~-.t),&.><NDOT,":bob return.end.
+if.badjr e=.jread f;l+(i i.r){h do.jderr ERR088 return.end.
+p=.(c{"1>e)q}p
+p=.(((<q;0){p),&.><'_',":bob)(<q;0)}p
+end.
+if.k~:WORD do.p=.btextlit p end.
+ok<p
 )
 bnlsearch=:4 :0
 if.1<+/y e.NDOT do.jderr ERR010 return.end.
@@ -1323,10 +1374,13 @@ d=.DEFAULT~:2{x
 if.d*.(0{x)e.TEST,GROUP,SUITE do.jderr ERR001 return.end.
 DL=.{:0{DPATH
 if.badrc j=.checkback DL do.j return.else.c=.rv j end.
-'h i'=.(NDOT&beforestr;NDOT&afterstr)y
+'h i'=.splitbname y
 if.isempty i do.i=.{.c
 elseif.0 e.i e.DIGITS do.jderr ERR010 return.
 elseif.-.(i=.".i)e.c do.jderr ERR103 return.
+end.
+if.#j=.h-.' 'do.
+if.badrc j=.checknames h do.j return.end.
 end.
 a=.(,NDOT)-:alltrim y
 if.a*.INPUT={.x do.
@@ -1352,6 +1406,16 @@ end.
 )
 bnums=:3 :0
 \:~~.,".({.;JDFILES)&beforestr&>{."1(1!:0)<y,'*',IJF
+)
+bpathsfx=:3 :0
+doj=.{:{.DPATH
+a=.(;y{JDFILES),IJF
+b=.".({.;dncn__doj y),'P__doj'
+b=.(>:b i:PATHDEL){.b 
+(b,(;{:JDSDIRS),PATHDEL);a
+)
+btextlit=:3 :0
+(<'')(<(I.0=#&>_1{"1 y);_1)}y
 )
 checkback=:3 :0
 if.0=#a=.bnums BAK__y do.jderr ERR103 else.ok a end.

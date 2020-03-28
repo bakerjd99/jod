@@ -1,6 +1,12 @@
 general/joddocument - change history
 ====================================
 
+### 1.0.1 - March 28, 2020 (Social Distancing Edition)
+
+  *  URLs in `jod.pdf` modified to use HTTPS instead of HTTP.
+
+  * References to JAL changed to use pacman instead.
+
 ### 1.0.0 - December 9, 2019 (Feature Complete Release)
 
   * `bget` backup get section added. 

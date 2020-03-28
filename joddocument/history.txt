@@ -1,6 +1,20 @@
 general/joddocument - change history
 ====================================
 
+### 1.0.1 - March 28, 2020 (Social Distancing Edition)
+
+  *  URLs in `jod.pdf` modified to use HTTPS instead of HTTP.
+
+  * References to JAL changed to use pacman instead.
+
+### 1.0.0 - December 9, 2019 (Feature Complete Release)
+
+  * `bget` backup get section added. 
+
+  *  pdf versions of Jupyter labs added - see the directory
+
+          jpath '~addons/general/joddocument/pdfdoc'
+
 ### 0.9.999 - August 29, 2019
 
   * version bump for J 9.01 beta patch.
