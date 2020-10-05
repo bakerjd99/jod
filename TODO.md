@@ -17,7 +17,7 @@ to finishing the few remaining `JOD` features.
 
 1. `<_57gpdh1nm20c5b2lg60doiaaf_>` Refine the `jodliterate` PDF JOD source code document. Now that
    I've resurrected `jodliterate` and revised it for current versions of [pandoc](https://pandoc.org/)
-   I can improve the source code presentation document. See the related  `TODO_jodliterate_md`.
+   I can improve the source code presentation document. See the related  [`TODO_jodliterate.md`](https://github.com/bakerjd99/jacks/blob/master/jodliterate/TODO_jodliterate.md).
 
 2. `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs
    have changed in recent J versions.
