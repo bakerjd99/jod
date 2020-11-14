@@ -206,6 +206,9 @@ NB. DUMPPRVPATH=: '/jod/jodprvdumps/'
 NB. clear dictionaries - used by (utils) macro (clearput) if present
 NB. CLEARJDICS=: ;:''
 
+NB. set a preferred pandoc on this machine - used by (jodliterate)
+NB. PREFERREDPANDOC=: 'C:\Users\genric.user\AppData\Local\Pandoc\pandoc'
+
 NB. JOD verbs typically run from the base locale 
 cocurrent 'base'
 

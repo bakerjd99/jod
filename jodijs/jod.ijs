@@ -221,10 +221,10 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.0.2 - dev';01;'15 May 2020 16:44:54'
+JODVMD=:'1.0.2';13;'13 Nov 2020 16:34:19'
 
 NB. base J version - prior versions not supported by JOD
-JVERSION=:,6.0199999999999996
+JVERSION=:,6.01999999999999957
 
 NB. default master file parameters
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
@@ -810,10 +810,10 @@ c=. ($y)$'NB.' E. ,y
 c=. +./\"1 c > ~:/\"1 y e. ''''     
 
 NB. ,, work around for j8.05 bug - remove when fixed                           
-y=. ,,y                                                     
+NB. y=. ,,y                                                     
                                                                  
 NB. blank out comments                                           
-y=. ' ' (I. ,c)} y                                     
+y=. ' ' (I. ,c)} ,y                                     
 y=. y $~ $c                                                    
                                                                  
 NB. remove blank lines - default                                 
@@ -1426,7 +1426,7 @@ if. #y do. JNAME rxall ; y ,&.> ' ' else. '' end.
 )
 
 NB. standarizes J path delimiter to unix/linux forward slash
-jpathsep=:'/'&(('\' I.@:= ])})
+jpathsep=:'/'&(('\' I.@:= ])} )
 
 NB. error trapped call to jread_jfiles_
 jread=:jread_jfiles_ ::(_2:)

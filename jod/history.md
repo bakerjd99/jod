@@ -3,11 +3,16 @@
 general/jod - change history
 ============================
 
-### 1.0.2 - (wip)
+### 1.0.2 - November 13, 2020 (Amazon J Object Dictionary Book Edition)
 
- * `jodliterate` pandoc/LaTeX based documentation tool updated.
+ *  `jodliterate` pandoc/LaTeX based documentation tool updated, see:
 
-   see: [Using jodliterate](https://github.com/bakerjd99/jacks/blob/master/jodliterate/Using%20jodliterate.ipynb)
+    [Using jodliterate](https://github.com/bakerjd99/jacks/blob/master/jodliterate/Using%20jodliterate.ipynb)
+
+ *  New Amazon printed edition of the (J Object Dictionary)[https://www.amazon.com/dp/B08M2KBMND].
+    This is a book version of the distributed `jod.pdf`. If you want to support
+    JOD development, consider purchasing a copy. If the preceding link fails
+    search your local Amazon for `ISBN-13: 979-8554921117`or Amazon ASIN key `B08M2KBMND`
 
 ### 1.0.1 - March 28, 2020 (Social Distancing Edition)
 

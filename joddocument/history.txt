@@ -1,6 +1,17 @@
 general/joddocument - change history
 ====================================
 
+### 1.0.2 - November 13, 2020 (Amazon J Object Dictionary Book Edition)
+
+  * New Amazon printed edition of the (J Object Dictionary)[https://www.amazon.com/dp/B08M2KBMND].
+    This is a book version of the distributed `jod.pdf`. If you want to support
+    JOD development, consider purchasing a copy. If the preceding link fails
+    search your local Amazon for `ISBN-13: 979-8554921117`or Amazon ASIN key `B08M2KBMND`
+
+  * New Jupyter lab pdf added `UsingJodliterate.pdf`- see the directory
+
+	jpath '~addons/general/joddocument/pdfdoc'
+
 ### 1.0.1 - March 28, 2020 (Social Distancing Edition)
 
   *  URLs in `jod.pdf` modified to use HTTPS instead of HTTP.

@@ -7,15 +7,15 @@ NB. following must hold:
 NB.
 NB. verbatim:
 NB.
-NB. 0) J 6.0x-8.0x for Windows, Mac, Linux must be installed.
+NB. 0) J 8.0x-9.0x for Windows, Mac, Linux must be installed.
 NB.
-NB. 1) The JOD addon must be installed. Use JAL to install
+NB. 1) The JOD addon must be installed. Use pacman to install
 NB.    general/jod
 NB.
-NB. 2) The JODSOURCE addon must be installed. Use JAL to install
+NB. 2) The JODSOURCE addon must be installed. Use pacman to install
 NB.    general/jodsource
 NB.
-NB. 3) The JFILES addon must be installed. Use JAL to install
+NB. 3) The JFILES addon must be installed. Use pacman to install
 NB.    data/jfiles
 NB.    
 NB. 4) The directory c:\jodroot\ (win) or /home/{$HOME}/jodroot/ (linux)
@@ -28,11 +28,12 @@ NB. created: 2011may24
 NB. changes: -----------------------------------------------------
 NB. 11dec19 added note about arc/zip failure on 64 bit systems
 NB. 18mar15 remove zfiles dependency - will now run on all J systems
+NB. 20may15 tested with (jodliterate)
 
 require 'files task regex dir'
 
 cocurrent 'base'
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
+coclass tmploc_AAAjodinstall999_=: 'AAAjodinstall999' [ coerase <'AAAjodinstall999'
 coinsert 'ijod'
 
 NB. returns result of linux/unix commands as text string
@@ -70,7 +71,7 @@ end.
 NB. if a JODroot folder is defined use it
 if. '~'={.jodroot=. jpath '~JODroot/' do.  
   NB. otherise use this default 
-  jodroot=. '/jodroot/' 
+  jodroot=. '/jod/' 
   if. IFWIN do. jodroot=. 'c:',jodroot 
   else. 
     jodroot=. (LF -.~ host 'echo $HOME'),jodroot 
@@ -100,7 +101,7 @@ for_dict. dicts do.
   NB. load dump script
   0!:0 <tmppath,dict,'.ijs'
   NB. insure we remain in working locale
-  cocurrent tmploc_AAAtrash999_
+  cocurrent tmploc_AAAjodinstall999_
   NB. regenerate cross references
   tmprefs=. 0 globs&> }. revo ''
   smoutput 'Cross references generated: ',dict
@@ -113,4 +114,4 @@ smoutput 4 od ''
 setupjodsource 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <tmploc_AAAjodinstall999_

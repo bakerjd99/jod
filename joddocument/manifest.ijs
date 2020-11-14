@@ -1,6 +1,6 @@
 NB. manifest for JODDOCUMENT
 CAPTION=:'JOD Documentation'
-VERSION=: '1.0.1'
+VERSION=: '1.0.2'
 FOLDER=:'general/joddocument'
 PLATFORMS=:''
 LABCATEGORY=:'General'
@@ -15,6 +15,7 @@ pdfdoc/JODLabsinJupyter.pdf
 pdfdoc/JODSourceCodeDumpScriptsLab.pdf
 pdfdoc/UsingJODBackupGet.pdf
 pdfdoc/UsingJODRegularExpressions.pdf
+pdfdoc/UsingJodliterate.pdf
 )
 RELEASE=: ''
 DESCRIPTION=: 0 : 0
