@@ -26,7 +26,7 @@ and *safe local identifiers* have been reduced to single characters. Compression
 significantly reduces the size of code at the expense of *readability.* To
 make casual browsing of JOD code easy, *without building JOD dictionaries*, the 
 directory [`jodijs`](https://github.com/bakerjd99/jod/tree/master/jodijs) contains
-fully commented JOD source. `jodijs` is not distributed by JAL.
+fully commented JOD source. `jodijs` is not distributed by [Pacman](https://code.jsoftware.com/wiki/Pacman).
 
 John Baker
 November 15, 2020
