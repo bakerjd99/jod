@@ -24,4 +24,6 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
 
 7. `<_cs3tdm8qn71elxercfl04ov5h_>` Consider adding an appendix to `jod.pdf` describing how references inside direct definitions are handled.
 
+8. `<_4bbeyvpi7x7t543s8zl3vn0i9_>` Consider adding a `bdisp` verb that would work like `disp` but show objects in backups.
+
 `[end-todo]`
