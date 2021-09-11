@@ -1,7 +1,7 @@
 general/joddocument - change history
 ====================================
 
-### 1.0.2 - November 13, 2020 (Amazon J Object Dictionary Book Edition)
+### 1.0.2 - November 9, 2020 (Amazon J Object Dictionary Book Edition)
 
   * New Amazon printed edition of the (J Object Dictionary)[https://www.amazon.com/dp/B08M2KBMND].
     This is a book version of the distributed `jod.pdf`. If you want to support

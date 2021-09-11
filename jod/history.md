@@ -3,7 +3,13 @@
 general/jod - change history
 ============================
 
-### 1.0.2 - November 13, 2020 (Amazon J Object Dictionary Book Edition)
+### 1.0.22 - (wip)
+
+ *  `abv`(all backup versions) added - see `jod.pdf`
+
+ *  `usedby` was incorrectly excluding names with '_' in results. 
+
+### 1.0.2 - November 9, 2020 (Amazon J Object Dictionary Book Edition)
 
  *  `jodliterate` pandoc/LaTeX based documentation tool updated, see:
 
@@ -606,6 +612,3 @@ general/jod - change history
        For example the following command produces an HTML version:
        
             pandoc -s historyjod.markdown -o historyjod.html
-            
- 
- 
