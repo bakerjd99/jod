@@ -14,16 +14,20 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
 
 2. `<_0ieeylze6dv47vimqz8rok5ci_>` Similarly make sure `jodliterate` works for direction definitions, see:  [`TODO_jodliterate.md`](https://github.com/bakerjd99/jacks/blob/master/jodliterate/TODO_jodliterate.md).
 
-3. `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs have changed in recent J versions.
+3. `<_31t8dofxlypuuaflswoq784pp_>` Test `jodliterate` on macOS and linux. Tweak if needed.
 
-4. `<_cee5z04ltg7qm8m8chp70ujv5_>` Consider adding `abv` (all backup versions) to `JODtools`. This verb is proving so handy it should be part of the standard setup.
+4. `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs have changed in recent J versions.
 
-5. `<_6kfjobpvb6ikszgzq1m9t9aub_>` Consider adding a new appendix to `jod.pdf` describing how to run JOD tests.
+5. `<_cee5z04ltg7qm8m8chp70ujv5_>` Consider adding `abv` (all backup versions) to `JODtools`. This verb is proving so handy it should be part of the standard setup.
 
-6. `<_60l6jkrqk94hi3bu1zycrcjm2_>` The `utils` verb `fgr` (find group roots) does not appear to handle J names with underscores `_` properly. Investigate and fix. NOTE: `fgr` is not a part of JOD but is very handy when creating and maintaining *class groups*.
+6. `<_6kfjobpvb6ikszgzq1m9t9aub_>` Consider adding a new appendix to `jod.pdf` describing how to run JOD tests.
 
-7. `<_cs3tdm8qn71elxercfl04ov5h_>` Consider adding an appendix to `jod.pdf` describing how references inside direct definitions are handled.
+7. `<_60l6jkrqk94hi3bu1zycrcjm2_>` The `utils` verb `fgr` (find group roots) does not appear to handle J names with underscores `_` properly. Investigate and fix. NOTE: `fgr` is not a part of JOD but is very handy when creating and maintaining *class groups*.
 
-8. `<_4bbeyvpi7x7t543s8zl3vn0i9_>` Consider adding a `bdisp` verb that would work like `disp` but show objects in backups.
+8. `<_cs3tdm8qn71elxercfl04ov5h_>` Consider adding an appendix to `jod.pdf` describing how references inside direct definitions are handled.
+
+9. `<_4bbeyvpi7x7t543s8zl3vn0i9_>` Consider adding a `bdisp` verb that would work like `disp` but show objects in backups.
+
+10. `<_d1dtfkd14ypvlatnch2pa5hwo_>` Consider allowing `~/` as a path prefix on macOS and Linux systems. The home directory convention on these systems is respected by `dir`.
 
 `[end-todo]`
