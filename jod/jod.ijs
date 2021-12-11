@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 1.0.2  Build Number: 13  Date: 13 Nov 2020 16:34:19
+NB. Version: 1.0.22  Build Number: 32  Date: 11 Dec 2021 15:48:27
 load 'task'
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
@@ -26,11 +26,14 @@ jodon=:3 :0
 e=.9!:14''
 e=.,(e i.'/'){.e 
 if.#e do.e=.0 ".e #~e e.'0123456789'else.e=.0 end.
+if.e<801 do.
+0 0$(1!:2&2)'WARNING: JOD works best with current J 8.0x-9.0x systems - upgrade!'
+end.
 h=.][1!:2&2
 if.e<602 do.
-f=.'JOD requires J 6.02 or later.'
+f=.'JOD requires J 8.01 or later.'
 f=.f,LF,'J is freely available at www.jsoftware.com'
-0[h f,LF,'Download and install J 6.0x-8.0x and then reinstall JOD.'
+0[h f,LF,'Download and install J 8.0x-9.0x and then reinstall JOD.'
 return.
 end.
 g=.(4!:0)@<
@@ -139,12 +142,12 @@ INCLASS=:12
 INCREATE=:13
 INPUT=:14
 INSIZE=:15
-IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make mnl newd od packd put regd restd rxs uses'
+IzJODinterface=:<;._1 ' abv bnl bget del did dnl dpset gdeps get globs grp make mnl newd od packd put regd restd rxs uses'
 JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'1.0.2';13;'13 Nov 2020 16:34:19'
+JODVMD=:'1.0.22';32;'11 Dec 2021 15:48:27'
 JVERSION=:,6.01999999999999957
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -168,6 +171,17 @@ PUTBLACK=:0
 REFERENCE=:11
 SYMBOLLIM=:2048
 UNION=:31
+abv=:3 :0
+0 abv y
+:
+if.badcl y do.jderr ERR002 return.end.
+if.(1<#,x )+.badil x do.jderr ERR001 return.end.
+if.-.isempty y do.if.badrc d=.checknames y do.d return.else.y=.rv d end.end.
+if.badrc d=.x bnl'.'do.d return.else.a=.}.d end.
+c=.(<a:)-.&.>~}.@(x&bnl)&.>(<y),&.>a
+b=.0<#&>c
+ok\:~;<"1@;"1&.>(b#c),"0 &.><"0 b#a
+)
 afterstr=:]}.~#@[+1&(i.~)@([E.])
 alltrim=:]#~[:-.[:(*./\.+.*./\)' '&=
 badappend=:0:>{.
@@ -179,12 +193,12 @@ elseif.do.-.*./a e.x
 end.
 )
 badbu=:[:32&~:3!:0
-badcl=:-.@(2&=@(3!:0))+.1:<[:#$
-badfl=:[:-.8"_=3!:0
-badil=:-.@((([:#$)e.0 1"_)*.3!:0 e.1 4"_)
+badcl=:-.@(2&=@(3!:0))(+.)1:<[:#$
+badfl=:[:(-.)8"_=3!:0
+badil=:-.@((([:#$)(e.)0 1"_)(*.)3!:0(e.)1 4"_)
 badjr=:[:+./_1 _2&e.
 badlocn=:[>:[:18!:0 ::(_2:)[:<]
-badrc=:[:-.1:-:[:>{.
+badrc=:[:(-.)1:-:[:>{.
 badreps=:0:><./
 badsts=:0:
 badunique=:#~:[:#~.
@@ -797,7 +811,7 @@ elseif.do.checkopen__ST 0
 end.
 )
 now=:6!:0
-nowfd=:([:0 100 100&#.3:{.])+([:24 60 60&#.3:}.])%86400"_
+nowfd=:([:(0 100 100&#.)3:{.])+([:(24 60 60&#.)3:}.])%86400"_
 obidfile=:3 :0
 (jodsystempath''),'jod.ijn'
 )
@@ -956,7 +970,7 @@ if.badrc a=.checkput__ST 0 do.a return.end.
 DL=.1{a
 if.badrc a=.restspace__DL 0 do.a else.(}.a )restdict__DL y end.
 )
-rv=:>@(1&{)
+rv=:>@(1&({))
 rxs=:''&$: :(4 :0)
 if.badrc d=.checkopen__ST 0 do.d return.end.
 a=.ERR001
@@ -1058,7 +1072,7 @@ saveobid=:3 :0
 b=.~.y,readobid a=.obidfile 0
 ((30<.#b){.b)(writenoun ::_1:)a
 )
-second=:1&{
+second=:1&({)
 tc=:3!:0
 trimnl=:-.&' '&.>
 tslash2=:([:-'\/'e.~{:)}.'/',~]
@@ -2828,6 +2842,7 @@ SOGRP=:' grp&> ". ". ''',(>{.WRAPTMPWID),'_'',SOLOCALE,''_'' [ cocurrent ''base'
 SOPUT=:'soput ".''nl_'',SOLOCALE,''_ i.4'' [ cocurrent ''base''',DUMPTAG
 SOPUTTEXT=:' put ". ".''',(>{.WRAPTMPWID),'_'',SOLOCALE,''_'' [ cocurrent ''base''',DUMPTAG
 SOSWITCH=:'cocurrent SO__JODobj',DUMPTAG
+DDEFESCS=:;:'{{}})'
 DUMPMSG0=:'NB. JOD dictionary dump: '
 DUMPMSG1=:'Names & DidNums on current path'
 DUMPMSG2=:'''NB. end-of-JOD-dump-file regenerate cross references with:  0 globs&> }. revo '''''''' '''
@@ -2882,6 +2897,11 @@ b=.":c,a
 )
 createmk=:3 :0
 'JOD ST MK UT SO'=:y
+)
+ddefescmask=:3 :0
+p=.>:I.(0{DDEFESCS)=y
+b=.(2{DDEFESCS)e.~p{y
+0((b#p),b#>:p)}(#y)#1
 )
 dec85=:3 :0
 b=.fromascii85 y
@@ -3122,7 +3142,7 @@ do=.{:{.DPATH__ST
 end.
 a
 )
-halfbits=:]*.1 0"_$~#
+halfbits=:](*.)1 0"_$~#
 htclip=:[(]}.~[:>:]i.[)]}.~[:-[:>:[i.~[:|.]
 jnb=:3 :0
 y jnb~masknb y 
@@ -3263,7 +3283,10 @@ e=.(;: ::0:)&.><"1 e
 if.e e.~<0 do.
 jderr ERR0151
 else.
-e=.ok(<a),(<b),<;e
+if.(0{DDEFESCS)e.e=.;e do.
+e=.e#~ddefescmask e
+end.
+e=.ok(<a),(<b),<e
 end.
 )
 putallts=:3 :0
@@ -3398,7 +3421,7 @@ OK0250=:' documented in ->'
 OK0251=:'edit locale cleared'
 OK0252=:'edit locale ->'
 OK0255=:'starting PDF reader'
-OK0256=:'jod.pdf not installed - use JAL to install the addon general/joddocument'
+OK0256=:'jod.pdf not installed - use pacman to install the addon general/joddocument'
 PDF=:'PDF'
 PDFREADER=:'C:\Program Files\Adobe\Reader 8.0\Reader\acrord32.exe'
 PDFREADERMAC=:'open'
@@ -3631,15 +3654,12 @@ EDTEMP et y
 :
 try.
 (toHOST y)write a=.jpath'~temp/',x,IJS
-if.*/wex;:'IFJ6 IFWIN'do.
-if.IFJ6*IFWIN do.smopen_jijs_ a return.end.
-end.
 if.IFQT do.open a
-elseif.IFJHS do.edit_jhs_ a
+elseif.IFJHS do.
+0 0$(1!:2&2)'edit_jhs_ ',(quote a),'  NB. allow browser pop ups'
+edit_jhs_ a
 elseif.IFWIN*.IFJHS+:IFQT do.fork_jtask_ EDCONSOLE,' ',a
 elseif.IFIOS do.je_z_ a
-elseif.wex<'IFGTK'do.
-if.IFGTK do.open_jgtk_ a else.jderr ERR0255 end.
 elseif.do.jderr ERR0262
 end.
 catch.jderr ERR0255
@@ -3654,7 +3674,7 @@ end.
 )
 jodfork=:[:fork_jtask_[:;1 0 2{' ';qt
 jodhelp=:3 :0
-a=.jpath'~addons\general\joddocument\pdfdoc\jod.pdf'
+a=.jpath'~addons/general/joddocument/pdfdoc/jod.pdf'
 if.fex<a do.
 b=.pdfreader 0
 if.UNAME-:'Darwin'do.

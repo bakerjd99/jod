@@ -1,11 +1,13 @@
 general/joddocument - change history
 ====================================
 
-### 1.0.22 - (Omicron Variant Edition wip)
+### 1.0.22 - December 11, 2021 (Omicron Variant Edition)
 
  *  `abv`(all backup versions) added - see `jod.pdf`
 
  *  Direct definition appendix added.
+
+ *  macOS/Linux paths added to configuration section.
 
 ### 1.0.2 - November 9, 2020 (Amazon J Object Dictionary Book Edition)
 
@@ -16,7 +18,7 @@ general/joddocument - change history
 
   * New Jupyter lab pdf added `UsingJodliterate.pdf`- see the directory
 
-	jpath '~addons/general/joddocument/pdfdoc'
+ jpath '~addons/general/joddocument/pdfdoc'
 
 ### 1.0.1 - March 28, 2020 (Social Distancing Edition)
 

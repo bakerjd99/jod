@@ -1,9 +1,18 @@
 
-
 general/jod - change history
 ============================
 
-### 1.0.2 - November 13, 2020 (Amazon J Object Dictionary Book Edition)
+### 1.0.22 - December 11, 2021 (Omicron Variant Edition)
+
+ *  `abv`(all backup versions) added - see `jod.pdf`
+
+ *  `usedby` was incorrectly excluding names with '_' in results. 
+
+ *  Direct `{{` ... `}}` definitions now supported - see `jod.pdf`  
+ 
+ *  Edit commands displayed for JHS to remind users to allow browser pop ups.
+
+### 1.0.2 - November 9, 2020 (Amazon J Object Dictionary Book Edition)
 
  *  `jodliterate` pandoc/LaTeX based documentation tool updated, see:
 
@@ -88,16 +97,16 @@ general/jod - change history
    and then added to the `scripts 'v'` list. This resulted in
    `scripts` lines like:
         
-		TeXfrWpxml  C:/Users/john2000/jod/docs/script/TeXfrWpxml.ijs
+  TeXfrWpxml  C:/Users/john2000/jod/docs/script/TeXfrWpxml.ijs
         
    Now `jpath` *configured* strings are not expanded resulting in 
    `scripts` lines like:
         
-		TeXfrWpxml  ~BLOG/TeXfrWpxml.ijs
-		
+  TeXfrWpxml  ~BLOG/TeXfrWpxml.ijs
+  
    This conforms to how `scripts` handles addons.
         
-		plot   ~addons/graphics/plot/plot.ijs
+  plot   ~addons/graphics/plot/plot.ijs
   
  * Support for J 6.01 ended and all versions prior to J 8.07 are
    now on life support.
@@ -105,12 +114,12 @@ general/jod - change history
  * `namecats` changed to fix indirect mixed assignment error.
  
         NB. (globs) was failing on verbs like this 
-        NB. - there are no mixed assignments.		
+        NB. - there are no mixed assignments.  
         mixedIndirectAssignError=: 4 : 0
         (MethodArguments)=. 0
         (func)=: [ + 0 * ]
         )
-		
+  
  * A new name analysis tag `(<:)=:` has been added to `namecats` to
    override mixed assignments. The following legitimate J pattern 
    is used in a number of JOD words.
@@ -119,9 +128,9 @@ general/jod - change history
         NB. (dn) appears to be both local and global
         dn=. (<_2}.ix) ,&.> DTSIXCN
         (dn)=: dat
-		
+  
    The previous change exposed this issue in JOD code. Override comments
-   have been added to JOD words using this pattern. 		
+   have been added to JOD words using this pattern.   
           
 ### 0.9.990 - February 27, 2017
 
@@ -606,6 +615,3 @@ general/jod - change history
        For example the following command produces an HTML version:
        
             pandoc -s historyjod.markdown -o historyjod.html
-            
- 
- 

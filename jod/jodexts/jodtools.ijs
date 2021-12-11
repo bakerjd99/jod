@@ -1,5 +1,5 @@
 NB. System: jodtools  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 1.0.2  Build Number: 12  Date: 13 Nov 2020 16:34:20
+NB. Version: 1.0.22  Build Number: 32  Date: 11 Dec 2021 15:48:35
 (9!:41)0
 coclass'ajodtools'
 coinsert'ajodutil'
@@ -16,10 +16,10 @@ ERR00406=:'invalid delimiter'
 ERR00407=:'ROOTFOLDER must be a character list configured (jpath) expression like: ~user/jodroot'
 ERR00408=:'unable to write load script ->'
 GROUPSUITES=:<;._1 ' Groups Suites'
-IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
+IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
-JODTOOLSVMD=:'1.0.2';12;'13 Nov 2020 16:34:20'
+JODTOOLSVMD=:'1.0.22';32;'11 Dec 2021 15:48:35'
 LF=:10{a.
 OK00400=:'load script saved ->'
 OK00401=:'file saved ->'
@@ -151,8 +151,6 @@ end.
 )
 firstperiod=:3 :0
 y=.(500<.#y){.y
-a=.;&.>,{(<<"0' ([{'),<;:'m. n. x. y. u. v. *.'
-y=.' '(I._2(|.!.0)+./a E.&><y)}y
 y i.'.'
 )
 fsen=:];[:firstcomment disp
@@ -342,6 +340,7 @@ elseif.do.
 ok(0=#&>{:"1 a)#{."1 a
 end.
 )
+swex=:0 8&put@:fsen
 today=:3 :0
 3&{.@(6!:0)''
 :
@@ -369,12 +368,11 @@ x=.(/:0{"1 x){x
 end.
 )
 usedby=:4 :0
-if.badrc c=.uses y do.c
+if.badrc a=.uses y do.a
 else.
-c=.>{:c
+a=.>{:a
 b=.boxopen x
-a=.>:+./'_'&e.&>b
-ok/:~({."1 c)#~;(a{"1 c)+./@e.&.><b
+ok/:~({."1 a)#~+./"1 ;"1 (1 2{"1 a)+./@e.&.><b
 end.
 )
 yyyymondd=:3 :0
