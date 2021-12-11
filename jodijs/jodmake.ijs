@@ -45,6 +45,10 @@ SOSWITCH=:'cocurrent SO__JODobj',DUMPTAG
 NB.*enddependents
 NB.*end-header
 
+NB. direct definition escape tokens - order matters
+DDEFESCS=:;:'{{}})'
+
+
 DUMPMSG0=:'NB. JOD dictionary dump: '
 DUMPMSG1=:'Names & DidNums on current path'
 
@@ -171,6 +175,25 @@ NB.   createmk__MK JOD;ST;MK;UT;<SO
 
 NB. object references !(*)=. JOD ST MK UT SO
 'JOD ST MK UT SO'=: y
+)
+
+
+ddefescmask=:3 : 0
+
+NB.*ddefescmask v-- direct definition escape token mask.
+NB.
+NB. Returns  a  bit mask  of direct  definition )? tokens.  These
+NB. tokens  would  be  seen  as globals  if passed  to  JOD  name
+NB. analysis verbs.
+NB.
+NB. monad:  pl =. ddefescmask blclJTokens
+NB.
+NB.   toks=. 3 pick parsecode__MK__JODobj jcr__JODobj 'ddef00_base_'
+NB.   toks #~ -.ddefescmask toks  NB. escape tokens
+
+p=. >:I. (0{DDEFESCS)=y      NB. first token after ddef starts
+b=. (2{DDEFESCS) e.~ p{y     NB. ddef )? escapes
+0 ((b # p),b # >:p)} (#y)#1  NB. escape token mask
 )
 
 
@@ -671,7 +694,7 @@ for_obj. OBJECTNC do.
   if. (,sts) -: nlfrrle ets do.
     NB. if run encoded timestamps are smaller use them
     if. (*/$ets) <: */$sts do.
-      cts=. (<ets) (<1;obj_index)} cts	
+      cts=. (<ets) (<1;obj_index)} cts
       cts=. (<1) (<2;obj_index)} cts
     end.
   end.
@@ -702,7 +725,7 @@ ascii85
 )
 
 NB. 0's every other 1 in even groups of 1's
-halfbits=:] *. 1 0"_ $~ #
+halfbits=:] (*.) 1 0"_ $~ #
 
 NB. clips head and tail delimited lists - see long documentation
 htclip=:[ (] }.~ [: >: ] i. [) ] }.~ [: - [: >: [ i.~ [: |. ]
@@ -995,7 +1018,11 @@ parsed=. (;: :: 0:)&.> <"1 parsed  NB. parse code
 if. parsed e.~ <0 do.
   jderr ERR0151  NB. errmsg: word syntax
 else.
-  parsed=. ok(<gbls),(<locs),<;parsed
+  if. (0{DDEFESCS) e. parsed=. ;parsed do.
+    NB. remove any direct definition escape tokens
+    parsed=. parsed #~ ddefescmask parsed
+  end.
+  parsed=. ok(<gbls),(<locs),<parsed
 end.
 )
 

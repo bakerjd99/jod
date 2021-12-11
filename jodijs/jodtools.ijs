@@ -8,7 +8,7 @@ NB.  delgrp   remove words/tests from groups/suites
 NB.  getrx    get required to execute                                                 
 NB.  hlpnl    displays short descriptions of objects on (y)                          
 NB.  jodage   days since last change and creation of JOD objects
-NB.  jodhelp   display online JOD help                     
+NB.  jodhelp  display PDF JOD help                     
 NB.  lg       make and load JOD group                                                 
 NB.  mls      make load script                                                                                               
 NB.  noexp    returns a list of objects with no explanations                          
@@ -37,7 +37,7 @@ AGEHEADER=:<;._1 '|Name|Date First put|Days from First put|Date Last put|Days fr
 NB. carriage return character
 CR=:13{a.
 
-NB. nw edit text template
+NB. (nw) edit text template - stored in this form to preserve embedded comments
 DOCUMENTMARK=:123 126 78 126 125 61 58 32 123 126 67 126 125 32 58 32 48 10 10 78 66 46 42 123 126 78 126 125 32 123 126 84 126 125 45 45 32 119 111 114 100 116 101 120 116 10 78 66 46 10 78 66 46 32 109 111 110 97 100 58 32 32 123 126 78 126 125 32 63 63 10 78 66 46 32 100 121 97 100 58 32 32 63 63 32 123 126 78 126 125 32 63 63 10 10 39 78 73 77 80 32 123 126 78 126 125 39 10 41{a.
 
 
@@ -55,7 +55,7 @@ NB. locgrp Group Suite display text
 GROUPSUITES=:<;._1 ' Groups Suites'
 
 NB. JODTOOLS interface - loaded into (ijod) - see (setjodinterface)
-IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp ltx mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
+IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 
 NB. comment tag marking end of scripts
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
@@ -64,7 +64,7 @@ NB. comment tag marking start of scripts
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 
 NB. JODTOOLS version, make and date
-JODTOOLSVMD=:'1.0.2';12;'13 Nov 2020 16:34:20'
+JODTOOLSVMD=:'1.0.22 - dev';28;'11 Dec 2021 11:39:25'
 
 NB. line feed character
 LF=:10{a.
@@ -385,18 +385,18 @@ end.
 firstperiod=:3 : 0
 
 NB.*firstperiod v-- returns the index of first sentence period.
-NB. J arguments m. n. x. y. u. v. are excluded.
 NB.
 NB. monad:  firstperiod cl
-NB.
-NB.   firstperiod 'not here {m. or here [u. or here (x.) or here u. but here. Got that'
 
-NB. mask out J arguments in at most first 500 chars
+NB. first period in at most 500 chars
 y=. (500<.#y){.y
-args=. ;&.> , { (<<"0' ([{'),<;:'m. n. x. y. u. v. *.'
-y=.' ' (I. _2  (|. !. 0) +./ args E.&> <y)} y
 
-NB. first period after masking
+NB. inflected names have been long deprecated in J
+NB. there is no need to mask them in later code 
+NB. args=. ;&.> , { (<<"0' ([{'),<;:'m. n. x. y. u. v. *.'
+NB. y=.' ' (I. _2  (|. !. 0) +./ args E.&> <y)} y
+
+NB. first period
 y i. '.'
 )
 
@@ -761,7 +761,7 @@ name et word
 )
 
 NB. object/locale names from uses:  allnames 31 uses 'name'
-obnames=:[: /:~ [: ~. [: ; 2: {"1 [: > {:
+obnames=:[: /:~ [: ~. [: ; 2: { "1 [: > {:
 
 
 onlycomments=:3 : 0
@@ -787,7 +787,7 @@ NB. put and cross reference word
 pr=:0&globs ,:~ put
 
 NB. referenced nonlocale names from uses:  allnames 31 uses 'name'
-refnames=:[: /:~ [: ~. [: ; 1: {"1 [: > {:
+refnames=:[: /:~ [: ~. [: ; 1: { "1 [: > {:
 
 
 revonex=:3 : 0
@@ -817,6 +817,9 @@ elseif.do.
  ok (0 = #&> {:"1 uv) # {."1 uv
 end.
 )
+
+NB. extract single line explanation from word header comment and save
+swex=:0 8&put@:fsen
 
 
 today=:3 : 0
@@ -903,10 +906,14 @@ NB. (uses) is expensive for large word lists.
 if. badrc uv=.uses y do. uv
 else.
   uv=. >{: uv
-  names=. boxopen x
+  wnames=. boxopen x
+
+  NB. BUGFIX: 21sep10 - was not returning names like: EMCS_END_CHECK_sql
   NB. search object and locale references if _ occurs in any name
-  col=. >: +./ '_'&e.&> names
-  ok /:~ ({."1 uv) #~  ; (col {"1 uv) +./@e.&.> < names
+  NB. col=. >: +./ '_'&e.&> wnames
+  NB. ok /:~ ({."1 uv) #~  ; (col {"1 uv) +./@e.&.> < wnames
+
+  ok /:~ ({."1 uv) #~ +./"1 ;"1 (1 2 {"1 uv) +./@e.&.> <wnames
 end.
 )
 

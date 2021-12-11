@@ -14,7 +14,7 @@ NB.   gt       get text out of edit windows
 NB.   revo     list recently revised objects
 NB.   rm       run macros
 NB.   rtt      run tautology tests
-NB.   jodhelp  browse PDF online help
+NB.   jodhelp  browse PDF help
 NB.
 NB. Notes:
 NB.   error & ok messages (jodutil range 00250-00399)
@@ -95,7 +95,7 @@ OK0250=:' documented in ->'
 OK0251=:'edit locale cleared'
 OK0252=:'edit locale ->'
 OK0255=:'starting PDF reader'
-OK0256=:'jod.pdf not installed - use JAL to install the addon general/joddocument'
+OK0256=:'jod.pdf not installed - use pacman to install the addon general/joddocument'
 
 NB. PDF document indicator
 PDF=:'PDF'
@@ -635,7 +635,7 @@ if. 2=#$ y do.
   end.
   NB. set default object name - if there is more than one 
   NB. object reset (x) to prevent affixing document command  
-  oname=. ;0{0{uv [ x=.  1 < #uv 	
+  oname=. ;0{0{uv [ x=.  1 < #uv 
 elseif. badrc uv=. x obtext y do. uv return. 
 elseif.do. 
   'oname text'=. }.uv 
@@ -668,17 +668,19 @@ try.
   (toHOST y) write file=. jpath '~temp/' , x , IJS
 
   NB. open in various editors !(*)=. IFJ6 IFWIN IFJHS IFQT IFIOS IFGTK open
-  if. */ wex ;:'IFJ6 IFWIN'  do. 
-    if. IFJ6 * IFWIN do. smopen_jijs_ file return. end. NB. J 6.0x win systems
-  end. 
+  
+  NB. J6 no longer supported 
+  NB. if. */ wex ;:'IFJ6 IFWIN'  do. 
+  NB.  if. IFJ6 * IFWIN do. smopen_jijs_ file return. end. NB. J 6.0x win systems
+  NB. end. 
   
   if. IFQT do. open file  NB. jqt ide
 
-  NB. JHS on macs - not tested recently
-  NB. elseif. IFJHS *. wex <'wwd_qjide_' do. 0 0$(1!:2&2) '$$$edit$$$',file  NB. qjide
-
-  NB. JHS on win 
-  elseif. IFJHS do. edit_jhs_ file  
+  elseif. IFJHS do. 
+    NB. show edit command in JHS to remind users to adjust
+    NB. browser pop ups and keep a handy recall line
+    0 0$(1!:2&2) 'edit_jhs_ ',(quote file), '  NB. allow browser pop ups'
+    edit_jhs_ file  
 
   NB. running in jconsole on Windows systems 
   NB. WARNING: there is no indication of fork failures 
@@ -691,9 +693,9 @@ try.
   NB. iPhone/iPad  
   elseif. IFIOS do. je_z_ file     
   
-  NB. GTK systems are deprecated
-  elseif. wex <'IFGTK' do.
-    if. IFGTK do. open_jgtk_ file  else. jderr ERR0255 end. NB. GTK 
+  NB. GTK systems are deprecated and no longer supported
+  NB. elseif. wex <'IFGTK' do.
+  NB.  if. IFGTK do. open_jgtk_ file  else. jderr ERR0255 end. NB. GTK 
 
   elseif.do. jderr ERR0262  NB. errmsg: not supported on current J system
   end. 
@@ -724,18 +726,18 @@ end.
 )
 
 NB. formats (jodhelp) command line and spawns browser or pdfreader
-jodfork=:[: fork_jtask_ [: ; 1 0 2 { ' ' ; qt
+jodfork=:[: fork_jtask_ [: ; 1 0 2 {  ' ' ; qt
 
 
 jodhelp=:3 : 0
 
-NB.*jodhelp v-- display JOD help.
+NB.*jodhelp v-- display PDF JOD help.
 NB.
 NB. monad:  jodhelp uuIgnore
 NB.
 NB.   jodhelp ''  NB. display JOD help - start PDF browsing 
 
-jodpdf=. jpath '~addons\general\joddocument\pdfdoc\jod.pdf'
+jodpdf=. jpath '~addons/general/joddocument/pdfdoc/jod.pdf'
 if. fex<jodpdf do.
   NB. jod.pdf is installed and local
   pdfrdr=. pdfreader 0
@@ -750,7 +752,7 @@ if. fex<jodpdf do.
   end.
 else.
   NB. jod.pdf is not installed advise user to download joddocument addon
-  ok OK0256 NB. msg: jod.pdf not installed - use JAL to install the addon general/joddocument
+  ok OK0256 NB. msg: jod.pdf not installed - use pacman to install the addon general/joddocument
 end.
 )
 

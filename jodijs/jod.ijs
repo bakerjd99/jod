@@ -9,6 +9,7 @@ NB.
 NB. Contains: dictionary utilities, constants, interface verbs
 NB.
 NB. Interface: (verbs made available by ijod locale)
+NB.   abv     all backup version names 
 NB.   bget    get objects from put dictionary backups 
 NB.   bnl     backup name lists from patterns
 NB.   del     delete words, tests, groups, macros, et cetera
@@ -206,7 +207,7 @@ NB. inverted data code: object size in bytes
 INSIZE=:15
 
 NB. core JOD interface - loaded into (ijod) - see (setjodinterface)
-IzJODinterface=:<;._1 ' bnl bget del did dnl dpset gdeps get globs grp make mnl newd od packd put regd restd rxs uses'
+IzJODinterface=:<;._1 ' abv bnl bget del did dnl dpset gdeps get globs grp make mnl newd od packd put regd restd rxs uses'
 
 NB. standard dictionary file names - order matters
 JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
@@ -221,7 +222,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.0.2';13;'13 Nov 2020 16:34:19'
+JODVMD=:'1.0.22 - dev';28;'11 Dec 2021 11:39:24'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
@@ -276,6 +277,39 @@ SYMBOLLIM=:2048
 NB. uses union option code
 UNION=:31
 
+
+abv=:3 : 0
+
+NB.*abv v-- all backup version names.
+NB.
+NB. Returns all  valid backup  names  matching  name prefix  (y).
+NB. Names are listed from most recent backups to older backups.
+NB.
+NB. monad:  (paRc ; blclBNames) =. abv zl|clPfx
+NB.
+NB.   abv 'ch'  NB. all words in all backups starting with 'ch'
+NB.   abv ''    NB. all words in all backups
+NB.
+NB. dyad:   (paRc ; blclBNames) =. il abv zl|clPfx
+NB.
+NB.   2 abv 'jod'  NB. all group names in all backups starting with 'jod'
+NB.   4 abv ''     NB. all macros in all backups
+
+0 abv y NB. word default
+:
+if. badcl y do. jderr ERR002 return. end. NB. errmsg: invalid name(s)
+if. (1 < #,x) +. badil x do. jderr ERR001 return. end. NB. errmsg: invalid option(s)
+if. -.isempty y do. if. badrc uv=. checknames y do. uv return. else. y=. rv uv end. end.
+if. badrc uv=. x bnl '.' do. uv return. else. bn=. }.uv end.
+
+NB. names matching prefix in all backups
+pfx=. (<a:) -.&.>~ }.@(x&bnl)&.> (<y) ,&.> bn
+b=. 0 < #&> pfx
+
+NB. return backup names from most recent to older backups
+ok \:~ ;<"1@;"1&.> (b # pfx) ,"0&.> <"0 b # bn
+)
+
 NB. retains string after first occurrence of (x)
 afterstr=:] }.~ #@[ + 1&(i.~)@([ E. ])
 
@@ -302,13 +336,13 @@ NB. 1 if (y) is not boxed
 badbu=:[: 32&~: 3!:0
 
 NB. 1 if (y) is not a character list or atom
-badcl=:-.@(2&=@(3!:0)) +. 1: < [: # $
+badcl=:-.@(2&=@(3!:0)) (+.) 1: < [: # $
 
 NB. 1 if (y) is not floating
-badfl=:[: -. 8"_ = 3!:0
+badfl=:[: (-.) 8"_ = 3!:0
 
 NB. 1 if (y) is not a list of non-extended integers
-badil=:-.@((([: # $) e. 0 1"_) *. 3!:0 e. 1 4"_)
+badil=:-.@((([: # $) (e.) 0 1"_) (*.) 3!:0 (e.) 1 4"_)
 
 NB. bad jfile operation
 badjr=:[: +./ _1 _2&e.
@@ -317,7 +351,7 @@ NB. bad locale name
 badlocn=:[ >: [: 18!:0 ::(_2:) [: < ]
 
 NB. bad return code
-badrc=:[: -. 1: -: [: > {.
+badrc=:[: (-.) 1: -: [: > {.
 
 NB. test for jfile replacement errors
 badreps=:0: > <./
@@ -725,13 +759,14 @@ if. fex <JODPROF do. (_9 -: ((0!:0) :: _9:) <JODPROF){1 0 else. 1 end.
 
 createmast=:3 : 0
 
-NB.*createmast v-- creates the dictionary master file. The master
-NB. file  holds  the  master dictionary  directory and dictionary
-NB. parameters. The master file tracks the state of dictionaries.
-NB. In  this  system  only  one   task  can   open  a  dictionary
-NB. read/write. When  opening a  dictionary  the master  file  is
-NB. checked to  determine  if  the  dictionary  has  been  opened
-NB. read/write  by  another  task.  Dictionaries  can  be  opened
+NB.*createmast v-- creates the dictionary master file.
+NB.
+NB. The master  file holds the  master  dictionary directory  and
+NB. dictionary parameters.  The master  file  tracks the state of
+NB. dictionaries.  In  this  system  only  one task  can  open  a
+NB. dictionary read/write. When opening a  dictionary  the master
+NB. file is  checked  to determine if  the  dictionary  has  been
+NB. opened read/write by another task. Dictionaries can be opened
 NB. read/only by any number of tasks.
 NB.
 NB. monad:  createmast clFile
@@ -764,7 +799,7 @@ try.
   parms=. <dptable MASTERPARMS    NB. created by 0!:0 !(*)=. MASTERPARMS
 catchd.
   jclose_jfiles_ fn
-  (jderr ERR027),<syp,PARMFILE return. 
+  (jderr ERR027),<syp,PARMFILE return.
 end.
 
 cn=. cn, parms jappend fn       NB. c7 active dictionary parameters
@@ -1625,7 +1660,7 @@ NB. numeric list timestamp
 now=:6!:0
 
 NB. convert timestamp to yyyymmdd
-nowfd=:([: 0 100 100&#. 3: {. ]) + ([: 24 60 60&#. 3: }. ]) % 86400"_
+nowfd=:([: (0 100 100&#.) 3: {. ]) + ([: (24 60 60&#.) 3: }. ]) % 86400"_
 
 
 obidfile=:3 : 0
@@ -1936,7 +1971,7 @@ if. badrc uv=. restspace__DL 0 do. uv else. (}. uv) restdict__DL y end.
 )
 
 NB. ok return value
-rv=:>@(1&{)
+rv=:>@(1&({ ))
 
 
 rxs=:''&$: :(4 : 0)
@@ -2126,7 +2161,7 @@ NB. but never closed - on this machine. JUST INCREASE THE NUMBER EHHH!!
 )
 
 NB. second list item
-second=:1&{
+second=:1&({ )
 
 NB. J type code
 tc=:3!:0

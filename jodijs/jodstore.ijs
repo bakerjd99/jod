@@ -1060,7 +1060,7 @@ end.
 )
 
 NB. select only duplicate names in table based on first column
-dupnames=:] #~ (0 {"1 ]) e. (0 {"1 ]) #~ [: -. [: ~: 0 {"1 ]
+dupnames=:] #~ (0 { "1 ]) e. (0 { "1 ]) #~ [: -. [: ~: 0 { "1 ]
 
 
 freedisk=:3 : 0
@@ -1638,7 +1638,7 @@ NB. NIMP: returns all 1's for now
 )
 
 NB. tests permissions/attributes of a blcl of full path file names for writeablity
-iswriteablewin=:'w-'"_ -:"1 [: ] 1 3"_ {"1 [: ;"1 [: ] _2: {."1 [: > [: ,&(1!:0)&.> ]
+iswriteablewin=:'w-'"_ -:"1 [: ] 1 3"_ { "1 [: ;"1 [: ] _2: {."1 [: > [: ,&(1!:0)&.> ]
 
 
 jdatcreate=:4 : 0
@@ -2040,7 +2040,7 @@ end.
 )
 
 NB. names containing substring: (;:'cats bats') nlctn 'at'
-nlctn=:([: I. [: +./"1 ([: ,: ]) E. [: > [) { [
+nlctn=:([: I. [: +./"1 ([: ,: ]) E. [: > [) {  [
 
 NB. match prefixes (optimize for large lists): (;:'he bo boat') nlpfx 'bo'
 nlpfx=:[ #~ ([: < [: , ]) -:&> ([: # [: , ]) {.&.> [
