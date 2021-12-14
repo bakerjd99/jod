@@ -1,44 +1,33 @@
-
-% Default to the notebook output style
-
-    
-
-
-% Inherit from the specified cell style.
-
-
-
-
-\documentclass[11pt,letter,landscape]{article}    
+\documentclass[11pt,letter,landscape]{article} 
 %\documentclass[11pt]{article}
 
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
     
-    
-    \usepackage[T1]{fontenc}
-    % Nicer default font (+ math font) than Computer Modern for most use cases
-    \usepackage{mathpazo}
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
 
     % Basic figure setup, for now with no caption control since it's done
     % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
     \usepackage{graphicx}
-    % We will generate all images so they have a width \maxwidth. This means
-    % that they will get their normal width if they fit onto the page, but
-    % are scaled down if they would overflow the margins.
-    \makeatletter
-    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
-    \else\Gin@nat@width\fi}
-    \makeatother
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
     \let\Oldincludegraphics\includegraphics
-    % Set max figure width to be 80% of text width, for now hardcoded.
-    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
     % Ensure that by default, figures have no caption (until we provide a
     % proper Figure object with a Caption API and a way to capture that
     % in the conversion process - todo).
     \usepackage{caption}
-    \DeclareCaptionLabelFormat{nolabel}{}
-    \captionsetup{labelformat=nolabel}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
 
-    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
     \usepackage{xcolor} % Allow colors to be defined
     \usepackage{enumerate} % Needed for markdown enumerations to work
     \usepackage{geometry} % Used to adjust the document margins
@@ -52,22 +41,32 @@
     \usepackage{upquote} % Upright quotes for verbatim code
     \usepackage{eurosym} % defines \euro
     \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
-    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
     \usepackage{fancyvrb} % verbatim replacement that allows latex
     \usepackage{grffile} % extends the file name processing of package graphics 
-                         % to support a larger range 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
     % The hyperref package gives us a pdf with properly built
     % internal navigation ('pdf bookmarks' for the table of contents,
     % internal cross-reference links, web links for URLs, etc.)
     \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
     \usepackage{longtable} % longtable support required by pandoc >1.10
     \usepackage{booktabs}  % table support for pandoc > 1.12.2
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
     
 
-    
     
     % Colors for the hyperref package
     \definecolor{urlcolor}{rgb}{0,.145,.698}
@@ -91,6 +90,8 @@
     \definecolor{ansi-cyan-intense}{HTML}{258F8F}
     \definecolor{ansi-white}{HTML}{C5C1B4}
     \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
 
     % commands and environments needed by pandoc snippets
     % extracted from the output of `pandoc -s`
@@ -137,17 +138,22 @@
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
-    % Math Jax compatability definitions
+    % Math Jax compatibility definitions
     \def\gt{>}
     \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
+    % Document title
     \title{Using JOD Regular Expressions}
     
     
     
-
-    % Pygments definitions
     
+    
+% Pygments definitions
 \makeatletter
 \def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
     \let\PY@ul=\relax \let\PY@tc=\relax%
@@ -249,11 +255,97 @@
 \makeatother
 
 
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
     % Exact colors from NB
-    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
-    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
-
-
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
 
     
     % Prevent overflowing lines due to hard-to-break entities
@@ -272,24 +364,21 @@
     
     
 
-    \begin{document}
-    
+\begin{document}
     
     \maketitle
     
     
 
     
-    \section{Using JOD Regular
-Expressions}\label{using-jod-regular-expressions}
+    \hypertarget{using-jod-regular-expressions}{%
+\section{Using JOD Regular
+Expressions}\label{using-jod-regular-expressions}}
 
-\begin{figure}
-\centering
 \includegraphics{inclusions/jodteenytinycube.png}
-\caption{}
-\end{figure}
 
-    \subsubsection{Introduction}\label{introduction}
+    \hypertarget{introduction}{%
+\subsubsection{Introduction}\label{introduction}}
 
 JOD's regular expressions are built on J's \texttt{regex} class.
 \href{https://code.jsoftware.com/wiki/Guides/Regular_Expressions/Verbs}{\texttt{regex}
@@ -300,122 +389,146 @@ with J's \texttt{regex} facilities before using \texttt{rxs}.
 \texttt{rxall} and \texttt{rxmatches}. If you understand how to use
 these verbs you will quickly master \texttt{rxs}.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. display J version}
-        \PY{l+m+mi}{9}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{14}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. display J version}
+\PY{l+m+mi}{9}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{14}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-j901/j64avx/windows/beta-s/commercial/www.jsoftware.com/2019-12-02T12:51:33
 
+j903/j64avx2/windows/beta-w/commercial/www.jsoftware.com/2021-12-05T18:25:00/cla
+ng-13-0-0/SLEEF=1
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{NB. load JOD in a clear base locale}
-        \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{n+nv}{clear} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. The distributed JOD profile automatically RESETME\PYZsq{}s.}
-        \PY{c+c1}{NB. To safely use dictionaries with many J tasks they must}
-        \PY{c+c1}{NB. be READONLY. To prevent opening the same put dictionary}
-        \PY{c+c1}{NB. READWRITE comment out (dpset) and restart this notebook.}
-        \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{S}\PY{l+s}{E}\PY{l+s}{T}\PY{l+s}{M}\PY{l+s}{E}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. Converting Jupyter notebooks to LaTeX is }
-        \PY{c+c1}{NB. simplified by ASCII box characters.}
-        \PY{n+nv}{portchars} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. Verb to show large boxed displays in}
-        \PY{c+c1}{NB. the notebook without ugly wrapping.}
-        \PY{n+nv}{sbx}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{\PYZsq{}} \PY{o}{,}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{\PYZti{}} \PY{l+m+mi}{90}\PY{o}{\PYZam{}}\PY{o}{\PYZob{}}\PY{o}{.}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{@}\PY{o}{\PYZdq{}}\PY{o}{:}
-        
-        \PY{c+c1}{NB. Create a test put dictionary for this notebook.}
-        \PY{c+c1}{NB. The use of (didnum) insures it does not exist.}
-        \PY{n+nv}{rxsDemo}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{o}{\PYZdq{}}\PY{o}{:}\PY{n+nv}{didnum\PYZus{}ajod\PYZus{}}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        \PY{n+nv}{newd} \PY{n+nv}{rxsDemo}
-        
-        \PY{c+c1}{NB. unregisters any extant rxsdemo\PYZsq{}s}
-        \PY{c+c1}{NB. 3 regd\PYZam{}\PYZgt{} s \PYZsh{}\PYZti{} (s=. \PYZcb{}. od \PYZsq{}\PYZsq{}) +./@E.\PYZam{}\PYZgt{}\PYZti{} \PYZlt{}\PYZsq{}rxsdemo\PYZsq{}}
-        
-        \PY{c+c1}{NB. open some JOD dictionaries to search}
-        \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{n+nv}{rxsDemo}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        \PY{n+nv}{sbx} \PY{n+nv}{did} \PY{o}{\PYZti{}} \PY{l+m+mi}{0}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. load JOD in a clear base locale}
+\PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{n+nv}{clear} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+
+\PY{c+c1}{NB. Converting Jupyter notebooks to LaTeX is }
+\PY{c+c1}{NB. simplified by ASCII box characters.}
+\PY{n+nv}{portchars} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+
+\PY{c+c1}{NB. show JOD version}
+\PY{n+nv}{JODVMD\PYZus{}ajod\PYZus{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-|1|+---------------------------------------------+--+-----+-----+-------+-------+------+-- {\ldots} 
-| ||                                             |--|Words|Tests|Groups*|Suites*|Macros|Pa {\ldots} 
-| |+---------------------------------------------+--+-----+-----+-------+-------+------+-- {\ldots} 
-| ||rxsdemo24347018837875837655937079410780880785|rw|0    |0    |0      |0      |0     |/  {\ldots} 
-| |+---------------------------------------------+--+-----+-----+-------+-------+------+-- {\ldots} 
-| ||joddev                                       |rw|32   |8    |2      |1      |12    |/j {\ldots} 
-| |+---------------------------------------------+--+-----+-----+-------+-------+------+-- {\ldots} 
-| ||jod                                          |ro|782  |67   |22     |13     |61    |/j {\ldots} 
-| |+---------------------------------------------+--+-----+-----+-------+-------+------+-- {\ldots} 
-| ||utils                                        |ro|392  |7    |21     |0      |17    |/u {\ldots} 
-| |+---------------------------------------------+--+-----+-----+-------+-------+------+-- {\ldots} 
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-
++------------+--+--------------------+
+|1.0.22 - dev|35|14 Dec 2021 08:32:08|
++------------+--+--------------------+
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{rxs} searches only nonnoun JOD
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. The distributed JOD profile automatically RESETME\PYZsq{}s.}
+\PY{c+c1}{NB. To safely use dictionaries with many J tasks they must}
+\PY{c+c1}{NB. be READONLY. To prevent opening the same put dictionary}
+\PY{c+c1}{NB. READWRITE comment out (dpset) and restart this notebook.}
+\PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{S}\PY{l+s}{E}\PY{l+s}{T}\PY{l+s}{M}\PY{l+s}{E}\PY{l+s}{\PYZsq{}}
+
+\PY{c+c1}{NB. Verb to show large boxed displays in}
+\PY{c+c1}{NB. the notebook without ugly wrapping.}
+\PY{n+nv}{sbx}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{\PYZsq{}} \PY{o}{,}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{\PYZti{}} \PY{l+m+mi}{73}\PY{o}{\PYZam{}}\PY{o}{\PYZob{}}\PY{o}{.}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{@}\PY{o}{\PYZdq{}}\PY{o}{:}
+
+\PY{c+c1}{NB. Create a test put dictionary for this notebook.}
+\PY{c+c1}{NB. The use of (didnum) insures it does not exist.}
+\PY{n+nv}{rxsDemo}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{o}{\PYZdq{}}\PY{o}{:}\PY{n+nv}{didnum\PYZus{}ajod\PYZus{}}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\PY{n+nv}{newd} \PY{n+nv}{rxsDemo}
+
+\PY{c+c1}{NB. unregisters any extant rxsdemo\PYZsq{}s}
+\PY{c+c1}{NB. 3 regd\PYZam{}\PYZgt{} s \PYZsh{}\PYZti{} (s=. \PYZcb{}. od \PYZsq{}\PYZsq{}) +./@E.\PYZam{}\PYZgt{}\PYZti{} \PYZlt{}\PYZsq{}rxsdemo\PYZsq{}}
+
+\PY{c+c1}{NB. open some JOD dictionaries to search}
+\PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{n+nv}{rxsDemo}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\PY{n+nv}{sbx} \PY{n+nv}{did} \PY{o}{\PYZti{}} \PY{l+m+mi}{0}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------------------------------------------------------- {\ldots}
+|1|+----------------------------------------------+--+-----+-----+------- {\ldots}
+| ||                                              |--|Words|Tests|Groups* {\ldots}
+| |+----------------------------------------------+--+-----+-----+------- {\ldots}
+| ||rxsdemo229466059168070132414447412768654587241|rw|0    |0    |0       {\ldots}
+| |+----------------------------------------------+--+-----+-----+------- {\ldots}
+| ||joddev                                        |rw|31   |4    |6       {\ldots}
+| |+----------------------------------------------+--+-----+-----+------- {\ldots}
+| ||jod                                           |ro|841  |76   |23      {\ldots}
+| |+----------------------------------------------+--+-----+-----+------- {\ldots}
+| ||utils                                         |ro|419  |8    |23      {\ldots}
+| |+----------------------------------------------+--+-----+-----+------- {\ldots}
++-+---------------------------------------------------------------------- {\ldots}
+    \end{Verbatim}
+
+    \hypertarget{rxs-searches-only-nonnoun-jod-text-objects}{%
+\subsubsection{\texorpdfstring{\texttt{rxs} searches only nonnoun JOD
 text
-objects}{rxs searches only nonnoun JOD text objects}}\label{rxs-searches-only-nonnoun-jod-text-objects}
+objects}{rxs searches only nonnoun JOD text objects}}\label{rxs-searches-only-nonnoun-jod-text-objects}}
 
 JOD dictionaries can store all types of J objects. It's not unusual to
 store binary data in JOD. The following saves some nouns in the demo
 dictionary.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}3}]:} \PY{n+nv}{intTablerxsDemo}\PY{o}{=:} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{2} \PY{l+m+mi}{3} \PY{l+m+mi}{4}
-        \PY{n+nv}{floatMerxsDemo}\PY{o}{=:} \PY{p}{(}\PY{l+m+mi}{100}\PY{n}{?}\PY{l+m+mi}{100}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{l+m+mf}{7.}\PY{l+m+mi}{71}
-        \PY{n+nv}{boxMerxsDemo}\PY{o}{=:} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{a}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{\PYZsq{}}
-        \PY{n+nv}{bigNumsrxsDemo}\PY{o}{=:} \PY{p}{(}\PY{n+nd}{x}\PY{o}{:} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{10}\PY{p}{)} \PY{o}{\PYZca{}} \PY{l+m+mi}{300}
-        \PY{n+nv}{smoutput} \PY{n+nv}{charMerxsDemo}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{g}\PY{l+s}{h}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{a}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nv}{intTablerxsDemo}\PY{o}{=:} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{2} \PY{l+m+mi}{3} \PY{l+m+mi}{4}
+\PY{n+nv}{floatMerxsDemo}\PY{o}{=:} \PY{p}{(}\PY{l+m+mi}{100}\PY{n}{?}\PY{l+m+mi}{100}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{l+m+mf}{7.}\PY{l+m+mi}{71}
+\PY{n+nv}{boxMerxsDemo}\PY{o}{=:} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{a}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{\PYZsq{}}
+\PY{n+nv}{bigNumsrxsDemo}\PY{o}{=:} \PY{p}{(}\PY{n+nd}{x}\PY{o}{:} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{10}\PY{p}{)} \PY{o}{\PYZca{}} \PY{l+m+mi}{300}
+\PY{n+nv}{smoutput} \PY{n+nv}{charMerxsDemo}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{g}\PY{l+s}{h}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{a}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{I}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 even though I am text I will not be searched by rxs because I am a noun
-
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. store nouns}
-        \PY{n+nv}{put} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{M}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{t}\PY{l+s}{T}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{l}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{f}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{M}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{x}\PY{l+s}{M}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{i}\PY{l+s}{g}\PY{l+s}{N}\PY{l+s}{u}\PY{l+s}{m}\PY{l+s}{s}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. store nouns}
+\PY{n+nv}{put} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{M}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{t}\PY{l+s}{T}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{l}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{f}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{M}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{x}\PY{l+s}{M}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{i}\PY{l+s}{g}\PY{l+s}{N}\PY{l+s}{u}\PY{l+s}{m}\PY{l+s}{s}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+-------------------+---------------------------------------------+
-|1|5 word(s) put in ->|rxsdemo24347018837875837655937079410780880785|
-+-+-------------------+---------------------------------------------+
-
++-+-------------------+----------------------------------------------+
+|1|5 word(s) put in ->|rxsdemo229466059168070132414447412768654587241|
++-+-------------------+----------------------------------------------+
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{NB. list all objects with suffix rxsDemo}
-        \PY{l+m+mi}{0} \PY{l+m+mi}{3} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. list all objects with suffix rxsDemo}
+\PY{l+m+mi}{0} \PY{l+m+mi}{3} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{D}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+--------------+------------+-------------+--------------+---------------+
 |1|bigNumsrxsDemo|boxMerxsDemo|charMerxsDemo|floatMerxsDemo|intTablerxsDemo|
 +-+--------------+------------+-------------+--------------+---------------+
-
     \end{Verbatim}
 
     Search for the string \texttt{rxs} in all nonnoun path words.
 \texttt{rxs} only displays hits in nonempty text. Observe that
 \texttt{charMerxsDemo} is not in the match table.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}6}]:} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{x}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+---------------+
@@ -427,25 +540,27 @@ even though I am text I will not be searched by rxs because I am a noun
 | ||rxssearch|rxs||
 | |+---------+---+|
 +-+---------------+
-
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{Empty \texttt{rxs} patterns return all
+    \hypertarget{empty-rxs-patterns-return-all-nonempty-search-text}{%
+\subsubsection{\texorpdfstring{Empty \texttt{rxs} patterns return all
 nonempty search
-text}{Empty rxs patterns return all nonempty search text}}\label{empty-rxs-patterns-return-all-nonempty-search-text}
+text}{Empty rxs patterns return all nonempty search text}}\label{empty-rxs-patterns-return-all-nonempty-search-text}}
 
 If \texttt{rxs} is given an empty pattern it returns all the text that
 would be searched by a nonempty pattern. This is useful for debugging
 complex regular expressions.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{NB. all nonempty short (EXPLAIN\PYZus{}ajod\PYZus{} = 8) explanation texts}
-        \PY{n+nv}{smoutput} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0} \PY{l+m+mi}{8} \PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{i}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. all nonempty long (DOCUMENT\PYZus{}ajod\PYZus{} = 9) test documents}
-        \PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{1} \PY{l+m+mi}{9} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-\end{Verbatim}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. all nonempty short (EXPLAIN\PYZus{}ajod\PYZus{} = 8) explanation texts}
+\PY{n+nv}{smoutput} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0} \PY{l+m+mi}{8} \PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{i}\PY{l+s}{\PYZsq{}}
 
+\PY{c+c1}{NB. all nonempty long (DOCUMENT\PYZus{}ajod\PYZus{} = 9) test documents}
+\PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{1} \PY{l+m+mi}{9} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+----------------------+
@@ -457,151 +572,202 @@ complex regular expressions.
 | ||sinh|hyperbolic sine||
 | |+----+---------------+|
 +-+----------------------+
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-|1|+-------+------------------------------------------------------------------------------ {\ldots} 
-| ||doctest|*doctest v-- test text for documentation (doc) verb.  This text is associated  {\ldots} 
-| |+-------+------------------------------------------------------------------------------ {\ldots} 
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-
++-+---------------------------------------------------------------------- {\ldots}
+|1|+-------+------------------------------------------------------------- {\ldots}
+| ||doctest|*doctest v-- test text for documentation (doc) verb.  This te {\ldots}
+| |+-------+------------------------------------------------------------- {\ldots}
++-+---------------------------------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{rxs} searches word text by
-default}{rxs searches word text by default}}\label{rxs-searches-word-text-by-default}
+    \hypertarget{rxs-searches-word-text-by-default}{%
+\subsubsection{\texorpdfstring{\texttt{rxs} searches word text by
+default}{rxs searches word text by default}}\label{rxs-searches-word-text-by-default}}
 
 If \texttt{rxs} is given a character list (\texttt{x}) argument it
 searches word text. To search documents, tests and macros \texttt{rxs}
 requires option codes.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{NB. words starting with s with at least one occurrence of string ex}
-        \PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. words starting with s with at least one occurrence of string ex}
+\PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+-------------------+
-|1|+--------------+--+|
-| ||setbuilddirs  |ex||
-| |+--------------+--+|
-| ||setifacelinks |ex||
-| |+--------------+--+|
-| ||setifacetargs |ex||
-| |+--------------+--+|
-| ||setjodliterate|ex||
-| |+--------------+--+|
-| ||setwwwbrowser |ex||
-| |+--------------+--+|
-| ||sexpin        |ex||
-| |+--------------+--+|
-| ||strexp        |ex||
-| |+--------------+--+|
-+-+-------------------+
-
++-+--------------------+
+|1|+---------------+--+|
+| ||setbuilddirs   |ex||
+| |+---------------+--+|
+| ||setifacelinks  |ex||
+| |+---------------+--+|
+| ||setifacesummary|ex||
+| |+---------------+--+|
+| ||setifacetargs  |ex||
+| |+---------------+--+|
+| ||setjodliterate |ex||
+| |+---------------+--+|
+| ||seturlsha256   |ex||
+| |+---------------+--+|
+| ||setwwwbrowser  |ex||
+| |+---------------+--+|
+| ||sexpin         |ex||
+| |+---------------+--+|
+| ||strexp         |ex||
+| |+---------------+--+|
++-+--------------------+
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{NB. show all ex matches (option 2) for words starting with s}
-        \PY{n+nv}{smoutput} \PY{n+nv}{opts}\PY{o}{=:} \PY{n+nv}{WORD\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{n+nv}{DEFAULT\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{2}
-        \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{opts}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. show all ex matches (option 2) for words starting with s}
+\PY{n+nv}{smoutput} \PY{n+nv}{opts}\PY{o}{=:} \PY{n+nv}{WORD\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{n+nv}{DEFAULT\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{2}
+\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{opts}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 0 7 2
-+-+------------------------------------+
-|1|+--------------+-------------------+|
-| ||setbuilddirs  |+--+               ||
-| ||              ||ex|               ||
-| ||              |+--+               ||
-| |+--------------+-------------------+|
-| ||setifacelinks |+--+--+--+--+--+--+||
-| ||              ||ex|ex|ex|ex|ex|ex|||
-| ||              |+--+--+--+--+--+--+||
-| |+--------------+-------------------+|
-| ||setifacetargs |+--+--+--+--+      ||
-| ||              ||ex|ex|ex|ex|      ||
-| ||              |+--+--+--+--+      ||
-| |+--------------+-------------------+|
-| ||setjodliterate|+--+--+--+         ||
-| ||              ||ex|ex|ex|         ||
-| ||              |+--+--+--+         ||
-| |+--------------+-------------------+|
-| ||setwwwbrowser |+--+--+            ||
-| ||              ||ex|ex|            ||
-| ||              |+--+--+            ||
-| |+--------------+-------------------+|
-| ||sexpin        |+--+--+            ||
-| ||              ||ex|ex|            ||
-| ||              |+--+--+            ||
-| |+--------------+-------------------+|
-| ||strexp        |+--+--+--+         ||
-| ||              ||ex|ex|ex|         ||
-| ||              |+--+--+--+         ||
-| |+--------------+-------------------+|
-+-+------------------------------------+
-
++-+----------------------------------------------+
+|1|+---------------+----------------------------+|
+| ||setbuilddirs   |+--+--+--+--+               ||
+| ||               ||ex|ex|ex|ex|               ||
+| ||               |+--+--+--+--+               ||
+| |+---------------+----------------------------+|
+| ||setifacelinks  |+--+--+--+--+--+--+         ||
+| ||               ||ex|ex|ex|ex|ex|ex|         ||
+| ||               |+--+--+--+--+--+--+         ||
+| |+---------------+----------------------------+|
+| ||setifacesummary|+--+                        ||
+| ||               ||ex|                        ||
+| ||               |+--+                        ||
+| |+---------------+----------------------------+|
+| ||setifacetargs  |+--+--+--+--+--+--+         ||
+| ||               ||ex|ex|ex|ex|ex|ex|         ||
+| ||               |+--+--+--+--+--+--+         ||
+| |+---------------+----------------------------+|
+| ||setjodliterate |+--+--+--+--+--+--+--+--+--+||
+| ||               ||ex|ex|ex|ex|ex|ex|ex|ex|ex|||
+| ||               |+--+--+--+--+--+--+--+--+--+||
+| |+---------------+----------------------------+|
+| ||seturlsha256   |+--+--+--+--+--+            ||
+| ||               ||ex|ex|ex|ex|ex|            ||
+| ||               |+--+--+--+--+--+            ||
+| |+---------------+----------------------------+|
+| ||setwwwbrowser  |+--+--+                     ||
+| ||               ||ex|ex|                     ||
+| ||               |+--+--+                     ||
+| |+---------------+----------------------------+|
+| ||sexpin         |+--+--+                     ||
+| ||               ||ex|ex|                     ||
+| ||               |+--+--+                     ||
+| |+---------------+----------------------------+|
+| ||strexp         |+--+--+--+                  ||
+| ||               ||ex|ex|ex|                  ||
+| ||               |+--+--+--+                  ||
+| |+---------------+----------------------------+|
++-+----------------------------------------------+
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}10}]:} \PY{c+c1}{NB. repeat previous search but now show position array (option 3) with matched text}
-         \PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0} \PY{l+m+mi}{7} \PY{l+m+mi}{3}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. repeat previous search but now show position array (option 3) with matched text}
+\PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0} \PY{l+m+mi}{7} \PY{l+m+mi}{3}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-|1|+--------------+-----+----------------------------------------------------------------- {\ldots} 
-| ||setbuilddirs  |669 2|3 : 0  NB.*setbuilddirs v-- sets paths used by JOD build words. N {\ldots} 
-| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
-| ||setifacelinks |162 2|4 : 0  NB.*setifacelinks  v--  set  hyperref   links  in   any  o {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |175 2|                                                                  {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |229 2|                                                                  {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |255 2|                                                                  {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |303 2|                                                                  {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |376 2|                                                                  {\ldots} 
-| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
-| ||setifacetargs | 63 2|4 : 0  NB.*setifacetargs v-- set hyperlink targets in group latex {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |116 2|                                                                  {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |177 2|                                                                  {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |272 2|                                                                  {\ldots} 
-| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
-| ||setjodliterate|419 2|3 : 0  NB.*setjodliterate v-- prepare for processing. NB. NB. mon {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |483 2|                                                                  {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |494 2|                                                                  {\ldots} 
-| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
-| ||setwwwbrowser |334 2|3 : 0  NB.*setwwwbrowser v-- tests and sets the WWW browser. NB.  {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |363 2|                                                                  {\ldots} 
-| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
-| ||sexpin        |11 2 |3 : 0 NB.*sexpin v-- single line explicit definition test. if.    {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |33 2 |                                                                  {\ldots} 
-| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
-| ||strexp        | 14 2|3 : 0  NB.*strexp v-- returns a boxed list of words containing st {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |127 2|                                                                  {\ldots} 
-| ||              |     |                                                                  {\ldots} 
-| ||              |150 2|                                                                  {\ldots} 
-| |+--------------+-----+----------------------------------------------------------------- {\ldots} 
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-
++-+---------------------------------------------------------------------- {\ldots}
+|1|+---------------+------+---------------------------------------------- {\ldots}
+| ||setbuilddirs   |1204 2|3 : 0  NB.*setbuilddirs v-- sets/creates paths {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |1497 2|                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |1762 2|                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |2659 2|                                               {\ldots}
+| |+---------------+------+---------------------------------------------- {\ldots}
+| ||setifacelinks  |162 2 |4 : 0  NB.*setifacelinks  v--  set  hyperref   {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |175 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |229 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |255 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |302 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |374 2 |                                               {\ldots}
+| |+---------------+------+---------------------------------------------- {\ldots}
+| ||setifacesummary|76 2  |4 : 0  NB.*setifacesummary v-- replace markdow {\ldots}
+| |+---------------+------+---------------------------------------------- {\ldots}
+| ||setifacetargs  | 63 2 |4 : 0  NB.*setifacetargs v-- set hyperlink tar {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |116 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |207 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |331 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |419 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |549 2 |                                               {\ldots}
+| |+---------------+------+---------------------------------------------- {\ldots}
+| ||setjodliterate | 473 2|3 : 0  NB.*setjodliterate v-- prepare LaTeX pr {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               | 503 2|                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               | 569 2|                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               | 599 2|                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |1186 2|                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |1255 2|                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |1281 2|                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |1334 2|                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |1434 2|                                               {\ldots}
+| |+---------------+------+---------------------------------------------- {\ldots}
+| ||seturlsha256   |166 2 |4 : 0  NB.*seturlsha256 v-- set url and sha-25 {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |175 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |537 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |683 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |707 2 |                                               {\ldots}
+| |+---------------+------+---------------------------------------------- {\ldots}
+| ||setwwwbrowser  |334 2 |3 : 0  NB.*setwwwbrowser v-- tests and sets th {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |363 2 |                                               {\ldots}
+| |+---------------+------+---------------------------------------------- {\ldots}
+| ||sexpin         |11 2  |3 : 0 NB.*sexpin v-- single line explicit defi {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |33 2  |                                               {\ldots}
+| |+---------------+------+---------------------------------------------- {\ldots}
+| ||strexp         | 14 2 |3 : 0  NB.*strexp v-- returns a boxed list of  {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |127 2 |                                               {\ldots}
+| ||               |      |                                               {\ldots}
+| ||               |150 2 |                                               {\ldots}
+| |+---------------+------+---------------------------------------------- {\ldots}
++-+---------------------------------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{NB. show first J quoted text in JOD tests with names that begin with r and t}
-         \PY{p}{(}\PY{n+nv}{Jchar\PYZus{}jregex\PYZus{}}\PY{o}{;}\PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{p}{(}\PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{)} \PY{o}{,} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. show first J quoted text in JOD tests with names that begin with r and t}
+\PY{p}{(}\PY{n+nv}{Jchar\PYZus{}jregex\PYZus{}}\PY{o}{;}\PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{p}{(}\PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{)} \PY{o}{,} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+------------------------------------------------+
@@ -623,73 +789,88 @@ requires option codes.
 | ||teststubClassGroup |'\{\textasciitilde{}T\textasciitilde{}\}'                   ||
 | |+-------------------+--------------------------+|
 +-+------------------------------------------------+
-
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{NB. show all J quoted text in JOD tests with names that begin with r and t}
-         \PY{n+nv}{sbx} \PY{p}{(}\PY{n+nv}{Jchar\PYZus{}jregex\PYZus{}}\PY{o}{;}\PY{l+m+mi}{1} \PY{l+m+mi}{7} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{p}{(}\PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{)} \PY{o}{,} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. show all J quoted text in JOD tests with names that begin with r and t}
+\PY{n+nv}{sbx} \PY{p}{(}\PY{n+nv}{Jchar\PYZus{}jregex\PYZus{}}\PY{o}{;}\PY{l+m+mi}{1} \PY{l+m+mi}{7} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{p}{(}\PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{p}{)} \PY{o}{,} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-|1|+-------------------+------------------------------------------------------------------ {\ldots} 
-| ||releasejod         |+------+------+-------------+-------------+------+--+------------- {\ldots} 
-| ||                   ||'ijod'|'base'|'AAAtrash999'|'AAAtrash999'|'ijod'|''|'joddev jod u {\ldots} 
-| ||                   |+------+------+-------------+-------------+------+--+------------- {\ldots} 
-| |+-------------------+------------------------------------------------------------------ {\ldots} 
-| ||restdBasic01       |+------------------------+----------+------+-----------+---------- {\ldots} 
-| ||                   ||'createtestdictionaries'|'\textasciitilde{}JODTEST'|'base'|'jodtester'|'\textasciitilde{}JODTEST' {\ldots} 
-| ||                   |+------------------------+----------+------+-----------+---------- {\ldots} 
-| |+-------------------+------------------------------------------------------------------ {\ldots} 
-| ||rxsBadSmoke00      |+------+----------+----------+-----------+-------------+---------- {\ldots} 
-| ||                   ||'base'|'\textasciitilde{}JODTEST'|'\textasciitilde{}JODTEST'|'jodtester'|'AAAsmoke999'|'AAAsmoke9 {\ldots} 
-| ||                   |+------+----------+----------+-----------+-------------+---------- {\ldots} 
-| |+-------------------+------------------------------------------------------------------ {\ldots} 
-| ||rxsSmoke00         |+-----------+--------------------+------+----------+----------+--- {\ldots} 
-| ||                   ||'testjod00'|'\textasciitilde{}JODTEST/testjod00'|'base'|'\textasciitilde{}JODTEST'|'\textasciitilde{}JODTEST'|'jo {\ldots} 
-| ||                   |+-----------+--------------------+------+----------+----------+--- {\ldots} 
-| |+-------------------+------------------------------------------------------------------ {\ldots} 
-| ||rxsgetSmoke00      |+------+----------+----------+-----------+-------------+---------- {\ldots} 
-| ||                   ||'base'|'\textasciitilde{}JODTEST'|'\textasciitilde{}JODTEST'|'jodtester'|'AAAtrash999'|'AAAtrash9 {\ldots} 
-| ||                   |+------+----------+----------+-----------+-------------+---------- {\ldots} 
-| |+-------------------+------------------------------------------------------------------ {\ldots} 
-| ||testdictionarypaths|+------+-----------+-------------+-------------+------+------+---- {\ldots} 
-| ||                   ||'base'|'jodtester'|'AAAtrash999'|'AAAtrash999'|'ijod'|'good'|'JOD {\ldots} 
-| ||                   |+------+-----------+-------------+-------------+------+------+---- {\ldots} 
-| |+-------------------+------------------------------------------------------------------ {\ldots} 
-| ||teststub           |+--------------------------+---------+------+-----------+--------- {\ldots} 
-| ||                   ||'/AAAtrash999/AAAsmoke999'|'newtest'|'base'|'jodtester'|'JODCLEAR {\ldots} 
-| ||                   |+--------------------------+---------+------+-----------+--------- {\ldots} 
-| |+-------------------+------------------------------------------------------------------ {\ldots} 
-| ||teststubClassGroup |+-------+                                                          {\ldots} 
-| ||                   ||'\{\textasciitilde{}T\textasciitilde{}\}'|                                                          {\ldots} 
-| ||                   |+-------+                                                          {\ldots} 
-| |+-------------------+------------------------------------------------------------------ {\ldots} 
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-
++-+---------------------------------------------------------------------- {\ldots}
+|1|+-------------------+------------------------------------------------- {\ldots}
+| ||releasejod         |+------+------+-------------+-------------+------ {\ldots}
+| ||                   ||'ijod'|'base'|'AAAtrash999'|'AAAtrash999'|'ijod' {\ldots}
+| ||                   |+------+------+-------------+-------------+------ {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||restdBasic01       |+------------------------+----------+------+----- {\ldots}
+| ||                   ||'createtestdictionaries'|'\textasciitilde{}JODTEST'|'base'|'jodt {\ldots}
+| ||                   |+------------------------+----------+------+----- {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||rxsBadSmoke00      |+------+----------+----------+-----------+------- {\ldots}
+| ||                   ||'base'|'\textasciitilde{}JODTEST'|'\textasciitilde{}JODTEST'|'jodtester'|'AAAsmo {\ldots}
+| ||                   |+------+----------+----------+-----------+------- {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||rxsSmoke00         |+-----------+--------------------+------+-------- {\ldots}
+| ||                   ||'testjod00'|'\textasciitilde{}JODTEST/testjod00'|'base'|'\textasciitilde{}JODTES {\ldots}
+| ||                   |+-----------+--------------------+------+-------- {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||rxsgetSmoke00      |+------+----------+----------+-----------+------- {\ldots}
+| ||                   ||'base'|'\textasciitilde{}JODTEST'|'\textasciitilde{}JODTEST'|'jodtester'|'AAAtra {\ldots}
+| ||                   |+------+----------+----------+-----------+------- {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||testdictionarypaths|+------+-----------+-------------+-------------+- {\ldots}
+| ||                   ||'base'|'jodtester'|'AAAtrash999'|'AAAtrash999'|' {\ldots}
+| ||                   |+------+-----------+-------------+-------------+- {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||teststub           |+--------------------------+---------+------+---- {\ldots}
+| ||                   ||'/AAAtrash999/AAAsmoke999'|'newtest'|'base'|'jod {\ldots}
+| ||                   |+--------------------------+---------+------+---- {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||teststubClassGroup |+-------+                                         {\ldots}
+| ||                   ||'\{\textasciitilde{}T\textasciitilde{}\}'|                                         {\ldots}
+| ||                   |+-------+                                         {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
++-+---------------------------------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{rxs} can search short and long
+    \hypertarget{rxs-can-search-short-and-long-object-documents}{%
+\subsubsection{\texorpdfstring{\texttt{rxs} can search short and long
 object
-documents}{rxs can search short and long object documents}}\label{rxs-can-search-short-and-long-object-documents}
+documents}{rxs can search short and long object documents}}\label{rxs-can-search-short-and-long-object-documents}}
 
 JOD words, test, groups, suites and macros are often associated with
 short and long documents.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{NB. search all short (EXPLAIN\PYZus{}ajod\PYZus{} = 8) texts for words starting with wr}
-         \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{[}\PY{l+s}{a}\PY{l+s}{e}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{]}\PY{l+s}{b}\PY{l+s}{*}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0}\PY{o}{,}\PY{n+nv}{EXPLAIN\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{w}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. search all short (EXPLAIN\PYZus{}ajod\PYZus{} = 8) texts for words starting with wr}
+\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{[}\PY{l+s}{a}\PY{l+s}{e}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{]}\PY{l+s}{b}\PY{l+s}{*}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0}\PY{o}{,}\PY{n+nv}{EXPLAIN\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{w}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+-----------------------------------+
 |1|+----------------+----------------+|
+| ||wrapQtlatex     |+--+--+         ||
+| ||                ||ra|ri|         ||
+| ||                |+--+--+         ||
+| |+----------------+----------------+|
 | ||wraplinear      |+--+--+--+--+--+||
 | ||                ||ra|re|re|ri|ri|||
 | ||                |+--+--+--+--+--+||
+| |+----------------+----------------+|
+| ||wraplix         |+--+--+         ||
+| ||                ||ra|ra|         ||
+| ||                |+--+--+         ||
+| |+----------------+----------------+|
+| ||wraprgidx       |+--+--+         ||
+| ||                ||ra|re|         ||
+| ||                |+--+--+         ||
 | |+----------------+----------------+|
 | ||wrapvrblong     |+--+            ||
 | ||                ||ra|            ||
@@ -736,96 +917,95 @@ short and long documents.
 | ||                |+--+            ||
 | |+----------------+----------------+|
 +-+-----------------------------------+
-
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{NB. search group (GROUP\PYZus{}ajod\PYZus{} = 2) long document (DOCUMENT\PYZus{}ajod\PYZus{} = 9) texts for all patterns}
-         \PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{*}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{GROUP\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{n+nv}{DOCUMENT\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{2} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. search group (GROUP\PYZus{}ajod\PYZus{} = 2) long document (DOCUMENT\PYZus{}ajod\PYZus{} = 9) texts for all patterns}
+\PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{*}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{GROUP\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{n+nv}{DOCUMENT\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{2} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-|1|+-----------+-------------------------------------------------------------------------- {\ldots} 
-| ||doctest    |+--------------------------+---------------------------------------------- {\ldots} 
-| ||           ||long documentation of a te|lobyte strings typical operations  complete is {\ldots} 
-| ||           |+--------------------------+---------------------------------------------- {\ldots} 
-| |+-----------+-------------------------------------------------------------------------- {\ldots} 
-| ||jodliterate|+------------+------------------------------------------+-----------+----- {\ldots} 
-| ||           ||lot more use|lows pandoc source code highlighting conve|loaded like|load  {\ldots} 
-| ||           |+------------+------------------------------------------+-----------+----- {\ldots} 
-| |+-----------+-------------------------------------------------------------------------- {\ldots} 
-| ||sunmoon    |+-------------------------+----------------------------------------------- {\ldots} 
-| ||           ||loating point table where|longitude in degrees with western longitudes ne {\ldots} 
-| ||           |+-------------------------+----------------------------------------------- {\ldots} 
-| |+-----------+-------------------------------------------------------------------------- {\ldots} 
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-
++-+---------------------------------------------------------------------- {\ldots}
+|1|+-------+------------------------------------------------------------- {\ldots}
+| ||doctest|+--------------------------+--------------------------------- {\ldots}
+| ||       ||long documentation of a te|lobyte strings typical operations {\ldots}
+| ||       |+--------------------------+--------------------------------- {\ldots}
+| |+-------+------------------------------------------------------------- {\ldots}
+| ||jod    |+------+-----------------------------------------------+----- {\ldots}
+| ||       ||locale|lobs  NB. analyze, report and store global name|loses {\ldots}
+| ||       |+------+-----------------------------------------------+----- {\ldots}
+| |+-------+------------------------------------------------------------- {\ldots}
+| ||sunmoon|+-------------------------+---------------------------------- {\ldots}
+| ||       ||loating point table where|longitude in degrees with western  {\ldots}
+| ||       |+-------------------------+---------------------------------- {\ldots}
+| |+-------+------------------------------------------------------------- {\ldots}
++-+---------------------------------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{rxs} can search the dictionary
-document}{rxs can search the dictionary document}}\label{rxs-can-search-the-dictionary-document}
+    \hypertarget{rxs-can-search-the-dictionary-document}{%
+\subsubsection{\texorpdfstring{\texttt{rxs} can search the dictionary
+document}{rxs can search the dictionary document}}\label{rxs-can-search-the-dictionary-document}}
 
 \texttt{rxs} can search the dictionary document.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}15}]:} \PY{c+c1}{NB. save a dictionary document (DICTIONARY\PYZus{}ajod\PYZus{} = 5) for the rxs demo dictionary}
-         \PY{n+nv}{DICTIONARY\PYZus{}ajod\PYZus{}} \PY{n+nv}{put} \PY{o}{;}\PY{l+m+mi}{25} \PY{o}{\PYZsh{}} \PY{o}{\PYZlt{}}\PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{u}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{u}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{LF}
-         \PY{l+m+mi}{5} \PY{n+nv}{disp} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. save a dictionary document (DICTIONARY\PYZus{}ajod\PYZus{} = 5) for the rxs demo dictionary}
+\PY{n+nv}{DICTIONARY\PYZus{}ajod\PYZus{}} \PY{n+nv}{put} \PY{o}{;}\PY{l+m+mi}{20} \PY{o}{\PYZsh{}} \PY{o}{\PYZlt{}}\PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{u}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{LF}
+\PY{l+m+mi}{5} \PY{n+nv}{disp} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
- all work and no play make jack a dull boy all work and no play make jack a dull boy
-
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
+ all work and no play make jack a dull boy
 
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}16}]:} \PY{c+c1}{NB. all the dull boys}
-         \PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{5} \PY{l+m+mi}{7} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. all the dull boys}
+\PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{5} \PY{l+m+mi}{7} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-|1|++------------------------------------------------------------------------------------- {\ldots} 
-| |||+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---- {\ldots} 
-| ||||jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack {\ldots} 
-| |||+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---- {\ldots} 
-| |++------------------------------------------------------------------------------------- {\ldots} 
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-
++-+---------------------------------------------------------------------- {\ldots}
+|1|++-------------------------------------------------------------------- {\ldots}
+| |||+----+----+----+----+----+----+----+----+----+----+----+----+----+-- {\ldots}
+| ||||jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|jack|ja {\ldots}
+| |||+----+----+----+----+----+----+----+----+----+----+----+----+----+-- {\ldots}
+| |++-------------------------------------------------------------------- {\ldots}
++-+---------------------------------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \subsubsection{Final remarks}\label{final-remarks}
+    \hypertarget{final-remarks}{%
+\subsubsection{Final remarks}\label{final-remarks}}
 
-\texttt{rxs} performs well for "reasonable" numbers of JOD objects. If
+\texttt{rxs} performs well for ``reasonable'' numbers of JOD objects. If
 you search for a complex pattern in very large dictionaries without
 restricting your search object list \texttt{rxs} may take some time.
 It's a good idea to restrict the list of searched objects whenever
@@ -834,11 +1014,13 @@ particular macro types.
 
 The following are typical \texttt{rxs} searches.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}17}]:} \PY{c+c1}{NB. search group }
-         \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{D}\PY{l+s}{E}\PY{l+s}{F}\PY{l+s}{A}\PY{l+s}{U}\PY{l+s}{L}\PY{l+s}{T}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0} \PY{l+m+mi}{7} \PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. search group }
+\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{D}\PY{l+s}{E}\PY{l+s}{F}\PY{l+s}{A}\PY{l+s}{U}\PY{l+s}{L}\PY{l+s}{T}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{0} \PY{l+m+mi}{7} \PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+-------------------+
@@ -850,81 +1032,88 @@ The following are typical \texttt{rxs} searches.
 | ||mnlsearch|DEFAULT||
 | |+---------+-------+|
 +-+-------------------+
-
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}18}]:} \PY{c+c1}{NB. search test suite for all negative expected (ner) results}
-         \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{1} \PY{l+m+mi}{7} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{3} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. search test suite for all negative expected (ner) results}
+\PY{n+nv}{sbx} \PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{1} \PY{l+m+mi}{7} \PY{l+m+mi}{2}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{3} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+---------------------------------------------------------------------------------------------------------------+
-|1|+-------------------+-----------------------------------------------------------------------------------------+|
-| ||bgetSmoke00        |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+            ||
-| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|            ||
-| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+            ||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-| ||bnlSmoke00         |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+||
-| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|||
-| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-| ||compjSmoke00       |+---+                                                                                    ||
-| ||                   ||ner|                                                                                    ||
-| ||                   |+---+                                                                                    ||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-| ||dnlSmoke00         |+---+---+---+---+---+---+---+---+                                                        ||
-| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|                                                        ||
-| ||                   |+---+---+---+---+---+---+---+---+                                                        ||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-| ||globsSmokeAssign000|+---+---+                                                                                ||
-| ||                   ||ner|ner|                                                                                ||
-| ||                   |+---+---+                                                                                ||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-| ||globsSmokeDoc00    |+---+                                                                                    ||
-| ||                   ||ner|                                                                                    ||
-| ||                   |+---+                                                                                    ||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-| ||mnlSmokeArgs00     |+---+---+---+---+---+---+---+---+                                                        ||
-| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|                                                        ||
-| ||                   |+---+---+---+---+---+---+---+---+                                                        ||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-| ||rxsBadSmoke00      |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+                            ||
-| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|                            ||
-| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+                            ||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-| ||rxsSmoke00         |+---+---+---+---+---+---+---+                                                            ||
-| ||                   ||ner|ner|ner|ner|ner|ner|ner|                                                            ||
-| ||                   |+---+---+---+---+---+---+---+                                                            ||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-| ||rxsgetSmoke00      |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+                                ||
-| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|                                ||
-| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+---+---+                                ||
-| |+-------------------+-----------------------------------------------------------------------------------------+|
-+-+---------------------------------------------------------------------------------------------------------------+
-
++-+---------------------------------------------------------------------- {\ldots}
+|1|+-------------------+------------------------------------------------- {\ldots}
+| ||abvSmoke00         |+---+---+---+---+---+---+---+---+---+---+---+     {\ldots}
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|     {\ldots}
+| ||                   |+---+---+---+---+---+---+---+---+---+---+---+     {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||bgetSmoke00        |+---+---+---+---+---+---+---+---+---+---+---+---+ {\ldots}
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner| {\ldots}
+| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+ {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||bnlSmoke00         |+---+---+---+---+---+---+---+---+---+---+---+---+ {\ldots}
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner| {\ldots}
+| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+ {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||compjSmoke00       |+---+                                             {\ldots}
+| ||                   ||ner|                                             {\ldots}
+| ||                   |+---+                                             {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||dnlSmoke00         |+---+---+---+---+---+---+---+---+                 {\ldots}
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|                 {\ldots}
+| ||                   |+---+---+---+---+---+---+---+---+                 {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||globsSmokeAssign000|+---+---+                                         {\ldots}
+| ||                   ||ner|ner|                                         {\ldots}
+| ||                   |+---+---+                                         {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||globsSmokeDoc00    |+---+                                             {\ldots}
+| ||                   ||ner|                                             {\ldots}
+| ||                   |+---+                                             {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||mnlSmokeArgs00     |+---+---+---+---+---+---+---+---+                 {\ldots}
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|                 {\ldots}
+| ||                   |+---+---+---+---+---+---+---+---+                 {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||rxsBadSmoke00      |+---+---+---+---+---+---+---+---+---+---+---+---+ {\ldots}
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner| {\ldots}
+| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+ {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||rxsSmoke00         |+---+---+---+---+---+---+---+                     {\ldots}
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|                     {\ldots}
+| ||                   |+---+---+---+---+---+---+---+                     {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||rxsgetSmoke00      |+---+---+---+---+---+---+---+---+---+---+---+---+ {\ldots}
+| ||                   ||ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner|ner| {\ldots}
+| ||                   |+---+---+---+---+---+---+---+---+---+---+---+---+ {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
++-+---------------------------------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}19}]:} \PY{c+c1}{NB. search all (MARKDOWN\PYZus{}ajod\PYZus{} = 27) macros (MACRO\PYZus{}ajod\PYZus{} = 4) for J quoted text}
-         \PY{n+nv}{sbx} \PY{p}{(}\PY{n+nv}{Jchar\PYZus{}jregex\PYZus{}}\PY{o}{;}\PY{l+m+mi}{4} \PY{l+m+mi}{7} \PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{p}{(}\PY{n+nv}{MACRO\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{1}\PY{o}{,}\PY{n+nv}{MARKDOWN\PYZus{}ajod\PYZus{}}\PY{p}{)} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. search all (MARKDOWN\PYZus{}ajod\PYZus{} = 27) macros (MACRO\PYZus{}ajod\PYZus{} = 4) for J quoted text}
+\PY{n+nv}{sbx} \PY{p}{(}\PY{n+nv}{Jchar\PYZus{}jregex\PYZus{}}\PY{o}{;}\PY{l+m+mi}{4} \PY{l+m+mi}{7} \PY{l+m+mi}{1}\PY{p}{)} \PY{n+nv}{rxs} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{p}{(}\PY{n+nv}{MACRO\PYZus{}ajod\PYZus{}}\PY{o}{,}\PY{l+m+mi}{1}\PY{o}{,}\PY{n+nv}{MARKDOWN\PYZus{}ajod\PYZus{}}\PY{p}{)} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-|1|+--------------+----------------------------------------------------------------------- {\ldots} 
-| ||historyjod    |'s Day)     * `rxs` implemented - see `jod.pdf`     * [`rxs` Jupyter La {\ldots} 
-| |+--------------+----------------------------------------------------------------------- {\ldots} 
-| ||historyjoddoc |'s Day)      * `rxs` section added.     \#\#\# 0.9.996 - October 14, 2018  {\ldots} 
-| |+--------------+----------------------------------------------------------------------- {\ldots} 
-| ||linuxnotes\_TXT|'john'                                                                  {\ldots} 
-| |+--------------+----------------------------------------------------------------------- {\ldots} 
-| ||macnotes\_TXT  |'joddev jod utils'                                                      {\ldots} 
-| |+--------------+----------------------------------------------------------------------- {\ldots} 
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-
++-+---------------------------------------------------------------------- {\ldots}
+|1|+-------------------+------------------------------------------------- {\ldots}
+| ||TODO\_jodliterate\_md|'s     inflection scheme and will ripple through  {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||historyjod         |'\_'                                               {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||historyjoddoc      |'\textasciitilde{}addons/general/joddocument/pdfdoc'              {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||linuxnotes\_TXT     |'john'                                            {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
+| ||macnotes\_TXT       |'joddev jod utils'                                {\ldots}
+| |+-------------------+------------------------------------------------- {\ldots}
++-+---------------------------------------------------------------------- {\ldots}
     \end{Verbatim}
 
 
@@ -932,4 +1121,4 @@ The following are typical \texttt{rxs} searches.
     
     
     
-    \end{document}
+\end{document}

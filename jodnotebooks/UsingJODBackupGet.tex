@@ -1,44 +1,33 @@
-
-% Default to the notebook output style
-
-    
-
-
-% Inherit from the specified cell style.
-
-
-
-
-\documentclass[11pt,letter,landscape]{article}  
+\documentclass[11pt,letter,landscape]{article} 
 %\documentclass[11pt]{article}
 
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
     
-    
-    \usepackage[T1]{fontenc}
-    % Nicer default font (+ math font) than Computer Modern for most use cases
-    \usepackage{mathpazo}
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
 
     % Basic figure setup, for now with no caption control since it's done
     % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
     \usepackage{graphicx}
-    % We will generate all images so they have a width \maxwidth. This means
-    % that they will get their normal width if they fit onto the page, but
-    % are scaled down if they would overflow the margins.
-    \makeatletter
-    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
-    \else\Gin@nat@width\fi}
-    \makeatother
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
     \let\Oldincludegraphics\includegraphics
-    % Set max figure width to be 80% of text width, for now hardcoded.
-    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
     % Ensure that by default, figures have no caption (until we provide a
     % proper Figure object with a Caption API and a way to capture that
     % in the conversion process - todo).
     \usepackage{caption}
-    \DeclareCaptionLabelFormat{nolabel}{}
-    \captionsetup{labelformat=nolabel}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
 
-    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
     \usepackage{xcolor} % Allow colors to be defined
     \usepackage{enumerate} % Needed for markdown enumerations to work
     \usepackage{geometry} % Used to adjust the document margins
@@ -52,22 +41,32 @@
     \usepackage{upquote} % Upright quotes for verbatim code
     \usepackage{eurosym} % defines \euro
     \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
-    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
     \usepackage{fancyvrb} % verbatim replacement that allows latex
     \usepackage{grffile} % extends the file name processing of package graphics 
-                         % to support a larger range 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
     % The hyperref package gives us a pdf with properly built
     % internal navigation ('pdf bookmarks' for the table of contents,
     % internal cross-reference links, web links for URLs, etc.)
     \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
     \usepackage{longtable} % longtable support required by pandoc >1.10
     \usepackage{booktabs}  % table support for pandoc > 1.12.2
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
     
 
-    
     
     % Colors for the hyperref package
     \definecolor{urlcolor}{rgb}{0,.145,.698}
@@ -91,6 +90,8 @@
     \definecolor{ansi-cyan-intense}{HTML}{258F8F}
     \definecolor{ansi-white}{HTML}{C5C1B4}
     \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
 
     % commands and environments needed by pandoc snippets
     % extracted from the output of `pandoc -s`
@@ -137,17 +138,22 @@
     % Define a nice break command that doesn't care if a line doesn't already
     % exist.
     \def\br{\hspace*{\fill} \\* }
-    % Math Jax compatability definitions
+    % Math Jax compatibility definitions
     \def\gt{>}
     \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
     % Document parameters
+    % Document title
     \title{Using JOD Backup Get}
     
     
     
-
-    % Pygments definitions
     
+    
+% Pygments definitions
 \makeatletter
 \def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
     \let\PY@ul=\relax \let\PY@tc=\relax%
@@ -249,11 +255,97 @@
 \makeatother
 
 
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
     % Exact colors from NB
-    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
-    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
-
-
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
 
     
     % Prevent overflowing lines due to hard-to-break entities
@@ -272,24 +364,21 @@
     
     
 
-    \begin{document}
-    
+\begin{document}
     
     \maketitle
     
     
 
     
-    \section{\texorpdfstring{Using JOD Backup Get
-\texttt{bget}}{Using JOD Backup Get bget}}\label{using-jod-backup-get-bget}
+    \hypertarget{using-jod-backup-get-bget}{%
+\section{\texorpdfstring{Using JOD Backup Get
+\texttt{bget}}{Using JOD Backup Get bget}}\label{using-jod-backup-get-bget}}
 
-\begin{figure}
-\centering
 \includegraphics{inclusions/jodteenytinycube.png}
-\caption{}
-\end{figure}
 
-    \subsubsection{Introduction}\label{introduction}
+    \hypertarget{introduction}{%
+\subsubsection{Introduction}\label{introduction}}
 
 In addition to restoring entire dictionary backups with \texttt{restd}
 JOD also supports fetching individual objects from particular backups
@@ -303,196 +392,258 @@ of a backup.
 \textbf{\texttt{bget} is your good bits
 \href{https://www.youtube.com/watch?v=R8OWNspU_yE}{huckleberry}.}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. display J version}
-        \PY{l+m+mi}{9}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{14}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. display J version}
+\PY{l+m+mi}{9}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{14}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-j901/j64avx/windows/beta-s/commercial/www.jsoftware.com/2019-12-02T12:51:33
 
+j903/j64avx2/windows/beta-w/commercial/www.jsoftware.com/2021-12-05T18:25:00/cla
+ng-13-0-0/SLEEF=1
     \end{Verbatim}
 
     The following examples assume you have installed the JOD development
 dictionaries (\texttt{joddev}), (\texttt{jod}), and (\texttt{utils}).
 
-Use \href{https://code.jsoftware.com/wiki/JAL/User_Guide}{JAL} to
+Use \href{https://code.jsoftware.com/wiki/JAL/User_Guide}{Pacman} to
 install the
 \href{https://code.jsoftware.com/wiki/Addons/general/jodsource}{JODSOURCE
 addon} and follow the instructions to load (\texttt{joddev}),
 (\texttt{jod}), and (\texttt{utils}).
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{NB. load JOD in a clear base locale}
-        \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{n+nv}{clear} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. The distributed JOD profile automatically RESETME\PYZsq{}s.}
-        \PY{c+c1}{NB. To safely use dictionaries with many J tasks they must}
-        \PY{c+c1}{NB. be READONLY. To prevent opening the same put dictionary}
-        \PY{c+c1}{NB. READWRITE comment out (dpset) and restart this notebook.}
-        \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{S}\PY{l+s}{E}\PY{l+s}{T}\PY{l+s}{M}\PY{l+s}{E}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. Converting Jupyter notebooks to LaTeX is }
-        \PY{c+c1}{NB. simplified by ASCII box characters.}
-        \PY{n+nv}{portchars} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. Verb to show large boxed displays in}
-        \PY{c+c1}{NB. the notebook without ugly wrapping.}
-        \PY{n+nv}{sbx}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{\PYZsq{}} \PY{o}{,}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{\PYZti{}} \PY{l+m+mi}{90}\PY{o}{\PYZam{}}\PY{o}{\PYZob{}}\PY{o}{.}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{@}\PY{o}{\PYZdq{}}\PY{o}{:}
-        
-        \PY{c+c1}{NB. open some JOD dictionaries to search}
-        \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        \PY{n+nv}{did} \PY{o}{\PYZti{}} \PY{l+m+mi}{0}
-\end{Verbatim}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. load JOD in a clear base locale}
+\PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{n+nv}{clear} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 
+\PY{c+c1}{NB. Converting Jupyter notebooks to LaTeX is }
+\PY{c+c1}{NB. simplified by ASCII box characters.}
+\PY{n+nv}{portchars} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+
+\PY{c+c1}{NB. show JOD version}
+\PY{n+nv}{smoutput} \PY{n+nv}{JODVMD\PYZus{}ajod\PYZus{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++------------+--+--------------------+
+|1.0.22 - dev|35|14 Dec 2021 08:32:08|
++------------+--+--------------------+
+    \end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. The distributed JOD profile automatically RESETME\PYZsq{}s.}
+\PY{c+c1}{NB. To safely use dictionaries with many J tasks they must}
+\PY{c+c1}{NB. be READONLY. To prevent opening the same put dictionary}
+\PY{c+c1}{NB. READWRITE comment out (dpset) and restart this notebook.}
+\PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{S}\PY{l+s}{E}\PY{l+s}{T}\PY{l+s}{M}\PY{l+s}{E}\PY{l+s}{\PYZsq{}}
+
+\PY{c+c1}{NB. Verb to show large boxed displays in}
+\PY{c+c1}{NB. the notebook without ugly wrapping.}
+\PY{n+nv}{sbx}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{\PYZsq{}} \PY{o}{,}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{\PYZti{}} \PY{l+m+mi}{73}\PY{o}{\PYZam{}}\PY{o}{\PYZob{}}\PY{o}{.}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{@}\PY{o}{\PYZdq{}}\PY{o}{:}
+
+\PY{c+c1}{NB. open some JOD dictionaries to search}
+\PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\PY{n+nv}{did} \PY{o}{\PYZti{}} \PY{l+m+mi}{0}
+\end{Verbatim}
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 +-+----------------------------------------------------------------+
 |1|+------+--+-----+-----+-------+-------+------+-----------------+|
 | ||      |--|Words|Tests|Groups*|Suites*|Macros|Path*            ||
 | |+------+--+-----+-----+-------+-------+------+-----------------+|
-| ||joddev|rw|32   |8    |2      |1      |12    |/joddev/jod/utils||
+| ||joddev|rw|31   |4    |6      |2      |21    |/joddev/jod/utils||
 | |+------+--+-----+-----+-------+-------+------+-----------------+|
-| ||jod   |ro|782  |67   |22     |13     |61    |/jod/utils       ||
+| ||jod   |ro|841  |76   |23     |13     |74    |/jod/utils       ||
 | |+------+--+-----+-----+-------+-------+------+-----------------+|
-| ||utils |ro|392  |7    |21     |0      |17    |/utils           ||
+| ||utils |ro|419  |8    |23     |0      |19    |/utils           ||
 | |+------+--+-----+-----+-------+-------+------+-----------------+|
 +-+----------------------------------------------------------------+
-
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{bnl} lists available
-backups}{bnl lists available backups}}\label{bnl-lists-available-backups}
+    \hypertarget{bnl-lists-available-backups}{%
+\subsubsection{\texorpdfstring{\texttt{bnl} lists available
+backups}{bnl lists available backups}}\label{bnl-lists-available-backups}}
 
 JOD binary backups are created with \texttt{packd}. When \texttt{packd}
 is run it copies current dictionary files to the backup folder and
 renames them with an ever increasing backup number prefix.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{NB. list all available put dictionary backups}
-        \PY{n+nv}{sbx} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. list all available put dictionary backups}
+\PY{n+nv}{sbx} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+--- {\ldots} 
-|1|.84|.83|.82|.81|.80|.79|.78|.77|.76|.75|.74|.73|.72|.71|.70|.69|.68|.67|.66|.65|.64|.63 {\ldots} 
-+-+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+--- {\ldots} 
-
++-+---+---+---+---+---+---+---+---+---+                                   {\ldots}
+|1|.38|.37|.36|.35|.34|.33|.32|.31|.30|                                   {\ldots}
++-+---+---+---+---+---+---+---+---+---+                                   {\ldots}
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{bnl} lists objects in
-backups}{bnl lists objects in backups}}\label{bnl-lists-objects-in-backups}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. dates of backups}
+\PY{l+m+mi}{14} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------------+
+|1|+--+--------------------+|
+| ||38|11 Dec 2021 14:38:19||
+| |+--+--------------------+|
+| ||37|10 Dec 2021 11:53:14||
+| |+--+--------------------+|
+| ||36|03 Dec 2021 09:02:39||
+| |+--+--------------------+|
+| ||35|12 Sep 2021 11:27:55||
+| |+--+--------------------+|
+| ||34|05 Aug 2021 10:37:17||
+| |+--+--------------------+|
+| ||33|05 Dec 2020 09:12:45||
+| |+--+--------------------+|
+| ||32|02 Dec 2020 11:03:12||
+| |+--+--------------------+|
+| ||31|01 Dec 2020 10:46:44||
+| |+--+--------------------+|
+| ||30|30 Nov 2020 13:55:56||
+| |+--+--------------------+|
++-+-------------------------+
+    \end{Verbatim}
+
+    \hypertarget{bnl-lists-objects-in-backups}{%
+\subsubsection{\texorpdfstring{\texttt{bnl} lists objects in
+backups}{bnl lists objects in backups}}\label{bnl-lists-objects-in-backups}}
 
 \texttt{bnl} lists objects in backups. See jod.pdf for more details.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. list all words in last backup}
-        \PY{n+nv}{smoutout} \PY{n+nv}{sbx} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. list all test cases in last backup}
-        \PY{n+nv}{smoutput} \PY{n+nv}{sbx} \PY{l+m+mi}{1} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. oldest backup}
-        \PY{n+nv}{smoutput} \PY{n+nv}{OldestBnum}\PY{o}{=:} \PY{o}{;} \PY{o}{\PYZob{}}\PY{o}{:} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
-        
-        \PY{c+c1}{NB. list all macros in oldest backup}
-        \PY{n+nv}{smoutput} \PY{n+nv}{sbx} \PY{l+m+mi}{4} \PY{n+nv}{bnl} \PY{n+nv}{OldestBnum}
-        
-        \PY{c+c1}{NB. list all macros with names starting with \PYZdq{}JOD\PYZdq{} in the oldest backup}
-        \PY{l+m+mi}{4} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{OldestBnum}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. list all words in last backup}
+\PY{n+nv}{smoutout} \PY{n+nv}{sbx} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+
+\PY{c+c1}{NB. list all test cases in last backup}
+\PY{n+nv}{smoutput} \PY{n+nv}{sbx} \PY{l+m+mi}{1} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+
+\PY{c+c1}{NB. oldest backup}
+\PY{n+nv}{smoutput} \PY{n+nv}{OldestBnum}\PY{o}{=:} \PY{o}{;} \PY{o}{\PYZob{}}\PY{o}{:} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
+
+\PY{c+c1}{NB. list all macros in oldest backup}
+\PY{n+nv}{smoutput} \PY{n+nv}{sbx} \PY{l+m+mi}{4} \PY{n+nv}{bnl} \PY{n+nv}{OldestBnum}
+
+\PY{c+c1}{NB. list all macros with names starting with \PYZdq{}JOD\PYZdq{} in the oldest backup}
+\PY{l+m+mi}{4} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{OldestBnum}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-+-----------+----------+----------+----------+-----------------+---------------------+-- {\ldots} 
-|1|bgetSmoke00|bnlBasic01|bnlSmoke00|bnlSmoke01|getDictextSmoke00|loadtest100dictionary|pu {\ldots} 
-+-+-----------+----------+----------+----------+-----------------+---------------------+-- {\ldots} 
-.10
-+-+---------------+--------------------+----------+-----------+-------------------+------- {\ldots} 
-|1|JODBUILDHISTORY|JODTOOLSBUILDHISTORY|historyjod|manifestjod|manifestjoddocument|manifes {\ldots} 
-+-+---------------+--------------------+----------+-----------+-------------------+------- {\ldots} 
++-+----------+----------------+----------------+--------------+           {\ldots}
+|1|abvSmoke00|buildjodliterate|globsBasicDDef00|globsSmokeDD00|           {\ldots}
++-+----------+----------------+----------------+--------------+           {\ldots}
+.30
++-+---------------+--------------------+-----------+-------------------+- {\ldots}
+|1|JODBUILDHISTORY|JODTOOLSBUILDHISTORY|TODO\_JOD\_md|TODO\_jodliterate\_md|b {\ldots}
++-+---------------+--------------------+-----------+-------------------+- {\ldots}
 +-+---------------+--------------------+
 |1|JODBUILDHISTORY|JODTOOLSBUILDHISTORY|
 +-+---------------+--------------------+
-
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{abv} a backup name list helper
-verb}{abv a backup name list helper verb}}\label{abv-a-backup-name-list-helper-verb}
+    \hypertarget{abv-a-backup-name-list-helper-verb}{%
+\subsubsection{\texorpdfstring{\texttt{abv} a backup name list helper
+verb}{abv a backup name list helper verb}}\label{abv-a-backup-name-list-helper-verb}}
 
-To streamline the search for backup objects the following helper verb
-uses \texttt{bnl} to return valid backup name lists for objects.
+To streamline the search for backup objects recent JOD versions
+(1.0.22+) provides \texttt{abv} (all backup versions). \texttt{abv}
+returns backup names from the most recent to oldest. The order derives
+from backup file numbers.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{NB. define in JOD\PYZsq{}s interface locale}
-        \PY{n+nv}{abv\PYZus{}ijod\PYZus{}}\PY{o}{=:}\PY{n+nf}{3 : 0}
-        
-        \PY{c+c1}{NB.*abv v\PYZhy{}\PYZhy{} all backup version names.}
-        \PY{c+c1}{NB.}
-        \PY{c+c1}{NB. Returns all valid backup names matching name prefix (y). }
-        \PY{c+c1}{NB.}
-        \PY{c+c1}{NB. monad:  blclBNames =. abv zl|clPfx}
-        \PY{c+c1}{NB.}
-        \PY{c+c1}{NB.   abv \PYZsq{}ch\PYZsq{}  NB. all words in all backups starting with \PYZsq{}ch\PYZsq{}}
-        \PY{c+c1}{NB.   abv \PYZsq{}\PYZsq{}    NB. all words in all backups}
-        \PY{c+c1}{NB.}
-        \PY{c+c1}{NB. dyad:   blclBNames =. il abv zl|clPfx}
-        \PY{c+c1}{NB.}
-        \PY{c+c1}{NB.   2 abv \PYZsq{}jod\PYZsq{}  NB. all group names in all backups starting with \PYZsq{}jod\PYZsq{}}
-        \PY{c+c1}{NB.   4 abv \PYZsq{}\PYZsq{}     NB. all macros in all backups}
-        
-        \PY{l+m+mi}{0} \PY{n+nv}{abv} \PY{n+nd}{y} \PY{c+c1}{NB. word default}
-        \PY{o}{:}
-        \PY{n+nl}{if.} \PY{n+nv}{badcl\PYZus{}ajod\PYZus{}} \PY{n+nd}{y} \PY{n+nl}{do.} \PY{n+nv}{jderr\PYZus{}ajod\PYZus{}} \PY{n+nv}{ERR002\PYZus{}ajod\PYZus{}} \PY{n+nl}{return.} \PY{n+nl}{end.}
-        \PY{n+nl}{if.} \PY{o}{\PYZhy{}}\PY{o}{.}\PY{n+nv}{isempty\PYZus{}ajod\PYZus{}} \PY{n+nd}{y} \PY{n+nl}{do.} \PY{n+nl}{if.} \PY{n+nv}{badrc\PYZus{}ajod\PYZus{}} \PY{n+nv}{uv}\PY{o}{=.}  \PY{n+nv}{checknames\PYZus{}ajod\PYZus{}} \PY{n+nd}{y} \PY{n+nl}{do.} \PY{n+nv}{uv} \PY{n+nl}{return.} \PY{n+nl}{else.} \PY{n+nd}{y}\PY{o}{=.} \PY{n+nv}{rv\PYZus{}ajod\PYZus{}} \PY{n+nv}{uv} \PY{n+nl}{end.} \PY{n+nl}{end.} 
-        \PY{n+nl}{if.} \PY{n+nv}{badrc\PYZus{}ajod\PYZus{}} \PY{n+nv}{uv}\PY{o}{=.} \PY{n+nd}{x} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{.}\PY{l+s}{\PYZsq{}} \PY{n+nl}{do.} \PY{n+nv}{uv} \PY{n+nl}{return.} \PY{n+nl}{else.} \PY{n+nv}{bn}\PY{o}{=.} \PY{o}{\PYZcb{}}\PY{o}{.}\PY{n+nv}{uv} \PY{n+nl}{end.}
-        
-        \PY{c+c1}{NB. names matching prefix in all backups}
-        \PY{n+nv}{pfx}\PY{o}{=.} \PY{p}{(}\PY{o}{\PYZlt{}}\PY{n+nv}{a}\PY{o}{:}\PY{p}{)} \PY{o}{\PYZhy{}}\PY{o}{.}\PY{o}{\PYZam{}}\PY{o}{.}\PY{o}{\PYZgt{}}\PY{o}{\PYZti{}} \PY{o}{\PYZcb{}}\PY{o}{.}\PY{o}{@}\PY{p}{(}\PY{n+nd}{x}\PY{o}{\PYZam{}}\PY{n+nv}{bnl}\PY{p}{)}\PY{o}{\PYZam{}}\PY{o}{.}\PY{o}{\PYZgt{}} \PY{p}{(}\PY{o}{\PYZlt{}}\PY{n+nd}{y}\PY{p}{)} \PY{o}{,}\PY{o}{\PYZam{}}\PY{o}{.}\PY{o}{\PYZgt{}} \PY{n+nv}{bn}
-        \PY{n+nv}{b}\PY{o}{=.} \PY{l+m+mi}{0} \PY{o}{\PYZlt{}} \PY{o}{\PYZsh{}}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{n+nv}{pfx} 
-        
-        \PY{c+c1}{NB. return backup names from most recent to older backups}
-        \PY{o}{\PYZbs{}}\PY{o}{:}\PY{o}{\PYZti{}} \PY{o}{;}\PY{o}{\PYZlt{}}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{@}\PY{o}{;}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{\PYZam{}}\PY{o}{.}\PY{o}{\PYZgt{}} \PY{p}{(}\PY{n+nv}{b} \PY{o}{\PYZsh{}} \PY{n+nv}{pfx}\PY{p}{)} \PY{o}{,}\PY{o}{\PYZdq{}}\PY{l+m+mi}{0}\PY{o}{\PYZam{}}\PY{o}{.}\PY{o}{\PYZgt{}} \PY{o}{\PYZlt{}}\PY{o}{\PYZdq{}}\PY{l+m+mi}{0} \PY{n+nv}{b} \PY{o}{\PYZsh{}} \PY{n+nv}{bn}
-        \PY{n+nl}{)}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. show first ten rows of all backup versions of all words in all backups}
+\PY{n+nv}{sbx} \PY{l+m+mi}{10} \PY{o}{\PYZob{}}\PY{o}{.} \PY{n+nv}{de} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
-
-    \texttt{abv} returns backup names from most recent to oldest. The order
-derives from backup numbers.
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{NB. all words in all backups beginning with \PYZsq{}b\PYZsq{}}
-        \PY{n+nv}{sbx} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{u}\PY{l+s}{\PYZsq{}}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-+--------------------------+--------------------------+--------------------------+-------- {\ldots} 
-|buildjodtoolscompressed.67|buildjodtoolscompressed.66|buildjodtoolscompressed.65|buildjod {\ldots} 
-+--------------------------+--------------------------+--------------------------+-------- {\ldots} 
-
+uwlatexfrwords.37          uwlatexfrwords.36          uwlatexfrwords.35   {\ldots}
+uwlatexfrwords.32          uwlatexfrwords.31          usedby.38           {\ldots}
+usedby.35                  ppcodelatex2.38            ppcodelatex2.37     {\ldots}
+ppcodelatex2.34            ppcodelatex2.33            ppcodelatex2.32     {\ldots}
+ppcodelatex.38             ppcodelatex.37             ppcodelatex.36      {\ldots}
+ppcodelatex.33             ppcodelatex.32             ppcodelatex.31      {\ldots}
+parsecode.37               markgassign.38             markgassign.37      {\ldots}
+markgassign.34             markgassign.33             markgassign.32      {\ldots}
+markdfrwords.37            markdfrwords.36            markdfrwords.35     {\ldots}
+markdfrwords.32            markdfrwords.31            jodon.38            {\ldots}
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{NB. all groups in all backups starting with \PYZdq{}build\PYZdq{} \PYZhy{} note the backup suffix numbers}
-        \PY{l+m+mi}{80} \PY{n+nv}{list} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{2} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{u}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. all words in all backups beginning with \PYZdq{}m\PYZdq{}}
+\PY{n+nv}{sbx} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{m}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-buildjod.66 buildjod.65 buildjod.64 buildjod.63 buildjod.62 buildjod.61 
-buildjod.60 buildjod.59 buildjod.58 buildjod.57 buildjod.56 buildjod.55 
-buildjod.54 buildjod.53 buildjod.52 buildjod.51 buildjod.50 buildjod.49 
-buildjod.48 buildjod.47 buildjod.46 buildjod.45 buildjod.44 buildjod.43 
-buildjod.42 buildjod.41 buildjod.40 buildjod.39 buildjod.38 buildjod.37 
-buildjod.36 buildjod.35 buildjod.34                                     
-
++-+--------------+--------------+--------------+--------------+---------- {\ldots}
+|1|markgassign.38|markgassign.37|markgassign.36|markgassign.35|markgassig {\ldots}
++-+--------------+--------------+--------------+--------------+---------- {\ldots}
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{bget} fetches objects from
-backups}{bget fetches objects from backups}}\label{bget-fetches-objects-from-backups}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. all groups in all backups starting with \PYZdq{}jod\PYZdq{} \PYZhy{} note the backup suffix numbers}
+\PY{l+m+mi}{80} \PY{n+nv}{list} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{2} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+jodutil.38                  jodutil.37
+jodutil.36                  jodutil.35
+jodutil.34                  jodutil.33
+jodutil.32                  jodutil.31
+jodutil.30                  jodtools.38
+jodtools.37                 jodtools.36
+jodtools.35                 jodtools.34
+jodtools.33                 jodtools.32
+jodtools.31                 jodtools.30
+jodmake.38                  jodmake.37
+jodliterateTroubleMakers.38 jodliterateTroubleMakers.37
+jodliterateTroubleMakers.36 jodliterateTroubleMakers.35
+jodliterateTroubleMakers.34 jodliterateTroubleMakers.33
+jodliterateTroubleMakers.32 jodliterateTroubleMakers.31
+jodliterateTroubleMakers.30 jodliterate.38
+jodliterate.37              jodliterate.36
+jodliterate.35              jodliterate.34
+jodliterate.33              jodliterate.32
+jodliterate.31              jodliterate.30
+jod.38                      jod.37
+jod.36                      jod.35
+jod.34                      jod.33
+jod.32                      jod.31
+jod.30
+    \end{Verbatim}
+
+    \hypertarget{bget-fetches-objects-from-backups}{%
+\subsubsection{\texorpdfstring{\texttt{bget} fetches objects from
+backups}{bget fetches objects from backups}}\label{bget-fetches-objects-from-backups}}
 
 \texttt{bget} fetches objects from backups. See jod.pdf for more
 details.
@@ -502,90 +653,96 @@ objects in locales. The reason for this is simple, \texttt{bget} may
 return many versions of the same object. Which one should you restore?
 JOD lets the user decide.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{NB. select a random word from the last backup}
-        \PY{n+nv}{AllWords}\PY{o}{=:} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{bnl}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-        \PY{n+nv}{smoutput} \PY{n+nv}{RandWord}\PY{o}{=:} \PY{o}{;}\PY{p}{(}\PY{n}{?}\PY{o}{\PYZsh{}}\PY{n+nv}{AllWords}\PY{p}{)} \PY{o}{\PYZob{}} \PY{n+nv}{AllWords}
-        
-        \PY{c+c1}{NB. fetch the word}
-        \PY{n+nv}{sbx} \PY{n+nv}{bget} \PY{n+nv}{RandWord}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. select a random word from the last backup}
+\PY{n+nv}{AllWords}\PY{o}{=:} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{bnl}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\PY{n+nv}{smoutput} \PY{n+nv}{RandWord}\PY{o}{=:} \PY{o}{;}\PY{p}{(}\PY{n}{?}\PY{o}{\PYZsh{}}\PY{n+nv}{AllWords}\PY{p}{)} \PY{o}{\PYZob{}} \PY{n+nv}{AllWords}
+
+\PY{c+c1}{NB. fetch the word}
+\PY{n+nv}{sbx} \PY{n+nv}{bget} \PY{n+nv}{RandWord}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-bgetobjects
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-|1|+--------------+-+--------------------------------------------------------------------- {\ldots} 
-| ||bgetobjects\_84|3|4 : 0  NB.*bgetobjects v-- get objects from backups. NB. NB. dyad: il {\ldots} 
-| |+--------------+-+--------------------------------------------------------------------- {\ldots} 
-+-+--------------------------------------------------------------------------------------- {\ldots} 
-
+jodhelp
++-+---------------------------------------------------------------------- {\ldots}
+|1|+----------+-+-------------------------------------------------------- {\ldots}
+| ||jodhelp\_38|3|3 : 0  NB.*jodhelp v-- display PDF JOD help. NB. NB. mon {\ldots}
+| |+----------+-+-------------------------------------------------------- {\ldots}
++-+---------------------------------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{bget} can fetch many
-objects}{bget can fetch many objects}}\label{bget-can-fetch-many-objects}
+    \hypertarget{bget-can-fetch-many-objects}{%
+\subsubsection{\texorpdfstring{\texttt{bget} can fetch many
+objects}{bget can fetch many objects}}\label{bget-can-fetch-many-objects}}
 
 \texttt{bget} can fetch many objects. The objects are returned in boxed
 name, class and value tables. For words and macros these tables have
 three columns for other objects there are two columns.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{NB. fetch the last five versions of words starting with \PYZdq{}release\PYZdq{}}
-        \PY{c+c1}{NB. NOTE: the backup number suffixes of the names in the first column of (ncv)}
-        \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{n+nv}{bget} \PY{l+m+mi}{5} \PY{o}{\PYZob{}}\PY{o}{.} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{l}\PY{l+s}{e}\PY{l+s}{a}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}
-        \PY{n+nv}{sbx} \PY{n+nv}{ncv}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. fetch the last five versions of words starting with \PYZdq{}jodo\PYZdq{}}
+\PY{c+c1}{NB. NOTE: the backup number suffixes of the names in the first column of (ncv)}
+\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{n+nv}{bget} \PY{l+m+mi}{5} \PY{o}{\PYZob{}}\PY{o}{.} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
+\PY{n+nv}{sbx} \PY{n+nv}{ncv}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-------------+-+------------------------------------------------------------------------- {\ldots} 
-|releasejod\_84|3|4 : 0  NB.*releasejod v-- final JOD release steps. NB. NB. dyad:  blVersi {\ldots} 
-+-------------+-+------------------------------------------------------------------------- {\ldots} 
-|releasejod\_83|3|4 : 0  NB.*releasejod v-- final JOD release steps. NB. NB. dyad:  blVersi {\ldots} 
-+-------------+-+------------------------------------------------------------------------- {\ldots} 
-|releasejod\_82|3|4 : 0  NB.*releasejod v-- final JOD release steps. NB. NB. dyad:  blVersi {\ldots} 
-+-------------+-+------------------------------------------------------------------------- {\ldots} 
-|releasejod\_81|3|4 : 0  NB.*releasejod v-- final JOD release steps. NB. NB. dyad:  blVersi {\ldots} 
-+-------------+-+------------------------------------------------------------------------- {\ldots} 
-|releasejod\_80|3|4 : 0  NB.*releasejod v-- final JOD release steps. NB. NB. dyad:  blVersi {\ldots} 
-+-------------+-+------------------------------------------------------------------------- {\ldots} 
-
++--------+-+------------------------------------------------------------- {\ldots}
+|jodon\_38|3|3 : 0  NB.*jodon v--  turn  JOD on  result  is 1  if  success {\ldots}
++--------+-+------------------------------------------------------------- {\ldots}
+|jodon\_37|3|3 : 0  NB.*jodon v--  turn  JOD on  result  is 1  if  success {\ldots}
++--------+-+------------------------------------------------------------- {\ldots}
+|jodon\_36|3|3 : 0  NB.*jodon v--  turn  JOD on  result  is 1  if  success {\ldots}
++--------+-+------------------------------------------------------------- {\ldots}
+|jodon\_35|3|3 : 0  NB.*jodon v--  turn  JOD on  result  is 1  if  success {\ldots}
++--------+-+------------------------------------------------------------- {\ldots}
+|jodon\_34|3|3 : 0  NB.*jodon v--  turn  JOD on  result  is 1  if  success {\ldots}
++--------+-+------------------------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}10}]:} \PY{c+c1}{NB. fetch the last ten versions of the short explanations of all words starting with \PYZdq{}bc\PYZdq{}}
-         \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{l+m+mi}{0} \PY{l+m+mi}{8} \PY{n+nv}{bget} \PY{l+m+mi}{10} \PY{o}{\PYZob{}}\PY{o}{.} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{c}\PY{l+s}{\PYZsq{}}
-         \PY{n+nv}{sbx} \PY{n+nv}{ncv}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. fetch the last ten versions of the short explanations of all words starting with \PYZdq{}bc\PYZdq{}}
+\PY{c+c1}{NB. smoutput \PYZcb{}. abv \PYZsq{}jo\PYZsq{}}
+\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{l+m+mi}{0} \PY{l+m+mi}{8} \PY{n+nv}{bget} \PY{l+m+mi}{10} \PY{o}{\PYZob{}}\PY{o}{.} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
+\PY{n+nv}{sbx} \PY{n+nv}{ncv}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_84|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_83|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_82|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_81|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_80|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_79|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_78|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_77|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_76|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-|bchecknames\_75|checks backup name patterns|                                               {\ldots} 
-+--------------+---------------------------+                                               {\ldots} 
-
++-------------------+---------------------------------------------------- {\ldots}
+|jodon\_38           |turn JOD on result is 1 if successful and 0 otherwis {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
+|jodon\_37           |turn JOD on result is 1 if successful and 0 otherwis {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
+|jodon\_36           |turn JOD on result is 1 if successful and 0 otherwis {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
+|jodon\_35           |turn JOD on result is 1 if successful and 0 otherwis {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
+|jodon\_34           |turn JOD on result is 1 if successful and 0 otherwis {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
+|jodon\_33           |turn JOD on result is 1 if successful and 0 otherwis {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
+|jodon\_32           |turn JOD on result is 1 if successful and 0 otherwis {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
+|jodon\_31           |turn JOD on result is 1 if successful and 0 otherwis {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
+|jodon\_30           |turn JOD on result is 1 if successful and 0 otherwis {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
+|jodliterate\_root\_38|                                                     {\ldots}
++-------------------+---------------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \subsubsection{\texorpdfstring{\texttt{bget} results can be edited with
-\texttt{ed}}{bget results can be edited with ed}}\label{bget-results-can-be-edited-with-ed}
+    \hypertarget{bget-results-can-be-edited-with-ed}{%
+\subsubsection{\texorpdfstring{\texttt{bget} results can be edited with
+\texttt{ed}}{bget results can be edited with ed}}\label{bget-results-can-be-edited-with-ed}}
 
 \texttt{bget} name, class and value tables can be edited with the JOD
 \texttt{ed} verb. JOD \texttt{ed} works differently depending on what J
@@ -593,75 +750,65 @@ IDE you are using but the basic approach is to generate script text from
 object data, write the script to a file, and then open a J editor. The
 following examples illustrate typical uses.
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{NB. edit the most recent version of a word}
-         \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{n+nv}{bget} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
-         \PY{n+nv}{ed} \PY{n+nv}{ncv}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. edit the most recent version of a word}
+\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{n+nv}{bget} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{k}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+
+\PY{c+c1}{NB. requires browser/file permissions and pop ups enabled}
+\PY{c+c1}{NB. (ed) is typically used in JQT and JHS environments and  }
+\PY{c+c1}{NB. may or may not work in Jupyter notebooks.}
+\PY{c+c1}{NB. ed ncv}
 \end{Verbatim}
+\end{tcolorbox}
 
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. edit all group header text}
+\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{l+m+mi}{2} \PY{n+nv}{bget} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{2} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\PY{n+nv}{smoutput} \PY{n+nv}{sbx} \PY{n+nv}{ncv}
+
+\PY{c+c1}{NB. ed ncv}
+\end{Verbatim}
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-\$\$\$edit\$\$\$c:/users/john/j901-user/temp/bchecknames\_84.ijs
-
++---------------------------+-------------------------------------------- {\ldots}
+|jod\_38                     |NB. *jod c-- main JOD dictionary class.  NB. {\ldots}
++---------------------------+-------------------------------------------- {\ldots}
+|jodliterate\_38             |NB.*jodliterate s-- generates literate sourc {\ldots}
++---------------------------+-------------------------------------------- {\ldots}
+|jodliterateTroubleMakers\_38|    NB. WARNING: long line breaking GROUP HE {\ldots}
++---------------------------+-------------------------------------------- {\ldots}
+|jodmake\_38                 |NB. *jodmake c-- script making \& code manipu {\ldots}
++---------------------------+-------------------------------------------- {\ldots}
+|jodtools\_38                |NB.*jodtools c-- derived tools class: extens {\ldots}
++---------------------------+-------------------------------------------- {\ldots}
+|jodutil\_38                 |NB. *jodutil c-- a collection of JOD utility {\ldots}
++---------------------------+-------------------------------------------- {\ldots}
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{NB. edit all group header text}
-         \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{l+m+mi}{2} \PY{n+nv}{bget} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{2} \PY{n+nv}{bnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
-         \PY{n+nv}{smoutput} \PY{n+nv}{sbx} \PY{n+nv}{ncv}
-         \PY{n+nv}{ed} \PY{n+nv}{ncv}
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{NB. edit all versions of all macros that begin with \PYZdq{}manifestjoddoc\PYZdq{}}
+\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{l+m+mi}{4} \PY{n+nv}{bget} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{4} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{i}\PY{l+s}{f}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{c}\PY{l+s}{\PYZsq{}}
+\PY{n+nv}{smoutput} \PY{l+m+mi}{80} \PY{n+nv}{list} \PY{l+m+mi}{0} \PY{o}{\PYZob{}}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1} \PY{n+nv}{ncv}
+
+\PY{c+c1}{NB. ed ncv}
 \end{Verbatim}
-
+\end{tcolorbox}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-+-----------+----------------------------------------------------------------------------- {\ldots} 
-|jod\_84     |NB. *jod c-- main JOD dictionary class.  NB.  NB. All other dictionary classe {\ldots} 
-+-----------+----------------------------------------------------------------------------- {\ldots} 
-|jodstore\_84|NB.*jodstore c-- storage object class: extension of (jod).  NB.  NB. Hides th {\ldots} 
-+-----------+----------------------------------------------------------------------------- {\ldots} 
-\$\$\$edit\$\$\$c:/users/john/j901-user/temp/jod\_84.ijs
-
+manifestjoddocument\_38 manifestjoddocument\_37 manifestjoddocument\_36
+manifestjoddocument\_35 manifestjoddocument\_34 manifestjoddocument\_33
+manifestjoddocument\_32 manifestjoddocument\_31 manifestjoddocument\_30
     \end{Verbatim}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{NB. edit all versions of all macros that begin with \PYZdq{}manifestjoddoc\PYZdq{}}
-         \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}\PY{o}{=:} \PY{l+m+mi}{4} \PY{n+nv}{bget} \PY{l+m+mi}{4} \PY{n+nv}{abv} \PY{l+s}{\PYZsq{}}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{i}\PY{l+s}{f}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{c}\PY{l+s}{\PYZsq{}}
-         \PY{n+nv}{smoutput} \PY{l+m+mi}{80} \PY{n+nv}{list} \PY{l+m+mi}{0} \PY{o}{\PYZob{}}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1} \PY{n+nv}{ncv}
-         \PY{n+nv}{ed} \PY{n+nv}{ncv}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-manifestjoddocument\_84 manifestjoddocument\_83 manifestjoddocument\_82 
-manifestjoddocument\_81 manifestjoddocument\_80 manifestjoddocument\_79 
-manifestjoddocument\_78 manifestjoddocument\_77 manifestjoddocument\_76 
-manifestjoddocument\_75 manifestjoddocument\_74 manifestjoddocument\_73 
-manifestjoddocument\_72 manifestjoddocument\_71 manifestjoddocument\_70 
-manifestjoddocument\_69 manifestjoddocument\_68 manifestjoddocument\_67 
-manifestjoddocument\_66 manifestjoddocument\_65 manifestjoddocument\_64 
-manifestjoddocument\_63 manifestjoddocument\_62 manifestjoddocument\_61 
-manifestjoddocument\_60 manifestjoddocument\_59 manifestjoddocument\_58 
-manifestjoddocument\_57 manifestjoddocument\_56 manifestjoddocument\_55 
-manifestjoddocument\_54 manifestjoddocument\_53 manifestjoddocument\_52 
-manifestjoddocument\_51 manifestjoddocument\_50 manifestjoddocument\_49 
-manifestjoddocument\_48 manifestjoddocument\_47 manifestjoddocument\_46 
-manifestjoddocument\_45 manifestjoddocument\_44 manifestjoddocument\_43 
-manifestjoddocument\_42 manifestjoddocument\_41 manifestjoddocument\_40 
-manifestjoddocument\_39 manifestjoddocument\_38 manifestjoddocument\_37 
-manifestjoddocument\_36 manifestjoddocument\_35 manifestjoddocument\_34 
-manifestjoddocument\_33 manifestjoddocument\_32 manifestjoddocument\_31 
-manifestjoddocument\_30 manifestjoddocument\_29 manifestjoddocument\_28 
-manifestjoddocument\_27 manifestjoddocument\_26 manifestjoddocument\_25 
-manifestjoddocument\_24 manifestjoddocument\_23 manifestjoddocument\_22 
-manifestjoddocument\_21 manifestjoddocument\_20 manifestjoddocument\_19 
-manifestjoddocument\_18 manifestjoddocument\_17 manifestjoddocument\_16 
-manifestjoddocument\_15 manifestjoddocument\_14 manifestjoddocument\_13 
-manifestjoddocument\_12 manifestjoddocument\_11 manifestjoddocument\_10 
-\$\$\$edit\$\$\$c:/users/john/j901-user/temp/manifestjoddocument\_84.ijs
-
-    \end{Verbatim}
-
-    \subsubsection{Final remarks}\label{final-remarks}
+    \hypertarget{final-remarks}{%
+\subsubsection{Final remarks}\label{final-remarks}}
 
 \texttt{bget} and \texttt{bnl} make it easy to recover objects in JOD
 binary backups. The objects are not defined in locales. You must edit
@@ -672,7 +819,7 @@ recovered objects.
 
 \begin{verbatim}
 John Baker 
-December 2019
+December 2021
 bakerjd99@gmail.com
 \end{verbatim}
 
@@ -681,4 +828,4 @@ bakerjd99@gmail.com
     
     
     
-    \end{document}
+\end{document}
