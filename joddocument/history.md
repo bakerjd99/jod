@@ -1,6 +1,10 @@
 general/joddocument - change history
 ====================================
 
+### 1.0.23 - wip
+
+ * Correct `abv` monad argument - only takes character lists.
+
 ### 1.0.22 - December 11, 2021 (Omicron Variant Edition)
 
  *  `abv`(all backup versions) added - see `jod.pdf`

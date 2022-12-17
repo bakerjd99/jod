@@ -1,0 +1,1658 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt,letter,landscape]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{JOD Introduction Lab}
+    
+    
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{JOD Introduction Lab}\label{jod-introduction-lab}
+
+\begin{figure}
+\centering
+\includegraphics{inclusions/jodtinycube.png}
+\caption{}
+\end{figure}
+
+    \subsubsection{What is JOD?}\label{what-is-jod}
+
+JOD is a word storage and retrieval system. It is mainly used to
+\textbf{\emph{refactor}} and reuse J words.
+
+The basic idea behind JOD is that J programming is best viewed as
+organizing collections of \textbf{\emph{words}} to perform a task.
+Organized collections of words have a better name:
+\textbf{\emph{dictionaries!}}
+
+JOD is a \href{https://code.jsoftware.com/wiki/JAL/User_Guide}{J addon}.
+It is installed in the
+(\texttt{\textasciitilde{}addons\textbackslash{}general\textbackslash{}jod})
+branch of the current J system folder by the
+\href{https://code.jsoftware.com/wiki/JAL/Package_Manager}{J package
+manager}.
+
+The next lab step initializes the JOD system.
+
+    \subsubsection{Start JOD}\label{start-jod}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. used by this lab}
+        \PY{n+nv}{require} \PY{l+s}{\PYZsq{}}\PY{l+s}{f}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{r}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{s}\PY{l+s}{k}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. start jod \PYZhy{} creates master file if necessary}
+        \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. use portable box drawing characters }
+        \PY{c+c1}{NB. simplifies rendering notebooks as (*.tex)}
+        \PY{n+nv}{portchars\PYZus{}ijod\PYZus{}}\PY{o}{=:}\PY{o}{[}\PY{o}{:} \PY{l+m+mi}{9}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{7} \PY{l+s}{\PYZsq{}}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{+}\PY{l+s}{|}\PY{l+s}{\PYZhy{}}\PY{l+s}{\PYZsq{}}\PY{o}{\PYZdq{}}\PY{l+m}{\PYZus{}} \PY{o}{[} \PY{o}{]}
+        \PY{n+nv}{portchars} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+
+    \end{Verbatim}
+
+    \subsubsection{Remove old lab
+dictionaries}\label{remove-old-lab-dictionaries}
+
+JOD is installed without any dictionaries. To use JOD you must create
+some dictionaries. This lab uses four example dictionaries
+(\texttt{lab}), (\texttt{labdev}), (\texttt{toy}) and
+(\texttt{playpen}). JOD dictionaries are created with the
+(\texttt{newd}) "new dictionary" verb.
+
+Before creating lab dictionaries remove any prior lab dictionaries. This
+step defines a utility that will erase dictionaries from default
+locations. It is run in the next step.
+
+\textbf{\emph{WARNING: IF THE TEMPORARY LAB DICTIONARIES CONTAIN
+INFORMATION YOU CARE ABOUT DO NOT EXECUTE THE NEXT LAB STEP!}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n+nv}{RemoveLabDictionaries\PYZus{}ijod\PYZus{}}\PY{o}{=:} \PY{n+nf}{3 : 0}
+        \PY{n+nv}{root}\PY{o}{=.} \PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}
+        \PY{n+nl}{if.} \PY{n+nv}{IFWIN} \PY{n+nl}{do.}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{q}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{\PYZbs{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{q}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{\PYZbs{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{q}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{\PYZbs{}}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{q}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{\PYZbs{}}\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{p}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{L}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{(}\PY{l+s}{w}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{)}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+        \PY{n+nl}{elseif.} \PY{n+nv}{IFUNIX} \PY{n+nl}{do.}
+          \PY{c+c1}{NB. avoid blanks in paths on Linux and Mac systems}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{r}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{r}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{r}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{r}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{p}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{L}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{(}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{/}\PY{l+s}{l}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{u}\PY{l+s}{x}\PY{l+s}{)}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+        \PY{n+nl}{elseif.}\PY{n+nl}{do.}
+          \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{E}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{u}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{y}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
+        \PY{n+nl}{end.}
+        \PY{n+nl}{)}
+\end{Verbatim}
+
+    \subsubsection{Remove any prior lab
+dictionaries}\label{remove-any-prior-lab-dictionaries}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{NB. close any dictionaries \PYZhy{} ignore errors}
+        \PY{l+m+mi}{0} \PY{l+m+mi}{0} \PY{o}{\PYZdl{}} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. reset master file }
+        \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{S}\PY{l+s}{E}\PY{l+s}{T}\PY{l+s}{M}\PY{l+s}{E}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. unregister any lab dictionaries \PYZhy{} ignore errors}
+        \PY{l+m+mi}{0} \PY{l+m+mi}{0} \PY{o}{\PYZdl{}} \PY{l+m+mi}{3} \PY{n+nv}{regd}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{p}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. remove dictionary directories and all contents \PYZhy{} ignore errors}
+        \PY{n+nv}{RemoveLabDictionaries} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Lab temporary (win) dictionaries erased
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{This step creates the (\texttt{lab}) and
+(\texttt{labdev})
+dictionaries}{This step creates the (lab) and (labdev) dictionaries}}\label{this-step-creates-the-lab-and-labdev-dictionaries}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. close any open dictionaries}
+        \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. create (lab) and  (labdev) dictionaries}
+        \PY{n+nv}{smoutput} \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{\PYZsq{}}
+        \PY{n+nv}{smoutput} \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. list available dictionaries}
+        \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------+---+------------------------------------------+
+|1|dictionary created ->|lab|c:/users/jbaker/j64-807-user/joddicts/lab/|
++-+---------------------+---+------------------------------------------+
++-+---------------------+------+---------------------------------------------+
+|1|dictionary created ->|labdev|c:/users/jbaker/j64-807-user/joddicts/labdev/|
++-+---------------------+------+---------------------------------------------+
++-+------+------+----+----+---+------+----------+-------+---+------+----+---------+-----+---------+
+|1|bpcopy|bptest|docs|imex|jod|joddev|joddevload|jodload|lab|labdev|play|smugpyter|utils|utilsload|
++-+------+------+----+----+---+------+----------+-------+---+------+----+---------+-----+---------+
+
+    \end{Verbatim}
+
+    \subsubsection{Opening and closing
+dictionaries}\label{opening-and-closing-dictionaries}
+
+The JOD verb for opening and closing dictionaries is (\texttt{od}) or
+(open dictionary). JOD verbs are short and easy to type.
+
+(\texttt{od}) can open dictionaries \texttt{READWRITE} and
+\texttt{READONLY}. As you might expect \texttt{READONLY} dictionaries
+cannot be changed by JOD verbs.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{NB. open read/write}
+        \PY{n+nv}{smoutput} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. open read/only}
+        \PY{n+nv}{smoutput} \PY{l+m+mi}{2} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. close (labdev)}
+        \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------+------+
+|1|opened (rw) ->|labdev|
++-+--------------+------+
++-+--------------+---+
+|1|opened (ro) ->|lab|
++-+--------------+---+
++-+---------+------+
+|1|closed ->|labdev|
++-+---------+------+
+
+    \end{Verbatim}
+
+    \subsubsection{Some return code basics}\label{some-return-code-basics}
+
+All JOD verbs return boxed list results. The first item is a return
+code: (1) good (0) bad. Remaining items are messages and, usually, error
+related information. JOD verbs perform extensive argument checking. If
+you break a JOD verb please email me (\texttt{bakerjd99@gmail.com}) and
+tell me what you did.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{NB. bad open request}
+        \PY{n+nv}{smoutput} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{i}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{s}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{g}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. bad types}
+        \PY{n+nv}{smoutput} \PY{n+nv}{od} \PY{l+m+mi}{9}
+        
+        \PY{c+c1}{NB. bad ranks}
+        \PY{n+nv}{od} \PY{l+m+mi}{3} \PY{l+m+mi}{3}\PY{o}{\PYZdl{}}\PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------------------------------------+
+|0|!JOD error: invalid or missing dictionary name(s)|
++-+-------------------------------------------------+
++-+-------------------------------------------------+
+|0|!JOD error: invalid or missing dictionary name(s)|
++-+-------------------------------------------------+
++-+-------------------------------------------------+
+|0|!JOD error: invalid or missing dictionary name(s)|
++-+-------------------------------------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Online JOD documentation}\label{online-jod-documentation}
+
+JOD has extensive (\texttt{pdf}) documentation.
+\href{https://github.com/jsoftware/general_joddocument/blob/master/pdfdoc/jod.pdf}{JOD
+documentation} can be accessed with the (\texttt{jodhelp}) verb.
+
+(\texttt{jodhelp}) spawns a PDF reader task. JOD uses J's configured PDF
+reader on Windows and Linux systems and the "open" shell command on
+Macs.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{NB. display JOD documentation}
+        \PY{n+nv}{jodhelp} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------+
+|1|starting PDF reader|
++-+-------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Dictionary paths}\label{dictionary-paths}
+
+The open dictionaries of JOD define a search and fetch path. The
+(\texttt{did}) (dictionary identification) verb lists the path.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{NB. reopen only (labdev) and (lab)}
+        \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. show path}
+        \PY{n+nv}{did} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+------+---+
+|1|labdev|lab|
++-+------+---+
+
+    \end{Verbatim}
+
+    The dyadic form of (\texttt{did}) returns details about the contents of
+each dictionary on the path.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{NB. did \PYZti{} 0   NB. handy idiom}
+        
+        \PY{c+c1}{NB. dictionary details}
+        \PY{l+m+mi}{0} \PY{n+nv}{did} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+----------------------------------------------------+
+|1|+------+--+-----+-----+-------+-------+------+-----+|
+| ||      |--|Words|Tests|Groups*|Suites*|Macros|Path*||
+| |+------+--+-----+-----+-------+-------+------+-----+|
+| ||labdev|rw|0    |0    |0      |0      |0     |/    ||
+| |+------+--+-----+-----+-------+-------+------+-----+|
+| ||lab   |rw|0    |0    |0      |0      |0     |/    ||
+| |+------+--+-----+-----+-------+-------+------+-----+|
++-+----------------------------------------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Some object orientation}\label{some-object-orientation}
+
+The JOD system is a complete and detailed example of object oriented
+programming in J. The system consists of a number of classes (prefixed
+with \texttt{\textquotesingle{}ajod\textquotesingle{}}). When the system
+loads a variety of objects are created. The basic architecture is a main
+dictionary object that contains four subobjects. Each open dictionary is
+also associated with a directory object. Directory objects are created
+and destroyed as required. The following diagram shows JOD's class
+structure.
+
+\begin{figure}
+\centering
+\includegraphics{inclusions/joddot.png}
+\caption{}
+\end{figure}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{c+c1}{NB. objects beginning with \PYZsq{}ajod\PYZsq{} are the JOD classes.}
+         \PY{n+nv}{smoutput} \PY{l+m+mi}{80} \PY{n+nv}{list} \PY{n+nv}{conl} \PY{l+m+mi}{0}
+         
+         \PY{c+c1}{NB. JOD consists of six basic objects and as}
+         \PY{c+c1}{NB. many directory objects as there are path items.}
+         \PY{n+nv}{conl} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+ajod      ajoddob   ajodmake  ajodstore ajodtools ajodutil  base      ijod      
+j         jal       jcompare  jdefs     jdemo     jfif      jfile     jfiles    
+jfilesrc  jhs       jijs      jijx      jlab      jlogin    jpacman   jregex    
+jsocket   json      jsp       jtask     qjide     z                             
++-+-+-+-+-+-+-+-+
+|0|1|2|3|4|5|8|9|
++-+-+-+-+-+-+-+-+
+
+    \end{Verbatim}
+
+    \subsubsection{The put dictionary
+concept}\label{the-put-dictionary-concept}
+
+The first dictionary on the path is \emph{special}. It is the only
+dictionary that can be modified by JOD verbs. Because most dictionary
+modifications are put's I call this dictionary the "put" dictionary.
+
+It's important to understand that you can use the contents of the other
+dictionaries on the path but you cannot change them in any way.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{NB. first path dictionary is the put dictionary}
+         \PY{n+nv}{did} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+------+---+
+|1|labdev|lab|
++-+------+---+
+
+    \end{Verbatim}
+
+    \subsubsection{Creating new
+dictionaries}\label{creating-new-dictionaries}
+
+Before modifying the contents of any dictionary let's create a new
+(\texttt{toy}) dictionary and make it the put dictionary.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{NB. close open dictionaries}
+         \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. create (toy)}
+         \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------+---+------------------------------------------+
+|1|dictionary created ->|toy|c:/users/jbaker/j64-807-user/joddicts/toy/|
++-+---------------------+---+------------------------------------------+
+
+    \end{Verbatim}
+
+    Make (\texttt{toy}) a put dictionary.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{NB. open toy, labdev and lab \PYZhy{} toy is the put dictionary}
+         \PY{n+nv}{smoutput} \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. insure toy is read/write}
+         \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{A}\PY{l+s}{D}\PY{l+s}{W}\PY{l+s}{R}\PY{l+s}{I}\PY{l+s}{T}\PY{l+s}{E}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+---+------+---+
+|1|opened (rw/rw/rw) ->|toy|labdev|lab|
++-+--------------------+---+------+---+
++-+--------------------------------------------+---+
+|1|put dictionary read/write status restored ->|toy|
++-+--------------------------------------------+---+
+
+    \end{Verbatim}
+
+    \subsubsection{Getting and putting
+words}\label{getting-and-putting-words}
+
+In the first section I said JOD is a word storage and retrieval system.
+Now we are ready to (\texttt{put}) and (\texttt{get}) some words.
+
+First create some words to store.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{NB. create some words}
+         \PY{n+nv}{random}\PY{o}{=:} \PY{err}{?}\PY{l+m+mi}{10} \PY{l+m+mi}{10}\PY{o}{\PYZdl{}}\PY{l+m+mi}{100}  \PY{c+c1}{NB. numeric noun}
+         \PY{n+nv}{text}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{o}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{g}\PY{l+s}{\PYZsq{}}
+         \PY{n+nv}{floats}\PY{o}{=:} \PY{l+m+mi}{2} \PY{o}{+} \PY{o}{\PYZpc{}} \PY{l+m+mi}{100}\PY{o}{\PYZsh{}}\PY{l+m+mi}{100}
+         \PY{n+nv}{symbols}\PY{o}{=:} \PY{n+nv}{s}\PY{o}{:} \PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{w}\PY{l+s}{i}\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{ }\PY{l+s}{f}\PY{l+s}{e}\PY{l+s}{e}\PY{l+s}{l}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{g}\PY{l+s}{\PYZsq{}}
+         \PY{n+nv}{boxed}\PY{o}{=:} \PY{o}{\PYZlt{}}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{2} \PY{l+m+mi}{3}
+         \PY{n+nv}{rationals}\PY{o}{=:} \PY{l+m+mi}{100} \PY{o}{+} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{o}{\PYZgt{}}\PY{o}{:}\PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi+il}{10x}\PY{p}{)} \PY{o}{\PYZca{}} \PY{l+m+mi}{50}
+         \PY{n+nv}{unicode}\PY{o}{=:} \PY{n+nv}{u}\PY{o}{:} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{w}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{n}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}
+         \PY{n+nv}{each}\PY{o}{=:} \PY{o}{\PYZam{}}\PY{o}{.}\PY{o}{\PYZgt{}}  \PY{c+c1}{NB. tacit adverb}
+         \PY{n+nv}{explicit}\PY{o}{=:} \PY{n+nf}{4 : 0}
+         \PY{c+c1}{NB. explicit verb}
+         \PY{n+nd}{x} \PY{o}{+}\PY{o}{.} \PY{n+nd}{y}
+         \PY{n+nl}{)}
+         
+         \PY{n+nv}{words}\PY{o}{=:} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{f}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{y}\PY{l+s}{m}\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{b}\PY{l+s}{o}\PY{l+s}{x}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{n}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{e}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{ }\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{i}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    (\texttt{put}) is the JOD command that stores words.
+
+Save and erase the words. Take some time to convince yourself that the
+words have been erased before proceeding.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{c+c1}{NB. save words}
+         \PY{n+nv}{smoutput} \PY{n+nv}{put} \PY{n+nv}{words}
+         
+         \PY{c+c1}{NB. erase definitions}
+         \PY{n+nv}{erase} \PY{n+nv}{words}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------+---+
+|1|9 word(s) put in ->|toy|
++-+-------------------+---+
+1 1 1 1 1 1 1 1 1
+
+    \end{Verbatim}
+
+    Now retrieve the stored words and check that they are properly restored.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{c+c1}{NB. get words}
+         \PY{n+nv}{get} \PY{n+nv}{words}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-----------------+
+|1|9 word(s) defined|
++-+-----------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Documentation 101}\label{documentation-101}
+
+One of my pet peeves is undocumented code!
+
+How often have you had to face hundreds, maybe thousands, of lines of
+code with nary a comment in sight. Comments are not for wimps and
+girly-men. Telling comments are a hallmark of good code.
+
+JOD provides a number of ways to document words. When a word is
+introduced it's a good idea to store a short one line description of the
+word.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{c+c1}{NB. store short word descriptions}
+         \PY{n+nv}{smoutput} \PY{l+m+mi}{0} \PY{l+m+mi}{8} \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{m}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{l}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}
+         
+         \PY{l+m+mi}{0} \PY{l+m+mi}{8} \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{a}\PY{l+s}{p}\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{i}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{e}\PY{l+s}{f}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{g}\PY{l+s}{u}\PY{l+s}{m}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------------------+---+
+|1|1 word explanation(s) put in ->|toy|
++-+-------------------------------+---+
++-+-------------------------------+---+
+|1|1 word explanation(s) put in ->|toy|
++-+-------------------------------+---+
+
+    \end{Verbatim}
+
+    Of course you can view your stored descriptions with (get).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{c+c1}{NB. get short explanations}
+         \PY{l+m+mi}{0} \PY{l+m+mi}{8} \PY{n+nv}{get} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{m}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{e}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------------------------------+
+|1|+------+------------------------------------+|
+| ||random|random integer table                ||
+| |+------+------------------------------------+|
+| ||each  |applies left argument to array items||
+| |+------+------------------------------------+|
++-+---------------------------------------------+
+
+    \end{Verbatim}
+
+    More detailed documentation can be stored and retrieved. This step loads
+a realistic example of word documentation into the current put
+dictionary and then displays with (\texttt{disp}).
+
+(\texttt{disp}) is a JOD utility. It is the only verb that returns a
+character list (when successful) instead of the usual boxed
+(\texttt{rc;value})
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{c+c1}{NB. loads (changestr) and (changestr) documentation into the current put dictionary}
+         \PY{n+nv}{script} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{\PYZbs{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{s}\PY{l+s}{\PYZbs{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{e}\PY{l+s}{0}\PY{l+s}{0}\PY{l+s}{1}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    This steps displays the long document loaded in the previous step.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{c+c1}{NB. show long documentation}
+         \PY{l+m+mi}{0} \PY{l+m+mi}{9} \PY{n+nv}{disp} \PY{l+s}{\PYZsq{}}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+*changestr v-- replaces substrings within a string.
+
+This algorithm was adapted from an APL algorithm. It requires
+high speed boolean bit  manipulation and is not  as effective
+in current  J systems as it  is in some  APL systems. Despite
+J's non-optimal booleans this verb is still fast enough to be
+fruitfully applied.  On  my  400MHZ NT  machine  you can make
+20,000 length increasing replacements, (the worst case), in a
+1  megabyte  string  in approximately  one  second.  For  100
+kilobyte  strings typical operations complete is less than  a
+tenth of second.
+
+High speed substring replacement is difficult to achieve in J
+and APL environments. This verb would be a good candidate for
+an external compiled routine.
+
+dyad:  clChanged =. clTargets changestr clStr
+
+  '/change/becomes' changestr 'change me'
+
+  '/delete' changestr 'delete me'   NB. null replacement deletes
+
+  NB. first character is delimiter
+
+  '.remove..purge..wipe' changestr 'removepurgewipe'
+
+  '/' changestr 'nothing happens'
+
+  '' changestr 'nothing happens'
+
+  '/nothing/happens' changestr 'no matches to change'
+
+  NB. multiple replacements are made in left to right order
+
+  t =. 'once all things were many'
+
+  '/many/changes/all/at/once/ehh' changestr t
+
+  NB. even null subtring replacements are allowed
+
+  '//XX' changestr 'insert big x chars around us'
+
+  NB. finally all this applies in a clean elegant
+  NB. way to UNICODE strings as well
+
+  uchars=. u: 1033 + i. 500  NB. unicode string
+  datatype uchars            NB. (datatype) from j profile
+
+  usub0=. (100+i.11)\{uchars  NB. substrings
+  usub1=. (313+i.7)\{uchars
+  datatype usub0
+  datatype usub1
+
+  NB. strings that will not occur in the original
+  unew0=. u: 40027+i.33
+  unew1=. u: 50217+i.7
+
+  +./ unew0 E. uchars   NB. not in uchars
+  +./ unew1 E. uchars
+
+  ucharsnew=. ('/',usub0,'/',unew0,'/',usub1,'/',unew1) changestr uchars
+
+  +./ unew0 E. ucharsnew  NB. now in string
+  +./ unew1 E. ucharsnew
+
+
+
+
+    \end{Verbatim}
+
+    \subsubsection{More putting and getting}\label{more-putting-and-getting}
+
+(\texttt{put}) and (\texttt{get}) are quite flexible and can store
+entire locales. The locales can be named or numbered.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{c+c1}{NB. save the (ajodmake) locale/class in \PYZdq{}toy\PYZdq{}}
+         \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{a}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{\PYZsq{}} \PY{n+nv}{put} \PY{n+nv}{zz}\PY{o}{=:} \PY{n+nv}{nl\PYZus{}ajodmake\PYZus{}} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{4}
+         
+         \PY{c+c1}{NB. retrieve the (ajodmake) words into an \PYZsq{}xxx\PYZsq{} locale}
+         \PY{l+s}{\PYZsq{}}\PY{l+s}{x}\PY{l+s}{x}\PY{l+s}{x}\PY{l+s}{\PYZsq{}} \PY{n+nv}{get} \PY{n+nv}{zz}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+---+
+|1|78 word(s) put in ->|toy|
++-+--------------------+---+
++-+------------------+
+|1|78 word(s) defined|
++-+------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Searching for words}\label{searching-for-words}
+
+Like most storage systems JOD provides facilities for searching the
+contents of its database.
+
+The main search command is (\texttt{dnl}) (dictionary name lists).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{c+c1}{NB. list all the words on the path beginning with \PYZsq{}du\PYZsq{}}
+         \PY{n+nv}{list} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{d}\PY{l+s}{u}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+dumpdictdoc  dumpdoc      dumpgs       dumpheader   dumpntstamps dumptext     dumptm       dumptrailer  dumpwords    
+
+    \end{Verbatim}
+
+    (\texttt{dnl}) can search for words, tests, groups, suites and macros.
+
+This step creates some groups and then lists all the groups on the path
+that begin with \texttt{\textquotesingle{}JOD\textquotesingle{}}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{c+c1}{NB. create some groups}
+         \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{g}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}
+         \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{nl\PYZus{}ajodmake\PYZus{}} \PY{n+nv}{i}\PY{o}{.}\PY{l+m+mi}{4}
+         
+         \PY{c+c1}{NB. groups beginning with \PYZsq{}loc\PYZsq{}}
+         \PY{l+m+mi}{2} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{c}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------+
+|1|loctest|
++-+-------+
+
+    \end{Verbatim}
+
+    \subsubsection{What are these funny argument
+numbers?}\label{what-are-these-funny-argument-numbers}
+
+By now you have probably noticed that many JOD verbs take integer
+arguments. JOD argument codes are of basically three types, object
+codes, option codes and qualifiers.
+
+The objects JOD stores and retrieves all have object codes. The next
+table displays JOD object codes.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{c+c1}{NB. JOD object codes}
+         \PY{p}{(}\PY{o}{\PYZlt{}}\PY{o}{\PYZdq{}}\PY{l+m+mi}{0} \PY{n+nv}{i}\PY{o}{.} \PY{l+m+mi}{6}\PY{p}{)} \PY{o}{,}\PY{o}{.} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{W}\PY{l+s}{O}\PY{l+s}{R}\PY{l+s}{D}\PY{l+s}{ }\PY{l+s}{T}\PY{l+s}{E}\PY{l+s}{S}\PY{l+s}{T}\PY{l+s}{ }\PY{l+s}{G}\PY{l+s}{R}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{P}\PY{l+s}{ }\PY{l+s}{S}\PY{l+s}{U}\PY{l+s}{I}\PY{l+s}{T}\PY{l+s}{E}\PY{l+s}{ }\PY{l+s}{M}\PY{l+s}{A}\PY{l+s}{C}\PY{l+s}{R}\PY{l+s}{O}\PY{l+s}{ }\PY{l+s}{D}\PY{l+s}{I}\PY{l+s}{C}\PY{l+s}{T}\PY{l+s}{I}\PY{l+s}{O}\PY{l+s}{N}\PY{l+s}{A}\PY{l+s}{R}\PY{l+s}{Y}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+----------+
+|0|WORD      |
++-+----------+
+|1|TEST      |
++-+----------+
+|2|GROUP     |
++-+----------+
+|3|SUITE     |
++-+----------+
+|4|MACRO     |
++-+----------+
+|5|DICTIONARY|
++-+----------+
+
+    \end{Verbatim}
+
+    Option and qualifier codes select and modify options. They are all
+integers. For more information about argument codes read
+\href{https://github.com/jsoftware/general_joddocument/blob/master/pdfdoc/jod.pdf}{JOD's
+documentation}.
+
+Now look at some more (\texttt{dnl}) commands.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{c+c1}{NB. (group, option 1 \PYZhy{} match prefix) \PYZhy{} case matters}
+         \PY{n+nv}{smoutput} \PY{l+m+mi}{2} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. (macro, option 2 \PYZhy{} name contains string) \PYZhy{} no macros yet}
+         \PY{n+nv}{smoutput} \PY{l+m+mi}{4} \PY{l+m+mi}{2} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. make a macro and search again}
+         \PY{n+nv}{smoutput} \PY{l+m+mi}{4} \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{r}\PY{l+s}{g}\PY{l+s}{h}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{JSCRIPT\PYZus{}ajod\PYZus{}}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{N}\PY{l+s}{B}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{g}\PY{l+s}{ }\PY{l+s}{J}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{r}\PY{l+s}{o}\PY{l+s}{\PYZsq{}}
+         
+         \PY{l+m+mi}{4} \PY{l+m+mi}{2} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------+
+|1|loctest|
++-+-------+
++-++
+|1||
++-++
++-+--------------------+---+
+|1|1 macro(s) put in ->|toy|
++-+--------------------+---+
++-+-----+
+|1|arrgh|
++-+-----+
+
+    \end{Verbatim}
+
+    \subsubsection{Groups and suites}\label{groups-and-suites}
+
+JOD provides a simple way to group words and tests. A group is a
+collection of J words. A suite is a collection of J test scripts. You
+create and modify groups and suites with the (\texttt{grp}) verb.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{c+c1}{NB. create a group of words with names beginning with \PYZsq{}ch\PYZsq{}}
+         \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{g}\PY{l+s}{r}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{p}\PY{l+s}{\PYZsq{}} \PY{o}{;} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{c}\PY{l+s}{h}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. create a test}
+         \PY{l+m+mi}{1} \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{h}\PY{l+s}{e}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{w}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{l}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{1}\PY{l+s}{ }\PY{l+s}{[}\PY{l+s}{ }\PY{l+s}{\PYZsq{}\PYZsq{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{J}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{c}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{p}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{t}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{n}\PY{l+s}{ }\PY{l+s}{1}\PY{l+s}{s}\PY{l+s}{\PYZsq{}\PYZsq{}}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. create a test suite \PYZhy{} note left argument code}
+         \PY{l+m+mi}{3} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{u}\PY{l+s}{i}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{\PYZsq{}} \PY{o}{;} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{1} \PY{n+nv}{dnl} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------------+---+
+|1|suite <testsuite> put in ->|toy|
++-+---------------------------+---+
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{You can list the contents of groups or
+suites with
+(\texttt{grp})}{You can list the contents of groups or suites with (grp)}}\label{you-can-list-the-contents-of-groups-or-suites-with-grp}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{c+c1}{NB. list contents of testgroup group}
+         \PY{n+nv}{smoutput} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{g}\PY{l+s}{r}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{p}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. contents of testsuite, note suite code left argument}
+         \PY{l+m+mi}{3} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{u}\PY{l+s}{i}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------+
+|1|changestr|
++-+---------+
++-+----------+
+|1|helloworld|
++-+----------+
+
+    \end{Verbatim}
+
+    \subsubsection{Making groups and suites}\label{making-groups-and-suites}
+
+One of the main advantages of storing J code in JOD vs. a plain script
+is that you can maintain a \emph{single} version of a word, test, group
+or suite and then generate many J load scripts that use dictionary
+objects. Database designers call this "one version of the truth."
+
+The following inserts a single word in a (\texttt{toy}) group and then
+generates scripts.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{c+c1}{NB. left justify table verb}
+         \PY{n+nv}{ljust}\PY{o}{=:}\PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{\PYZsq{}}\PY{o}{\PYZam{}}\PY{o}{\PYZdl{}}\PY{o}{:} \PY{o}{:}\PY{p}{(}\PY{o}{]} \PY{o}{|}\PY{o}{.}\PY{o}{\PYZdq{}}\PY{l+m+mi}{\PYZus{}1}\PY{o}{\PYZti{}} \PY{n+nv}{i}\PY{o}{.}\PY{o}{\PYZdq{}}\PY{l+m+mi}{1}\PY{o}{\PYZam{}}\PY{l+m+mi}{0}\PY{o}{@}\PY{p}{(}\PY{o}{]} \PY{n+nv}{e}\PY{o}{.} \PY{o}{[}\PY{p}{)}\PY{p}{)}
+         
+         \PY{c+c1}{NB. store in put dictionary}
+         \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{j}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. insert in all put dictionary groups }
+         \PY{p}{(}\PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{2} \PY{n+nv}{revo} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}\PY{p}{)} \PY{n+nv}{addgrp}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{\PYZlt{}}\PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{j}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. lookup (revo) in jod.pdf with (jodhelp)}
+         
+         \PY{c+c1}{NB. generate all put dictionary groups }
+         \PY{n+nv}{smoutput} \PY{l+m+mi}{0} \PY{n+nv}{mls}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{2} \PY{n+nv}{revo}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. if the left argument is elided the groups are made into (load) scripts}
+         \PY{c+c1}{NB. mls\PYZam{}\PYZgt{} \PYZcb{}. 2 revo\PYZsq{}\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------+--------------------------------------------------------------+
+|1|file saved ->|c:/users/jbaker/j64-807-user/joddicts/toy/script/strings.ijs  |
++-+-------------+--------------------------------------------------------------+
+|1|file saved ->|c:/users/jbaker/j64-807-user/joddicts/toy/script/loctest.ijs  |
++-+-------------+--------------------------------------------------------------+
+|1|file saved ->|c:/users/jbaker/j64-807-user/joddicts/toy/script/testgroup.ijs|
++-+-------------+--------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Macros}\label{macros}
+
+Tasks, like updating generated scripts, can be simplified with JOD
+macros. A JOD macro is an arbitrary J script that can be fetched and
+executed with (\texttt{rm}).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{c+c1}{NB. macro that generates all put dictionary groups}
+         \PY{n+nv}{jodmacro}\PY{o}{=:} \PY{l+s}{\PYZsq{}}\PY{l+s}{N}\PY{l+s}{B}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{g}\PY{l+s}{r}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{p}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{LF}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{0}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{\PYZam{}}\PY{l+s}{\PYZgt{}}\PY{l+s}{ }\PY{l+s}{\PYZcb{}}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{2}\PY{l+s}{ }\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{o}\PY{l+s}{\PYZsq{}\PYZsq{}}\PY{l+s}{\PYZsq{}\PYZsq{}}\PY{l+s}{ }\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. store macro \PYZhy{} code (JSCRIPT\PYZus{}ajod\PYZus{}) tells JOD this is a J script}
+         \PY{l+m+mi}{4} \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{p}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{g}\PY{l+s}{r}\PY{l+s}{p}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{JSCRIPT\PYZus{}ajod\PYZus{}}\PY{o}{;}\PY{n+nv}{jodmacro}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+---+
+|1|1 macro(s) put in ->|toy|
++-+--------------------+---+
+
+    \end{Verbatim}
+
+    Running a JOD macro is a simple matter of opening the appropriate
+dictionaries and using (\texttt{rm}) - run macro.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{c+c1}{NB. fetch and execute silently \PYZhy{} will only display explicit code output}
+         \PY{c+c1}{NB. 1 rm \PYZsq{}makeputgrps\PYZsq{}}
+         
+         \PY{c+c1}{NB. fetch and execute }
+         \PY{n+nv}{rm} \PY{l+s}{\PYZsq{}}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{k}\PY{l+s}{e}\PY{l+s}{p}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{g}\PY{l+s}{r}\PY{l+s}{p}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   NB. generate all put dictionary groups
+   0 mls\&> \}. 2 revo'' 
++-+-------------+--------------------------------------------------------------+
+|1|file saved ->|c:/users/jbaker/j64-807-user/joddicts/toy/script/strings.ijs  |
++-+-------------+--------------------------------------------------------------+
+|1|file saved ->|c:/users/jbaker/j64-807-user/joddicts/toy/script/loctest.ijs  |
++-+-------------+--------------------------------------------------------------+
+|1|file saved ->|c:/users/jbaker/j64-807-user/joddicts/toy/script/testgroup.ijs|
++-+-------------+--------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    Macros are not restricted to J scripts. You can also store HTML, LaTeX,
+XML, TEXT, BTYE, MARKDOWN, UTF8, SQL, PYTHON and JSON scripts in JOD
+dictionaries. Only J scripts can be run however.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{c+c1}{NB. store LaTeX (22) and HTML (23) texts}
+         \PY{l+m+mi}{4} \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{x}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{22}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{L}\PY{l+s}{a}\PY{l+s}{T}\PY{l+s}{e}\PY{l+s}{X}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
+         
+         \PY{l+m+mi}{4} \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{h}\PY{l+s}{t}\PY{l+s}{m}\PY{l+s}{l}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{23}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{ }\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{ }\PY{l+s}{H}\PY{l+s}{T}\PY{l+s}{M}\PY{l+s}{L}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. store XML and arbitrary TEXT (bytes).}
+         \PY{l+m+mi}{4} \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{x}\PY{l+s}{m}\PY{l+s}{l}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{n+nv}{XML\PYZus{}ajod\PYZus{}}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZlt{}}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{\PYZgt{}}\PY{l+s}{t}\PY{l+s}{h}\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{m}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{x}\PY{l+s}{m}\PY{l+s}{l}\PY{l+s}{\PYZlt{}}\PY{l+s}{/}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{\PYZgt{}}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. BYTE is uninterpreted bytes and can store binaries \PYZhy{} not recommended for large files.}
+         \PY{l+m+mi}{4} \PY{n+nv}{put} \PY{l+s}{\PYZsq{}}\PY{l+s}{B}\PY{l+s}{I}\PY{l+s}{N}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{l+m+mi}{26}\PY{o}{;}\PY{n+nv}{read\PYZus{}ajod\PYZus{}} \PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{\PYZbs{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{f}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. byte size of macro}
+         \PY{n+nv}{smoutput} \PY{l+m+mi}{4} \PY{l+m+mi}{15} \PY{n+nv}{get} \PY{l+s}{\PYZsq{}}\PY{l+s}{B}\PY{l+s}{I}\PY{l+s}{N}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. macro text types are contants in the main JOD class}
+         \PY{n+nv}{JSCRIPT\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{LATEX\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{HTML\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{XML\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{TEXT\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{BYTE\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{MARKDOWN\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{UTF8\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{PYTHON\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{SQL\PYZus{}ajod\PYZus{}}\PY{o}{,} \PY{n+nv}{JSON\PYZus{}ajod\PYZus{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-----+
+|1|82048|
++-+-----+
+21 22 23 24 25 26 27 28 29 30 31
+
+    \end{Verbatim}
+
+    \subsubsection{Loading dictionary dump
+scripts}\label{loading-dictionary-dump-scripts}
+
+To demonstrate other JOD features we need some words in our dictionary.
+The next step loads (\texttt{labdump.ijs}).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{c+c1}{NB. insure correct path}
+         \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. load dump script}
+         \PY{l+m+mi}{0}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{0} \PY{o}{\PYZlt{}}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{u}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------+---+
+|1|1 word(s) put in ->|toy|
++-+-------------------+---+
++-+--------------------+---+
+|1|35 word(s) put in ->|toy|
++-+--------------------+---+
++-+--------------------------------+---+
+|1|36 word explanation(s) put in ->|toy|
++-+--------------------------------+---+
++-+----------------------------+---+
+|1|2 word document(s) put in ->|toy|
++-+----------------------------+---+
++-+-------------------------+---+
+|1|group <bstats> put in -> |toy|
++-+-------------------------+---+
+|1|group <sunmoon> put in ->|toy|
++-+-------------------------+---+
+NB. end-of-JOD-dump-file regenerate cross references with:  0 globs\&> \}. revo '' 
+
+    \end{Verbatim}
+
+    Dump scripts do not store word references. They must be generated.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{c+c1}{NB. update word references \PYZhy{} show first 5 messages}
+         \PY{l+m+mi}{5} \PY{o}{\PYZob{}}\PY{o}{.} \PY{l+m+mi}{0} \PY{n+nv}{globs}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{revo}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------+---++++++++++++
+|1|<antimode> references put in -> |toy||||||||||||
++-+--------------------------------+---++++++++++++
+|1|<arctan> references put in ->   |toy||||||||||||
++-+--------------------------------+---++++++++++++
+|1|<calmoons> references put in -> |toy||||||||||||
++-+--------------------------------+---++++++++++++
+|1|<cos> references put in ->      |toy||||||||||||
++-+--------------------------------+---++++++++++++
+|1|<datecheck> references put in ->|toy||||||||||||
++-+--------------------------------+---++++++++++++
+
+    \end{Verbatim}
+
+    \subsubsection{Global references}\label{global-references}
+
+JOD has facilities for carrying out static name analysis on J words and
+tests.
+
+The (\texttt{globs}) and (\texttt{uses}) verbs analyze and stored name
+references.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{c+c1}{NB. analyze names}
+         \PY{n+nv}{get} \PY{l+s}{\PYZsq{}}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. classify name use in base locale word}
+         \PY{l+m+mi}{11} \PY{n+nv}{globs} \PY{l+s}{\PYZsq{}}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------------------------------------------+
+|1|+------+-----------------------------------------------------------+|
+| ||Global|+--------+--------+----+------+-----+--+--+--------+------+||
+| ||      ||antimode|kurtosis|mean|median|mode2|q1|q3|skewness|stddev|||
+| ||      |+--------+--------+----+------+-----+--+--+--------+------+||
+| |+------+-----------------------------------------------------------+|
+| ||Local |+---+---+-+-+                                              ||
+| ||      ||max|min|t|v|                                              ||
+| ||      |+---+---+-+-+                                              ||
+| |+------+-----------------------------------------------------------+|
+| ||(*)=: |                                                           ||
+| |+------+-----------------------------------------------------------+|
+| ||(*)=. |                                                           ||
+| |+------+-----------------------------------------------------------+|
+| ||for.  |                                                           ||
+| |+------+-----------------------------------------------------------+|
++-+--------------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    You can update global word references.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{c+c1}{NB. 0 is the word code \PYZhy{} stores global references}
+         \PY{l+m+mi}{0} \PY{n+nv}{globs} \PY{l+s}{\PYZsq{}}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+----------------------------+---+
+|1|<dstat> references put in ->|toy|
++-+----------------------------+---+
+
+    \end{Verbatim}
+
+    (\texttt{uses}) retrieves stored references.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{c+c1}{NB. global references for (dstat)}
+         \PY{n+nv}{uses} \PY{l+s}{\PYZsq{}}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------------------------------------------+
+|1|+-----+-----------------------------------------------------------++|
+| ||dstat|+--------+--------+----+------+-----+--+--+--------+------+|||
+| ||     ||antimode|kurtosis|mean|median|mode2|q1|q3|skewness|stddev||||
+| ||     |+--------+--------+----+------+-----+--+--+--------+------+|||
+| |+-----+-----------------------------------------------------------++|
++-+--------------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    (\texttt{uses}) becomes very "useful" when all words have stored
+references.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{c+c1}{NB. insure toy is the put dictionary}
+         \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+---+------+---+
+|1|opened (rw/rw/rw) ->|toy|labdev|lab|
++-+--------------------+---+------+---+
+
+    \end{Verbatim}
+
+    (\texttt{uses}) can return many reference lists at once. The same path
+search mechanism is used for retrieving references.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{c+c1}{NB. global references of words beginning with \PYZsq{}m\PYZsq{}}
+         \PY{c+c1}{NB. uses \PYZcb{}. dnl \PYZsq{}m\PYZsq{}}
+         
+         \PY{c+c1}{NB. global references of words ending with \PYZsq{}s\PYZsq{}}
+         \PY{n+nv}{uses} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{l+m+mi}{0} \PY{l+m+mi}{3} \PY{n+nv}{dnl}\PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------------------------+
+|1|+------------+---------------------++|
+| ||calmoons    |+----------+-----+   |||
+| ||            ||fromjulian|moons|   |||
+| ||            |+----------+-----+   |||
+| |+------------+---------------------++|
+| ||cos         |                     |||
+| |+------------+---------------------++|
+| ||dumpgs      |                     |||
+| |+------------+---------------------++|
+| ||dumpntstamps|                     |||
+| |+------------+---------------------++|
+| ||dumpwords   |                     |||
+| |+------------+---------------------++|
+| ||extscopes   |                     |||
+| |+------------+---------------------++|
+| ||floats      |                     |||
+| |+------------+---------------------++|
+| ||fuserows    |                     |||
+| |+------------+---------------------++|
+| ||getallts    |                     |||
+| |+------------+---------------------++|
+| ||halfbits    |                     |||
+| |+------------+---------------------++|
+| ||jscriptdefs |                     |||
+| |+------------+---------------------++|
+| ||kurtosis    |+---+-----+          |||
+| ||            ||dev|ssdev|          |||
+| ||            |+---+-----+          |||
+| |+------------+---------------------++|
+| ||makegs      |                     |||
+| |+------------+---------------------++|
+| ||moons       |+---+                |||
+| ||            ||sin|                |||
+| ||            |+---+                |||
+| |+------------+---------------------++|
+| ||namecats    |                     |||
+| |+------------+---------------------++|
+| ||opaqnames   |                     |||
+| |+------------+---------------------++|
+| ||putallts    |                     |||
+| |+------------+---------------------++|
+| ||rationals   |                     |||
+| |+------------+---------------------++|
+| ||skewness    |+---+-----+          |||
+| ||            ||dev|ssdev|          |||
+| ||            |+---+-----+          |||
+| |+------------+---------------------++|
+| ||symbols     |                     |||
+| |+------------+---------------------++|
+| ||wrdglobals  |                     |||
+| |+------------+---------------------++|
+| ||writeijs    |                     |||
+| |+------------+---------------------++|
+| ||yeardates   |+---------+---------+|||
+| ||            ||datecheck|yeardates||||
+| ||            |+---------+---------+|||
+| |+------------+---------------------++|
++-+-------------------------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{The \texttt{uses}
+union}{The uses union}}\label{the-uses-union}
+
+Option 31 of (\texttt{uses}) returns the \textbf{\emph{uses-union}} of a
+word. The uses-union is basically a unique list of all the words on the
+call tree of a word.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{c+c1}{NB. uses union of two words}
+         \PY{l+m+mi}{31} \PY{n+nv}{uses} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{c}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{u}\PY{l+s}{n}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{t}\PY{l+s}{0}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------------------------------------+
+|1|+-----------+------------------------------------++|
+| ||calmoons   |+----------+-----+---+              |||
+| ||           ||fromjulian|moons|sin|              |||
+| ||           |+----------+-----+---+              |||
+| |+-----------+------------------------------------++|
+| ||sunriseset0|+---------+------+---+---+-----+---+|||
+| ||           ||NORISESET|arctan|cos|sin|tabit|tan||||
+| ||           |+---------+------+---+---+-----+---+|||
+| |+-----------+------------------------------------++|
++-+---------------------------------------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Generating load scripts}\label{generating-load-scripts}
+
+JOD can generate J load scripts from dictionary groups. The generated
+scripts are written to the put dictionary's script subdirectory.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{c+c1}{NB. generate load script}
+         \PY{n+nv}{mls} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{u}\PY{l+s}{n}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}   \PY{c+c1}{NB. sun/moon rise set}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+------------------------------------------------------------+
+|1|load script saved ->|c:/users/jbaker/j64-807-user/joddicts/toy/script/sunmoon.ijs|
++-+--------------------+------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    (\texttt{mls}) appends generated scripts to the current user's
+\texttt{startup.ijs} file so they can be loaded independently of JOD.
+
+Note: mls scripts are added to \texttt{PUBLIC\_j\_} or
+\texttt{Public\_j\_} for the current user.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{c+c1}{NB. load generated script}
+         \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{s}\PY{l+s}{u}\PY{l+s}{n}\PY{l+s}{m}\PY{l+s}{o}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
+         
+         \PY{n+nv}{calmoons} \PY{l+m+mi}{2019}  \PY{c+c1}{NB. full (1)  and new (0) moons in 2019}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0 2019  1  5
+1 2019  1 20
+0 2019  2  4
+1 2019  2 19
+0 2019  3  6
+1 2019  3 20
+0 2019  4  4
+1 2019  4 18
+0 2019  5  4
+1 2019  5 18
+0 2019  6  2
+1 2019  6 16
+0 2019  7  2
+1 2019  7 16
+0 2019  7 31
+1 2019  8 15
+0 2019  8 29
+1 2019  9 13
+0 2019  9 28
+1 2019 10 13
+0 2019 10 27
+1 2019 11 12
+0 2019 11 26
+1 2019 12 11
+0 2019 12 25
+
+    \end{Verbatim}
+
+    \subsubsection{Generating scripts on
+demand}\label{generating-scripts-on-demand}
+
+JOD can also generate and load scripts without creating load scripts.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}42}]:} \PY{c+c1}{NB. load basic statistics group}
+         \PY{n+nv}{lg} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-------------------+
+|1|bstats group loaded|
++-+-------------------+
+
+    \end{Verbatim}
+
+    (\texttt{getrx}) loads all the words called by a given word.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{c+c1}{NB. load into arbitrary locales}
+         \PY{c+c1}{NB. \PYZsq{}statloc\PYZsq{} getrx \PYZsq{}dstat\PYZsq{}}
+         \PY{c+c1}{NB. \PYZsq{}99\PYZsq{} getrx \PYZsq{}dstat\PYZsq{}}
+         
+         \PY{c+c1}{NB. load all words needed to run (dstat)}
+         \PY{n+nv}{getrx} \PY{l+s}{\PYZsq{}}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{t}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+------------------------------+
+|1|(14) words loaded into -> base|
++-+------------------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Backing up and restoring
+dictionaries}\label{backing-up-and-restoring-dictionaries}
+
+JOD is database for J words, scripts and other precious program texts.
+Most database systems have means for backing up and restoring databases
+and JOD does as well. The (\texttt{packd}) verb backups up a database.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{c+c1}{NB. save a backup of the current put dictionary}
+         \PY{n+nv}{packd} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+---+-+
+|1|dictionary packed ->|toy|0|
++-+--------------------+---+-+
+
+    \end{Verbatim}
+
+    (\texttt{packd}) copies the current dictionary files to the backup
+subdirectory and prefixes all the files with a unique ever increasing
+backup number.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{c+c1}{NB. list put dictionary backup files}
+         \PY{n+nv}{BDIR}\PY{o}{=:} \PY{o}{\PYZob{}}\PY{o}{:}\PY{o}{\PYZob{}}\PY{o}{.}  \PY{n+nv}{DPATH\PYZus{}\PYZus{}ST\PYZus{}\PYZus{}JODobj}   \PY{c+c1}{NB. put directory}
+         \PY{n+nv}{dir} \PY{n+nv}{BAK\PYZus{}\PYZus{}BDIR}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{*}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{f}\PY{l+s}{\PYZsq{}}            \PY{c+c1}{NB. backup files}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+0jgroups.ijf       22400 28-Jan-19 11:21:27
+0jmacros.ijf      142208 28-Jan-19 11:21:27
+0jsuites.ijf        6272 28-Jan-19 11:21:26
+0jtests.ijf         6016 28-Jan-19 11:21:26
+0juses.ijf         21120 28-Jan-19 11:21:27
+0jwords.ijf       202560 28-Jan-19 11:21:28
+
+    \end{Verbatim}
+
+    (\texttt{restd}) restores the last backup by selecting backup files with
+the highest prefix.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{c+c1}{NB. restore last backup}
+         \PY{n+nv}{restd} \PY{l+s}{\PYZsq{}}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+----------------------+---+-+
+|1|dictionary restored ->|toy|0|
++-+----------------------+---+-+
+
+    \end{Verbatim}
+
+    (\texttt{packd}) creates binary backups. You can also backup
+dictionaries as dump scripts. Dump scripts are single J scripts that can
+be used to backup, copy and merge dictionaries.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{c+c1}{NB. dump all the words on the path as a single dump script.}
+         \PY{n+nv}{toydump}\PY{o}{=:} \PY{n+nv}{showpass\PYZus{}ajod\PYZus{}} \PY{n+nv}{make} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------------+------------------------------------------------------+
+|1|object(s) on path dumped ->|c:/users/jbaker/j64-807-user/joddicts/toy/dump/toy.ijs|
++-+---------------------------+------------------------------------------------------+
+
+    \end{Verbatim}
+
+    When we load (\texttt{toydump}) into a new dictionary observe how the
+path is changed. The dictionaries have been merged.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{c+c1}{NB. new dictionary}
+         \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{p}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. open}
+         \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{p}\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{y}\PY{l+s}{p}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. load (toydump)}
+         \PY{l+m+mi}{0}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{0} \PY{o}{\PYZlt{}} \PY{o}{;}\PY{o}{\PYZob{}}\PY{o}{:} \PY{n+nv}{toydump}
+         
+         \PY{c+c1}{NB. dictionary information}
+         \PY{n+nv}{did}\PY{o}{\PYZti{}} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+-------+
+|1|42 word(s) put in ->|playpen|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|playpen|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|32 word(s) put in ->|playpen|
++-+--------------------+-------+
++-+--------------------------------+-------+
+|1|38 word explanation(s) put in ->|playpen|
++-+--------------------------------+-------+
++-+----------------------------+-------+
+|1|1 word document(s) put in ->|playpen|
++-+----------------------------+-------+
++-+----------------------------+-------+
+|1|2 word document(s) put in ->|playpen|
++-+----------------------------+-------+
++-+-------------------+-------+
+|1|1 test(s) put in ->|playpen|
++-+-------------------+-------+
++-+--------------------+-------+
+|1|6 macro(s) put in ->|playpen|
++-+--------------------+-------+
++-+---------------------------+-------+
+|1|group <bstats> put in ->   |playpen|
++-+---------------------------+-------+
+|1|group <loctest> put in ->  |playpen|
++-+---------------------------+-------+
+|1|group <strings> put in ->  |playpen|
++-+---------------------------+-------+
+|1|group <sunmoon> put in ->  |playpen|
++-+---------------------------+-------+
+|1|group <testgroup> put in ->|playpen|
++-+---------------------------+-------+
++-+---------------------------+-------+
+|1|suite <testsuite> put in ->|playpen|
++-+---------------------------+-------+
+NB. end-of-JOD-dump-file regenerate cross references with:  0 globs\&> \}. revo '' 
++-+--------------------------------------------------------+
+|1|+-------+--+-----+-----+-------+-------+------+--------+|
+| ||       |--|Words|Tests|Groups*|Suites*|Macros|Path*   ||
+| |+-------+--+-----+-----+-------+-------+------+--------+|
+| ||playpen|rw|124  |1    |5      |1      |6     |/playpen||
+| |+-------+--+-----+-----+-------+-------+------+--------+|
++-+--------------------------------------------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Final words}\label{final-words}
+
+You now have some idea of what JOD is all about. To learn more read
+\href{https://github.com/jsoftware/general_joddocument/blob/master/pdfdoc/jod.pdf}{JOD's
+documentation} and run the other JOD labs. If you have any problems,
+questions or complaints please email me at bakerjd99@gmail.com
+
+\begin{verbatim}
+ John Baker
+ bakerjd99@gmail.com
+ January 2019
+\end{verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{c+c1}{NB. close any open dictionaries}
+         \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------+-------+
+|1|closed ->|playpen|
++-+---------+-------+
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

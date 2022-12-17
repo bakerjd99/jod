@@ -1,0 +1,1133 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt,letter,landscape]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{JOD Source Code Dump Scripts Lab}
+    
+    
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{JOD Source Code Dump Scripts
+Lab}\label{jod-source-code-dump-scripts-lab}
+
+\begin{figure}
+\centering
+\includegraphics{inclusions/jodtinycube.png}
+\caption{}
+\end{figure}
+
+    \subsubsection{Introduction}\label{introduction}
+
+JOD source code is distributed in three JOD dump scripts. Dump scripts
+are plain ASCII J scripts that can be loaded with J's standard script
+processing verbs.
+
+This lab assumes JOD and supporting addons have been installed. JOD and
+supporting addons can be installed with the
+\href{https://code.jsoftware.com/wiki/JAL/Package_Manager}{J package
+manager}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{NB. to use a dump script JOD must be active}
+        \PY{n+nv}{load} \PY{l+s}{\PYZsq{}}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. use portable characters \PYZhy{} simplifies converting notebooks to *.tex and other formats}
+        \PY{n+nv}{portchars} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{Configure a
+\texttt{\textasciitilde{}JODSOURCE}
+directory}{Configure a \textasciitilde{}JODSOURCE directory}}\label{configure-a-jodsource-directory}
+
+To run a JOD dump script simply open a new dictionary and use
+\texttt{(0!:0)}.
+
+For this lab, the source dictionaries are created in the
+(\texttt{\textasciitilde{}JODSOURCE}) relative directory. You will need
+to configure a J folder to point to an actual directory. I
+\emph{strongly recommend} using a directory that is not in the J system
+tree! You don't want your precious dictionary databases being wiped by
+installing the next J version.
+
+Before proceeding configure a (\texttt{\textasciitilde{}JODSOURCE})
+directory. On J8.0 and 9.0x JQT systems, the \texttt{Configure/Folders}
+menu opens the directory folder configuration file.
+
+    \subsubsection{Remove previous lab
+dictionaries}\label{remove-previous-lab-dictionaries}
+
+\textbf{WARNING: THE NEXT STEP REMOVES DICTIONARIES CREATED BY PRIOR
+RUNS OF THIS LAB. THE DICTIONARIES (\texttt{utilsload},
+\texttt{jodload}, \texttt{joddevload}) WILL BE DELETED. IF YOU CARE
+ABOUT THE CONTENTS OF THESE DICTIONARIES DO NOT EXECUTE THE NEXT LAB
+STEP.}
+
+This step defines a verb that removes lab source dictionaries.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{n+nv}{RemoveLabSourceDictionaries\PYZus{}ijod\PYZus{}}\PY{o}{=:} \PY{n+nf}{3 : 0}
+        \PY{n+nl}{if.} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{\PYZsq{}} \PY{o}{\PYZhy{}}\PY{o}{:} \PY{n+nv}{root}\PY{o}{=.} \PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{\PYZsq{}} \PY{n+nl}{do.}
+          \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{A}\PY{l+s}{ }\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{t}\PY{l+s}{u}\PY{l+s}{p}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{t}\PY{l+s}{u}\PY{l+s}{p}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{g}\PY{l+s}{a}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
+        \PY{n+nl}{elseif.} \PY{o}{\PYZhy{}}\PY{o}{.}\PY{n+nv}{fexist} \PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}} \PY{n+nl}{do.}
+          \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{n}\PY{l+s}{o}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{ }\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{t}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{g}\PY{l+s}{a}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
+        \PY{n+nl}{elseif.} \PY{n+nv}{IFWIN} \PY{n+nl}{do.}
+          \PY{c+c1}{NB. clear out dictionary directories}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{q}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{p}{(}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{q}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{p}{(}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{/}\PY{l+s}{q}\PY{l+s}{ }\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{p}{(}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZbs{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZdq{}}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{L}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{(}\PY{l+s}{w}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{)}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+        \PY{n+nl}{elseif.} \PY{n+nv}{IFUNIX} \PY{n+nl}{do.}
+          \PY{c+c1}{NB. avoid blanks in JODSOURCE paths on Linux and Mac systems}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{r}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{/}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{r}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{shell} \PY{l+s}{\PYZsq{}}\PY{l+s}{r}\PY{l+s}{m}\PY{l+s}{ }\PY{l+s}{\PYZhy{}}\PY{l+s}{r}\PY{l+s}{f}\PY{l+s}{ }\PY{l+s}{\PYZsq{}}\PY{o}{,}\PY{n+nv}{root}\PY{o}{,}\PY{l+s}{\PYZsq{}}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+          \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{L}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{(}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{c}\PY{l+s}{/}\PY{l+s}{l}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{u}\PY{l+s}{x}\PY{l+s}{)}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+        \PY{n+nl}{elseif.}\PY{n+nl}{do.}
+          \PY{n+nv}{smoutput} \PY{l+s}{\PYZsq{}}\PY{l+s}{E}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{s}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{r}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{t}\PY{l+s}{e}\PY{l+s}{m}\PY{l+s}{p}\PY{l+s}{o}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{l}\PY{l+s}{a}\PY{l+s}{b}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{i}\PY{l+s}{e}\PY{l+s}{s}\PY{l+s}{ }\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{n}\PY{l+s}{u}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{l}\PY{l+s}{y}\PY{l+s}{.}\PY{l+s}{\PYZsq{}}
+        \PY{n+nl}{end.}
+        \PY{n+nl}{)}
+\end{Verbatim}
+
+    \subsubsection{Remove any previous lab
+dictionaries.}\label{remove-any-previous-lab-dictionaries.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{c+c1}{NB. unregister \PYZhy{} ignore errors}
+        \PY{l+m+mi}{0} \PY{l+m+mi}{0} \PY{o}{\PYZdl{}} \PY{l+m+mi}{3} \PY{n+nv}{regd}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. clear out dictionary directories}
+        \PY{n+nv}{RemoveLabSourceDictionaries} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Lab temporary (win) source dictionaries erased
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{Create \texttt{utilsload}
+dictionary}{Create utilsload dictionary}}\label{create-utilsload-dictionary}
+
+Dump scripts are loaded into dictionaries. Create a (\texttt{utilsload})
+dictionary.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{NB. create a new utils directory in (\PYZti{}JODSOURCE) \PYZhy{} it will be renamed later}
+        \PY{c+c1}{NB. You must configure (\PYZti{}JODSOURCE) and point to an actual empty directory.}
+        
+        \PY{n+nv}{smoutput} \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{p}{(}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{/}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{m}\PY{l+s}{a}\PY{l+s}{i}\PY{l+s}{n}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{i}\PY{l+s}{t}\PY{l+s}{y}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. close any open dictionaries and open}
+        \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}} \PY{o}{[} \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------+---------+--------------------------------+
+|1|dictionary created ->|utilsload|c:/jodtest/labtesting/utilsload/|
++-+---------------------+---------+--------------------------------+
++-+--------------+---------+
+|1|opened (rw) ->|utilsload|
++-+--------------+---------+
+
+    \end{Verbatim}
+
+    \emph{When JOD dump scripts run they do not disturb your current J
+environment.} All words are defined in a numbered scratch locale that is
+created when JOD loads. JOD dump scripts display messages after loading
+batches of objects. The next lab step loads the utility dictionary.
+
+Warning: dump scripts can be \emph{very large} so it's a good idea to
+use always use \texttt{(0!:x)}. Loading a dump script into J session
+editors can crash J for very large scripts.
+
+    \subsubsection{\texorpdfstring{Load the \texttt{utilsload}
+dictionary}{Load the utilsload dictionary}}\label{load-the-utilsload-dictionary}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{NB. run the utils dump script}
+        \PY{l+m+mi}{0}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{0} \PY{o}{\PYZlt{}}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{/}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+---------+
+|1|25 word(s) put in ->|utilsload|
++-+--------------------+---------+
++-+--------------------+---------+
+|1|50 word(s) put in ->|utilsload|
++-+--------------------+---------+
++-+--------------------+---------+
+|1|50 word(s) put in ->|utilsload|
++-+--------------------+---------+
++-+--------------------+---------+
+|1|50 word(s) put in ->|utilsload|
++-+--------------------+---------+
++-+--------------------+---------+
+|1|50 word(s) put in ->|utilsload|
++-+--------------------+---------+
++-+--------------------+---------+
+|1|50 word(s) put in ->|utilsload|
++-+--------------------+---------+
++-+--------------------+---------+
+|1|50 word(s) put in ->|utilsload|
++-+--------------------+---------+
++-+--------------------+---------+
+|1|50 word(s) put in ->|utilsload|
++-+--------------------+---------+
++-+--------------------+---------+
+|1|12 word(s) put in ->|utilsload|
++-+--------------------+---------+
++-+---------------------------------+---------+
+|1|387 word explanation(s) put in ->|utilsload|
++-+---------------------------------+---------+
++-+----------------------------+---------+
+|1|3 word document(s) put in ->|utilsload|
++-+----------------------------+---------+
++-+----------------------------+---------+
+|1|6 word document(s) put in ->|utilsload|
++-+----------------------------+---------+
++-+----------------------------+---------+
+|1|3 word document(s) put in ->|utilsload|
++-+----------------------------+---------+
++-+----------------------------+---------+
+|1|5 word document(s) put in ->|utilsload|
++-+----------------------------+---------+
++-+----------------------------+---------+
+|1|3 word document(s) put in ->|utilsload|
++-+----------------------------+---------+
++-+-----------------------------+---------+
+|1|10 word document(s) put in ->|utilsload|
++-+-----------------------------+---------+
++-+----------------------------+---------+
+|1|1 word document(s) put in ->|utilsload|
++-+----------------------------+---------+
++-+----------------------------+---------+
+|1|4 word document(s) put in ->|utilsload|
++-+----------------------------+---------+
++-+-------------------+---------+
+|1|7 test(s) put in ->|utilsload|
++-+-------------------+---------+
++-+-------------------------------+---------+
+|1|7 test explanation(s) put in ->|utilsload|
++-+-------------------------------+---------+
++-+---------------------+---------+
+|1|16 macro(s) put in ->|utilsload|
++-+---------------------+---------+
++-+---------------------------------+---------+
+|1|16 macro explanation(s) put in ->|utilsload|
++-+---------------------------------+---------+
++-+--------------------------------+---------+
+|1|group <base64> put in ->        |utilsload|
++-+--------------------------------+---------+
+|1|group <boxopen> put in ->       |utilsload|
++-+--------------------------------+---------+
+|1|group <bstats> put in ->        |utilsload|
++-+--------------------------------+---------+
+|1|group <buildutils> put in ->    |utilsload|
++-+--------------------------------+---------+
+|1|group <dbext> put in ->         |utilsload|
++-+--------------------------------+---------+
+|1|group <dewhitejscript> put in ->|utilsload|
++-+--------------------------------+---------+
+|1|group <dllutils> put in ->      |utilsload|
++-+--------------------------------+---------+
+|1|group <earthdistances> put in ->|utilsload|
++-+--------------------------------+---------+
+|1|group <grpclassutils> put in -> |utilsload|
++-+--------------------------------+---------+
+|1|group <htmthorn> put in ->      |utilsload|
++-+--------------------------------+---------+
+|1|group <numrep> put in ->        |utilsload|
++-+--------------------------------+---------+
+|1|group <odbcREF> put in ->       |utilsload|
++-+--------------------------------+---------+
+|1|group <putters> put in ->       |utilsload|
++-+--------------------------------+---------+
+|1|group <remdots> put in ->       |utilsload|
++-+--------------------------------+---------+
+|1|group <rwtabd> put in ->        |utilsload|
++-+--------------------------------+---------+
+|1|group <socketsREF> put in ->    |utilsload|
++-+--------------------------------+---------+
+|1|group <sunmoon> put in ->       |utilsload|
++-+--------------------------------+---------+
+|1|group <trig> put in ->          |utilsload|
++-+--------------------------------+---------+
+|1|group <unicode> put in ->       |utilsload|
++-+--------------------------------+---------+
+|1|group <wordformation> put in -> |utilsload|
++-+--------------------------------+---------+
+|1|group <xmlutils> put in ->      |utilsload|
++-+--------------------------------+---------+
++-+-------------------------+---------+
+|1|5 group text(s) put in ->|utilsload|
++-+-------------------------+---------+
++-+---------------------------------+---------+
+|1|21 group explanation(s) put in ->|utilsload|
++-+---------------------------------+---------+
++-+-----------------------------+---------+
+|1|2 group document(s) put in ->|utilsload|
++-+-----------------------------+---------+
++-+------------------------------+---------+
+|1|dictionary document updated ->|utilsload|
++-+------------------------------+---------+
+NB. end-of-JOD-dump-file regenerate cross references with:  0 globs\&> \}. revo '' 
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{Regenerate \texttt{utilsload} cross
+references}{Regenerate utilsload cross references}}\label{regenerate-utilsload-cross-references}
+
+The last message displayed by a dump script is a reminder to regenerate
+cross references. JOD dictionaries maintain word cross references that
+are used in many ways. The cross references are not stored in dumps and
+must be recreated afterwards.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{c+c1}{NB. regenerate utilities cross references and show first 5 messages}
+        \PY{n+nv}{smoutput} \PY{l+m+mi}{5} \PY{o}{\PYZob{}}\PY{o}{.} \PY{l+m+mi}{0} \PY{n+nv}{globs}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{revo} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. make utilities a read only dictionary}
+        \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{A}\PY{l+s}{D}\PY{l+s}{O}\PY{l+s}{N}\PY{l+s}{L}\PY{l+s}{Y}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+-----------------------------------+---------+
+|1|<weeksbetween> references put in ->|utilsload|
++-+-----------------------------------+---------+
+|1|<weeksinyear> references put in -> |utilsload|
++-+-----------------------------------+---------+
+|1|<wfl> references put in ->         |utilsload|
++-+-----------------------------------+---------+
+|1|<winlcchars> references put in ->  |utilsload|
++-+-----------------------------------+---------+
+|1|<winpathsep> references put in ->  |utilsload|
++-+-----------------------------------+---------+
++-+--------------------------------------------+---------+
+|1|put dictionary is now a read/only library ->|utilsload|
++-+--------------------------------------------+---------+
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{Load
+\texttt{jodload}}{Load jodload}}\label{load-jodload}
+
+The utilities dictionary is now loaded and cross references have been
+updated. To complete the restoration of JOD source code we now create
+and load (\texttt{jodload}) and (\texttt{joddevload)}.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{c+c1}{NB. create dictionaries}
+        \PY{n+nv}{smoutput} \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{p}{(}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{c}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
+        \PY{n+nv}{newd} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{p}{(}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{J}\PY{l+s}{O}\PY{l+s}{D}\PY{l+s}{S}\PY{l+s}{O}\PY{l+s}{U}\PY{l+s}{R}\PY{l+s}{C}\PY{l+s}{E}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{o}{;}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{e}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{p}\PY{l+s}{m}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{p}\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{ }\PY{l+s}{d}\PY{l+s}{i}\PY{l+s}{c}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{a}\PY{l+s}{r}\PY{l+s}{y}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------+-------+------------------------------+
+|1|dictionary created ->|jodload|c:/jodtest/labtesting/jodload/|
++-+---------------------+-------+------------------------------+
++-+---------------------+----------+---------------------------------+
+|1|dictionary created ->|joddevload|c:/jodtest/labtesting/joddevload/|
++-+---------------------+----------+---------------------------------+
+
+    \end{Verbatim}
+
+    JOD source code depends on objects in the utilities dictionary. This
+relationship is maintained by the path order of dictionaries.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{NB. close any open dictionaries }
+        \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. open (jodload) and (utilsload)}
+        \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+        
+        \PY{c+c1}{NB. display dictionary information}
+        \PY{n+nv}{did}\PY{o}{\PYZti{}}  \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+------------------------------------------------------------+
+|1|+---------+--+-----+-----+-------+-------+------+----------+|
+| ||         |--|Words|Tests|Groups*|Suites*|Macros|Path*     ||
+| |+---------+--+-----+-----+-------+-------+------+----------+|
+| ||jodload  |rw|0    |0    |0      |0      |0     |/         ||
+| |+---------+--+-----+-----+-------+-------+------+----------+|
+| ||utilsload|ro|387  |7    |21     |0      |16    |/utilsload||
+| |+---------+--+-----+-----+-------+-------+------+----------+|
++-+------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    Load JOD source code. The JOD dictionary dump is large because it
+contains a substantial amount of documentation and test data. It may
+take a few moments to load.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{NB. load jod}
+        \PY{l+m+mi}{0}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{0} \PY{o}{\PYZlt{}}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|42 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|50 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+--------------------+-------+
+|1|26 word(s) put in ->|jodload|
++-+--------------------+-------+
++-+---------------------------------+-------+
+|1|319 word explanation(s) put in ->|jodload|
++-+---------------------------------+-------+
++-+---------------------------------+-------+
+|1|268 word explanation(s) put in ->|jodload|
++-+---------------------------------+-------+
++-+----------------------------+-------+
+|1|1 word document(s) put in ->|jodload|
++-+----------------------------+-------+
++-+----------------------------+-------+
+|1|1 word document(s) put in ->|jodload|
++-+----------------------------+-------+
++-+--------------------+-------+
+|1|50 test(s) put in ->|jodload|
++-+--------------------+-------+
++-+-------------------+-------+
+|1|4 test(s) put in ->|jodload|
++-+-------------------+-------+
++-+--------------------------------+-------+
+|1|39 test explanation(s) put in ->|jodload|
++-+--------------------------------+-------+
++-+----------------------------+-------+
+|1|1 test document(s) put in ->|jodload|
++-+----------------------------+-------+
++-+---------------------+-------+
+|1|50 macro(s) put in ->|jodload|
++-+---------------------+-------+
++-+---------------------+-------+
+|1|11 macro(s) put in ->|jodload|
++-+---------------------+-------+
++-+---------------------------------+-------+
+|1|39 macro explanation(s) put in ->|jodload|
++-+---------------------------------+-------+
++-+----------------------------------+-------+
+|1|group <AGEHEADER> put in ->       |jodload|
++-+----------------------------------+-------+
+|1|group <CR> put in ->              |jodload|
++-+----------------------------------+-------+
+|1|group <IzjReferences> put in ->   |jodload|
++-+----------------------------------+-------+
+|1|group <badgroup001> put in ->     |jodload|
++-+----------------------------------+-------+
+|1|group <buildjod> put in ->        |jodload|
++-+----------------------------------+-------+
+|1|group <buildutils> put in ->      |jodload|
++-+----------------------------------+-------+
+|1|group <colibReferences> put in -> |jodload|
++-+----------------------------------+-------+
+|1|group <doctest> put in ->         |jodload|
++-+----------------------------------+-------+
+|1|group <jfilesReferences> put in ->|jodload|
++-+----------------------------------+-------+
+|1|group <jod> put in ->             |jodload|
++-+----------------------------------+-------+
+|1|group <joddob> put in ->          |jodload|
++-+----------------------------------+-------+
+|1|group <jodliterate> put in ->     |jodload|
++-+----------------------------------+-------+
+|1|group <jodmake> put in ->         |jodload|
++-+----------------------------------+-------+
+|1|group <jodon> put in ->           |jodload|
++-+----------------------------------+-------+
+|1|group <jodpostprj> put in ->      |jodload|
++-+----------------------------------+-------+
+|1|group <jodprepprj> put in ->      |jodload|
++-+----------------------------------+-------+
+|1|group <jodstore> put in ->        |jodload|
++-+----------------------------------+-------+
+|1|group <jodtester> put in ->       |jodload|
++-+----------------------------------+-------+
+|1|group <jodtools> put in ->        |jodload|
++-+----------------------------------+-------+
+|1|group <jodutil> put in ->         |jodload|
++-+----------------------------------+-------+
+|1|group <test> put in ->            |jodload|
++-+----------------------------------+-------+
+|1|group <testpost> put in ->        |jodload|
++-+----------------------------------+-------+
++-+--------------------------+-------+
+|1|13 group text(s) put in ->|jodload|
++-+--------------------------+-------+
++-+--------------------------------+-------+
+|1|8 group explanation(s) put in ->|jodload|
++-+--------------------------------+-------+
++-+-----------------------------+-------+
+|1|4 group document(s) put in ->|jodload|
++-+-----------------------------+-------+
++-+---------------------------------------+-------+
+|1|suite <doctest> put in ->              |jodload|
++-+---------------------------------------+-------+
+|1|suite <jodbasictests> put in ->        |jodload|
++-+---------------------------------------+-------+
+|1|suite <jodcrushtests> put in ->        |jodload|
++-+---------------------------------------+-------+
+|1|suite <jodextensiontests> put in ->    |jodload|
++-+---------------------------------------+-------+
+|1|suite <jodlargetests> put in ->        |jodload|
++-+---------------------------------------+-------+
+|1|suite <jodmanwintests> put in ->       |jodload|
++-+---------------------------------------+-------+
+|1|suite <jodpjmtest> put in ->           |jodload|
++-+---------------------------------------+-------+
+|1|suite <jodpreparetests> put in ->      |jodload|
++-+---------------------------------------+-------+
+|1|suite <jodsmoketests> put in ->        |jodload|
++-+---------------------------------------+-------+
+|1|suite <jodstresstests> put in ->       |jodload|
++-+---------------------------------------+-------+
+|1|suite <loadlargefeasiblecase> put in ->|jodload|
++-+---------------------------------------+-------+
+|1|suite <makePathtests> put in ->        |jodload|
++-+---------------------------------------+-------+
++-+-------------------------+-------+
+|1|4 suite text(s) put in ->|jodload|
++-+-------------------------+-------+
++-+--------------------------------+-------+
+|1|7 suite explanation(s) put in ->|jodload|
++-+--------------------------------+-------+
++-+-----------------------------+-------+
+|1|1 suite document(s) put in ->|jodload|
++-+-----------------------------+-------+
++-+------------------------------+-------+
+|1|dictionary document updated ->|jodload|
++-+------------------------------+-------+
+NB. end-of-JOD-dump-file regenerate cross references with:  0 globs\&> \}. revo '' 
+
+    \end{Verbatim}
+
+    \subsubsection{Regenerate cross
+references}\label{regenerate-cross-references}
+
+Before regenerating cross references look at the open dictionaries. The
+(\texttt{jodload}) dictionary now has a reference path that includes
+(\texttt{utilsload}).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{c+c1}{NB. note the (jodload) path}
+         \PY{n+nv}{did}\PY{o}{\PYZti{}} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------------------------------------------------------+
+|1|+---------+--+-----+-----+-------+-------+------+------------------+|
+| ||         |--|Words|Tests|Groups*|Suites*|Macros|Path*             ||
+| |+---------+--+-----+-----+-------+-------+------+------------------+|
+| ||jodload  |rw|768  |54   |22     |12     |61    |/jodload/utilsload||
+| |+---------+--+-----+-----+-------+-------+------+------------------+|
+| ||utilsload|ro|387  |7    |21     |0      |16    |/utilsload        ||
+| |+---------+--+-----+-----+-------+-------+------+------------------+|
++-+--------------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    JOD cross references will depend on utilities.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{NB. regenerate (jodload) cross references and show first 5 messages}
+         \PY{n+nv}{smoutput} \PY{l+m+mi}{5} \PY{o}{\PYZob{}}\PY{o}{.} \PY{l+m+mi}{0} \PY{n+nv}{globs}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{revo} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. make (jodload) a read only dictionary}
+         \PY{n+nv}{dpset} \PY{l+s}{\PYZsq{}}\PY{l+s}{R}\PY{l+s}{E}\PY{l+s}{A}\PY{l+s}{D}\PY{l+s}{O}\PY{l+s}{N}\PY{l+s}{L}\PY{l+s}{Y}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+---------------------------------+-------+
+|1|<putntstamp> references put in ->|jodload|
++-+---------------------------------+-------+
+|1|<puttable> references put in ->  |jodload|
++-+---------------------------------+-------+
+|1|<puttexts> references put in ->  |jodload|
++-+---------------------------------+-------+
+|1|<puttstamps> references put in ->|jodload|
++-+---------------------------------+-------+
+|1|<putwords> references put in ->  |jodload|
++-+---------------------------------+-------+
++-+--------------------------------------------+-------+
+|1|put dictionary is now a read/only library ->|jodload|
++-+--------------------------------------------+-------+
+
+    \end{Verbatim}
+
+    \subsubsection{\texorpdfstring{Load
+\texttt{joddevload}}{Load joddevload}}\label{load-joddevload}
+
+Now let's load and cross reference (\texttt{joddevload}).
+(\texttt{joddevload}) is what I call the "dev-layer". The dev-layer is a
+put dictionary that sits on top of a number of stable dictionaries.
+During development only the dev-layer changes. You can easily revoke a
+dev-layer dictionary by closing it.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{c+c1}{NB. close open dictionaries and open in correct path order}
+         \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+         \PY{n+nv}{od} \PY{o}{;}\PY{o}{:}\PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{ }\PY{l+s}{u}\PY{l+s}{t}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{s}\PY{l+s}{l}\PY{l+s}{o}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+----------+-------+---------+
+|1|opened (rw/ro/ro) ->|joddevload|jodload|utilsload|
++-+--------------------+----------+-------+---------+
+
+    \end{Verbatim}
+
+    Load and cross reference.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{c+c1}{NB. load (joddevload)}
+         \PY{l+m+mi}{0}\PY{o}{!}\PY{o}{:}\PY{l+m+mi}{0} \PY{o}{\PYZlt{}}\PY{n+nv}{jpath} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZti{}}\PY{l+s}{a}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{s}\PY{l+s}{/}\PY{l+s}{g}\PY{l+s}{e}\PY{l+s}{n}\PY{l+s}{e}\PY{l+s}{r}\PY{l+s}{a}\PY{l+s}{l}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{/}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{d}\PY{l+s}{e}\PY{l+s}{v}\PY{l+s}{.}\PY{l+s}{i}\PY{l+s}{j}\PY{l+s}{s}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. insure at least one group exists \PYZhy{} defines put dictionary path}
+         \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}\PY{o}{;}\PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{grp} \PY{l+s}{\PYZsq{}}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{o}\PY{l+s}{n}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. cross reference}
+         \PY{n+nv}{smoutput} \PY{l+m+mi}{5} \PY{o}{\PYZob{}}\PY{o}{.} \PY{l+m+mi}{0} \PY{n+nv}{globs}\PY{o}{\PYZam{}}\PY{o}{\PYZgt{}} \PY{o}{\PYZcb{}}\PY{o}{.} \PY{n+nv}{revo} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}} 
+         
+         \PY{c+c1}{NB. development path dictionaries}
+         \PY{n+nv}{did}\PY{o}{\PYZti{}} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
++-+--------------------+----------+
+|1|23 word(s) put in ->|joddevload|
++-+--------------------+----------+
++-+--------------------+----------+
+|1|48 word(s) put in ->|joddevload|
++-+--------------------+----------+
++-+--------------------------------+----------+
+|1|68 word explanation(s) put in ->|joddevload|
++-+--------------------------------+----------+
++-+--------------------+----------+
+|1|38 test(s) put in ->|joddevload|
++-+--------------------+----------+
++-+--------------------------------+----------+
+|1|38 test explanation(s) put in ->|joddevload|
++-+--------------------------------+----------+
++-+---------------------+----------+
+|1|18 macro(s) put in ->|joddevload|
++-+---------------------+----------+
++-+---------------------------------+----------+
+|1|18 macro explanation(s) put in ->|joddevload|
++-+---------------------------------+----------+
++-+--------------------------+----------+
+|1|group <buildjod> put in ->|joddevload|
++-+--------------------------+----------+
+|1|group <jod> put in ->     |joddevload|
++-+--------------------------+----------+
+|1|group <joddob> put in ->  |joddevload|
++-+--------------------------+----------+
+|1|group <jodmake> put in -> |joddevload|
++-+--------------------------+----------+
+|1|group <jodstore> put in ->|joddevload|
++-+--------------------------+----------+
+|1|group <jodtools> put in ->|joddevload|
++-+--------------------------+----------+
+|1|group <jodutil> put in -> |joddevload|
++-+--------------------------+----------+
++-+-------------------------+----------+
+|1|6 group text(s) put in ->|joddevload|
++-+-------------------------+----------+
++-+--------------------------------+----------+
+|1|7 group explanation(s) put in ->|joddevload|
++-+--------------------------------+----------+
++-+---------------------------------------+----------+
+|1|suite <jodbasictests> put in ->        |joddevload|
++-+---------------------------------------+----------+
+|1|suite <jodcrushtests> put in ->        |joddevload|
++-+---------------------------------------+----------+
+|1|suite <jodextensiontests> put in ->    |joddevload|
++-+---------------------------------------+----------+
+|1|suite <jodlargetests> put in ->        |joddevload|
++-+---------------------------------------+----------+
+|1|suite <jodpreparetests> put in ->      |joddevload|
++-+---------------------------------------+----------+
+|1|suite <jodpurgetests> put in ->        |joddevload|
++-+---------------------------------------+----------+
+|1|suite <jodsmoketests> put in ->        |joddevload|
++-+---------------------------------------+----------+
+|1|suite <jodstresstests> put in ->       |joddevload|
++-+---------------------------------------+----------+
+|1|suite <loadlargefeasiblecase> put in ->|joddevload|
++-+---------------------------------------+----------+
++-+-------------------------+----------+
+|1|1 suite text(s) put in ->|joddevload|
++-+-------------------------+----------+
++-+--------------------------------+----------+
+|1|9 suite explanation(s) put in ->|joddevload|
++-+--------------------------------+----------+
++-+------------------------------+----------+
+|1|dictionary document updated ->|joddevload|
++-+------------------------------+----------+
+NB. end-of-JOD-dump-file regenerate cross references with:  0 globs\&> \}. revo '' 
++-+----------------------------------------------+----------+
+|1|<bget> references put in ->                   |joddevload|
++-+----------------------------------------------+----------+
+|1|<bnl> references put in ->                    |joddevload|
++-+----------------------------------------------+----------+
+|1|<bnlsearch> references put in ->              |joddevload|
++-+----------------------------------------------+----------+
+|1|<buildjodcompressed> references put in ->     |joddevload|
++-+----------------------------------------------+----------+
+|1|<buildjodtoolscompressed> references put in ->|joddevload|
++-+----------------------------------------------+----------+
++-+--------------------------------------------------------------------------------+
+|1|+----------+--+-----+-----+-------+-------+------+-----------------------------+|
+| ||          |--|Words|Tests|Groups*|Suites*|Macros|Path*                        ||
+| |+----------+--+-----+-----+-------+-------+------+-----------------------------+|
+| ||joddevload|rw|71   |38   |8      |9      |18    |/joddevload/jodload/utilsload||
+| |+----------+--+-----+-----+-------+-------+------+-----------------------------+|
+| ||jodload   |ro|768  |54   |22     |12     |61    |/jodload/utilsload           ||
+| |+----------+--+-----+-----+-------+-------+------+-----------------------------+|
+| ||utilsload |ro|387  |7    |21     |0      |16    |/utilsload                   ||
+| |+----------+--+-----+-----+-------+-------+------+-----------------------------+|
++-+--------------------------------------------------------------------------------+
+
+    \end{Verbatim}
+
+    \subsubsection{Generate fully commented jod
+scripts}\label{generate-fully-commented-jod-scripts}
+
+The JOD source code dictionaries have now been restored.
+
+To generate fully commented traditional J script files for the
+components of the JOD system you can run a script stored in the JOD
+dictionaries. This step runs this script.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{NB. generate JOD script files in fully commented form.}
+         \PY{n+nv}{rm} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{u}\PY{l+s}{i}\PY{l+s}{l}\PY{l+s}{d}\PY{l+s}{j}\PY{l+s}{o}\PY{l+s}{d}\PY{l+s}{s}\PY{l+s}{o}\PY{l+s}{u}\PY{l+s}{r}\PY{l+s}{c}\PY{l+s}{e}\PY{l+s}{\PYZsq{}}
+         
+         \PY{c+c1}{NB. close dictionaries}
+         \PY{l+m+mi}{3} \PY{n+nv}{od} \PY{l+s}{\PYZsq{}}\PY{l+s}{\PYZsq{}}
+\end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+   NB.*buildjodsource s--  generates fully commented JOD source files.
+   NB.
+   NB. Files are written to the put dictionary scripts directory.
+   
+   cocurrent 'base'
+   
+   NB. JOD classes
+   (<2 \_1) make\&> ;:'jod jodstore joddob jodmake jodutil jodtools jodon'
++-+-------------+----------------------------------------------------+
+|1|file saved ->|c:/jodtest/labtesting/joddevload/script/jod.ijs     |
++-+-------------+----------------------------------------------------+
+|1|file saved ->|c:/jodtest/labtesting/joddevload/script/jodstore.ijs|
++-+-------------+----------------------------------------------------+
+|1|file saved ->|c:/jodtest/labtesting/joddevload/script/joddob.ijs  |
++-+-------------+----------------------------------------------------+
+|1|file saved ->|c:/jodtest/labtesting/joddevload/script/jodmake.ijs |
++-+-------------+----------------------------------------------------+
+|1|file saved ->|c:/jodtest/labtesting/joddevload/script/jodutil.ijs |
++-+-------------+----------------------------------------------------+
+|1|file saved ->|c:/jodtest/labtesting/joddevload/script/jodtools.ijs|
++-+-------------+----------------------------------------------------+
+|1|file saved ->|c:/jodtest/labtesting/joddevload/script/jodon.ijs   |
++-+-------------+----------------------------------------------------+
+      
++-+---------+----------+-------+---------+
+|1|closed ->|joddevload|jodload|utilsload|
++-+---------+----------+-------+---------+
+
+    \end{Verbatim}
+
+    \subsubsection{Section Rename JOD load
+dictionaries}\label{section-rename-jod-load-dictionaries}
+
+The JOD source code dictionaries are named (\texttt{joddev})
+(\texttt{jod}) and (\texttt{utils}). Many test and build scripts in
+these dictionaries make use of these names. To dive into JOD code it's a
+good idea to copy and rename the load dictionaries. Uncomment and run
+the following lines to copy and rename the load dictionaries.
+
+\textbf{WARNING: UNCOMMENT ONLY IF YOU DO NOT ALREADY HAVE
+(\texttt{joddev}) (\texttt{jod}) AND (\texttt{utils}) DICTIONARIES.}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{c+c1}{NB. unregister}
+         \PY{c+c1}{NB. 3 regd\PYZam{}\PYZgt{} ;:\PYZsq{}utilsload jodload joddevload utils jod joddev\PYZsq{}}
+         
+         \PY{c+c1}{NB. clear any jod source dictionaries}
+         \PY{c+c1}{NB. Note: commands are Windows oriented. For unix systems}
+         \PY{c+c1}{NB. remove and copy directories manually.}
+         \PY{c+c1}{NB. shell \PYZsq{}rd /s /q \PYZdq{}\PYZsq{},(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}utils\PYZsq{}),\PYZsq{}\PYZdq{}\PYZsq{}}
+         \PY{c+c1}{NB. shell \PYZsq{}rd /s /q \PYZdq{}\PYZsq{},(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}jod\PYZsq{}),\PYZsq{}\PYZdq{}\PYZsq{}}
+         \PY{c+c1}{NB. shell \PYZsq{}rd /s /q \PYZdq{}\PYZsq{},(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}joddev\PYZsq{}),\PYZsq{}\PYZdq{}\PYZsq{}}
+         
+         \PY{c+c1}{NB. copy dictionaries \PYZhy{} /e option copies required empty subdirectories }
+         \PY{c+c1}{NB. shell \PYZsq{}xcopy \PYZdq{}\PYZsq{},(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}utilsload\PYZsq{}),\PYZsq{}\PYZdq{} \PYZdq{}\PYZsq{},(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}utils\PYZbs{}\PYZsq{}),\PYZsq{}\PYZdq{} /e /y\PYZsq{}}
+         \PY{c+c1}{NB. shell \PYZsq{}xcopy \PYZdq{}\PYZsq{},(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}jodload\PYZsq{}),\PYZsq{}\PYZdq{} \PYZdq{}\PYZsq{},(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}jod\PYZbs{}\PYZsq{}),\PYZsq{}\PYZdq{} /e /y\PYZsq{}}
+         \PY{c+c1}{NB. shell \PYZsq{}xcopy \PYZdq{}\PYZsq{},(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}joddevload\PYZsq{}),\PYZsq{}\PYZdq{} \PYZdq{}\PYZsq{},(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}joddev\PYZbs{}\PYZsq{}),\PYZsq{}\PYZdq{} /e /y\PYZsq{}}
+         
+         \PY{c+c1}{NB. re\PYZhy{}register with new names}
+         \PY{c+c1}{NB. regd \PYZsq{}utils\PYZsq{};(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}utils\PYZsq{});\PYZsq{}general utilities\PYZsq{}}
+         \PY{c+c1}{NB. regd \PYZsq{}jod\PYZsq{};(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}jod\PYZsq{});\PYZsq{}jod source code\PYZsq{}}
+         \PY{c+c1}{NB. regd \PYZsq{}joddev\PYZsq{};(jpath \PYZsq{}\PYZti{}JODSOURCE\PYZbs{}joddev\PYZsq{});\PYZsq{}jod development\PYZsq{}}
+\end{Verbatim}
+
+    \subsubsection{Dump Scripts Galore!}\label{dump-scripts-galore}
+
+Dump scripts are the best way to save, share and version control JOD
+dictionaries. You can browse a large collection of
+\href{https://github.com/bakerjd99/joddumps}{dump scripts in this Git
+repository}.
+
+    \subsubsection{Final Words}\label{final-words}
+
+This lab showed how to load dump scripts. JOD source code dictionaries
+were loaded.\\
+To use the JOD source dictionaries make sure they are named
+(\texttt{joddev}), (\texttt{jod}) and (\texttt{utils}).
+
+\begin{verbatim}
+John Baker
+January 2019
+bakerjd99@gmail.com
+\end{verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

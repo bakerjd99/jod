@@ -2,6 +2,14 @@
 general/jod - change history
 ============================
 
+### 1.0.23 (wip)
+
+ * `5 od ''` adjusted to sort registered dictionaries.
+
+ * Regex errors (errors in the regex expression) now 
+   trapped and clarified: '*wrong' rxs }. dnl ''
+   Prior JOD versions let regex errors go to the top level trap.
+
 ### 1.0.22 - December 11, 2021 (Omicron Variant Edition)
 
  *  `abv`(all backup versions) added - see `jod.pdf`
