@@ -1,7 +1,11 @@
 general/joddocument - change history
 ====================================
 
-### 1.0.23 - wip
+### 1.0.23 - January 26, 2023 (Gender Fluid Edition)
+
+ * Component 12 in `jwords` now holds the J `9!:14` system string. This
+   helps JOD deal with the binary incompatibility between J 9.04's and earlier
+   J's extended precision integers.
 
  * Correct `abv` monad argument - only takes character lists.
 

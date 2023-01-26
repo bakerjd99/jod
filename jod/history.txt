@@ -2,6 +2,32 @@
 general/jod - change history
 ============================
 
+### 1.0.23 January 26, 2023 (Gender Fluid Edition)
+
+ * J 9.04's use of [GMP](https://gmplib.org/) for extended precision integers 
+   has introduced a binary incompatibility between J 9.04 and prior versions of J.
+   JOD stores extended precision integers in dictionary binary `jfiles`. J 9.04
+   can read older extended integers but if J 9.04 writes extended integers to `jfiles`
+   components older J's can no read longer them. This version adds checks to `put`,
+   `globs` and `dpset` to prevent the mishandling of new/old binary data in dictionaries. 
+
+   NOTE: if you are only interested in running current J9.04 and newer
+   versions of J. You can dump your dictionaries as dump scripts and reload
+   them in newly created J 9.04 dictionaries. The JOD manual explains how to do this
+   in the *Turning JOD Dump Script Tricks* appendix. 
+
+ * J 9.04's changes to the use of the regular expression library `PCRE2` forced some 
+   adjustments to `rxs`. Unicode characters are turned off with `rxutf8 0` prior
+   to `rxs` searches. The setting should be restored after `rxs` runs but I would
+   advise checking for critical code. Turning off Unicode may limit JOD's ability 
+   to deal with some documents but J's Unicode support has always partial.
+   
+ * `5 od ''` adjusted to sort registered dictionaries.
+
+ * Regex errors (errors in the regex expression) now 
+   trapped and clarified: '*wrong' rxs }. dnl ''
+   Prior JOD versions let regex errors go to the top level trap.
+
 ### 1.0.22 - December 11, 2021 (Omicron Variant Edition)
 
  *  `abv`(all backup versions) added - see `jod.pdf`

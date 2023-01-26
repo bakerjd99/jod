@@ -1,5 +1,5 @@
 NB. System: jodtools  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 1.0.22  Build Number: 32  Date: 11 Dec 2021 15:48:35
+NB. Version: 1.0.23 - dev  Build Number: 25  Date: 26 Jan 2023 10:25:55
 (9!:41)0
 coclass'ajodtools'
 coinsert'ajodutil'
@@ -19,7 +19,7 @@ GROUPSUITES=:<;._1 ' Groups Suites'
 IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
-JODTOOLSVMD=:'1.0.22';32;'11 Dec 2021 15:48:35'
+JODTOOLSVMD=:'1.0.23 - dev';25;'26 Jan 2023 10:25:55'
 LF=:10{a.
 OK00400=:'load script saved ->'
 OK00401=:'file saved ->'

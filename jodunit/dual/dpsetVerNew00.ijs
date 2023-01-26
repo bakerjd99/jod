@@ -49,13 +49,25 @@ er@regd"1 rgdicts  NB. returns all 1s
 NB. attempt parameter changes
 er od ;0{0{rgdicts
 ner showpass dpset 'READWRITE'
+ner showpass dpset 'DEFAULTS'
 ner dpset 'CLEARPATH'
 ner dpset 'RETAINAGE'
 ner dpset 'ASCII85';1
 ner dpset 'ROOTFOLDER';'~BOGUS'
 ner dpset 'DOCUMENTWIDTH';71
 
-1 [ 3 od '' NB. close any open dicts
+1 [ 3 od ''
+
+NB. the following touch the master file but older 
+NB. versions can still open and work with IT
+er od showpass ;0{0{rgdicts
+er dpset 'RESETME'
+1 [ 3 od '' 
+
+er od ;0{0{rgdicts
+er dpset 'RESETALL'
+1 [ 3 od '' 
+
 
 NB. -{TEST SUCCESSFUL}-
 ereopen 0

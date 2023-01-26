@@ -92,6 +92,9 @@ splitbname=: (NDOT&beforestr ; NDOT&afterstr)
 NB.*enddependents
 NB.*end-header
 
+NB. file component: J dictionary creator version string
+CNJVERSION=:12
+
 NB. initial documentation list: latex ; html ; text
 DOCINIT=:<;._1 '   '
 
@@ -153,6 +156,7 @@ ERR104=:'no registered dictionaries'
 ERR105=:'unreadable or missing backup timestamp'
 ERR106=:'invalid backup number(s)'
 ERR107=:'not in backup(s) -> '
+ERR108=:'cannot register binary incompatible read/write dictionary ->'
 
 NB. directory and reserved components in *.ijf files
 OFFSET=:39
@@ -1679,10 +1683,13 @@ msg=. ERR052 NB. errmsg: unable to initialize
 
 if.     -.jcreate y  do. (jderr msg),<y
 elseif. c=. < 0 ; t=. now ''        NB. c0 length and directory stamp
-        c=. c , <''                 NB. c1 RESERVED
+        c=. c , <''                 NB. c1 pack count and last backup or restore timestamp.
         c=. c , 0{x                 NB. c2 this dictionary's documentation
         c=. c , <}. x               NB. c3 dictionary parameters
-        badappend c=. (c , (OFFSET-#c) # a:) jappend y do. (jderr msg),<y
+        a=. badappend c=. (c , (OFFSET-#c) # a:) jappend y
+        NB. store J version string that created this dictionary
+        b=. badjr (<9!:14'') jreplace y;CNJVERSION
+        a +. b do. (jderr msg),<y
 elseif. do.
  ok {: c  NB. return last component
 end.
@@ -1993,9 +2000,30 @@ elseif.do.
 
     NB. NIMP should run under a trap here to protect
     NB. against files that appear to be dictionary but are not
-
+  
+    NB. NOTE: this component will hold a J version string for J's 
+    NB. after 9.04. For dictionaries created with older J versions it
+    NB. is either empty or holds a version string. This redundant 
+    NB. storage of the creator version is to get around binary
+    NB. incompatibilities of extended precision integers.   
+    if. badjr dicver=. jread (file=. path,>{.JDFILES);CNJVERSION do.
+      NB. errmsg: jfile read failure
+      jdmasterr ERR088 return. 
+    elseif. dicver=. (>dicver) jvn 0
+            NB. (dicver < JEPOCHVER)  *. JVERSION < JEPOCHVER  NB. old dict, old j OK
+            NB. (dicver < JEPOCHVER)  *. JEPOCHVER <: JVERSION NB. old dict, new j OK
+            NB. (JEPOCHVER <: dicver) *. JEPOCHVER <: JVERSION NB. new dict, new j OK
+            (JEPOCHVER <: dicver) *. JVERSION < JEPOCHVER  do. NB. new dict, old J BAD
+      NB. errmsg: cannot register binary incompatible dictionary  
+      (jdmasterr ERR108),name;dicver;JVERSION 
+      return.
+    end.
+    
+    NB. NOTE: this read fails when J's prior to 9.04 attempt to
+    NB. read the parameters created by a j 9.04 system. The stored 
+    NB. extended integers are not compatibile for older J's
     NB. read dictionary parameter table and documentation
-    if. badjr dat=. jread (file=. path,>{.JDFILES);CNPARMS,CNDICDOC do.
+    if. badjr dat=. jread file;CNPARMS,CNDICDOC do.
       jdmasterr ERR088 return. NB. errmsg: jfile read failure
     end.
 
@@ -2009,6 +2037,13 @@ elseif.do.
 
     NB. if not a libary adjust dictionary paths, name and documentation
     if. -.islib dpt do.
+
+      NB. cannot register read/write dictionaries that are not binary
+      NB. binary compatible with current version of J 9.04+ HARDCODE:
+      if. (dicver < JEPOCHVER) *. JVERSION <: JEPOCHVER do.
+        NB. errmsg: cannot register binary incompatible dictionary
+        (jdmasterr ERR108),name;dicver;JVERSION return.
+      end. 
 
       NB. test dictionary file attributes - we must be able to read/write
       if. 0 e. iswriteable dcfiles do.

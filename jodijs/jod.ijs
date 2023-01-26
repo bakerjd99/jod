@@ -178,6 +178,8 @@ ERR025=:'only one balanced dependent section allowed'
 ERR026=:'error in joduserconfig.ijs - last J error ->'
 ERR027=:'unable to set master parameters ->'
 ERR028=:'not supported on this environment ->'
+ERR029=:'regex pattern error ->'
+ERR030=:'binary version conflict - dictionary -> '
 
 NB. explain option code
 EXPLAIN=:8
@@ -215,6 +217,9 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 NB. standard dictionary subdirectory names - order matters
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 
+
+JEPOCHVER=:9.03999999999999915
+
 NB. default JOD user directory
 JJODDIR=:'joddicts\'
 
@@ -222,7 +227,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.0.22 - dev';28;'11 Dec 2021 11:39:24'
+JODVMD=:'1.0.23';26;'26 Jan 2023 10:25:54'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
@@ -482,6 +487,22 @@ case. DICTIONARY do.
   end.
 case.do. jderr msg
 end.
+)
+
+
+binverchk=:3 : 0
+
+NB.*binverchk v-- check binary compatibility of dictionary with directory object (y).
+NB.
+NB. monad:  blRc =. binverchk baObj
+
+if. JEPOCHVER <: JVERSION do.
+  if. JCREATEVER__y < JEPOCHVER do.
+    (jderr ERR030),<'(',DNAME__y,') created with ',(":JCREATEVER__y),' rebuild as ',":JVERSION
+    return.
+  end.  
+end.
+OK
 )
 
 
@@ -1035,6 +1056,11 @@ elseif.do.
     ok <|:>{:>jread WF__DL;CNPARMS__ST
 
   elseif. -.badcl y do.
+
+    NB. cannot change dictionary parameters for older dictionaries
+    NB. that are not fully binary compatible with J 9.04+
+    if. badrc msg=. binverchk DL do. msg return. end.
+
     NB. if we are resetting READWRITE status dictionary need only be open
     if. 'READWRITE'-:y do.
 
@@ -1311,6 +1337,7 @@ elseif.do.
   select. x
   case. WORD do.
     if. badrc uv=. checkput__ST 0  do. uv return. else. DL=. 1 { uv end.
+    if. badrc uv=. binverchk DL do. uv return. end.
     if. badrc y=. checknames__ST y do. y return. else. y=. ,>}.y end.
     if. badrc uv=. (WORD;<DL) inputdict__ST <y  do. uv return. end.
     if. badrc uv=. WORD getobjects__ST y do. uv return. else. uv=. ,1 {:: uv end.
@@ -1457,7 +1484,15 @@ NB. remove all lists beginning with numerals and _
 y=. y #~ -.({.&> y) e. '_0123456789'
 
 NB. extract any remaing names with regular expression
-if. #y do. JNAME rxall ; y ,&.> ' ' else. '' end.
+if. #y do. 
+  NB. NOTE: workaround for J 9.04 PCRE2 changes
+  NB. turn of utf8 support for J 9.04+ !(*)=. rxutf8
+  if. b903=. 9.03 < jvn'' do. rgs=. rxutf8 0 end.
+  ejn=. JNAME rxall ; y ,&.> ' '
+  if. b903 do. rgs=. rxutf8 rgs end.
+  ejn
+else. '' 
+end.
 )
 
 NB. standarizes J path delimiter to unix/linux forward slash
@@ -1477,14 +1512,21 @@ jvn=:3 : 0
 
 NB.*jvn-- J version number.
 NB.
-NB. monad:  na =. jvn uuIgnore
+NB. monad:  fa =. jvn uuIgnore
+NB. dyad: fa =. cl jvn uuIgnore
 
-NB. J version number
-ver=. 9!:14 ''
-ver=. (ver e. '0123456789/')#ver
+(9!:14 '') jvn y
+:
+NB. for empty version strings return
+NB. 0 we don't know the version 
+if. 0=#x do. 0
+else.
+  NB. extract J version number from (9!;14) string
+  ver=. '0/' ,~ (x e. '0123456789/')#x
 
-NB. return version 6.01 if string is not numeric
-100 %~ , 601 ". (ver i. '/') {. ver
+  NB. return version 0 if string is not numeric
+  100 %~ , 0 ". (ver i. '/') {. ver
+end.
 )
 
 NB. removes all leading and trailing CR and LF characters
@@ -1726,12 +1768,16 @@ case. 4 do.
 
 case. 5 do. 
 
-  NB. return the currently registered dictionaries as a (regd) script
-  mdt=. quote&.> 0 2{>mdt
-  mdt=. ctl ;"1 (<'regd ') ,"1 |: 1 0 2{ (<';'),mdt
-  NB. prefix command to close and unregister all current dictionaries
-  mdt=. 'NB. require ''general/jod''',LF,'3 regd&> }. od'''' [ 3 od ''''',LF,mdt
-  ok 'NB. JOD registrations: ',(tstamp ''),LF,jpathsep mdt
+  NB. return the currently registered dictionaries as a sorted (regd) script
+  if. 0 e. $mdt=. >mdt do. 
+    ok 'NB. No current JOD registrations: ',tstamp ''
+  else.
+    mdt=. quote&.> 0 2{mdt {"1~ /: 0{mdt
+    mdt=. ctl ;"1 (<'regd ') ,"1 |: 1 0 2{ (<';'),mdt
+    NB. prefix command to close and unregister all current dictionaries
+    mdt=. 'NB. require ''general/jod''',LF,'3 regd&> }. od'''' [ 3 od ''''',LF,mdt
+    ok 'NB. JOD registrations: ',(tstamp ''),LF,jpathsep mdt
+  end.
   
 case.do. jderr ERR001  NB. errmsg: invalid option(s)
 end.
@@ -1800,6 +1846,14 @@ end.
 NB. do we have a put dictionary open?
 if. badrc uv=. checkput__ST 0 do. uv return. end.
 DL=. 1 { uv  NB. directory object !(*)=. DL
+
+NB. NOTE: j 9.04 introduced a new binary format for extended precision
+NB. integers that is not backward compatible with prior versions of j.
+NB. While it ok to read jod binary files created in older versions it's
+NB. not ok to write to them. JOD uses extended precision integers to encode
+NB. GUIDs. In retrospect it would have been a better choice to encode
+NB. GUIDS as plain old character data. HARDCODE:
+if. badrc msg=. binverchk DL do. msg return. end.
 
 NB. format standard (x) options
 x=. 2 {. x , DEFAULT
@@ -2121,20 +2175,35 @@ NB. dyad:  (clPat ; ilOpts) rxssearch btNameText
 NB. all arguments validated by callers
 'pat opts'=. x
 
-NB. require 'regex' !(*)=. rxfirst rxall rxmatches
+NB. require 'regex' !(*)=. rxfirst rxall rxmatches rxutf8
+NB. NOTE: workaround for J 9.04 PCRE2 changes
+NB. turn of utf8 support for J 9.04+ !(*)=. rxutf8
+if. b903=. 9.03 < jvn'' do. rgs=. rxutf8 0 end.
+
 NB. HARDCODE: option codes
-select. {:opts
-case. 1 do.
-  h=. pat&rxfirst&.> 1 {"1 y
-  ok  <((0 {"1 y) ,. h) #~ 0 < #&> h
-case. 2 do.
-  h=. pat&rxall&.> 1 {"1 y
-  ok  <((0 {"1 y) ,. h) #~ 0 < #&> h
-case. 3 do.
-  h=. pat&rxmatches&.> 1 {"1 y
-  b=. 0 < #&> h
-  ok  <(b # 0 {"1 y) ,. (b # h) ,. b # 1 {"1 y
-case.do. jderr ERR001
+try.
+  select. {:opts
+  case. 1 do.
+    h=. pat&rxfirst&.> 1 {"1 y
+    if. b903 do. rgs=. rxutf8 rgs end.
+    ok  <((0 {"1 y) ,. h) #~ 0 < #&> h
+  case. 2 do.
+    h=. pat&rxall&.> 1 {"1 y
+    if. b903 do. rgs=. rxutf8 rgs end.
+    ok  <((0 {"1 y) ,. h) #~ 0 < #&> h
+  case. 3 do.
+    h=. pat&rxmatches&.> 1 {"1 y
+    if. b903 do. rgs=. rxutf8 rgs end.
+    b=. 0 < #&> h
+    ok  <(b # 0 {"1 y) ,. (b # h) ,. b # 1 {"1 y
+  case.do.
+    if. b903 do. rgs=. rxutf8 rgs end.
+    jderr ERR001
+  end.
+catchd.
+  if. b903 do. rgs=. rxutf8 rgs end.
+  NB. errmsg: regex pattern error ->
+  (jderr ERR029),<13!:12''
 end.
 )
 

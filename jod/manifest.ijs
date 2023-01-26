@@ -1,6 +1,6 @@
 NB. manifest for JOD
 CAPTION=:'JOD J Object Dictionary'
-VERSION=:'1.0.22'
+VERSION=:'1.0.23'
 FOLDER=:'general/jod'
 PLATFORMS=:'win linux darwin'      
 LABCATEGORY=:'General'
@@ -51,4 +51,5 @@ More information is available on the JOD Page and GitHub at:
   
    https://analyzethedatanotthedrivel.org/the-jod-page/
    https://github.com/bakerjd99/jod  
+   https://github.com/bakerjd99/jod/blob/master/joddocument/pdfdoc/jod.pdf
 )

@@ -185,7 +185,7 @@ NB.*createdl v-- directory object creation verb.
 NB.
 NB. monad:  create bluu
 
-NB. object nouns !(*)=. BAKNUM DIDNUM DNAME RPATH RW UF SYS WF LIBSTATUS NPPFX
+NB. object nouns !(*)=. BAKNUM DIDNUM DNAME RPATH RW UF SYS WF LIBSTATUS NPPFX JCREATEVER
 
 NB. no backup directories exist at creation
 BAKNUM=: _1
@@ -207,6 +207,10 @@ RW=: (-.LIBSTATUS) * 1=readstatus  NB. open read status
 
 NB. script, suite, macro, document, dump, backup directories
 (DSUBDIRS)=: PARMDIRS{dparms
+
+NB. set floating J version that created 
+NB. this dictionary following code is (jvn) inline 
+JCREATEVER=: (;10{dparms) jvn 0 NB. HARDCODE:
 
 NB. full dictionary file names (without extensions) and pointers
 NB. NOTE: the (dpath) does not have to match the paths of (DSUBDIRS)
