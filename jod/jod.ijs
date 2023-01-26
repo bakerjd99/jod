@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 1.0.23  Build Number: 26  Date: 26 Jan 2023 10:25:54
+NB. Version: 1.0.23  Build Number: 30  Date: 26 Jan 2023 15:15:15
 load 'task'
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
@@ -150,7 +150,7 @@ JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JEPOCHVER=:9.03999999999999915
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'1.0.23';26;'26 Jan 2023 10:25:54'
+JODVMD=:'1.0.23';30;'26 Jan 2023 15:15:15'
 JVERSION=:,6.01999999999999957
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -2016,98 +2016,103 @@ f=.f,<i.0
 f,<|:0 2{"1 b
 )
 newregdict=:4 :0
-o=.JMASTER
-p=.ERR061
-if.(badbu y )+.1~:#$y do.jderr p
-elseif.(3<#y )+.2>#y do.jderr p
-elseif.+./badcl&>y do.jderr p
+r=.JMASTER
+s=.ERR061
+if.(badbu y )+.1~:#$y do.jderr s
+elseif.(3<#y )+.2>#y do.jderr s
+elseif.+./badcl&>y do.jderr s
 elseif.do.
-'q w h'=.3{.y,<''
-q=.alltrim q[w=.hostsep alltrim w
-if.0&e.(#q),#w do.jderr p return.end.
-if.0&e.q e.' ',ALPHA do.
+'t B k'=.3{.y,<''
+t=.alltrim t[B=.hostsep alltrim B
+if.0&e.(#t),#B do.jderr s return.end.
+if.0&e.t e.' ',ALPHA do.
 jderr ERR062 return.
-elseif.0&e.w e.PATHCHRS,ALPHA do.
+elseif.0&e.B e.PATHCHRS,ALPHA do.
 jderr ERR063 return.
 end.
 if.IFWIN do.
-if.(2#PATHDEL)-:2{.w do.
-w=.w,(PATHDEL={:w)}.PATHDEL
-e=.''
+if.(2#PATHDEL)-:2{.B do.
+B=.B,(PATHDEL={:B)}.PATHDEL
+h=.''
 else.
-if.isempty z=.justdrv w do.jderr ERR064 return.end.
-e=.z,':',PATHDEL
+if.isempty C=.justdrv B do.jderr ERR064 return.end.
+h=.C,':',PATHDEL
 end.
 else.
-if.PATHDEL~:{.w do.(jderr ERR096),<w return.end.
-e=.w
+if.PATHDEL~:{.B do.(jderr ERR096),<B return.end.
+h=.B
 end.
-if.(x=1)*.0<#e do.
-a=.freedisk e
-if.a<FREESPACE do.(jderr ERR065),<e return.end.
+if.(x=1)*.0<#h do.
+d=.freedisk h
+if.d<FREESPACE do.(jderr ERR065),<h return.end.
 end.
-if.badjr A=.jread o;CNMFTAB,CNMFPARMS,CNMFDLOG do.
+if.badjr D=.jread r;CNMFTAB,CNMFPARMS,CNMFDLOG do.
 jderr ERR006 return.
 end.
-if.badrc p=.markmast 1 do.p return.end.
-'l i f'=.A
-if.(<q)e.0{l do.jdmasterr ERR066 return.end.
+if.badrc s=.markmast 1 do.s return.end.
+'q l i'=.D
+if.(<t)e.0{q do.jdmasterr ERR066 return.end.
 if.x=1 do.
-if.badrc w=.mainddir w do.w [markmast~0 return.end.
-w=.{:w
-if.0 &e.A=.makedir"0 w,&.>JDSDIRS do.
+if.badrc B=.mainddir B do.B [markmast~0 return.end.
+B=.{:B
+if.0 &e.D=.makedir"0 B,&.>JDSDIRS do.
 jdmasterr ERR067 return.
 end.
-w=.>w
-g=.didnum 0
-A=.newdparms JDSDIRS;i;q;g;w
-A=.<(h;A)jwordscreate w,>0{JDFILES
-A=.A,(}.JDFILES)jdatcreate&.><w
-if.0&e.;{.&>A do.
+B=.>B
+j=.didnum 0
+D=.newdparms JDSDIRS;l;t;j;B
+D=.<(k;D)jwordscreate B,>0{JDFILES
+D=.D,(}.JDFILES)jdatcreate&.><B
+if.0&e.;{.&>D do.
 jdmasterr ERR068 return.
 end.
-r=.l,.q;g;w;0
-s=.OK050
+w=.q,.t;j;B;0
+z=.OK050
 else.
-w=.(-PATHDEL={:w)}.w,PATHDEL
-k=.JDFILES,&.><IJF
-if.1 e.A=.-.fex"1 c=.<@:;"1 (<w),"0/k do.
-(jdmasterr ERR073),<q return.
+B=.(-PATHDEL={:B)}.B,PATHDEL
+p=.JDFILES,&.><IJF
+if.1 e.D=.-.fex"1 f=.<@:;"1 (<B),"0/p do.
+(jdmasterr ERR073),<t return.
 end.
-if.badjr d=.jread(j=.w,>{.JDFILES);CNJVERSION do.
+if.badjr g=.jread(o=.B,>{.JDFILES);CNJVERSION do.
 jdmasterr ERR088 return.
-elseif.d=.(>d)jvn 0
-(JEPOCHVER <:d)*.JVERSION<JEPOCHVER do.
-(jdmasterr ERR108),q;d;JVERSION
+elseif.g=.(>g)jvn 0
+a=.(g<JEPOCHVER)*.JVERSION<JEPOCHVER
+b=.(g<JEPOCHVER)*.JEPOCHVER<:JVERSION
+c=.(JEPOCHVER<:g)*.JEPOCHVER<:JVERSION
+a+.b+.c do.OK
+elseif.(JEPOCHVER <:g)*.JVERSION<JEPOCHVER do.
+(jdmasterr ERR108),t;g;JVERSION
 return.
 end.
-if.badjr b=.jread j;CNPARMS,CNDICDOC do.
+if.badjr e=.jread o;CNPARMS,CNDICDOC do.
 jdmasterr ERR088 return.
 end.
-'i t'=.b
-g=.1{::i
-if.g e.;1{l do.jdmasterr ERR092 return.end.
-if.-.islib i do.
-if.(d<JEPOCHVER )*.JVERSION<:JEPOCHVER do.
-(jdmasterr ERR108),q;d;JVERSION return.
+'l A'=.e
+j=.1{::l
+if.j e.;1{q do.jdmasterr ERR092 return.end.
+if.-.islib l do.
+if.a+.c do.OK
+elseif.b do.
+(jdmasterr ERR108),t;g;JVERSION return.
 end.
-if.0 e.iswriteable c do.
+if.0 e.iswriteable f do.
 jdmasterr ERR095 return.
 end.
-i=.((<w),&.>JDSDIRS,&.>PATHDEL)PARMDIRS}i
-i=.(<q)0}i
-h=.(*#h){t;h
-if.badreps(i;h)jreplace j;CNPARMS,CNDICDOC do.
+l=.((<B),&.>JDSDIRS,&.>PATHDEL)PARMDIRS}l
+l=.(<t)0}l
+k=.(*#k){A;k
+if.badreps(l;k)jreplace o;CNPARMS,CNDICDOC do.
 jdmasterr ERR056
 end.
 end.
-r=.l,.q;g;w;0
-s=.OK058
+w=.q,.t;j;B;0
+z=.OK058
 end.
-A=.(r;l;f,g)jreplace o;CNMFTAB,CNMFTABBCK,CNMFDLOG
-if.0&><./A do.jdmasterr ERR069 return.end.
-if.badrc p=.markmast~0 do.p return.end.
-ok s;q;jpathsep w
+D=.(w;q;i,j)jreplace r;CNMFTAB,CNMFTABBCK,CNMFDLOG
+if.0&><./D do.jdmasterr ERR069 return.end.
+if.badrc s=.markmast~0 do.s return.end.
+ok z;t;jpathsep B
 end.
 )
 nlctn=:([:I.[:+./"1([:,:])E.[:>[){[

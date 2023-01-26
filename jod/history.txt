@@ -9,7 +9,33 @@ general/jod - change history
    JOD stores extended precision integers in dictionary binary `jfiles`. J 9.04
    can read older extended integers but if J 9.04 writes extended integers to `jfiles`
    components older J's can no read longer them. This version adds checks to `put`,
-   `globs` and `dpset` to prevent the mishandling of new/old binary data in dictionaries. 
+   `globs` and `dpset` to prevent the mishandling of new/old binary data in dictionaries.
+
+   WARNING: to upgrade to this version of JOD reset your JOD master file by:
+
+        load 'general/jod'
+
+        NB. backup your currently registered dictionaries and shut J down
+        (1 pick 5 od '') fwrite jpath '~addons/general/jod/jodregister.ijs'
+        
+        NB. restart J and erase the files
+        ferase jpath '~addons/general/jod/jmaster.ijf'
+        ferase jpath '~addons/general/jod/jod.ijn'
+
+        NB. reload the registered dictionaries paying attention 
+        NB. to any binary incompatibility messages
+        load 'general/jod'
+        0!:001 <jpath '~addons/general/jod/jodregister.ijs'
+
+        NB. to use old (before 9.04) dictionaries you will have to set them 
+        NB. READONLY in an older version of J and then register in J 9.04
+
+        NB. set dictionary READONLY in an older j
+        od 'olddict'
+        dpset 'READONLY'
+
+        NB. then in a new (J 9.04+) J register 
+        regd 'olddict';'c:/where/your/dict/is'
 
    NOTE: if you are only interested in running current J9.04 and newer
    versions of J. You can dump your dictionaries as dump scripts and reload

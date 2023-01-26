@@ -1,5 +1,5 @@
-NB. JOD dictionary dump: 26 Jan 2023 10:25:55
-NB. Generated with JOD version; 1.0.23 - dev; 26; 25 Jan 2023 14:20:08
+NB. JOD dictionary dump: 26 Jan 2023 15:15:16
+NB. Generated with JOD version; 1.0.23; 29; 26 Jan 2023 14:15:50
 NB. J version: j903/j64avx2/windows/release-a/commercial/www.jsoftware.com/2021-12-16T15:15:09/clang-13-0-0/SLEEF=1
 NB.
 NB. Names & DidNums on current path
