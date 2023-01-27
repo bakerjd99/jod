@@ -2010,10 +2010,11 @@ elseif.do.
       NB. errmsg: jfile read failure
       jdmasterr ERR088 return. 
     elseif. dicver=. (>dicver) jvn 0
-            NB. (dicver < JEPOCHVER)  *. JVERSION < JEPOCHVER  NB. old dict, old j OK
-            NB. (dicver < JEPOCHVER)  *. JEPOCHVER <: JVERSION NB. old dict, new j OK
-            NB. (JEPOCHVER <: dicver) *. JEPOCHVER <: JVERSION NB. new dict, new j OK
-            (JEPOCHVER <: dicver) *. JVERSION < JEPOCHVER  do. NB. new dict, old J BAD
+            bck0=. (dicver < JEPOCHVER)  *. JVERSION < JEPOCHVER  NB. old dict, old j OK
+            bck1=. (dicver < JEPOCHVER)  *. JEPOCHVER <: JVERSION NB. old dict, new j OK
+            bck2=. (JEPOCHVER <: dicver) *. JEPOCHVER <: JVERSION NB. new dict, new j OK
+            bck0 +. bck1 +. bck2 do. OK
+    elseif. (JEPOCHVER <: dicver) *. JVERSION < JEPOCHVER  do.  NB. new dict, old J BAD
       NB. errmsg: cannot register binary incompatible dictionary  
       (jdmasterr ERR108),name;dicver;JVERSION 
       return.
@@ -2040,7 +2041,8 @@ elseif.do.
 
       NB. cannot register read/write dictionaries that are not binary
       NB. binary compatible with current version of J 9.04+ HARDCODE:
-      if. (dicver < JEPOCHVER) *. JVERSION <: JEPOCHVER do.
+      if. bck0 +. bck2 do. OK
+      elseif. bck1 do.
         NB. errmsg: cannot register binary incompatible dictionary
         (jdmasterr ERR108),name;dicver;JVERSION return.
       end. 

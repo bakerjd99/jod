@@ -138,8 +138,8 @@ if. badcl_ajod_ sl=. x disp y do. sl return. end.
 
 NB. regenerate put dictionary word cross references
 reref=: 3 : 0
-if. badrc_ajod_ n=. revo '' do. n return. end.
-(n,.s) #~ -.;0{"1 s=.0 globs&> n=.}.n
+if. badrc_ajod_ r=. revo '' do. r return. end.
+(r,.s) #~ -.;0{"1 s=.0 globs&> r=.}.r
 )
 
 NB. handy cl doc helpers
