@@ -217,7 +217,7 @@ JDFILES=:<;._1 ' jwords jtests jgroups jsuites jmacros juses'
 NB. standard dictionary subdirectory names - order matters
 JDSDIRS=:<;._1 ' script suite document dump alien backup'
 
-
+NB. last J version that introduced a binary data incompatibility
 JEPOCHVER=:9.03999999999999915
 
 NB. default JOD user directory
@@ -227,7 +227,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.0.23';30;'26 Jan 2023 15:15:15'
+JODVMD=:'1.0.24 dev';3;'01 Feb 2023 11:22:04'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
@@ -1487,10 +1487,11 @@ NB. extract any remaing names with regular expression
 if. #y do. 
   NB. NOTE: workaround for J 9.04 PCRE2 changes
   NB. turn of utf8 support for J 9.04+ !(*)=. rxutf8
-  if. b903=. 9.03 < jvn'' do. rgs=. rxutf8 0 end.
-  ejn=. JNAME rxall ; y ,&.> ' '
-  if. b903 do. rgs=. rxutf8 rgs end.
-  ejn
+  NB. if. b903=. 9.03 < jvn'' do. rgs=. rxutf8 0 end.
+  NB. ejn=. JNAME rxall ; y ,&.> ' '
+  NB. if. b903 do. rgs=. rxutf8 rgs end.
+  NB. ejn
+  JNAME rxall ; y ,&.> ' '
 else. '' 
 end.
 )
@@ -2178,30 +2179,30 @@ NB. all arguments validated by callers
 NB. require 'regex' !(*)=. rxfirst rxall rxmatches rxutf8
 NB. NOTE: workaround for J 9.04 PCRE2 changes
 NB. turn of utf8 support for J 9.04+ !(*)=. rxutf8
-if. b903=. 9.03 < jvn'' do. rgs=. rxutf8 0 end.
+NB. if. b903=. 9.03 < jvn'' do. rgs=. rxutf8 0 end.
 
 NB. HARDCODE: option codes
 try.
   select. {:opts
   case. 1 do.
     h=. pat&rxfirst&.> 1 {"1 y
-    if. b903 do. rgs=. rxutf8 rgs end.
+    NB. if. b903 do. rgs=. rxutf8 rgs end.
     ok  <((0 {"1 y) ,. h) #~ 0 < #&> h
   case. 2 do.
     h=. pat&rxall&.> 1 {"1 y
-    if. b903 do. rgs=. rxutf8 rgs end.
+    NB. if. b903 do. rgs=. rxutf8 rgs end.
     ok  <((0 {"1 y) ,. h) #~ 0 < #&> h
   case. 3 do.
     h=. pat&rxmatches&.> 1 {"1 y
-    if. b903 do. rgs=. rxutf8 rgs end.
+    NB. if. b903 do. rgs=. rxutf8 rgs end.
     b=. 0 < #&> h
     ok  <(b # 0 {"1 y) ,. (b # h) ,. b # 1 {"1 y
   case.do.
-    if. b903 do. rgs=. rxutf8 rgs end.
+    NB. if. b903 do. rgs=. rxutf8 rgs end.
     jderr ERR001
   end.
 catchd.
-  if. b903 do. rgs=. rxutf8 rgs end.
+  NB. if. b903 do. rgs=. rxutf8 rgs end.
   NB. errmsg: regex pattern error ->
   (jderr ERR029),<13!:12''
 end.
