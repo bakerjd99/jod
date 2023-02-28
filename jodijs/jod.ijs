@@ -147,7 +147,7 @@ NB. dictionary path table - see long documentation
 DPATH=:0 4$00
 
 NB. maximum dictionary path length
-DPLIMIT=:32
+DPLIMIT=:64
 
 
 ERR001=:'invalid option(s)'
@@ -227,7 +227,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.0.24 dev';3;'01 Feb 2023 11:22:04'
+JODVMD=:'1.0.24';9;'28 Feb 2023 10:55:31'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
@@ -1513,20 +1513,40 @@ jvn=:3 : 0
 
 NB.*jvn-- J version number.
 NB.
+NB. NOTE: the format of  the string returned  by 9!14 has changed
+NB. without warning over  the years. The latest change (feb 2023)
+NB. has  been   to  a  (version.major.minor)  layout.  This  verb
+NB. computes a floating version number.
+NB.
 NB. monad:  fa =. jvn uuIgnore
 NB. dyad: fa =. cl jvn uuIgnore
+NB.
+NB.   v0=. 'j9.4.0-beta13/j64avx512/windows/commercial/www.jsoftware.com/2023-02-23T08:08:24/clang-15-0-7/SLEEF=1'
+NB.   v1=. 'j903/j64avx2/windows/release-a/commercial/www.jsoftware.com/2021-12-16T15:15:09/clang-13-0-0/SLEEF=1'
+NB.   v2=. 'j10.12.53/jwhatever'
+NB.   v3=. 'j8.05/oldsys'
+NB.
+NB.   v0 jvn_ajod_ 0
+NB.   v1 jvn_ajod_ 0
+NB.   v2 jvn_ajod_ 0
+NB.   v3 jvn_ajod_ 0
 
 (9!:14 '') jvn y
 :
 NB. for empty version strings return
-NB. 0 we don't know the version 
+NB. 0 we don't know the version
 if. 0=#x do. 0
 else.
-  NB. extract J version number from (9!;14) string
-  ver=. '0/' ,~ (x e. '0123456789/')#x
-
-  NB. return version 0 if string is not numeric
-  100 %~ , 0 ". (ver i. '/') {. ver
+  NB. extract J version from (9!;14) string
+  ver=. (x i. '/') {. x ,'0/'
+  if. '.' e. ver=. (ver e. '0123456789.-/')#ver do.
+    NB. version.major.minor layouts
+    ver=. ver {."0 1~ ({. , <./@}.) ver i. '.-/'
+    (0 ". 0{ver) + 0 ". '0.',((] }.~ (i.&'.')) 1{ver)-.'.'
+  else.
+    NB. version layouts before j9.4
+    100 %~ , 0 ". (ver i. '/') {. ver
+  end.
 end.
 )
 

@@ -1,5 +1,5 @@
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 1.0.23  Build Number: 30  Date: 26 Jan 2023 15:15:15
+NB. Version: 1.0.24  Build Number: 9  Date: 28 Feb 2023 10:55:31
 load 'task'
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
@@ -38,7 +38,7 @@ return.
 end.
 g=.(4!:0)@<
 a=.(4!:55)@<
-if._1 e.(4!:0);:'load conew coclass coerase coinsert cocurrent copath jpath UNAME IFWIN'do.
+if._1 e.(4!:0);:'load conew coclass coerase coinsert cocurrent copath jpath UNAME IFWIN IFUNIX'do.
 f=.'JOD depends on core J load and class utilities.'
 0[h f=.f,LF,'Load J with a standard profile to use JOD.'
 return.
@@ -104,7 +104,7 @@ DIGITS=:'0123456789'
 DOCUMENT=:9
 DODEPENDENTS=:1
 DPATH=:0 4$00
-DPLIMIT=:32
+DPLIMIT=:64
 ERR001=:'invalid option(s)'
 ERR002=:'invalid name(s)'
 ERR003=:'name(s) to long'
@@ -150,7 +150,7 @@ JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JEPOCHVER=:9.03999999999999915
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'1.0.23';30;'26 Jan 2023 15:15:15'
+JODVMD=:'1.0.24';9;'28 Feb 2023 10:55:31'
 JVERSION=:,6.01999999999999957
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
 MAXEXPLAIN=:80
@@ -749,10 +749,7 @@ y=.y#~0<#&>y=.alltrim&.>y
 y=.y#~y*./@:e.&><ALPHA,'_'
 y=.y#~-.({.&>y)e.'_0123456789'
 if.#y do.
-if.a=.9.03<jvn''do.c=.rxutf8 0 end.
-b=.JNAME rxall;y,&.>' '
-if.a do.c=.rxutf8 c end.
-b
+JNAME rxall;y,&.>' '
 else.''
 end.
 )
@@ -765,8 +762,13 @@ jvn=:3 :0
 :
 if.0=#x do.0
 else.
-a=.'0/',~(x e.'0123456789/')#x 
+a=.(x i.'/'){.x ,'0/'
+if.'.'e.a=.(a e.'0123456789.-/')#a do.
+a=.a {."0 1~({.,<./@}.)a i.'.-/'
+(0".0{a)+0".'0.',((]}.~(i.&'.'))1{a)-.'.'
+else.
 100%~,0".(a i.'/'){.a 
+end.
 end.
 )
 lfcrtrim=:]#~[:-.[:(*./\.+.*./\)]e.(10 13{a.)"_
@@ -1082,29 +1084,23 @@ end.
 end.
 )
 rxssearch=:4 :0
-'d c'=.x
-if.a=.9.03<jvn''do.e=.rxutf8 0 end.
+'c a'=.x
 try.
-select.{:c
+select.{:a
 case.1 do.
-h=.d&rxfirst&.>1 {"1 y
-if.a do.e=.rxutf8 e end.
+h=.c&rxfirst&.>1 {"1 y
 ok<((0{"1 y),.h)#~0<#&>h
 case.2 do.
-h=.d&rxall&.>1 {"1 y
-if.a do.e=.rxutf8 e end.
+h=.c&rxall&.>1 {"1 y
 ok<((0{"1 y),.h)#~0<#&>h
 case.3 do.
-h=.d&rxmatches&.>1 {"1 y
-if.a do.e=.rxutf8 e end.
+h=.c&rxmatches&.>1 {"1 y
 b=.0<#&>h
 ok<(b#0{"1 y),.(b#h),.b#1 {"1 y
 case.do.
-if.a do.e=.rxutf8 e end.
 jderr ERR001
 end.
 catchd.
-if.a do.e=.rxutf8 e end.
 (jderr ERR029),<13!:12''
 end.
 )
@@ -2227,6 +2223,7 @@ end.
 )
 putgs=:4 :0
 'DL d i'=.x
+if.badrc k=.binverchk DL do.k return.end.
 if.badrc k=.pathnl d do.k return.end.
 y=./:~~.}.y[g=.{.y
 if.*./b=.y e.;}.k do.

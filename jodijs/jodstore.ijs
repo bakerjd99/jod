@@ -2331,6 +2331,9 @@ NB.   ((<'6');WORD;GROUP) putgs ;: 'group and members'
 
 'DL code gtype'=. x  NB. directory object !(*)=. DL
 
+NB. check binary compatibility of target dictionary
+if. badrc msg=. binverchk DL do. msg return. end.
+
 if. badrc msg=. pathnl code do. msg return. end.
 y=. /:~ ~. }. y [ gn=. {. y
 if. *./b=. y e. ; }. msg do.

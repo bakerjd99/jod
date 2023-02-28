@@ -2,6 +2,17 @@
 general/jod - change history
 ============================
 
+### 1.0.24 February 28, 2023 (Spy Balloon Edition)
+
+ * J 9.04 renamed to J 9.4 and the layout of 9!:14 was changed this
+   required a change to `jvn` which computes a floating version number.
+
+ * `DPLIMIT` was bumped up to 64. If you need more than 64 dictionaries
+   on your JOD path you are doing something wrong! 
+
+ * `putgs` adjusted to check binary compatibility - missed this in prior version.
+
+
 ### 1.0.23 January 26, 2023 (Gender Fluid Edition)
 
  * J 9.04's use of [GMP](https://gmplib.org/) for extended precision integers 
