@@ -2,6 +2,11 @@
 general/jod - change history
 ============================
 
+### 1.0.25 
+
+ * `newd` now takes `dpset 'RETAINAGE';1` and `dpset 'ASCII85';1` as defaults
+    when creating new dictionaries.
+
 ### 1.0.24 February 28, 2023 (Spy Balloon Edition)
 
  * J 9.04 renamed to J 9.4 and the layout of 9!:14 was changed this
