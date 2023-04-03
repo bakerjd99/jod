@@ -61,6 +61,9 @@ DUMPMSG3=:'NB. Generated with JOD version'
 NB. J version that created this dumpfile
 DUMPMSG4=:'NB. J version: '
 
+NB. notes put dictionary path - useful when loading dump scripts
+DUMPMSG5=:'NB. JOD put dictionary path: '
+
 
 ERR0150=:'confused declarations ->'
 ERR0151=:'word syntax'
@@ -73,6 +76,7 @@ ERR0157=:'directory-component name class inconsistency -- dump aborted ->'
 ERR0158=:'invalid fully qualified dump file name'
 ERR0159=:'mixed assignments ->'
 ERR0160=:'invalid object timestamp table'
+ERR0161=:'cannot prefix hash ->'
 
 NB. multiplicative factor for small text dumps
 EXPLAINFAC=:10
@@ -337,6 +341,10 @@ NB. format header text
 head=. DUMPMSG0 , tstamp ''
 head=. head,LF,DUMPMSG3 , ;(<'; ') ,&.> ":&.>JODVMD 
 head=. head,LF,DUMPMSG4 , ": , 9!:14 ''
+
+NB. note path of first (put) dictionary
+head=. head,LF,DUMPMSG5 , ;{: 1 { >1{did~ 0
+
 head=. head,LF,ctl 'NB. ',"1 ' ' , DUMPMSG1 , ": 0 1 {"1 DPATH__ST
 head=. head,LF,LF
 
@@ -774,6 +782,9 @@ end.
 NB. HARDCODE: are we retaining object age?
 if. 0=nc<'RETAINAGE__DL' do. rag=. 1 -: RETAINAGE__DL  else. rag=. 0 end. 
 
+NB. HARDCODE: are we prefixing dump hashes?
+if. 0=nc<'HASHDUMP__DL' do. hdm=. 1 -: HASHDUMP__DL  else. hdm=. 0 end.
+
 NB. standardize path character
 dumpfile=. jpathsep dumpfile
 
@@ -787,7 +798,7 @@ elseif. badrc uv=. dumpdictdoc dumpfile       do. uv
 elseif. badrc uv=. rag dumpntstamps dumpfile  do. uv
 elseif. badrc uv=. dumptrailer dumpfile       do. uv
 elseif.do.
-  (ok OK0151),<dumpfile
+  if. hdm do. prefixdumphash dumpfile else. (ok OK0151),<dumpfile end.
 end.
 )
 
@@ -1023,6 +1034,29 @@ else.
     parsed=. parsed #~ ddefescmask parsed
   end.
   parsed=. ok(<gbls),(<locs),<parsed
+end.
+)
+
+
+prefixdumphash=:3 : 0
+
+NB.*prefixdumphash v-- prefixes hash to dump scripts.
+NB.
+NB. monad:  prefixdumphash clDumpfile
+
+if. _1 -: dumpscript=. (read :: _1:) y do. 
+  NB. errmsg: cannot prefix hash
+  (jderr ERR0161),<y return.
+else.
+  NB. standard LF line ends for hash
+  NB. matches (chkhashdmp) verb
+  hash=. sha256 dumpscript -. CR
+  dumpscript=. (toHOST 'NB. sha256:',hash,LF),dumpscript
+  if. _1 -: dumpscript (write :: _1:) y do.
+    (jderr ERR0161),<y return.
+  else.
+    (ok OK0151),<y  
+  end. 
 end.
 )
 

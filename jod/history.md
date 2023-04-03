@@ -2,10 +2,34 @@
 general/jod - change history
 ============================
 
-### 1.0.25 
+### 1.0.25 April 3, 2023 (Spring Indictments Edition)
 
  * `newd` now takes `dpset 'RETAINAGE';1` and `dpset 'ASCII85';1` as defaults
     when creating new dictionaries.
+
+ *  A new parameter `HASHDUMP` has been added to `jodparms.ijs`. The default
+    is 1, turn off with 0. When 1 a SHA-256 hash is prefixed to the start of dump
+    scripts. The following tests for dump script integrity:
+
+         chkhashdmp_ajod_ '~addons/general/jodsource/joddev.ijs'
+
+ *  A new macro qualifier `IPYNB` code has been added for Jupyter notebooks. Notebook files
+    can be stored as JOD macros with:
+        
+         NB. read notebook and store
+         ipynb=: read 'notebook.ipynb'
+         4 put 'notebook';IPYNB_ajod_;ipynb
+
+ *  The put dictionary path is now in the header comments of JOD
+    dumps. For example the `joddev` dictionary has a path:
+ 
+         ;:'joddev jod utils'
+
+    This path was not previously shown. 
+
+ *  A bug introduced in version (1.0.23) has been corrected. A default
+    message was incorrectly set leading to `0 666 put ''word''` failures (SIGH).
+       
 
 ### 1.0.24 February 28, 2023 (Spy Balloon Edition)
 

@@ -64,9 +64,10 @@ UTF8=:28
 PYTHON=:29
 SQL=:30
 JSON=:31
+IPYNB=:32
 
 NB. macro text types
-MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8,PYTHON,SQL,JSON
+MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8,PYTHON,SQL,JSON,IPYNB
 
 NB. object codes
 WORD=:0
@@ -107,6 +108,9 @@ NB.*end-header
 NB. valid characters in file and path names
 ALPHA=:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
+NB. object size option code
+BYTESIZE=:15
+
 NB. master file cn: dictionary number log - see long documentation
 CNMFDLOG=:10
 
@@ -124,6 +128,9 @@ CNMFTAB=:2
 
 NB. master file cn: main dictionary table backup
 CNMFTABBCK=:3
+
+NB. object creation option code
+CREATION=:13
 
 NB. default option code
 DEFAULT=:7
@@ -227,10 +234,13 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.0.24';9;'28 Feb 2023 10:55:31'
+JODVMD=:'1.0.25 - dev';12;'03 Apr 2023 11:45:05'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
+
+NB. last object put option code
+LASTPUT=:14
 
 NB. default master file parameters
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
@@ -240,6 +250,9 @@ MAXEXPLAIN=:80
 
 NB. maximum length of dictionary names
 MAXNAME=:128
+
+NB. J name class option code
+NAMECLASS=:12
 
 NB. (name,[class],value) option code
 NVTABLE=:10
@@ -704,6 +717,20 @@ end.
 )
 
 
+chkhashdmp=:3 : 0
+
+NB.*chkhashdmp v-- checks dump script hash against contents.
+NB.
+NB. monad:  pa =. chkhashdmp clFile
+NB.
+NB.   chkhashdmp_ajod_ '~addons/general/jodsource/joddev.ijs'
+
+NB. j profile !(*)=. jpath
+ijs=. (read jpath y)-.CR
+(':'&afterstr LF&beforestr ijs)-:sha256 LF&afterstr ijs
+)
+
+
 createjod=:3 : 0
 
 NB.*createjod  v--  dictionary  object  creation verb. (y)  is  a
@@ -1059,7 +1086,7 @@ elseif.do.
 
     NB. cannot change dictionary parameters for older dictionaries
     NB. that are not fully binary compatible with J 9.04+
-    if. badrc msg=. binverchk DL do. msg return. end.
+    if. badrc msgbin=. binverchk DL do. msgbin return. end.
 
     NB. if we are resetting READWRITE status dictionary need only be open
     if. 'READWRITE'-:y do.
@@ -1337,7 +1364,7 @@ elseif.do.
   select. x
   case. WORD do.
     if. badrc uv=. checkput__ST 0  do. uv return. else. DL=. 1 { uv end.
-    if. badrc uv=. binverchk DL do. uv return. end.
+    if. badrc uvbin=. binverchk DL do. uvbin return. end.
     if. badrc y=. checknames__ST y do. y return. else. y=. ,>}.y end.
     if. badrc uv=. (WORD;<DL) inputdict__ST <y  do. uv return. end.
     if. badrc uv=. WORD getobjects__ST y do. uv return. else. uv=. ,1 {:: uv end.
@@ -1795,9 +1822,15 @@ case. 5 do.
   else.
     mdt=. quote&.> 0 2{mdt {"1~ /: 0{mdt
     mdt=. ctl ;"1 (<'regd ') ,"1 |: 1 0 2{ (<';'),mdt
+
     NB. prefix command to close and unregister all current dictionaries
-    mdt=. 'NB. require ''general/jod''',LF,'3 regd&> }. od'''' [ 3 od ''''',LF,mdt
-    ok 'NB. JOD registrations: ',(tstamp ''),LF,jpathsep mdt
+    mdt=. 'NB. require ''general/jod''',LF,'0 0$3 regd&> }. od'''' [ 3 od ''''',LF,mdt
+
+    NB. add JOD/j versions - useful when dealing with binary incompatibilities
+    head=. 'NB. JOD registrations: ',tstamp ''
+    head=. head,LF,DUMPMSG3__MK , ;(<'; ') ,&.> ":&.>JODVMD 
+    head=. head,LF,DUMPMSG4__MK , ": , 9!:14 '' 
+    ok head,LF,jpathsep mdt
   end.
   
 case.do. jderr ERR001  NB. errmsg: invalid option(s)
@@ -1870,11 +1903,11 @@ DL=. 1 { uv  NB. directory object !(*)=. DL
 
 NB. NOTE: j 9.04 introduced a new binary format for extended precision
 NB. integers that is not backward compatible with prior versions of j.
-NB. While it ok to read jod binary files created in older versions it's
+NB. While it's ok to read jod binary files created in older versions it's
 NB. not ok to write to them. JOD uses extended precision integers to encode
 NB. GUIDs. In retrospect it would have been a better choice to encode
 NB. GUIDS as plain old character data. HARDCODE:
-if. badrc msg=. binverchk DL do. msg return. end.
+if. badrc msgbin=. binverchk DL do. msgbin return. end.
 
 NB. format standard (x) options
 x=. 2 {. x , DEFAULT
@@ -2252,6 +2285,9 @@ NB. but never closed - on this machine. JUST INCREASE THE NUMBER EHHH!!
 
 NB. second list item
 second=:1&({ )
+
+NB. sha-256 hash from bytes: sha256 'hash me again'
+sha256=:3&(128!:6)
 
 NB. J type code
 tc=:3!:0
