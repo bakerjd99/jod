@@ -2,7 +2,7 @@
 general/jod - change history
 ============================
 
-### 1.0.25 April 3, 2023 (Spring Indictments Edition)
+### 1.0.25 April 4, 2023 (Spring Indictments Edition)
 
  * `newd` now takes `dpset 'RETAINAGE';1` and `dpset 'ASCII85';1` as defaults
     when creating new dictionaries.

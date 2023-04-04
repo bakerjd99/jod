@@ -1,6 +1,17 @@
 general/joddocument - change history
 ====================================
 
+### 1.0.25 April 4, 2023 (Spring Indictments Edition)
+
+ * The order of option code tables in appendix E. has
+   been changed. The larger table 12 is now on a single
+   page to leave space for future codes.
+
+ * Some *undocumented* codes have been added to table 12.
+
+ * The entry for `dpset` has been adjusted to show 
+   the new `HASHDUMP` parameter.
+
 ### 1.0.23 - January 26, 2023 (Gender Fluid Edition)
 
  * Component 12 in `jwords` now holds the J `9!:14` system string. This
