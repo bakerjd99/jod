@@ -2,6 +2,11 @@
 general/jod - change history
 ============================
 
+### 1.1.0 - dev (wip)
+
+ * `LEAN` and `ZIG` macro option codes added.
+
+
 ### 1.0.25 April 4, 2023 (Spring Indictments Edition)
 
  * `newd` now takes `dpset 'RETAINAGE';1` and `dpset 'ASCII85';1` as defaults
@@ -17,8 +22,8 @@ general/jod - change history
     can be stored as JOD macros with:
         
          NB. read notebook and store
-         ipynb=: read 'notebook.ipynb'
-         4 put 'notebook';IPYNB_ajod_;ipynb
+         ipynb=: utf8 read 'notebook.ipynb'
+         4 put 'notebook_ipynb';IPYNB_ajod_;ipynb
 
  *  The put dictionary path is now in the header comments of JOD
     dumps. For example the `joddev` dictionary has a path:
