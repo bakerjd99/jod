@@ -6,6 +6,30 @@ general/jod - change history
 
  * `LEAN` and `ZIG` macro option codes added.
 
+ * `dpset` takes a new option `FORCEMASTERPATH` that forces the 
+    path in the master file into the put dictionary even
+    if the put dictionary is `READONLY`. The main use of
+    `FORCEMASTERPATH` is to reset the internal paths in `READONLY`
+    dictionaries that have been moved. After forcing paths 
+    the dictionary must be closed and reopened.
+ 
+ *  Sidecar files of SHA-256 hashes are now written during 
+    backup `packd` operations.  For backup 42 the file is `42jhashes.txt`
+
+ *  A new `bnl` option has been implemented to check backup files
+    against the hashes stored in the sidecar file.
+
+         17 bnl '.'
+
+ *  `restd` now restores particular backups instead of just 
+    the last backup. Also, backup files are checked against
+    the hashes in the corresponding sidecar file and the 
+    backup is aborted if any hashes do not match.
+   
+         restd 'dname'     NB. restore last backup
+         restd 'dname';11  NB. restore backup 11
+         restd 'dname';11 17  NB. restore ignoring backup hashes
+        
 
 ### 1.0.25 April 4, 2023 (Spring Indictments Edition)
 

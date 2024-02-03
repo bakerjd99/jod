@@ -53,7 +53,7 @@ if. #jvn do. jvn=. 0 ". jvn #~ jvn e. '0123456789' else. jvn=. 0 end.
 
 NB. allow older system to run but nag the user to upgrade
 if. jvn < 801 do.
-  0 0 $ (1!:2&2) 'WARNING: JOD works best with current J 8.0x-9.0x systems - upgrade!'
+  0 0 $ (1!:2&2) 'WARNING: JOD works best with current J 8.x-9.x systems - upgrade!'
 end.
 
 sp=. ] [ 1!:2&2
@@ -61,7 +61,7 @@ if. jvn < 602 do.
   NB. J's before 6.02 are beyond the pale
   msg=. 'JOD requires J 8.01 or later.'
   msg=. msg,LF, 'J is freely available at www.jsoftware.com'
-  0 [ sp msg,LF, 'Download and install J 8.0x-9.0x and then reinstall JOD.'
+  0 [ sp msg,LF, 'Download and install J 8.x-9.x and then reinstall JOD.'
   return.
 end.
 

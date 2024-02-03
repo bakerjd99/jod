@@ -735,7 +735,7 @@ ascii85
 NB. 0's every other 1 in even groups of 1's
 halfbits=:] (*.) 1 0"_ $~ #
 
-NB. clips head and tail delimited lists - see long documentation
+NB. clips head and tail delimited lists
 htclip=:[ (] }.~ [: >: ] i. [) ] }.~ [: - [: >: [ i.~ [: |. ]
 
 

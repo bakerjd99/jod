@@ -570,6 +570,11 @@ if. bdot *. INPUT={.x do.
   NB. show pack/backup dates
   ok <DL backupdates bn
 
+elseif. bdot *. HASH={.x do.
+
+  NB. check all backup file hashes
+  hashbchk ''
+
 elseif. bdot do.
 
   NB. return backup suffixes
@@ -1152,7 +1157,7 @@ s=. 'kernel32 GetDiskFreeSpaceA i *c *i *i *i *i' cd y;(,0);(,0);(,0);(,0)
 */ ; 2 3 4 { s
 )
 
-NB. returns lists of directory object noun values - see long documentation
+NB. returns lists of directory object noun values
 fullmonty=:[: ".&.> ([: < [) ,&.> [: locsfx ]
 
 
@@ -1410,6 +1415,64 @@ if. badjr cn=. jread (".({.ln),'P__uv');cn do.
   jderr ERR084 NB. errmsg: unable to read data
 else.
   ok >{:>cn  NB. stored list is unique and sorted
+end.
+)
+
+
+hashbchk=:3 : 0
+
+NB.*hashbchk v-- checks hashes of backup files.
+NB.
+NB. monad:  hashbchk iaBacknum|zl
+NB.
+NB.   hashbchk ''  NB. check all backups
+NB.   hashbchk 42  NB. check backup 42
+
+NB. put dictionary object
+DL=. {:0{DPATH
+
+NB. ordered list of backup numbers
+if. badrc bnums=. checkback DL do. bnums return. 
+else. 
+  bnums=. >1{bnums [ bpath=. BAK__DL
+end.
+
+if. badil ,y do.
+  NB. checks all backup files in backup directory 
+  chktab=. (<bpath) hashrep&> <"0 bnums
+  ok <chktab ,~ (<''),(<'(n)') ,&.> JDFILES
+else.
+  NB. tests a single dictionary backup
+  if. bnums e.~ pfn=. 0{,y do. ok <bpath hashrep pfn
+  else. (jderr ERR106),<":pfn
+  end.
+end.
+)
+
+
+hashrep=:4 : 0
+
+NB.*hashrep v-- backup hash report.
+NB.
+NB. dyad:  bl =. clPath hashrep iaPfn
+
+if. fex <jhashes=. x,(":y),HASHFSX do.
+  NB. (n)jhashes.txt file exists - check hashes
+  txt=. (read jhashes)-.CR
+  txt=. <;._2 txt,(LF={:txt)}.LF
+  NB. drop header lines
+  txt=. txt #~ -. +./@(HASHHDR&E.)&> txt
+  NB. split out hashes and files
+  txt=. <;._1&> ' ' ,&.> txt
+  NB. to pass the backup files must exist and the hashes must match
+  filesok=. fex (<x) ,&.> 1 {"1 txt
+  NB. compare hashes
+  hashcmp=.(0 {"1 txt) -:&> sha256@(read :: ''"_)&.> (<x) ,&.> 1 {"1 txt
+  NB. if any backup file is missing all fail
+  y;<"0 filesok *. hashcmp
+else.
+  NB. (n)jhashes.txt missing - null result
+  y;(#JDFILES)#<''
 end.
 )
 

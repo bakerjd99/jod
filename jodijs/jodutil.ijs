@@ -979,12 +979,12 @@ NB.
 NB.   50 textform2 10#,:' four score and seven years ago our '
 
 i=. 0
-v=. reb , y ,"1 ' '
-j=. #v
+s=. reb , y ,"1 ' '
+j=. #s
 b=. j$0
 while. j > a=. i + x do.
   k=.  i + i. >:a - i
-  if. #c=. (' ' = k{v)#k do.
+  if. #c=. (' ' = k{s)#k do.
     i=. >: {: c
     g=. ({:k) - <:i
     c=. (1 >. <:#c) {. c
@@ -997,8 +997,8 @@ while. j > a=. i + x do.
     i=. a
   end.
 end.
-v=. (>:b) # v
+s=. (>:b) # s
 e=. >: x
-r=. >.(#v) % e
-(r,x) {. (r,e)$(e*r){.v
+r=. >.(#s) % e
+(r,x) {. (r,e)$(e*r){.s
 )

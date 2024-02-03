@@ -96,6 +96,7 @@ ERR209=:'backup dictionary id number invalid - restore aborted'
 ERR210=:'unable to copy/move/rename files - shell messages ->'
 ERR211=:'unable to read timestamps'
 ERR212=:'timestamp update failure'
+ERR213=:'cannot write backup hash file ->'
 
 NB. object report header names
 HEADNMS=:<;._1 ' Words Tests Groups* Suites* Macros'
@@ -119,17 +120,17 @@ TEMPFX=:'tmp'
 
 backnum=:3 : 0
 
-NB.*backnum v-- increments backup pack count and backup/restoration timestamp.
+NB.*backnum v-- updates backup pack count and backup/restoration timestamp.
 NB.
-NB. monad:  backnum ia
+NB. monad:  backnum iaNxtBack
 NB.
-NB.   backnum 0 NB. typical call
+NB.   backnum 11 NB. typical call
 
-NB. HARDCODE pack counter is in component 1
+NB. HARDCODE: pack counter is in component 1
 nums=.> jread WF;1  NB. object noun !(*)=. WF
-if. #nums do. nums=. (>:y{nums) y}nums else. nums=. 0 , 6!:0'' end.
+if. #nums do. nums=. (y) 0}nums else. nums=. 0 , 6!:0'' end.
 ((0{nums) , 6!:0'') jreplace WF;1
-<.y{nums NB. integer result
+<.y NB. integer result
 )
 
 
@@ -411,6 +412,27 @@ NB. errmsg: unable to read timestamps
 if. badjr dat=. jread fp;CNCREATION,CNPUTDATE do. jderr ERR211 else. ok < >dat end.
 )
 
+
+hashback=:4 : 0
+
+NB.*hashback v-- writes a text sidecar file of backup hashes.
+NB.
+NB. dyad:  blclDcfiles hashback blcl
+
+bckfiles=. x [ target=. 2 }. y [ bckpath=. ;1{y [ pfn=. ;0{y
+
+NB. backup hashes NIMP: check for sha256 '' null hash - indicates failure
+hashes=. ctl ;"1 (' ' ,&.> bckfiles) ,.~ sha256@(read :: ''"_)&.> target
+
+NB. time and j version - object nouns !(*)=. DNAME DIDNUM
+head=. HASHHDR,' ' [ dictid=. ' ',DNAME,' ',":DIDNUM 
+hashes=. (ctl (head,(tstamp''),dictid) ,: head , 9!:14''),LF,hashes
+
+NB. write hashes file 
+sidecar=. bckpath,(":pfn),HASHFSX 
+if. _1 -: hashes (write :: _1:) sidecar do. (jderr ERR213),<sidecar else. OK end.
+)
+
 NB. extract drive and path from qualified file names
 justdrvpath=:[: }: ] #~ [: +./\. '\'&=
 
@@ -578,9 +600,6 @@ else.
 end.
 )
 
-NB. maximum backup prefix number - null when no numeric prefixes
-maxback=:[: >./ [: ".&> (] *./\@e.&.> (<'0123456789')"_) #&.> ]
-
 NB. Win32 procedure that moves/renames files
 movefile=:'kernel32 MoveFileA i *c *c'&cd
 
@@ -588,7 +607,7 @@ NB. bit mask of blcl (y) items with numeric prefix (x)
 nummask=:([: ": [) -:"1 ([: # [: ": [) {.&> ]
 
 
-packdict=:3 : 0
+packdict=:4 : 0
 
 NB.*packdict v-- pack the current dictionary.
 NB.
@@ -596,7 +615,7 @@ NB. At  the  end  of  a  successful pack  operation  the  current
 NB. directory object is refreshed and subsequent  operations  are
 NB. performed on the packed files.
 NB.
-NB. monad:  packdict clName
+NB. dyad:  iaNxtBak packdict clName
 
 NB. object nouns !(*)=. DNAME UF WF
 
@@ -605,8 +624,8 @@ if. (,DNAME) -: ,y do.
   dropall 0
   path=. SYS   NB. object noun !(*)=. SYS
 
-  NB. backup number
-  pfn=.backnum 0
+  NB. store backup number
+  pfn=.backnum x
 
   NB. copy object files to tmp files
   for_obj. OBJECTNC do.
@@ -626,8 +645,12 @@ if. (,DNAME) -: ,y do.
   bckpath=. PATHDEL ,~ path,>5{JDSDIRS
   dcfiles=. JDFILES ,&.> <IJF
   source=.  (<path) ,&.> dcfiles
-  target=.  (<bckpath) ,&.> (<":pfn) ,&.> dcfiles
+  bckfiles=. (<":pfn) ,&.> dcfiles
+  target=.  (<bckpath) ,&.> bckfiles
   if. badrc msg=.source renamefiles target do. msg return. end.
+
+  NB. hash backup files and write sidecar (n)jhashes.txt file
+  if. badrc msg=. bckfiles hashback pfn;bckpath;target do. msg return. end.
 
   NB. rename tmp files to standard file names
   target=. source
@@ -706,25 +729,27 @@ end.
 
 restdict=:4 : 0
 
-NB.*restdict v-- restore latest backup created by (packd)
+NB.*restdict v-- restore backups created by (packd).
 NB.
-NB. dyad:  blclFiles restdict clName
+NB. dyad:  blclFiles restdict blNameNxtnum
 
 NB. object nouns !(*)=. DIDNUM DNAME SYS
 
-if. (,DNAME) -: ,y do.
+'bkname nxtbak'=. y
+
+if. (,DNAME) -: ,bkname do.
 
   NB. clear current object directory - frees space
   dropall 0
 
-  NB. NIMP restore comes from the same volume as the
+  NB. NIMP: restore comes from the same volume as the
   NB. dictionary.  This code depends on the fact we
   NB. are dealing with a standard dictionary directory
   NB. that is contained on ONE volume.
   path=. ((justpath`justdrvpath@.IFWIN) SYS),PATHDEL
 
   dcfiles=. JDFILES ,&.> <IJF            NB. dictionary file names with extension
-  bckpath=. PATHDEL ,~ path,>5{JDSDIRS   NB. HARDCODE 5 backup directory index
+  bckpath=. PATHDEL ,~ path,>5{JDSDIRS   NB. HARDCODE: 5 backup directory index
   target=. (<path) ,&.> dcfiles          NB. current dictionary files
   source=. (<bckpath) ,&.> (<":>x) ,&.> dcfiles  NB. lastest backup files
 
@@ -733,7 +758,7 @@ if. (,DNAME) -: ,y do.
 
   NB. Check DIDNUM of backup dictionary against current object
   NB. they must match to maintain master/dictionary relationships.
-  NB. WARNING uses fact that the WORD file is first ON (source) list
+  NB. WARNING: uses fact that the WORD file is first ON (source) list
   if. badjr dat=. jread (>{.source);CNPARMS do.
       jderr ERR088 return. NB. errmsg: jfile read failure
   end.
@@ -746,14 +771,14 @@ if. (,DNAME) -: ,y do.
   (1!:55) target
   if. badrc msg=.source copyfiles target do. msg return. end.
 
-  NB. increment pack count to prevent clash with backup
-  NB. this causes gaps in the backup count but insures we never clash
-  pfn=.backnum 0
+  NB. update restored pack count to prevent clashes with backups
+  pfn=.backnum <:nxtbak
 
   NB. insure new directory is reloaded when needed
   dropall 0
 
-  ok OK201;DNAME;<:pfn  NB. name & pack count of restored dictionary
+  NB. name, restore number, new pack count
+  ok OK201;DNAME;(>x),pfn  
 else.
   jderr ERR202
 end.
@@ -762,27 +787,26 @@ end.
 
 restspace=:3 : 0
 
-NB.*restspace v-- determines  if there is enough space to restore
-NB. a dictionary.
+NB.*restspace v-- checks space for dictionary restores.
 NB.
-NB. monad:  restspace uuIgnore
+NB. monad:  restspace bkNum
 
 NB. object nouns !(*)=. BAK SYS
 
 NB. all dictionary backup files
 if. #back=. 1!:0 <BAK,'*',IJF do.
 
-  NB. latest back up number
-  maxb=. maxback {."1 back
+  maxb=. {. y NB. valid backup number
 
-  NB. select files in latest backup
+
+  NB. select files in backup
   back=. back #~ maxb nummask {."1 back
 
   NB. bytes required to store lastest backup
   bytes=. +/ ; 2 {"1 back
 
   if. bytes<volfree SYS do.
-    ok maxb       NB. return lastest backup number
+    ok maxb       NB. return backup number
   else.
     jderr ERR204  NB. errmsg: not enough free disk space for operation
   end.

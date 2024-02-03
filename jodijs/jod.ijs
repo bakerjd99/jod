@@ -65,9 +65,11 @@ PYTHON=:29
 SQL=:30
 JSON=:31
 IPYNB=:32
+LEAN=:33
+ZIG=:34
 
 NB. macro text types
-MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8,PYTHON,SQL,JSON,IPYNB
+MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8,PYTHON,SQL,JSON,IPYNB,LEAN,ZIG
 
 NB. object codes
 WORD=:0
@@ -111,7 +113,7 @@ ALPHA=:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 NB. object size option code
 BYTESIZE=:15
 
-NB. master file cn: dictionary number log - see long documentation
+NB. master file cn: dictionary number log
 CNMFDLOG=:10
 
 NB. master file cn: in use bit
@@ -120,10 +122,10 @@ CNMFMARK=:0
 NB. master file cn: dictionary parameter defaults
 CNMFPARMDEFS=:9
 
-NB. master file cn: dictionary parameters - see long documentation
+NB. master file cn: dictionary parameters
 CNMFPARMS=:7
 
-NB. master file cn: main dictionary table - see long documentation
+NB. master file cn: main dictionary table
 CNMFTAB=:2
 
 NB. master file cn: main dictionary table backup
@@ -150,7 +152,7 @@ DOCUMENT=:9
 NB. controls dependent block processing - (1) process (0) do not process
 DODEPENDENTS=:1
 
-NB. dictionary path table - see long documentation
+NB. dictionary path table
 DPATH=:0 4$00
 
 NB. maximum dictionary path length
@@ -187,12 +189,22 @@ ERR027=:'unable to set master parameters ->'
 ERR028=:'not supported on this environment ->'
 ERR029=:'regex pattern error ->'
 ERR030=:'binary version conflict - dictionary -> '
+ERR031=:'backup hash failure ->'
 
 NB. explain option code
 EXPLAIN=:8
 
 NB. space in bytes required to create dictionary (0 turns off volume sizing)
 FREESPACE=:0
+
+NB. backup hash option code
+HASH=:17
+
+NB. backup hashes file suffix
+HASHFSX=:'jhashes.txt'
+
+NB. marks header lines in backup hash files
+HASHHDR=:'--sha256--'
 
 NB. group and suite header code
 HEADER=:1
@@ -234,7 +246,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.0.25';14;'04 Apr 2023 09:24:10'
+JODVMD=:'1.1.0 - dev';31;'03 Feb 2024 11:10:03'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
@@ -270,6 +282,7 @@ OK006=:'parameter set ->'
 OK007=:'put dictionary is now a read/only library ->'
 OK008=:'put dictionary read/write status restored ->'
 OK009=:'put dictionary references deleted ->'
+OK010=:'close and reopen to activate - paths forced to ->'
 
 NB. indexes of dictionary subdirectories in dictionary parameter list
 PARMDIRS=:4 5 6 7 8 9
@@ -536,6 +549,7 @@ NB.   4 2  bnl 'ex'     NB. macros with names containing 'ex' in last backup
 NB.   2 3  bnl 'et.13'  NB. groups with names ending with 'et' in backup 13
 NB.
 NB.   14 bnl '.'  NB. display pack/backup dates
+NB.   17 bnl '.'  NB. check backup files against hashes
 
 WORD bnl y
 :
@@ -544,8 +558,9 @@ if. badrc msg=.x nlargs y do. msg return. end.
 NB. format standard (bnl) (x) options and search
 x=.  x , (<:#x)}. 1 , DEFAULT
 
-NB. special list backup dates case first
-if. (INPUT=0{x) *. (,NDOT__ST)-:alltrim y do. x bnlsearch__ST y return. end.
+NB. backup dates and hash checks first
+if. spc=.(0{x) e. INPUT,HASH
+    spc *. (,NDOT__ST)-:alltrim y do. x bnlsearch__ST y return. end.
 
 if. ((0{x) e. WORD,MACRO) *. -.(2{x) e. DEFAULT,MACROTYPE,i. 4 do. jderr ERR001 
 elseif. ({. x) e. OBJECTNC do. x bnlsearch__ST y 
@@ -1104,6 +1119,28 @@ elseif.do.
       end.
       return.
     end.
+
+    NB. Modify path settings in dictionary files ignoring any
+    NB. READONLY settings. The primary use is resetting paths
+    NB. in READONLY dictionaries that have been moved. NOTE: this
+    NB. is the only option that does not respect read/write settings
+    NB. it may also fail if the target files are locked down by the OS
+    if. 'FORCEMASTERPATH'-:y do.
+      if. badjr dat=. jread JMASTER;CNMFTAB    do. jderr ERR088 return. end.
+      if. badjr dpt=. jread WF__DL;CNPARMS__ST do. jderr ERR088 return. end.
+      NB. master file dictionary path HARDCODE 2
+      NB. search must succeed as this dictionary is open
+      mastpath=. ;2 { (>dat) {"1~ (0{>dat) i. <DNAME__DL
+      NB. replace dictionary path prefixes with master path
+      NB. HARDCODE _2 exploits syntax of JOD paths 
+      dicpaths=. (<mastpath) ,&.> }.@;@(_2&{.)&.> <;.1&.> (>dpt) {~ PARMDIRS
+      dpt=. <dicpaths (PARMDIRS)} >dpt
+      if. badreps dpt jreplace WF__DL;CNPARMS__ST  do. jderr ERR017 return.
+      else.
+        ok DNAME__DL;OK010;mastpath return.
+      end.
+    end.
+
     NB. other changes of dictionary parameters require a put dictionary
     if. badrc msg=. checkput__ST 0 do. msg return. end.
     select. y
@@ -1192,7 +1229,7 @@ firstone=:] > [: }: 0: , ]
 NB. first of doubles
 fod=:] #~ 1 0"_ $~ #
 
-NB. first on path order list index - see long documentation
+NB. first on path order list index
 fopix=:1: i.~ [ +/@:e.&> [: < [: < ]
 
 
@@ -1733,6 +1770,26 @@ end.
 )
 
 
+nextbaknum=:4 : 0
+
+NB.*nextbaknum v-- next backup number with ordered list of backup numbers.
+NB.
+NB. monad:  il =. baObj nextbaknum uuIgnore
+NB.
+NB.   DL nextbaknum 0
+
+DL=. x NB. put dictionary directory object
+
+NB. next backup number HARDCODE: pack counter is in component 1 errmsg: jfile read failure
+if. badjr nums=.>jread WF__DL;1 do. jderr ERR088__ST  
+else. 
+  NB. new dicts without backups do not have counts and date
+  if. #nums do. pckcnt=. >:0{nums else. pckcnt=. 0 end.
+  ok <.pckcnt,bnums__ST BAK__DL 
+end.
+)
+
+
 nlargs=:4 : 0
 
 NB.*nlargs v-- test basic name list arguments
@@ -1853,9 +1910,6 @@ NB. monad:  packd clName
 NB.
 NB.   packd 'dictionary'
 
-NB. NIMP: packd/restd not supported on iOS/Android devices for now
-NB. if. badrc uv=. checksup 'packd' do. uv return. end.
-
 NB. only put dictionaries can be packed
 if. badrc uv=. checkput__ST 0 do. uv return. end.
 DL=. 1 { uv  NB. directory object !(*)=. DL
@@ -1863,7 +1917,11 @@ DL=. 1 { uv  NB. directory object !(*)=. DL
 NB. is there enough space on the backup volume?
 if. badrc uv=. packspace__DL 0 do. uv return. end.
 
-packdict__DL y
+NB. get next backup number 
+if. badrc uv=. DL nextbaknum 0 do. uv return. else. pfn=. {. ,rv uv end.
+
+NB. backup files
+pfn packdict__DL y
 )
 
 NB. promote lists to tables - other ranks unchanged
@@ -2061,21 +2119,48 @@ end.
 
 restd=:3 : 0
 
-NB.*restd v-- restores the most recent backup created by (packd).
+NB.*restd v-- restores backups created by (packd).
 NB.
-NB. monad:  restd cl
+NB. monad:  restd clName | blNameBnum
 NB.
 NB.   restd 'backup'
-
-NB. NIMP: packd/restd not supported on iOS/Android devices for now
-NB. if. badrc uv=. checksup 'restd' do. uv return. end.
+NB.   restd 'backup';13     NB. restore backup 13
+NB.   restd 'backup';13 17  NB. restore backup 13 ignoring hash failures
 
 NB. only put dictionaries can be restored
 if. badrc uv=. checkput__ST 0 do. uv return. end.
 DL=. 1 { uv  NB. directory object !(*)=. DL
 
+NB. next backnum with ordered list of extant backup numbers
+if. badrc uv=. DL nextbaknum 0 do. uv return. else. uv=. rv uv end.
+
+NB. next backup number
+bklist=. }.uv [ nxtbak=. {.uv 
+
+NB. if a particular backup is being requested check its number
+achk=. (2 = #) * (1 = [: $ $) * 1 = L.
+if. achk y do.
+  'bkname bknum'=. y
+  if. badcl bkname do. jderr ERR002 return. end.
+  NB. HARDCODE: 2 forcing bknum to pair
+  if. badil ,bknum do. (jderr ERR106__ST),<bknum return. else. bknum=. 2 {. bknum end.
+  if. -.({.bknum) e. bklist do. (jderr ERR106__ST),<{.bknum return. end.
+elseif. -.badcl y do.
+  bkname=. y
+  bknum=. 2 {. {. bklist NB. most recent backup
+elseif.do. jderr ERR002 return. 
+end.
+
+if. HASH ~: {:bknum do.
+  NB. check backup hashes
+  if. badrc uv=. hashbchk__ST {.bknum do. uv return. 
+  NB. errmsg: backup hash failure ->
+  elseif. 0 e. }.;rv uv do. (jderr ERR031),<{.bknum return. 
+  end.
+end.
+
 NB. is there enough space on the dictionary volume?
-if. badrc uv=. restspace__DL 0 do. uv else. (}. uv) restdict__DL y end.
+if. badrc uv=. restspace__DL {.bknum do. uv else. (}. uv) restdict__DL bkname;nxtbak end.
 )
 
 NB. ok return value
