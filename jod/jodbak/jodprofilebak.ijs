@@ -15,12 +15,9 @@ NB. active. If only one task is active RESETME's prevent annoying
 NB. already open  messages that frequently result from forgetting
 NB. to close dictionaries upon exiting J.
 NB.
-NB. Note to  J developers. A shutdown sentence (a line  of J  the
+NB. NOTE: to  J developers. A shutdown sentence (a line  of J  the
 NB. interpretor  executes  before   terminating)  would  be  very
 NB. useful.
-NB.
-NB. author: John D. Baker
-NB. email:  bakerjd99@gmail.com
 
 NB. set white space preservation on
 9!:41 [ 1
@@ -44,12 +41,14 @@ EDCONSOLE_ajodutil_=: '"c:\Program Files\Microsoft VS Code\code.exe"'
 NB. EDCONSOLE_ajodutil_=: '"c:\Program Files (x86)\notepad++\notepad++.exe"'
 
 NB. used by some macros: WHEREAMI=: ;0 { ;:'home work test'
-NB. WHEREAMI=: 'home'
+WHEREAMI=: 'home'
 
 NB. (ijod) error/ message text
 ERRIJOD00=: 'current group name (jodg_ijod_) not set'
 ERRIJOD01=: 'current suite name (jods_ijod_) not set'
+ERRIJOD02=: 'invalid (x) search string'
 OKIJOD00=:  'no matches'
+OKIJOD01=:  'no objects'
 
 NB. add delete objects from current group or current suite
 ag=: 3 : 0
@@ -92,6 +91,9 @@ ts=: 3&revo
 NB. run tautology as plaintest - does not stop on nonzero results
 rt=: 2&rtt
 
+NB. run tautology silently - will show explict smoutput
+rq=:1&rtt
+
 NB. run macro silently - will show explict smoutput
 rs=: 1&rm
 
@@ -111,13 +113,33 @@ if. badrc_ajod_ w=. y revo '' do. w return. end.
 y hlpnl x {. }. w
 )
 
+NB. remove trailing blank rows
+rebtbrow=: ] #~ [: -. [: *./"1 [: *./\. ' '&=
+
+NB. appends trailing line feed character if necessary
+tlf=:] , ((10{a.)"_ = {:) }. (10{a.)"_
+
+NB. show long documents
+NB.      hld 0     NB. words
+NB.      hld 2     NB. groups
+NB.  0 1 0 hld 0   NB. documented nouns
+NB. 'NIMP:' hld 0  NB. word docs with string 'NIMP:'
+NB.  (] ,: #@hld"0) i. 5 NB. count docs on path
+hld=: ''&$: :(4 : 0)
+if. badcl_ajod_ x do. jderr_ajod_ ERRIJOD02 return. end.
+if. badrc_ajod_ w=. y dnl '' do. w return. end.
+if. 0=#&> w=. }. w do. ok_ajod_ OKIJOD01 return. end.
+if. badrc_ajod_ d=. (({.y),9) get w do. d return. end.
+d=. d #~ 0 < #&> 1 {"1 d=. >1{d
+if. 0<#x do. d=. d #~ +./@(x&E.)&> 1 {"1 d end.
+(0 {"1 d) ,. rebtbrow@(];._2)@tlf@(-.&CR)&.> 1 {"1 d
+)
+
 NB. search short help for string and list matching words
 NB.     hss 'see long'   NB. search word short text 
 NB.  2  hss 'see long'   NB. search group short text
 NB.  4  hss 'post'       NB. search macro short text 
-hss=: 3 : 0
-0 hss y
-:
+hss=: 0&$: :(4 : 0)
 if. badrc_ajod_ w=. x dnl ''   do. w return. end.
 d=. x hlpnl }. w
 if. 0=#w=. 1 >@{ d             do. ok_ajod_ OKIJOD00 return. end.
@@ -129,9 +151,7 @@ NB. single line explanation
 NB.    slex 'word'         NB. word
 NB.  4 slex 'jodregister'  NB. macro
 NB.  1 slex 'thistest'     NB. test
-slex=: 3 : 0
-0 slex y
-:
+slex=: 0&$: :(4 : 0)
 if. badcl_ajod_ sl=. x disp y do. sl return. end.
 (x,8) put y;firstcomment__JODtools sl
 )
@@ -190,11 +210,11 @@ jl=: (0!:0)@jt
 NB. load j script from configured j path
 jp=: [: 0!:0 [: < jpath
 
+NB. load and show j script from configured path
+jps=: [: 0!:001 [: < jpath
+
 NB. number of objects - used by various (utils) macros (sizeput, ageput, ...) if present
 NOBS=: 10
-
-NB. where am I used by some macros values 'work' or 'home'
-NB. WHEREAMI=: 'work'
 
 NB. dump drive - used by (utils) macro (dumpput) if present
 NB. DUMPWINDRV=: 'h:'
@@ -206,8 +226,9 @@ NB. DUMPPRVPATH=: '/jod/jodprvdumps/'
 NB. clear dictionaries - used by (utils) macro (clearput) if present
 NB. CLEARJDICS=: ;:''
 
-NB. set a preferred pandoc on this machine - used by (jodliterate)
+NB. set a preferred local pandoc  - used by (jodliterate) - try (where pandoc)
 NB. PREFERREDPANDOC=: 'C:\Users\genric.user\AppData\Local\Pandoc\pandoc'
+NB. PREFERREDPANDOC=: '/usr/local/bin/pandoc'
 
 NB. JOD verbs typically run from the base locale 
 cocurrent 'base'

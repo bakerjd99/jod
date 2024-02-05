@@ -28,14 +28,15 @@ NB.        only (+integer) is currently executed other types will
 NB.        be passed as character lists (see dptable).
 NB.     value is an executable J expression that produces a value
 
-ASCII85    ; (+integer) when 1 use ascii85 in dumps (0 or 1)            ; 0  
-COPYFACTOR ; (+integer) components copied in one loop pass  (1<y<240)   ; 100
+ASCII85    ; (+integer) when 1 use ascii85 in dumps (0 or 1)            ; 1  
+COPYFACTOR ; (+integer) components copied in one loop pass (1<y<240)    ; 100
 DOCUMENTDICT ; (+integer) when 1 dictionary document is put (0 or 1)    ; 1
-DOCUMENTWIDTH ; (+integer) width of justified document text  (20<y<255) ; 61
+DOCUMENTWIDTH ; (+integer) width of justified document text (20<y<255)  ; 61
 DUMPFACTOR ; (+integer) objects dumped in one loop pass (1<y<240)       ; 50
 GETFACTOR  ; (+integer) words retrieved in one loop pass (10<y<2048)    ; 250
-PUTFACTOR  ; (+integer) words stored in one loop pass  (10<y<2048)      ; 100
-RETAINAGE  ; (+integer) when 1 timestamps are saved in dumps (0 or 1)   ; 0
+PUTFACTOR  ; (+integer) words stored in one loop pass (10<y<2048)       ; 100
+RETAINAGE  ; (+integer) when 1 timestamps are saved in dumps (0 or 1)   ; 1
+HASHDUMP   ; (+integer) when 1 a hash is prefixed to dumps (0 or 1)     ; 1
 
 NB. ROOTFOLDER is empty by default. If it is set to a (jpath) J configured 
 NB. folder ROOTFOLDER overrides dictionary locations for (mls) generated scripts 

@@ -1,6 +1,6 @@
-NB. sha256:70c9a97c78d65650d75a8df2c9e3baff1286035dea327ab862871c5242acc174
+NB. sha256:0ef19804d75e573a49a60b522a8a4aa8c5e4a4beb56261368bb2157b4c8f863b
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 1.1.0 - dev  Build Number: 31  Date: 03 Feb 2024 11:10:03
+NB. Version: 1.1.0  Build Number: 36  Date: 05 Feb 2024 10:17:03
 load 'task'
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
@@ -160,7 +160,7 @@ JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JEPOCHVER=:9.03999999999999915
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'1.1.0 - dev';31;'03 Feb 2024 11:10:03'
+JODVMD=:'1.1.0';36;'05 Feb 2024 10:17:03'
 JVERSION=:,6.01999999999999957
 LASTPUT=:14
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
@@ -392,13 +392,13 @@ if.-.wex<'JODPROF'do.JODPROF=:jodsystempath'jodprofile.ijs'end.
 if.-.wex<'JODUSER'do.JODUSER=:jodsystempath'joduserconfig.ijs'end.
 JVERSION_ajod_=:(jvn ::_9:)''
 if.-.fex<JMASTER,IJF do.
-if.badrc o_gvg=.createmast JMASTER do.o_gvg return.end.
+if.badrc o_sy2=.createmast JMASTER do.o_sy2 return.end.
 end.
 if.fex<JODUSER do.
 if.(_9-:((0!:0) ::_9:) <JODUSER) {0 1 do.(jderr ERR026) ,<13!:12''return.end.
 end.
-if.badjr o_gvg=.jread JMASTER;CNMFPARMS do.jderr ERR006 return.end.
-MASTERPARMS_ajod_=:>o_gvg
+if.badjr o_sy2=.jread JMASTER;CNMFPARMS do.jderr ERR006 return.end.
+MASTERPARMS_ajod_=:>o_sy2
 JODEXT=:0$a:
 IZJODALL=:IzJODinterface,<'JODobj'
 JOD=:y
@@ -407,10 +407,10 @@ MK=:conew'ajodmake'
 UT=:conew'ajodutil'
 SO=:cocreate''
 ('ijod';'z')copath;SO
-o_jpb=.JOD;ST;MK;UT;<SO
-createst__ST o_jpb
-createmk__MK o_jpb
-createut__UT o_jpb
+o_mgx=.JOD;ST;MK;UT;<SO
+createst__ST o_mgx
+createmk__MK o_mgx
+createut__UT o_mgx
 ".&.>y defzface IzJODinterface
 makedir<jpath'~temp/'
 if.fex<JODPROF do.(_9-:((0!:0) ::_9:) <JODPROF ) {1 0 else.1 end.
@@ -2035,18 +2035,18 @@ OK
 )
 loadwords=:4 :0
 DL=.{:y
-if.badjr o_u4a=.jread WF__DL;x{WORDCN__DL do.
+if.badjr o_zYa=.jread WF__DL;x{WORDCN__DL do.
 jderr ERR088
 else.
-o_kRx=.0~:;1&{&>o_u4a
-o_iOb=.>{.y
+o_g6p=.0~:;1&{&>o_zYa
+o_rGl=.>{.y
 try.
-if.#o_dHW=.o_kRx#o_u4a do.
-0!:0;(({.&>o_dHW),&.><o_iOb,'=:'),&.>({:&>o_dHW),&.><LF
+if.#o_cmT=.o_g6p#o_zYa do.
+0!:0;(({.&>o_cmT),&.><o_rGl,'=:'),&.>({:&>o_cmT),&.><LF
 end.
-if.#o_jx1=.(-.o_kRx)#o_u4a do.
-o_dHW=.({.&>o_jx1),&.><o_iOb
-(o_dHW)=:(3!:2)&.>{:&>o_jx1
+if.#o_kNi=.(-.o_g6p)#o_zYa do.
+o_cmT=.({.&>o_kNi),&.><o_rGl
+(o_cmT)=:(3!:2)&.>{:&>o_kNi
 end.
 catch.jderr ERR091 return.end.
 OK
@@ -3928,50 +3928,50 @@ end.
 rm=:3 :0
 0 rm y
 :
-if.badrc o_gXP=.MACRO get y do.o_gXP return.end.
-o_gXP=.rv o_gXP
-if.*./o_tC1=.JSCRIPT=;1 {"1 o_gXP do.
-o_aUY=.;({:"1 o_gXP),&.>LF
-o_fsn=.18!:5''
+if.badrc o_qKf=.MACRO get y do.o_qKf return.end.
+o_qKf=.rv o_qKf
+if.*./o_yDX=.JSCRIPT=;1 {"1 o_qKf do.
+o_wHL=.;({:"1 o_qKf),&.>LF
+o_dL3=.18!:5''
 try.
 cocurrent'base'
-if.x-:1 do.0!:100 o_aUY else.0!:101 o_aUY end.
-cocurrent o_fsn
+if.x-:1 do.0!:100 o_wHL else.0!:101 o_wHL end.
+cocurrent o_dL3
 catchd.
-cocurrent o_fsn
+cocurrent o_dL3
 (jderr ERR0256),<13!:12''return.
 end.
 else.
-(jderr ERR0252),(-.o_tC1)#{."1 o_gXP
+(jderr ERR0252),(-.o_yDX)#{."1 o_qKf
 end.
 )
 rtt=:3 :0
 0 rtt y
 :
 if.(3-:x )+.4-:x do.
-if.badrc o_x9e=.(SUITE,_2)make y do.o_x9e return.end.
-o_znM=.rv o_x9e
+if.badrc o_tdq=.(SUITE,_2)make y do.o_tdq return.end.
+o_x6q=.rv o_tdq
 x=.x-3
 else.
-if.badrc o_x9e=.TEST get y do.o_x9e return.end.
-o_x9e=.rv o_x9e
-o_znM=.;({:"1 o_x9e),&.>LF
+if.badrc o_tdq=.TEST get y do.o_tdq return.end.
+o_tdq=.rv o_tdq
+o_x6q=.;({:"1 o_tdq),&.>LF
 end.
-o_qOK=.18!:5''
+o_pF3=.18!:5''
 cocurrent'base'
 try.
-if.0-:x do.0!:2 o_znM
-elseif.1-:x do.(][1!:2&2)0!:3 o_znM
-elseif.2-:x do.0!:001 o_znM
+if.0-:x do.0!:2 o_x6q
+elseif.1-:x do.(][1!:2&2)0!:3 o_x6q
+elseif.2-:x do.0!:001 o_x6q
 elseif.do.
-cocurrent o_qOK
+cocurrent o_pF3
 jderr ERR001 return.
 end.
 catchd.
-cocurrent o_qOK
+cocurrent o_pF3
 (jderr ERR0256),<13!:12''return.
 end.
-cocurrent o_qOK
+cocurrent o_pF3
 )
 textform2=:63&$: :(4 :0)
 i=.0

@@ -35,6 +35,7 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
    NB. replaces the put dictionaries path with currently open master path
    dpset 'FORCEMASTERPATH'
    ~~~~
+   (DONE)
 
 3. `<_blzjon6v8f3bdq46k8wlzuz74_>` Consider extending `restd` to retore particular backups.
    Currently it restores the most recent backup. Also, consider checking the hashes
@@ -46,6 +47,7 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
    NB. restore backup 42 ignoring hash mismatches
    restd 'bitchface';42 17
    ~~~~
+   (DONE)
 
 4. `<_3bq9v9yst3qu3t62zicli27gv_>` New numeric datatypes and a conversion utility `c.` are being
    added in J 9.6 (2024jan02) we now have
@@ -64,6 +66,7 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
    NB. code 17 on bnl tests the backups against hashes
    17 bnl '.'
    ~~~~
+   (DONE)
 
 6. `<_7zh37k9klj5wkdpj40bzsqnm8_>` Consider adding a hash object facility that will store a SHA-256 hash when putting
    objects. I am thinking another option code `17` that would mean store a hash on
@@ -89,7 +92,7 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
 
 9.  `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs have changed in recent J versions.
 
-10.   `<_6kfjobpvb6ikszgzq1m9t9aub_>` Consider adding a new appendix to `jod.pdf` describing how to run JOD tests.
+10.   `<_6kfjobpvb6ikszgzq1m9t9aub_>` Consider adding a new appendix to `jod.pdf` describing how to run JOD tests. (DONE)
 
 11.   `<_d1dtfkd14ypvlatnch2pa5hwo_>` Consider allowing `~/` as a path prefix on macOS and Linux systems. The home directory convention on these systems is respected by `dir`.
 

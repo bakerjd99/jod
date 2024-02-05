@@ -2,9 +2,9 @@
 general/jod - change history
 ============================
 
-### 1.1.0 - dev (wip)
+### 1.1.0 - February 5, 2024 (Hashy McHashface Edition)
 
- * `LEAN` and `ZIG` macro option codes added.
+ * `HASH`, `LEAN` and `ZIG` macro option codes added.
 
  * `dpset` takes a new option `FORCEMASTERPATH` that forces the 
     path in the master file into the put dictionary even
@@ -19,7 +19,7 @@ general/jod - change history
  *  A new `bnl` option has been implemented to check backup files
     against the hashes stored in the sidecar file.
 
-         17 bnl '.'
+         17 bnl '.'  NB. 17 = HASH
 
  *  `restd` now restores particular backups instead of just 
     the last backup. Also, backup files are checked against

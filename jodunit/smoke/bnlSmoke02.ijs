@@ -3,11 +3,11 @@ NB.
 NB. assumes:
 NB.
 NB.   0) configured J test folder JODTEST, standard J utils (dir, dirtree)
-NB. 
-NB.   1) (testjod00) dictionary 
+NB.
+NB.   1) (testjod00) dictionary
 NB.      newd 'testjod00';jpath '~JODTEST/testjod00' NB. create
 NB.      regd 'testjod00';jpath '~JODTEST/testjod00' NB. register extant
-NB.  
+NB.
 NB. created: 2024feb03
 NB. changes: -----------------------------------------------------
 
@@ -20,12 +20,17 @@ coinsert 'ijod'
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
 
-tdict=: 'testjod00'
+NB. is folder configured
+iscf '~JODTEST'
+
+NB. set test dictionary
+er settdict tdict=: 'testjod00'
 
 NB. read and write bytes
 read=: 1!:1&(]`<@.(32&>@(3!:0)))
 write=: 1!:2 ]`<@.(32&>@(3!:0))
 
+NB. close any open and open test dictionary
 er od tdict [ 3 od ''
 
 NB. erase any current test dictionary backups
@@ -49,14 +54,8 @@ er tmploc put 'hashhack'
 er tmploc put 'hashmsg'
 er packd tdict
 
-hashhack=: ?5 5 5$1000000
-hashmsg=: 'third backup'
-er tmploc put 'hashhack'
-er tmploc put 'hashmsg'
-er packd tdict
-
 NB. all hashes should pass
-er showpass hashes=:17 bnl '.'
+er showpass hashes=: 17 bnl '.'
 *./ ; 1 1 }. rv_ajod_ hashes
 
 NB. copy and rename older backup word files over

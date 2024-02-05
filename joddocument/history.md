@@ -1,7 +1,18 @@
 general/joddocument - change history
 ====================================
 
-### 1.0.26 - dev (wip)
+### 1.1.0 - February 5, 2024 (Hashy McHashface Edition)
+
+ * New appendix on running JOD tests added.
+
+ * Obsolete J6 graphic removed.
+
+ * Changes to `bnl`, `restd`, `packd` to note the addition
+   and use of SHA-256 backup sidecar files.
+
+ * `HASH`, `LEAN` and `ZIG` macro option codes added to table.
+
+ * Minor improvements to puntucation - the typo jihad is ongoing.
 
 ### 1.0.25 April 4, 2023 (Spring Indictments Edition)
 
