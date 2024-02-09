@@ -2,6 +2,13 @@
 general/jod - change history
 ============================
 
+### 1.1.1 (wip)
+
+ *  A new `od` option opens the entire put dictionary path.
+
+         6 od 'adnd' NB. opens all on (adnd) path - makes (adnd) put
+         6 od ;:'gps smug utils' NB. opens all on (gps) path - makes (gps) put      
+
 ### 1.1.0 - February 5, 2024 (Hashy McHashface Edition)
 
  * `HASH`, `LEAN` and `ZIG` macro option codes added.
