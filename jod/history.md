@@ -2,12 +2,17 @@
 general/jod - change history
 ============================
 
-### 1.1.1 (wip)
+### 1.1.1 – February 10, 2024 (No-brainer Mea culpa Edition)
 
- *  A new `od` option opens the entire put dictionary path.
+ *  A new `od` option opens the entire put dictionary path. This
+    is such a timesaving no-brainer I'm embarrassed for not thinking
+    of it years ago.
 
          6 od 'adnd' NB. opens all on (adnd) path - makes (adnd) put
-         6 od ;:'gps smug utils' NB. opens all on (gps) path - makes (gps) put      
+         6 od ;:'gps smug utils' NB. opens all on (gps) path - makes (gps) put    
+         oep_ijod_=: 6&od  NB. define handy shortcut in JOD interface locale  
+
+ *  New test cases and changes to `jodtester` to make tests more portable.
 
 ### 1.1.0 - February 5, 2024 (Hashy McHashface Edition)
 

@@ -246,7 +246,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.1.0';36;'05 Feb 2024 10:17:03'
+JODVMD=:'1.1.1';11;'10 Feb 2024 12:01:53'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
@@ -1889,6 +1889,18 @@ case. 5 do.
     head=. head,LF,DUMPMSG4__MK , ": , 9!:14 '' 
     ok head,LF,jpathsep mdt
   end.
+
+case. 6 do.
+
+  NB. open entire put dictionary path - shallow recursive
+  NB. closes current dictionaries and makes first (y) put
+  if. isempty y do. jderr msg return. end.
+  uv=. 3 od '' [ opd=. }. did 0
+  uv=. <;._1 ; {: 1 { rv did ~ mdt=. od ;0{boxopen y
+  if. uv -: ,a: do. mdt NB. empty path
+  NB. attempt to reopen original dicts on error
+  elseif. badrc uv=. od uv [ 3 od '' do. uv [ od opd 
+  elseif.do. uv end. 
   
 case.do. jderr ERR001  NB. errmsg: invalid option(s)
 end.

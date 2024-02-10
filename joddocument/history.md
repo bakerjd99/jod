@@ -1,6 +1,10 @@
 general/joddocument - change history
 ====================================
 
+### 1.1.1 - February 10, 2024 (No-brainer Mea culpa Edition)
+
+ * `od` section edited for new `6 od` option.
+
 ### 1.1.0 - February 5, 2024 (Hashy McHashface Edition)
 
  * New appendix on running JOD tests added.

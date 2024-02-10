@@ -83,6 +83,9 @@ sg=: 3 : 0
 if. wex_ajod_ <'jodg' do. mls jodg else. jderr_ajod_ ERRIJOD01 end. 
 )
 
+NB. open entire (y) path
+oep=: 6&od
+
 NB. top (put dictionary) words, groups, suites in revision order
 tw=: revo
 tg=: 2&revo

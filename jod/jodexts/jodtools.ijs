@@ -1,6 +1,6 @@
-NB. sha256:d21bc531216cf701492303b3063dc865e1b12b719bedb9e87a47e582d7724de4
+NB. sha256:1aa56cb06c8cf558335e0eda9d48bdd14d1c7e9639b07834ac622e3e17b31abd
 NB. System: jodtools  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 1.1.0  Build Number: 36  Date: 05 Feb 2024 10:17:03
+NB. Version: 1.1.1  Build Number: 10  Date: 10 Feb 2024 12:01:53
 (9!:41)0
 coclass'ajodtools'
 coinsert'ajodutil'
@@ -20,7 +20,7 @@ GROUPSUITES=:<;._1 ' Groups Suites'
 IzJODtools=:<;._1 ' addgrp allnames allrefs delgrp fsen getrx hlpnl jodage lg locgrp mls noexp notgrp nt nw obnames pr refnames revonex swex usedby'
 JODLOADEND=:'NB.</JOD_Load_Scripts>'
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
-JODTOOLSVMD=:'1.1.0';36;'05 Feb 2024 10:17:03'
+JODTOOLSVMD=:'1.1.1';10;'10 Feb 2024 12:01:53'
 LF=:10{a.
 OK00400=:'load script saved ->'
 OK00401=:'file saved ->'
@@ -194,26 +194,26 @@ lg=:3 :0
 2 lg y
 :
 if.x-:2 do.
-o_hmI=.OK00404
-o_jsH=.2 _2 make y
+o_vrR=.OK00404
+o_fE1=.2 _2 make y
 else.
-o_hmI=.OK00405
-o_jsH=.2 mls y
+o_vrR=.OK00405
+o_fE1=.2 mls y
 end.
-'o_hdx o_uU0'=.2{.o_jsH
-if.o_hdx do.
-o_bXh=.18!:5''
+'o_qo5 o_dSG'=.2{.o_fE1
+if.o_qo5 do.
+o_yef=.18!:5''
 cocurrent'base'
-try.0 !:0 o_uU0
+try.0 !:0 o_dSG
 catchd.
-cocurrent o_bXh
+cocurrent o_yef
 (jderr ERR00404),y;13!:12''
 return.
 end.
-cocurrent o_bXh
-ok(y),o_hmI
+cocurrent o_yef
+ok(y),o_vrR
 else.
-o_jsH
+o_fE1
 end.
 )
 locgrp=:3 :0
