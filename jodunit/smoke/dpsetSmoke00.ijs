@@ -9,6 +9,7 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2024jan19
 NB. changes: -----------------------------------------------------
+NB. 24jul08 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 
@@ -18,8 +19,7 @@ NB.   od ;:'joddev jod utils' [ 3 od ''
 NB.   mls 'jodtester'
 load 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAdpsetSmoke00'
 
 testenvironment 'good';'JOD' NB. ;1  NB. yammer on 
 
@@ -69,4 +69,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

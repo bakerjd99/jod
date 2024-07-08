@@ -20,12 +20,12 @@ NB. 11may13 updated for J7/Linux version of JOD
 NB. 11may20 (jodtester) require'd
 NB. 11nov23 changed to use temporary locale
 NB. 18may24 upated for J 8.07
+NB. 24jul07 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAbasic999_=: 'AAAbasic999' [ coerase <'AAAbasic999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAdelBasic001'
 
 testenvironment 'good';'JOD'
 
@@ -68,4 +68,4 @@ NB. reopen any dictionaries
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAbasic999_
+coerase <testlocale_ijod_

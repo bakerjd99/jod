@@ -15,12 +15,12 @@ NB. 11nov18 updated for J7/Linux
 NB. 15jul09 renamed (didSmoke00) from (didBasic001) 
 NB.         run in junk locale
 NB. 18may23 updated to correspond to: rtt 'createtestdictionaries'
+NB. 24jul07 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAdidSmoke00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -49,4 +49,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

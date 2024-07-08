@@ -9,6 +9,7 @@ NB. created: 2012nov20
 NB. changes: -----------------------------------------------------
 NB. 18may21 ROOTFOLDER tests added
 NB. 18oct13 test nonexpansion of ROOTFOLDER added
+NB. 24jul08 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
@@ -16,8 +17,7 @@ require 'jodtester'
 NB. work in clear base or trash locale
 clear ''
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAdpsetBasic01'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -78,4 +78,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

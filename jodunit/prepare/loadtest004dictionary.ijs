@@ -12,6 +12,7 @@ NB. created: 2011nov22
 NB. changes: -----------------------------------------------------
 NB. 15jun26 user configured JODTEST folder
 NB. 18may31 updated for J 8.07
+NB. 24jun30 revise for J 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
@@ -19,8 +20,8 @@ require 'jodtester'
 NB. is JODTEST configured?
 -. '~JODTEST' -: jpath '~JODTEST'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+NB. (jodtestlocale) defined in jodprofile.ijs
+cocurrent jodtestlocale 'AAAloadtest004dictionary'
 
 testenvironment 'good';'JOD'
 
@@ -36,7 +37,7 @@ NB. open (testjod4) and clear
 er od tdict4
 1 [ obs del&> 1 }.&.> obs dnl&.> (#obs=.<"0 i. 5)#<''
 ((0!:0) :: 0:) <file
-cocurrent tmploc_AAAtrash999_
+cocurrent testlocale_ijod_
 1 [ 3 od ''
 
 NB. open test 1 dictionary fetch approx half words
@@ -91,4 +92,4 @@ er did ~ 0
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

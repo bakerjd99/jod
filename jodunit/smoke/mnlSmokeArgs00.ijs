@@ -4,17 +4,17 @@ NB. Checks all valid argument patterns for (mnl).
 NB.
 NB. assumes:
 NB.
-NB.   1) ...
+NB.   1) (testjod00) dictionary exists
 NB.
 NB. author:  John D. Baker
 NB. created: 2018jun02
 NB. changes: -----------------------------------------------------
+NB. 24jul08 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAmnlSmokeArgs00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -70,4 +70,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

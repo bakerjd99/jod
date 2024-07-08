@@ -8,6 +8,7 @@ NB. changes: -----------------------------------------------------
 NB. 11nov21 (rmroot) added - now runs on Windows and Linux
 NB. 17jun20 basic config test added
 NB. 18may30 (tpfx) test dictionary prefix added
+NB. 24jun28 revise for J 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 
@@ -17,8 +18,11 @@ NB. is JODTEST configured?
 NB. test utils load into (ijod) locale
 require 'jodtester'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+NB. (jodtestlocale) defined in jodprofile.ijs
+cocurrent jodtestlocale 'AAAdestroytestdictionaries'
+
+NB. coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
+NB. coinsert 'ijod'
 
 NB. define test utils
 testenvironment 'good';'JOD'
@@ -33,7 +37,7 @@ NB. unregister any testjod dictionaries
 1 [ 3 regd&> DICTS
 
 NB. destroy all current jodtest dictionaries
-NB. Note: the ~jodtest root must be set - use J configure 
+NB. Note: the ~JODTEST root must be set - use J configure 
 JODTESTROOT=: jpath '~JODTEST'
 
 NB. UNC windows network root
@@ -45,4 +49,6 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_
+
+NB. coerase <tmploc_AAAtrash999_

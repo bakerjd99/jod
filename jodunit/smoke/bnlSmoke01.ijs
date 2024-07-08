@@ -1,18 +1,22 @@
 NB.*bnlSmoke01 t-- (bnl) display pack/backup dates.
 NB.
 NB. assumes:
+NB.
+NB.   0) (JODTEST) defined: jpath '~JODTEST'
 NB. 
 NB.   1) (testjod00) dictionary 
-NB.      regd 'testjod00';jpath '~JODTEST/testjod00'
-NB.  
+NB.
+NB.      newd 'testjod00';jpath '~JODTEST/testjod00' NB. create 
+NB.      regd 'testjod00';jpath '~JODTEST/testjod00' NB. or register
+NB.       
 NB. created: 2019mar22
 NB. changes: -----------------------------------------------------
+NB. 24jun22 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAbnlSmoke01'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -36,4 +40,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

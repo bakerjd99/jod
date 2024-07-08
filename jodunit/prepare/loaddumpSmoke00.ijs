@@ -1,6 +1,8 @@
 NB.*loaddumpSmoke00 t-- dump script reloading smoke tests.
 NB.
 NB. assumes:
+NB.
+NB.   0) JOD dev dictionaries open
 NB. 
 NB.   1) (testjod00) dictionary 
 NB.      regd 'testjod00';jpath '~JODTEST/testjod00'
@@ -10,12 +12,13 @@ NB. created: 2015oct05
 NB. changes: -----------------------------------------------------
 NB. 18may26 updated for J 8.07 see: rtt 'createtestdictionaries'
 NB. 19mar14 adjusted for 18!:4 change
+NB. 24jun29 revise for J 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+NB. (jodtestlocale) defined in jodprofile.ijs
+cocurrent jodtestlocale 'AAAloaddumpSmoke00'
 
 NB. save smoke load test scripts
 rc [ 'rc loadSmoke'=: 1 get ;:'loadSmoketest0 loadSmoketest1'
@@ -49,4 +52,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

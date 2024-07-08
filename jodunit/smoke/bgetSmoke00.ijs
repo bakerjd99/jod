@@ -10,6 +10,7 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2019dec04
 NB. changes: -----------------------------------------------------
+NB. 24jul07 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 
@@ -19,8 +20,7 @@ NB.   od ;:'joddev jod utils' [ 3 od ''
 NB.   mls 'jodtester'
 load 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAbgetSmoke00'
 
 NB. save smoke load test scripts
 rc [ 'rc loadSmoke'=: 1 get ;:'loadSmoketest0 loadSmoketest1'
@@ -252,4 +252,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

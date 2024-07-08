@@ -7,12 +7,15 @@ NB. locale hence it lacks the usual test setup and tear down.
 NB.
 NB. assumes:
 NB.
+NB.   0) (jodtestlocale) used to create test locale
+NB.
 NB.   1) (testjod00) dictionary
 NB.
 NB. author:  John D. Baker
 NB. created: 2015aug06
 NB. changes: -----------------------------------------------------
 NB. 18may24 update for J 8.07 see: rtt 'createtestdictionaries'
+NB. 24jun29 revise for J 9.6 (cocreate/coerase) changes
 
 >0{od 'testjod00' [ 3 od ''
 
@@ -35,8 +38,9 @@ boxSTUFF=: (<BOOLLIST),(<FLOATLIST),<SYMTAB
 
 NB. store locale words if present
 (3 : 0)''
-if. #nl_AAAsmoke999_ i.4 do.
-  >0{'AAAsmoke999' put nl_AAAsmoke999_ i.4
+nlc=. 'nl_',testlocale_ijod_,'_'
+if. # ons=. ".nlc,' i.4' do.
+  >0{testlocale_ijod_ put ons
 elseif. #nl i.4 do.
   >0{put nl i.4
 elseif. do.

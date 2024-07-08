@@ -6,12 +6,12 @@ NB.   0) configured J test folder JODTEST, standard J utils (dir, dirtree)
 NB.
 NB. created: 2024feb09
 NB. changes: -----------------------------------------------------
+NB. 24jul08 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAodSmoke00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -96,4 +96,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

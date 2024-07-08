@@ -10,6 +10,7 @@ NB. 11nov21 (rmroot) added - adjusted to run on both window & linux
 NB. 17jun20 test dictionaries branded - more added
 NB. 18may21 insure ~JODTEST directory exists
 NB. 18may30 add (tpfx) test dictionary name prefix
+NB. 24jun28 revise for J 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 
@@ -19,9 +20,8 @@ NB. is JODTEST configured?
 NB. tester utils load into (ijod) locale
 require 'jodtester'
 
-NB. create temporary working locale
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+NB. (jodtestlocale) defined in jodprofile.ijs
+cocurrent jodtestlocale 'AAAcreatetestdictionaries'
 
 NB. define test utils
 testenvironment 'good';'JOD'
@@ -139,4 +139,5 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_
+

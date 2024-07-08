@@ -5,15 +5,13 @@ NB. changes: -----------------------------------------------------
 NB. 07dec05 now using (testjod)
 NB. 11nov28 updated for J7/Linux
 NB. 18may31 updated for J 8.07
+NB. 24jul08 revised for j 9.6 (cocreate/coerase) changes
 
 NB.*ERROR=> (jodage) was returning _1 for day intervals. 
 NB. date: 16 Oct 2007 09:57:04
 
 cocurrent 'base'
-
-0 = (4!:0) <'JODCLEAROK_ijod_'
-1 -: ".'JODCLEAROK_ijod_'
-clear ''
+cocurrent jodtestlocale 'AAAjodageSmokeDays00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -29,7 +27,7 @@ a=. y
 a * 10
 )
 
-er put 'zeroage'
+er tmploc put 'zeroage'
 
 age=: jodage 'zeroage'
 
@@ -40,3 +38,6 @@ NB.*FIX=> rounded yyyymmdd.ff dates to integers before calling (dayage) in (joda
 
 NB. -{TEST SUCCESSFUL}-
 ereopen 0
+
+cocurrent 'base'
+coerase <testlocale_ijod_

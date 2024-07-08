@@ -13,6 +13,7 @@ NB. changes: -----------------------------------------------------
 NB. 11nov23 removed any (oldjar) dictionary
 NB. 15jun26 user configured JODTEST folder
 NB. 18may31 updated for J 8.07
+NB. 24jun30 revise for J 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
@@ -20,8 +21,8 @@ require 'jodtester'
 NB. is JODTEST configured?
 -. '~JODTEST' -: jpath '~JODTEST'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+NB. (jodtestlocale) defined in jodprofile.ijs
+cocurrent jodtestlocale 'AAAloadtest002dictionary'
 
 testenvironment 'good';'JOD'
 
@@ -43,7 +44,7 @@ NB. delete all words, groups, tests, suites, macros
 
 NB. load dump script
 ((0!:0) :: 0:) <file
-cocurrent tmploc_AAAtrash999_
+cocurrent testlocale_ijod_
 
 NB. pack dictionary to remove "dead" file components
 er packd tdict
@@ -62,4 +63,4 @@ er did ~ 0
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

@@ -1,4 +1,4 @@
-NB.*rxsSmoke00 t-- (rxs) argument smoke tests.
+NB.*rxsSmoke00 t-- FAILED 24jul08 (rxs) argument smoke tests.
 NB.
 NB. assumes:
 NB. 
@@ -15,6 +15,7 @@ NB. changes: -----------------------------------------------------
 NB. 19jan07 add short/long document text tests
 NB. 19feb12 add empty pattern - empty dictionary tests
 NB. 19feb13 add more search patterns
+NB. 24jul08 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 
@@ -23,8 +24,7 @@ NB. is JODTEST configured?
 
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAArxsSmoke00'
 
 NB. save smoke load test scripts
 NB. rc [ 'rc loadSmoke'=: 1 get ;:'loadSmoketest0 loadSmoketest1'
@@ -92,7 +92,7 @@ NB. Option 1: search for and return first match in texts
 NB. basic search of nonbinary word text
 NB. (rxs) only search texts - ignore binary data
 NB. default is first match 
-er pat04 rxs }. dnl '' 
+er pat04 rxs }. dnl '' NB. NOTE: FAILTEST: test fail j 9.6 24jul08
 
 NB. same as previous
 er (pat04;0) rxs }. dnl '' 
@@ -253,4 +253,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

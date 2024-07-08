@@ -10,12 +10,12 @@ NB. created: 2015jul31
 NB. changes: -----------------------------------------------------
 NB. 18oct12 adjusted for 18!:4 change
 NB. 19dec03 test for invalid J names and embedded locales added
+NB. 24jul07 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAbnlSmoke00'
 
 NB. save smoke load test scripts
 rc [ 'rc loadSmoke'=: 1 get ;:'loadSmoketest0 loadSmoketest1'
@@ -613,4 +613,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

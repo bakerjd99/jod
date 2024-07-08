@@ -10,12 +10,12 @@ NB.      regd 'testjod00';jpath '~JODTEST/testjod00' NB. register extant
 NB.  
 NB. created: 2024feb03
 NB. changes: -----------------------------------------------------
+NB. 24jul08 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAArestdSmoke00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -106,4 +106,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

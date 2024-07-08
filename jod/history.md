@@ -1,7 +1,43 @@
-
 general/jod - change history
-============================
+=============================
 
+### 1.1.2 - (wip) July 7, 2024 (Permanent Locale Edition)
+
+ *  (jodon) and (jodoff) have been changed to handle permanent
+    locales introduced in J 9.6. (jodoff) no longer destroys JOD
+    class locales. It now simply closes open dictionaries and removes
+    (ijod), the JOD interface locale from the base path. (jodon)
+    restores (ijod) to the base path. The now permanent JOD class
+    locales (ajod,ajoddob,ajodmake,ajodstore,ajodtools,ajodutil)
+    are not changed by (jodon) and (jodoff). 
+ 
+    To create or refresh JOD class locales you must:
+
+         load 'general/jod'
+		 
+    This change is backward compatible and runs in J's before 9.6.
+	
+ *  Many JOD test scripts use named locales. They were created,
+    typically loaded with JOD (get)'s, executed, and then deleted
+    to clean up test artifacts. This pattern will not work in J 9.6
+    as locales are permanent unless explicitly created as temporary.
+    The backward compatible (jodprofile.ijs) verb (jodtestlocale) 
+    maintains this pattern and many test scripts at:
+
+         https://github.com/bakerjd99/jod/tree/master/jodunit
+	
+    illustrate its use.
+
+ *  `CLEARVOBS_ijod_` can be used to control vestigal JOD object
+    removal during loads. In rare cases the verb (clearvobs) might
+    select numbered user locales. This is particularily likely if
+    the user locale is empty. By setting `CLEARVOBS` to 0 in 
+    (jodprofile.ijs) JOD will not remove vestigal locales. With 
+    `CLEARVOBS` set to 0 repeated (load 'general/jod') loads will 
+    orphan JOD objects. As collisions with user locales are unlikely
+    the default is 1.
+		 
+		 
 ### 1.1.1 – February 10, 2024 (No-brainer Mea culpa Edition)
 
  *  A new `od` option opens the entire put dictionary path. This

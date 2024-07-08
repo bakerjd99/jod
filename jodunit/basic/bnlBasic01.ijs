@@ -10,12 +10,13 @@ NB. created: 2011dec20
 NB. changes: -----------------------------------------------------
 NB. 18may24 updated for J 8.07 see: rtt 'createtestdictionaries'
 NB. 18mar22 added (packd) to insure enough backups exist for test
+NB. 24jun30 revise for J 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAbasic999_=: 'AAAbasic999' [ coerase <'AAAbasic999'
-coinsert 'ijod'
+NB. (jodtestlocale) defined in jodprofile.ijs
+cocurrent jodtestlocale 'AAAbnlBasic01'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -71,4 +72,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAbasic999_
+coerase <testlocale_ijod_

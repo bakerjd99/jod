@@ -1,6 +1,8 @@
 NB.*abvSmoke00 t-- (abv) argument smoke tests.
 NB.
 NB. assumes:
+NB.
+NB.   0) JOD dev dictionaries open
 NB. 
 NB.   1) (testjod00) dictionary 
 NB.      regd 'testjod00';jpath '~JODTEST/testjod00'
@@ -10,6 +12,7 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2020nov26
 NB. changes: -----------------------------------------------------
+NB. 24jun29 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 
@@ -19,8 +22,7 @@ NB.   od ;:'joddev jod utils' [ 3 od ''
 NB.   mls 'jodtester'
 load 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAabvSmoke00'
 
 NB. save smoke load test scripts
 rc [ 'rc loadSmoke'=: 1 get ;:'loadSmoketest0 loadSmoketest1'
@@ -140,4 +142,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_
