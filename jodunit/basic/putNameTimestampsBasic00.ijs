@@ -8,6 +8,7 @@ NB. author:  John D. Baker
 NB. created: 2015jul02
 NB. changes: -----------------------------------------------------
 NB. 18may24 updated for J 8.07
+NB. 24jul09 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
@@ -15,9 +16,7 @@ require 'jodtester'
 NB. we need a configured directory 
 -. (] -: jpath) '~JODTEST'
 
-
-coclass tmploc_AAAbasic999_=: 'AAAbasic999' [ coerase <'AAAbasic999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAputNameTimestampsBasic00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -69,7 +68,7 @@ dtpath2=: (tslash2_ajod_ jpath '~JODTEST'),dtname2
 
 NB. load dump of first dictionary
 ((0!:0) :: 0:) {:df
-1 [ cocurrent 'AAAbasic999'
+1 [ cocurrent testlocale_ijod_
 
 NB. all timestamps from both dictionaries must match
 ts2=: getallts__MK__JODobj 0
@@ -87,4 +86,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAbasic999_
+coerase <testlocale_ijod_

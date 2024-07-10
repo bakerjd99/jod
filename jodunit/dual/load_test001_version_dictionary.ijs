@@ -5,6 +5,7 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2023jan24
 NB. changes: -----------------------------------------------------
+NB. 24jul09 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
@@ -12,8 +13,7 @@ require 'jodtester'
 NB. is JODTEST configured?
 -. '~JODTEST' -: jpath '~JODTEST'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAloadtest001versiondictionary'
 
 NB. JOD source words - merges path dictionaries
 NB. Occasionally remake this dump to track changes in JOD
@@ -33,8 +33,8 @@ testenvironment 'good';'JOD'
 NB. retains string before first occurrence of (x)
 beforestr=:] {.~ 1&(i.~)@([ E. ])
 
-NB. name embeds current running version of J
-tpfx=: 'testjod', '/' beforestr 9!:14 ''
+NB. WARNING: name embeds current running version of J
+tpfx=: 'testjod', ('/' beforestr 9!:14 '') -. '.-'
 
 tdict=: tpfx,'01'
 
@@ -45,7 +45,7 @@ NB. delete all words, groups, tests, suites, macros
 
 NB. load test dump script 
 ((0!:100) :: 0:) TestDictionaryDump
-cocurrent tmploc_AAAtrash999_
+cocurrent testlocale_ijod_
 
 NB. pack dictionary to remove "dead" file components
 er packd tdict
@@ -57,7 +57,7 @@ er 0 8 put ({."1 S) ,. (80&<."0 #&> {:"1 S) {.&.> {:"1 S
 
 NB. merge in JOD source
 ((0!:0) :: 0:) JodSourcePathDump
-cocurrent tmploc_AAAtrash999_
+cocurrent testlocale_ijod_
 
 NB. generate all cross references - ignoring errors as many words
 NB. are missing and many ambigous names are improperly declared.
@@ -84,4 +84,4 @@ er showpass did ~ 0
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

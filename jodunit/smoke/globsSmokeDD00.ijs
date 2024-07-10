@@ -108,8 +108,7 @@ NB. clear ''
 
 NB. test in temporary junk locale - not all JOD
 NB. tests can be performed in junk locales some must run in base
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAglobsSmokeDD00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -121,4 +120,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

@@ -5,12 +5,12 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2018may24
 NB. changes: -----------------------------------------------------
+NB. 24jul10 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAglobsSmokeDoc00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -29,14 +29,14 @@ scopeless=. <'cis_scoping_is_so_un_woke'
 )
 
 NB. mixed assignment triggers error
-ner globs 'mixedassignment_AAAsmoke999_'
+ner globs 'mixedassignment_',testlocale_ijod_,'_'
 
 NB. override tag allows mixed assignments
-er globs 'confusing_AAAsmoke999_'
+er globs 'confusing_',testlocale_ijod_,'_'
 
 
 NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

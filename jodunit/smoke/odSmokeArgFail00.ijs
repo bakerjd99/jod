@@ -5,16 +5,15 @@ NB. created: October 1999
 NB. changes: -----------------------------------------------------
 NB. 11nov28 updated for J7/Linux
 NB. 18may31 updated for J 8.07
+NB. 24jul10 revised for j 9.6 (cocreate/coerase) changes
 
 NB. The following inputs should result in error messages (newd).
 
 cocurrent 'base'
-
-0 = (4!:0) <'JODCLEAROK_ijod_'
-1 -: ".'JODCLEAROK_ijod_'
-clear ''
-
 require 'jodtester'
+
+cocurrent jodtestlocale 'AAAodSmokeArgFail00'
+
 NB. expecting failures
 testenvironment 'bad';'JOD'
 NB. -{TEST START}-
@@ -52,3 +51,6 @@ er od u: 'boo'
 
 NB. -{TEST SUCCESSFUL}-
 ereopen 0
+
+cocurrent 'base'
+coerase <testlocale_ijod_

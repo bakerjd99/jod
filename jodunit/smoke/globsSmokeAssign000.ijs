@@ -9,12 +9,12 @@ NB. changes: -----------------------------------------------------
 NB. 17may12 finally fix this nuisance
 NB. 17may15 add override tag (^:)=:
 NB. 18may23 change override tag to (<:)=: - see noun MIXEDOVER
+NB. 24jul10 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAglobsSmokeAssign000'
 
 testenvironment 'good';'JOD';1
 NB. -{TEST START}-
@@ -62,21 +62,21 @@ NB. globs looks for word values in base locale
 NB. by default look in test locale for this test
 
 NB. returns correct result
-er globs 'mixedIndirectAssignOk0_AAAsmoke999_'
-er 11 globs 'mixedIndirectAssignOk0_AAAsmoke999_'
-er globs 'mixedIndirectAssignOk1_AAAsmoke999_'
-er 11 globs 'mixedIndirectAssignOk1_AAAsmoke999_'
+er globs 'mixedIndirectAssignOk0_',(testlocale_ijod_),'_'
+er 11 globs 'mixedIndirectAssignOk0_',(testlocale_ijod_),'_'
+er globs 'mixedIndirectAssignOk1_',(testlocale_ijod_),'_'
+er 11 globs 'mixedIndirectAssignOk1_',(testlocale_ijod_),'_'
 
 NB. detect mixed indirect assignment name use
-ner globs 'mixedIndirectAssignError0_AAAsmoke999_'
-ner globs 'mixedIndirectAssignError1_AAAsmoke999_'
+ner globs 'mixedIndirectAssignError0_',(testlocale_ijod_),'_'
+ner globs 'mixedIndirectAssignError1_',(testlocale_ijod_),'_'
 
 NB. override mixed assignments
-er globs 'OverrideIndirectAssign1_AAAsmoke999_'
-er 11 globs 'OverrideIndirectAssign1_AAAsmoke999_'
+er globs 'OverrideIndirectAssign1_',(testlocale_ijod_),'_'
+er 11 globs 'OverrideIndirectAssign1_',(testlocale_ijod_),'_'
 
 NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

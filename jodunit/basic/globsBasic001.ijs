@@ -7,13 +7,12 @@ NB. author:  John D. Baker
 NB. changes: -----------------------------------------------------
 NB. 11nov23 updated for J7/Linux
 NB. 18may23 updated to correspond to: rtt 'createtestdictionaries'
+NB. 24jul09 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-
-coclass tmploc_AAAbasic999_=: 'AAAbasic999' [ coerase <'AAAbasic999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAglobsBasic001'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -41,4 +40,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAbasic999_
+coerase <testlocale_ijod_

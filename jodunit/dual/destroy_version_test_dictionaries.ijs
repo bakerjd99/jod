@@ -5,6 +5,7 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2023jan24
 NB. changes: -----------------------------------------------------
+NB. 24jul09 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 
@@ -14,8 +15,7 @@ NB. is JODTEST configured?
 NB. test utils load into (ijod) locale
 require 'jodtester'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAdestroyversiontestdictionaries'
 
 NB. define test utils
 testenvironment 'good';'JOD'
@@ -24,8 +24,8 @@ NB. -{TEST START}-
 NB. retains string before first occurrence of (x)
 beforestr=:] {.~ 1&(i.~)@([ E. ])
 
-NB. name embeds current running version of J
-tpfx=: 'testjod', '/' beforestr 9!:14 ''
+NB. WARNING: name embeds current running version of J 
+tpfx=: 'testjod', ('/' beforestr 9!:14 '') -. '.-'
 
 NB. unregister any testjod dictionaries
 >{. DICTS=: 4 od ''
@@ -46,4 +46,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

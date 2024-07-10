@@ -1,4 +1,4 @@
-NB.*dpsetVerOld00 t--  set read/write  statue  on  older  J  test
+NB.*dpsetVerOld00 t--  OUTDATED 24jul09  set read/write  statue  on  older  J  test
 NB. dictionaries.
 NB.
 NB. Set READWRITE  and READONLY  status on selected  dictionaries
@@ -12,12 +12,12 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2023jan24
 NB. changes: -----------------------------------------------------
+NB. 24jul09 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAdpsetVerOld00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -65,4 +65,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

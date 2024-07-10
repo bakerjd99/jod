@@ -7,13 +7,12 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2018oct14
 NB. changes: -----------------------------------------------------
+NB. 24jul10 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAApackdStress00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -33,4 +32,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

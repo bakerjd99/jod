@@ -1,4 +1,4 @@
-NB.*dpsetVerNew00  t-- (dpset)  binary  compatibility new  system
+NB.*dpsetVerNew00  t-- OUTDATED 24jul09 (dpset)  binary  compatibility new  system
 NB. checks.
 NB.
 NB. (dpset)   cannot   change  dictionary   parameters   of   old
@@ -8,19 +8,19 @@ NB.
 NB. assumes:
 NB.
 NB.   1) Old test dictionaries exist run (create_version_test_dictionaries)
-NB.      on and older J.
+NB.      on an older J.
 NB.
 NB.   2) Run test (dpsetVerOld00) to set READONLY on older dicts
 NB.
 NB. author:  John D. Baker
 NB. created: 2023jan25
 NB. changes: -----------------------------------------------------
+NB. 24jul09 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAdpsetVerNew00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -73,4 +73,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

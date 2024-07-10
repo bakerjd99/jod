@@ -1,4 +1,4 @@
-NB.*putSmokeVerNewA0 t-- (put) behaviour  for binary incompatible
+NB.*putSmokeVerNewA0 t-- OUTDATED 24jul10 (put) behaviour  for binary incompatible
 NB. dictionaries.
 NB.
 NB. Only two JOD verbs (put) and (globs) write to binary J files.
@@ -18,13 +18,12 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2023jan24
 NB. changes: -----------------------------------------------------
+NB. 24jul10 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAputSmokeVerNewA0'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -32,7 +31,7 @@ NB. -{TEST START}-
 NB. retains string (y) after last occurrence of (x)
 afterlaststr=:] }.~ #@[ + 1&(i:~)@([ E. ])
 
-NB. HARDCODE: prior J version bolted in cowboy - beware
+NB. WARNING: HARDCODE: prior J version bolted in cowboy - beware
 tdict=: 'testjodj903'
 
 NB. get names of prior J dictionaries they may
@@ -57,4 +56,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_
