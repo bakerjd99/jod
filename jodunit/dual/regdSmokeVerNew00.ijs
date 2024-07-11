@@ -1,4 +1,4 @@
-NB.*regdSmokeVerNew00   t--   (regd)    behaviour    for   binary
+NB.*regdSmokeVerNew00   t--   OUTDATED 24jul11 (regd)    behaviour    for   binary
 NB. incompatible dictionaries.
 NB.
 NB. J 9.04 (2023) changed the internal representation of extended
@@ -20,13 +20,12 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2023jan24
 NB. changes: -----------------------------------------------------
+NB. 24jul11 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAregdSmokeVerNew00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -62,4 +61,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

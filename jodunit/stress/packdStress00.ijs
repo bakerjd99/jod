@@ -1,4 +1,4 @@
-NB.*packdStress00 t-- pack very large dictionary.
+NB.*packdStress00 t-- (packd) very large dictionary.
 NB.
 NB. assumes:
 NB.
@@ -11,6 +11,9 @@ NB. 24jul10 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
+
+NB. is JODTEST configured?
+-. '~JODTEST' -: jpath '~JODTEST'
 
 cocurrent jodtestlocale 'AAApackdStress00'
 

@@ -6,13 +6,12 @@ NB. (JODobj) suffix.
 NB.
 NB. assumes:
 NB.
-NB.   1) first test assumption
-NB.   2) second test assumption
-NB.           ....
+NB.   1) ~JODTEST is configured
 NB.
 NB. author:  John D. Baker
 NB. created: 2019feb08
 NB. changes: -----------------------------------------------------
+NB. 24jul10 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 
@@ -21,8 +20,7 @@ NB. is JODTEST configured?
 
 require 'jodtester'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAArxsgetSmoke00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -115,4 +113,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_

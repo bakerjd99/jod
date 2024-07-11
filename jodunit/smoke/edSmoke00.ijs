@@ -14,12 +14,12 @@ NB. created: 2015jul29
 NB. changes: -----------------------------------------------------
 NB. 18may23 updated to correspond to: rtt 'createtestdictionaries'
 NB. 19dec07 ed/bget tests added 
+NB. 24jul10 revised for j 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
-coclass tmploc_AAAsmoke999_=: 'AAAsmoke999' [ coerase <'AAAsmoke999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAedSmoke00'
 
 NB. save smoke load test scripts
 rc [ 'rc loadSmoke'=: 1 get ;:'loadSmoketest0 loadSmoketest1'
@@ -93,4 +93,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAsmoke999_
+coerase <testlocale_ijod_

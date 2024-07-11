@@ -1,4 +1,4 @@
-NB.*makeStress00 t-- dump very large dictionary.
+NB.*makeStress00 t-- (make) dump very large dictionary.
 NB.
 NB. assumes:
 NB.
@@ -7,13 +7,15 @@ NB.
 NB. author:  John D. Baker
 NB. created: 2018oct14
 NB. changes: -----------------------------------------------------
+NB. 24jul11 revise for J 9.6 (cocreate/coerase) changes
 
 cocurrent 'base'
 require 'jodtester'
 
+NB. is JODTEST configured?
+-. '~JODTEST' -: jpath '~JODTEST'
 
-coclass tmploc_AAAtrash999_=: 'AAAtrash999' [ coerase <'AAAtrash999'
-coinsert 'ijod'
+cocurrent jodtestlocale 'AAAmakeStress00'
 
 testenvironment 'good';'JOD'
 NB. -{TEST START}-
@@ -36,4 +38,4 @@ NB. -{TEST SUCCESSFUL}-
 ereopen 0
 
 cocurrent 'base'
-coerase <tmploc_AAAtrash999_
+coerase <testlocale_ijod_
