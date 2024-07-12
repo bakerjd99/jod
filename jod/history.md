@@ -1,7 +1,10 @@
 general/jod - change history
 =============================
 
-### 1.1.2 - (wip) July 7, 2024 (Permanent Locale Edition)
+### 1.1.2 - (wip) July 12, 2024 (Permanent Locale Edition)
+
+ *  JOD now requires J's after version 9.02. 9.02 introduced
+    direct definitions. Some JOD words now use direct definitions.
 
  *  (jodon) and (jodoff) have been changed to handle permanent
     locales introduced in J 9.6. (jodoff) no longer destroys JOD
@@ -26,7 +29,8 @@ general/jod - change history
 
          https://github.com/bakerjd99/jod/tree/master/jodunit
 	
-    illustrate its use.
+    illustrate its use. All JOD test scripts are distributed in
+    in the `~addons/general/jodsource` addon.
 
  *  `CLEARVOBS_ijod_` can be used to control vestigal JOD object
     removal during loads. In rare cases the verb (clearvobs) might
