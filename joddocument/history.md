@@ -1,6 +1,12 @@
 general/joddocument - change history
 ====================================
 
+### 1.1.2 - July 14, 2024 (Permanent locale edition)
+
+ * Minor edits and additions. The location of `jod.pdf` LaTeX
+   is now called out. References to J's before 9.02 have been
+   removed. JOD now requires J 9.02 or later.
+
 ### 1.1.1 - February 10, 2024 (No-brainer Mea culpa Edition)
 
  * `od` section edited for new `6 od` option.

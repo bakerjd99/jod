@@ -1,7 +1,7 @@
 general/jod - change history
 =============================
 
-### 1.1.2 - (wip) July 12, 2024 (Permanent Locale Edition)
+### 1.1.2 - July 14, 2024 (Permanent Locale Edition)
 
  *  JOD now requires J's after version 9.02. 9.02 introduced
     direct definitions. Some JOD words now use direct definitions.

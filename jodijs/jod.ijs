@@ -246,7 +246,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.1.1';11;'10 Feb 2024 12:01:53'
+JODVMD=:'1.1.2';3;'14 Jul 2024 11:01:18'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
@@ -746,6 +746,32 @@ ijs=. (read jpath y)-.CR
 )
 
 
+clearvobs=:3 : 0
+
+NB.*clearvobs v-- vestigal numbered JOD object locales.
+NB.
+NB. monad:  blclNLocales =. clearvobs uuIgnore
+
+NB. current numbered locales !(*)=. conl nl
+obl=. conl 1
+
+NB. words in numbered locales uses j (nl) utility
+wnl=. ".&> 'nl_'&,&.> obl ,&.> <'_ i.4'
+
+NB. empty locales are PROBABLY JOD scratch objects
+sols=. *./"1 [ 0 = #&> wnl
+
+NB. locales with these names are PROBABLY JOD objects
+jobs=. *./"1 (;:'MK SO ST UT') e."1 wnl
+
+NB. locales with these names are JOD directory objects
+dobs=. *./"1 (;:'BAKNUM DIDNUM DNAME RPATH RW UF SYS WF LIBSTATUS NPPFX JCREATEVER') e."1 wnl
+
+NB. JOD vestigal objects
+obl #~ sols +. jobs +. dobs
+)
+
+
 createjod=:3 : 0
 
 NB.*createjod  v--  dictionary  object  creation verb. (y)  is  a
@@ -757,6 +783,11 @@ NB. monad:  paRc =. createjod ba
 NB.
 NB.   JD=: conew 'ajod'
 NB.   createjod__JD JD
+
+NB. clean up vestigal dead JOD objects from prior loads
+if. wex <'CLEARVOBS_ijod_' do. 
+  if. 1-:CLEARVOBS_ijod_ do. coerase clearvobs 0 end. 
+end.
 
 NB. set default master, profile and user if they don't exist
 if. -.wex <'JMASTER' do. JMASTER=:jodsystempath 'jmaster' end.
@@ -979,31 +1010,6 @@ case. REFERENCE do.
   end.
 case. do. jderr msg
 end.
-)
-
-
-destroyjod=:3 : 0
-
-NB.*destroyjod v--  dictionary  object  destroy  verb.  This  verb
-NB. erases the JOD (ijod) locale user interface.
-NB.
-NB. monad:  destroyjd uuIgnore
-
-NB. close any open dictionaries
-3 od ''
-
-NB. erase current direct _n_ ijod locale references
-NB. (*)=. IZJODALL JODEXT
-(4!:55) IZJODALL ,&.> locsfx 'z'
-
-NB. destroy sub-objects !(*)=. ST MK UT SO
-coerase ST,MK,UT,SO
-
-NB. destroy any JOD class extension objects
-coerase JODEXT
-
-NB. return self reference
-18!:5 ''
 )
 
 
@@ -1558,6 +1564,58 @@ if. #y do.
   JNAME rxall ; y ,&.> ' '
 else. '' 
 end.
+)
+
+
+jodinit=:3 : 0
+
+NB.*jodinit v-- start JOD - 1 if successful and 0 otherwise.
+NB.
+NB. Tests the current J environment and creates JOD objects.
+NB.
+NB. monad:  paRc =. jodinit uuIgnore
+
+NB. format of (9!:14) has changed without warning in the past
+jvn=. 9!:14 ''
+
+NB. first value before '/'  or '-' is the version number (we hope).
+jvn=. , (<./jvn i. '-/') {. jvn
+if. #jvn do. jvn=. 0 ". jvn #~ jvn e. '0123456789' else. jvn=. 0 end.
+
+NB. allow older system to run but nag the user to upgrade
+if. jvn < 902 do.
+  0 0 $ (1!:2&2) 'WARNING: JOD works best with current J 9.x systems - upgrade!'
+end.
+
+sp=. ] [ 1!:2&2
+if. jvn < 902 do.
+  msg=. 'JOD requires J 9.02 or later.'
+  msg=. msg,LF, 'J is freely available at www.jsoftware.com'
+  0 [ sp msg,LF, 'Download and install J 9.x and then reinstall JOD.'
+  return.
+end.
+
+NB. spot check of J environment - we need core J utilities
+NB. if the following are not present JOD will not work
+if. _1 e. (4!:0);:'load conew coclass coerase coinsert cocurrent copath conl jpath UNAME IFWIN IFUNIX' do.
+  msg=. 'JOD depends on core J load and class utilities.'
+  0 [ sp msg=. msg,LF,'Load J with a standard profile to use JOD.'
+  return.
+end.
+
+NB. HARDCODE: JODobj_ijod_ ijod ajod ajodtools base
+NB. if jod classes are loaded create JOD objects
+if. -.(<'ajod') e. 18!:1 ] 0 do. 0 
+else.
+  JODobj_ijod_=: jod=. conew 'ajod'
+  if. createjod__jod jod do. 
+    'base' copath~ ~.'ijod';copath 'base' 
+  else. 
+    (4!:55) <'JODobj_ijod_' 
+  end.
+end.
+
+0 = (4!:0) <'JODobj_ijod_'
 )
 
 NB. standarizes J path delimiter to unix/linux forward slash

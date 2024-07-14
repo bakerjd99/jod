@@ -51,18 +51,10 @@ OKIJOD00=:  'no matches'
 OKIJOD01=:  'no objects'
 
 NB. add delete objects from current group or current suite
-ag=: 3 : 0
-if. wex_ajod_ <'jodg' do. jodg addgrp y else. jderr_ajod_ ERRIJOD00 end.
-)
-as=: 3 : 0
-if. wex_ajod_ <'jods' do. (jods;3) addgrp y else. jderr_ajod_ ERRIJOD01 end.
-)
-dg=: 3 : 0
-if. wex_ajod_ <'jodg' do. jodg delgrp y else. jderr_ajod_ ERRIJOD00 end.
-)
-ds=: 3 : 0
-if. wex_ajod_ <'jods' do. (jods;3) delgrp y else. jderr_ajod_ ERRIJOD01 end. 
-)
+ag=: {{if. wex_ajod_ <'jodg' do. jodg addgrp y else. jderr_ajod_ ERRIJOD00 end.}}
+as=: {{if. wex_ajod_ <'jods' do. (jods;3) addgrp y else. jderr_ajod_ ERRIJOD01 end.}}
+dg=: {{if. wex_ajod_ <'jodg' do. jodg delgrp y else. jderr_ajod_ ERRIJOD00 end.}}
+ds=: {{if. wex_ajod_ <'jods' do. (jods;3) delgrp y else. jderr_ajod_ ERRIJOD01 end.}} 
    
 NB. referenced words not in current group
 nx=: 3 : 0
@@ -79,9 +71,7 @@ y usedby }. gn
 )
    
 NB. generate current group and save load script
-sg=: 3 : 0
-if. wex_ajod_ <'jodg' do. mls jodg else. jderr_ajod_ ERRIJOD01 end. 
-)
+sg=: {{if. wex_ajod_ <'jodg' do. mls jodg else. jderr_ajod_ ERRIJOD01 end.}}
 
 NB. open entire (y) path
 oep=: 6&od
@@ -166,8 +156,8 @@ if. badrc_ajod_ r=. revo '' do. r return. end.
 )
 
 NB. handy cl doc helpers
-docscr=: 3 : 'ctl_ajod_ (61;0;0;''NB.'') docct2__UT__JODobj ];._1 LF,y-.CR'
-doctxt=: 3 : 'ctl_ajod_ (61;0;0;'''') docct2__UT__JODobj ];._1 LF,y-.CR'
+docscr=: {{ctl_ajod_ (61;0;0;'NB.') docct2__UT__JODobj ];._1 LF,y-.CR}}
+doctxt=: {{ctl_ajod_ (61;0;0;'') docct2__UT__JODobj ];._1 LF,y-.CR}}
 
 NB. display noun on screen and return noun value
 showpass=:] [ 1!:2&2
@@ -219,6 +209,33 @@ jps=: [: 0!:001 [: < jpath
 NB. number of objects - used by various (utils) macros (sizeput, ageput, ...) if present
 NOBS=: 10
 
+NB. show (1) or suppress (0) dyadic (smoutput)
+SHOWSMO=: 1
+
+NB. add put current dictionary to save imex list
+svix=: {{if. (0=nc <'SAVEIMEX_ijod_') *. op=. >0{dl=. did 0 do. SAVEIMEX_ijod_=:~.(1{dl),SAVEIMEX_ijod_ elseif. op do. SAVEIMEX_ijod_=: 1{dl else. dl end.}}
+
+NB. create temporary named and labeled jod test locales for j 9.6 and beyond
+NB. NOTE: WARNING: (jodtestlocale) is used in most JOD test scripts.
+(3 : 0) ''
+if. 9.6 <: jvn_ajod_'' do.
+jodtestlocale=: {{'ijod' jodtestlocale y 
+: 
+((;:x),copath y) copath y [ _1 cocreate <y [ coerase <y=. y -. ' '
+('tmploc_',y,'_')=: y [ testlocale_ijod_=: y}}
+else.
+jodtestlocale=: {{'ijod' jodtestlocale y 
+: 
+((;:x),copath y) copath y [ cocreate <y [ coerase <y=. y -. ' '
+('tmploc_',y,'_')=: y [ testlocale_ijod_=: y}}
+end.
+'jodtestlocale defined'
+)
+
+NB. clear vestigal JOD objects during load - this value must exist
+NB. and match 1 for vestigal objects to be cleared by (createjod)
+CLEARVOBS=: 1
+
 NB. dump drive - used by (utils) macro (dumpput) if present
 NB. DUMPWINDRV=: 'h:'
 
@@ -232,6 +249,9 @@ NB. CLEARJDICS=: ;:''
 NB. set a preferred local pandoc  - used by (jodliterate) - try (where pandoc)
 NB. PREFERREDPANDOC=: 'C:\Users\genric.user\AppData\Local\Pandoc\pandoc'
 NB. PREFERREDPANDOC=: '/usr/local/bin/pandoc'
+
+NB. list tests without 'jodtestlocale'
+noc=: {{list tests -. 0 {"1 [ 1 pick ('jodtestlocale';1) rxs tests=. }. 1 dnl ''}}
 
 NB. JOD verbs typically run from the base locale 
 cocurrent 'base'

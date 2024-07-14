@@ -1,7 +1,5 @@
 NB.*docSmoke00 t-- (doc) smoke test.
 NB.
-NB. This test ..... formatted text
-NB.
 NB. assumes:
 NB.
 NB.   0) dictionary (testjod01) exists and is loaded.

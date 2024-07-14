@@ -1,6 +1,6 @@
-NB. sha256:fbbbf9959cf3d62b22420ee15defaa3aadce23a22033d199e338f40b6a271098
+NB. sha256:0b2b1f794d9ead5c4eb4ad4d574fa01ccc4e9adb0325f9f270114db69464b640
 NB. System: JOD  Author: John D. Baker  Email: bakerjd99@gmail.com
-NB. Version: 1.1.1  Build Number: 11  Date: 10 Feb 2024 12:01:53
+NB. Version: 1.1.2  Build Number: 6  Date: 14 Jul 2024 11:23:20
 load 'task'
 (9!:41) 0
 jodsf_ijod_=:0"_;'JOD SYSTEM FAILURE: last J error -> '"_,[:13!:12''"_[]
@@ -12,50 +12,10 @@ JMASTER=:jodsystempath'jmaster'
 JODPROF=:jodsystempath'jodprofile.ijs'
 cocurrent'z'
 jodoff=:3 :0
-try.
-a=.<'JODobj_ijod_'
-if.0 =(4!:0 )a do.(4!:55)a [(18!:55)destroyjod__JODobj 0 end.
-(18!:55)w#~'ajod'&-:@:(4&{.)&>w=.18!:1]0
-((18!:2<'base')-.<'ijod')18!:2<'base'
-(18!:55)<'ijod'
-_1=(4!:0)a
-catchd.
-0
-end.
+1['base'copath~(copath'base')-.<'ijod'[3 od''
 )
 jodon=:3 :0
-e=.9!:14''
-e=.,(e i.'/'){.e 
-if.#e do.e=.0 ".e #~e e.'0123456789'else.e=.0 end.
-if.e<801 do.
-0 0$(1!:2&2)'WARNING: JOD works best with current J 8.x-9.x systems - upgrade!'
-end.
-h=.][1!:2&2
-if.e<602 do.
-f=.'JOD requires J 8.01 or later.'
-f=.f,LF,'J is freely available at www.jsoftware.com'
-0[h f,LF,'Download and install J 8.x-9.x and then reinstall JOD.'
-return.
-end.
-g=.(4!:0)@<
-a=.(4!:55)@<
-if._1 e.(4!:0);:'load conew coclass coerase coinsert cocurrent copath jpath UNAME IFWIN IFUNIX'do.
-f=.'JOD depends on core J load and class utilities.'
-0[h f=.f,LF,'Load J with a standard profile to use JOD.'
-return.
-end.
-d=.g'JODobj_ijod_'
-b=.(<'ajod')e.18!:1]0
-if.(0=d)*.b do.1
-elseif.(_1=d)*.b do.
-JODobj_ijod_=:conew'ajod'
-if.c=.createjod__JODobj JODobj_ijod_ do.1 else.0[a'JODobj_ijod_'end.
-elseif.-.b do.
-a'JODobj_ijod_'
-load'general/jod'
-0=g'JODobj_ijod_'
-elseif.do.0
-end.
+1['base'copath~~.'ijod';copath'base'
 )
 coclass'ajod'
 coinsert'ijod'
@@ -160,7 +120,7 @@ JDSDIRS=:<;._1 ' script suite document dump alien backup'
 JEPOCHVER=:9.03999999999999915
 JJODDIR=:'joddicts\'
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
-JODVMD=:'1.1.1';11;'10 Feb 2024 12:01:53'
+JODVMD=:'1.1.2';6;'14 Jul 2024 11:23:20'
 JVERSION=:,6.01999999999999957
 LASTPUT=:14
 MASTERPARMS=:6 3$'PUTFACTOR';'(+integer) words stored in one loop pass';100;'GETFACTOR';'(+integer) words retrieved in one loop pass (<2048)';250;'COPYFACTOR';'(+integer) components copied in one loop pass';100;'DUMPFACTOR';'(+integer) objects dumped in one loop pass (<240)';50;'DOCUMENTWIDTH';'(+integer) width of justified document text';61;'WWWBROWSER';'(character) browser command line - used for jod help';' "C:\Program Files\Internet Explorer\IEXPLORE.EXE"'
@@ -386,7 +346,18 @@ chkhashdmp=:3 :0
 a=.(read jpath y)-.CR
 (':'&afterstr LF&beforestr a)-:sha256 LF&afterstr a
 )
+clearvobs=:3 :0
+c=.conl 1
+e=.".&>'nl_'&,&.>c,&.><'_ i.4'
+d=.*./"1[0=#&>e
+b=.*./"1 (;:'MK SO ST UT')e."1 e
+a=.*./"1 (;:'BAKNUM DIDNUM DNAME RPATH RW UF SYS WF LIBSTATUS NPPFX JCREATEVER')e."1 e
+c#~d+.b+.a
+)
 createjod=:3 :0
+if.wex<'CLEARVOBS_ijod_'do.
+if.1-:CLEARVOBS_ijod_ do.coerase clearvobs 0 end.
+end.
 if.-.wex<'JMASTER'do.JMASTER=:jodsystempath'jmaster'end.
 if.-.wex<'JODPROF'do.JODPROF=:jodsystempath'jodprofile.ijs'end.
 if.-.wex<'JODUSER'do.JODUSER=:jodsystempath'joduserconfig.ijs'end.
@@ -496,13 +467,6 @@ elseif.do.(ok OK009),<DNAME__DL
 end.
 case.do.jderr a
 end.
-)
-destroyjod=:3 :0
-3 od''
-(4!:55)IZJODALL,&.>locsfx'z'
-coerase ST,MK,UT,SO
-coerase JODEXT
-18!:5''
 )
 did=:3 :0
 if.badrc a=.checkopen__ST 0 do.a else.ok{."1 DPATH__ST end.
@@ -781,6 +745,36 @@ if.#y do.
 JNAME rxall;y,&.>' '
 else.''
 end.
+)
+jodinit=:3 :0
+a=.9!:14''
+a=.,(<./a i.'-/'){.a 
+if.#a do.a=.0 ".a #~a e.'0123456789'else.a=.0 end.
+if.a<902 do.
+0 0$(1!:2&2)'WARNING: JOD works best with current J 9.x systems - upgrade!'
+end.
+c=.][1!:2&2
+if.a<902 do.
+b=.'JOD requires J 9.02 or later.'
+b=.b,LF,'J is freely available at www.jsoftware.com'
+0[c b,LF,'Download and install J 9.x and then reinstall JOD.'
+return.
+end.
+if._1 e.(4!:0);:'load conew coclass coerase coinsert cocurrent copath conl jpath UNAME IFWIN IFUNIX'do.
+b=.'JOD depends on core J load and class utilities.'
+0[c b=.b,LF,'Load J with a standard profile to use JOD.'
+return.
+end.
+if.-.(<'ajod')e.18!:1]0 do.0 
+else.
+JODobj_ijod_=:jod=.conew'ajod'
+if.createjod__jod jod do.
+'base'copath~~.'ijod';copath'base'
+else.
+(4!:55)<'JODobj_ijod_'
+end.
+end.
+0=(4!:0)<'JODobj_ijod_'
 )
 jpathsep=:'/'&(('\'I.@:=])})
 jread=:jread_jfiles_ ::(_2:)
@@ -4007,7 +4001,7 @@ r=.>.(#s)%e
 )
 cocurrent'base'
 coinsert'ijod'
-jodon 0
+jodinit_ajod_ 0
 cocurrent'base'
 0!:0<jodsystempath'jodexts/jodtools.ijs'
 (9!:41)1
