@@ -16,13 +16,7 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
    17 bget jpath '~JODDUMPS/utils.ijs'
    ~~~~
 
-2. `<_9e7elc55pvf04no2mkw14prri_>` Consider adding a new `od` option that opens the entire path of put dictionaries, e.g.,
-   ~~~~
-   NB. open entire path
-   6 od 'adnd'
-   ~~~~
-
-3. `<_82d0nudx1m2go87v4x0ty9fkx_>` Consider adding a formating option to `make` that generates
+2. `<_82d0nudx1m2go87v4x0ty9fkx_>` Consider adding a formating option to `make` that generates
    direct definition forms when making scripts. The direct definition form
    is more elegant and has the nice feature of "dequoting" single line explicits, e.g.
    ~~~~
@@ -36,7 +30,7 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
    `u v m n`.  A change like this would also impact `jodliterate` but
    overall would make J code nicer to look it.
 
-4. `<_3bq9v9yst3qu3t62zicli27gv_>` New numeric datatypes and a conversion utility `c.` are being
+3. `<_3bq9v9yst3qu3t62zicli27gv_>` New numeric datatypes and a conversion utility `c.` are being
    added in J 9.6 (2024jan02) we now have
    `/integer1/integer2/integer4/floating2/floating4/floating16` whenever there are
    changes to binary internals it impacts JOD.  I've already hit a conversion precision error.
@@ -44,7 +38,7 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
    dump scripts that will not load in older J versions. Will have to devise some scheme
    to cope. NOTE: seems to have been fixed in later J 9.6 betas.
 
-5. `<_7zh37k9klj5wkdpj40bzsqnm8_>` Consider adding a hash object facility that will store a SHA-256 hash when putting
+4. `<_7zh37k9klj5wkdpj40bzsqnm8_>` Consider adding a hash object facility that will store a SHA-256 hash when putting
    objects. I am thinking another option code `17` that would mean store a hash on
    `put` or test a hash on `get`
    ~~~~
@@ -54,7 +48,7 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
     0 17 get 'word'
    ~~~~
 
-6. `<_botm3t2vdtw7ite6kkyyi014v_>` J's file verbs may hang when accessing windows files on drives accessed by
+5. `<_botm3t2vdtw7ite6kkyyi014v_>` J's file verbs may hang when accessing windows files on drives accessed by
    VPN connections when VPN is off. There's not much JOD can do for mapped (letter'ed)
    drives but `fexist` eventually returns 0 for VPN shares like:
    ~~~~
@@ -64,10 +58,10 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
    shares `//some/share/ehh/jwords.ijf`.  This will not help for VPN mapped drives
    when VPN is off.
 
-7. `<_31t8dofxlypuuaflswoq784pp_>` Test `jodliterate` on macOS and linux. Tweak if needed.
+6. `<_31t8dofxlypuuaflswoq784pp_>` Test `jodliterate` on macOS and linux. Tweak if needed.
 
-8.  `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs have changed in recent J versions.
+7.  `<_77ozevqhpzugqsgru959hbqp2_>` Improve and extend `JOD` labs and insure they run on later J systems. Labs have changed in recent J versions.
 
-9.    `<_d1dtfkd14ypvlatnch2pa5hwo_>` Consider allowing `~/` as a path prefix on macOS and Linux systems. The home directory convention on these systems is respected by `dir`.
+8.    `<_d1dtfkd14ypvlatnch2pa5hwo_>` Consider allowing `~/` as a path prefix on macOS and Linux systems. The home directory convention on these systems is respected by `dir`.
 
 `[end-todo]`
