@@ -190,6 +190,8 @@ ERR028=:'not supported on this environment ->'
 ERR029=:'regex pattern error ->'
 ERR030=:'binary version conflict - dictionary -> '
 ERR031=:'backup hash failure ->'
+ERR032=:'hash does not match ->'
+ERR033=:'invalid dump file ->'
 
 NB. explain option code
 EXPLAIN=:8
@@ -246,7 +248,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.1.2';3;'14 Jul 2024 11:01:18'
+JODVMD=:'1.1.3 - dev';4;'17 Jul 2024 10:36:06'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
@@ -283,6 +285,7 @@ OK007=:'put dictionary is now a read/only library ->'
 OK008=:'put dictionary read/write status restored ->'
 OK009=:'put dictionary references deleted ->'
 OK010=:'close and reopen to activate - paths forced to ->'
+OK011=:'hash matches ->'
 
 NB. indexes of dictionary subdirectories in dictionary parameter list
 PARMDIRS=:4 5 6 7 8 9
@@ -1698,11 +1701,22 @@ NB.
 NB.   NB. make groups that are not in put dictionary
 NB.   NB. file is written to put dictionary script directory
 NB.   2 _1 make 'deepgroup'
+NB.
+NB.   NB. NIMP: check dump script hash
+NB.   17 make '~JODDUMPS/joddev.ijs'
 
 makedump__MK y
 :
 msg=. ERR001  NB. errmsg: invalid option(s)
 if. badil x do. jderr msg return. end.
+
+NB. j profile !(*)=. jpath
+if. HASH={.x do.
+  if. badcl y do. jderr msg return. end.
+  if. -.fex <file=. jpath y do. (jderr ERR033),<file return. end.
+  if. chkhashdmp y do. (ok OK011),<file else. (jderr ERR032),<file end.
+  return. 
+end.
 
 NB. do we have a dictionary open?
 if. badrc uv=. checkopen__ST 0 do. uv return. end.

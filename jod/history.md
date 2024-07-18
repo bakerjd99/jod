@@ -1,6 +1,8 @@
 general/jod - change history
 =============================
 
+### 1.1.3 - (wip) unreleased
+
 ### 1.1.2 - July 14, 2024 (Permanent Locale Edition)
 
  *  JOD now requires J's after version 9.02. 9.02 introduced
@@ -76,7 +78,7 @@ general/jod - change history
  *  `restd` now restores particular backups instead of just 
     the last backup. Also, backup files are checked against
     the hashes in the corresponding sidecar file and the 
-    backup is aborted if any hashes do not match.
+    restore is aborted if any hashes do not match.
    
          restd 'dname'     NB. restore last backup
          restd 'dname';11  NB. restore backup 11

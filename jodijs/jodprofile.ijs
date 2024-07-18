@@ -251,7 +251,7 @@ NB. PREFERREDPANDOC=: 'C:\Users\genric.user\AppData\Local\Pandoc\pandoc'
 NB. PREFERREDPANDOC=: '/usr/local/bin/pandoc'
 
 NB. list tests without 'jodtestlocale'
-noc=: {{list tests -. 0 {"1 [ 1 pick ('jodtestlocale';1) rxs tests=. }. 1 dnl ''}}
+NB. noc=: {{list tests -. 0 {"1 [ 1 pick ('jodtestlocale';1) rxs tests=. }. 1 dnl ''}}
 
 NB. JOD verbs typically run from the base locale 
 cocurrent 'base'

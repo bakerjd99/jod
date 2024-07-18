@@ -64,7 +64,7 @@ NB. comment tag marking start of scripts
 JODLOADSTART=:'NB.<JOD_Load_Scripts>'
 
 NB. JODTOOLS version, make and date
-JODTOOLSVMD=:'1.1.2 - dev';34;'14 Jul 2024 11:01:18'
+JODTOOLSVMD=:'1.1.3 - dev';4;'17 Jul 2024 10:36:07'
 
 NB. line feed character
 LF=:10{a.

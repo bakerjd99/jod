@@ -12,8 +12,9 @@ to see what *actually got implemented*. Plans do not necessarily materialize.
 
 1. `<_vwieu578h97x1wsqwkoo8b4t_>` Consider exposing dump script hash checks, e.g.,
    ~~~~
+   NB. (make) generates dump scripts - have it check its hash as well
    NB. check dump script contents against hash
-   17 bget jpath '~JODDUMPS/utils.ijs'
+   17 make jpath '~JODDUMPS/utils.ijs'
    ~~~~
 
 2. `<_82d0nudx1m2go87v4x0ty9fkx_>` Consider adding a formating option to `make` that generates
