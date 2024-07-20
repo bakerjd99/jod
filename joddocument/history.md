@@ -3,6 +3,8 @@ general/joddocument - change history
 
 ### 1.1.3 - (wip) unreleased
 
+ * Dump script hask check noted in `make` section.
+
 ### 1.1.2 - July 14, 2024 (Permanent locale edition)
 
  * Minor edits and additions. The location of `jod.pdf` LaTeX

@@ -3,18 +3,23 @@ general/jod - change history
 
 ### 1.1.3 - (wip) unreleased
 
+ *  `make` now checks dump script contents against its hash.
+
+         df=: make ''   NB. dump all words on path
+         17 make ;{:df  NB. check dump against leading hash 
+
 ### 1.1.2 - July 14, 2024 (Permanent Locale Edition)
 
  *  JOD now requires J's after version 9.02. 9.02 introduced
     direct definitions. Some JOD words now use direct definitions.
 
- *  (jodon) and (jodoff) have been changed to handle permanent
-    locales introduced in J 9.6. (jodoff) no longer destroys JOD
+ *  `jodon` and `jodof` have been changed to handle permanent
+    locales introduced in J 9.6. `jodoff` no longer destroys JOD
     class locales. It now simply closes open dictionaries and removes
-    (ijod), the JOD interface locale from the base path. (jodon)
-    restores (ijod) to the base path. The now permanent JOD class
-    locales (ajod,ajoddob,ajodmake,ajodstore,ajodtools,ajodutil)
-    are not changed by (jodon) and (jodoff). 
+    `ijod`, the JOD interface locale from the base path. `jodon`
+    restores `ijod` to the base path. The now permanent JOD class
+    locales (`ajod,ajoddob,ajodmake,ajodstore,ajodtools,ajodutil`)
+    are not changed by `jodon` and `jodoff`. 
  
     To create or refresh JOD class locales you must:
 
@@ -35,7 +40,7 @@ general/jod - change history
     in the `~addons/general/jodsource` addon.
 
  *  `CLEARVOBS_ijod_` can be used to control vestigal JOD object
-    removal during loads. In rare cases the verb (clearvobs) might
+    removal during loads. In rare cases the verb `clearvobs` might
     select numbered user locales. This is particularily likely if
     the user locale is empty. By setting `CLEARVOBS` to 0 in 
     (jodprofile.ijs) JOD will not remove vestigal locales. With 
