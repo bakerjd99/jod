@@ -1,5 +1,5 @@
 NB.*loadSmoketest0  t--  load a small collection of objects  into
-NB. (testjod00).
+NB. (tdict).
 NB.
 NB. This test script is  typically run inside other test scripts.
 NB. It should not  alter  the  running locale hence it  lacks the
@@ -9,15 +9,16 @@ NB. assumes:
 NB.
 NB.   0) (jodtestlocale) used to create test locale
 NB.
-NB.   1) (testjod00) dictionary
+NB.   1) (tdict) dictionary
 NB.
 NB. author:  John D. Baker
 NB. created: 2015aug06
 NB. changes: -----------------------------------------------------
 NB. 18may24 updated for J 8.07 see: rtt 'createtestdictionaries'
 NB. 24jun29 revise for J 9.6 (cocreate/coerase) changes
+NB. 24jul27 revised to load (tdict) - set in calling scripts
 
->0{od 'testjod00' [ 3 od ''
+>0{od tdict [ 3 od ''
 
 NB. words of various types
 BOOLATOM0=: 0

@@ -6,7 +6,9 @@ general/jod - change history
  *  `make` now checks dump script contents against its hash.
 
          df=: make ''   NB. dump all words on path
-         17 make ;{:df  NB. check dump against leading hash 
+         17 make ;{:df  NB. check dump against leading hash
+
+ *  `RUST` and `CSRC` macro text types added for rust and C code.
 
 ### 1.1.2 - July 14, 2024 (Permanent Locale Edition)
 
