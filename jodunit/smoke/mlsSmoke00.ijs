@@ -19,10 +19,8 @@ NB. -{TEST START}-
 
 tdict=: 'testjod05'
 
-NB. save smoke load test scripts
-er od ;:'joddev jod utils' [ 3 od ''
-
 NB. fetch some utils
+er od ;:'joddev jod utils' [ 3 od ''
 er tmploc get ;:'read write beforestr afterstr showpass'
 
 rc [ 'rc loadSmoke'=: 1 get ;:'loadSmoketest0 loadSmoketest1'
