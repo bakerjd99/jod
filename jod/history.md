@@ -3,6 +3,15 @@ general/jod - change history
 
 ### 1.1.3 - (wip) unreleased
 
+ *  The `6 od` option changed to open the entire path of the
+    the last dictionary in a list of dictionaries and put leading
+    dictionaries first. 
+
+         NB. open all on (joddev) path and make (imex) put
+         6 od ;:'imex joddev' 
+         NB. open all on (play) path and prefix (gps, docs) (gps) is put
+         6 od ;:'gps docs play'
+
  *  `make` now checks dump script contents against its hash.
 
          df=: make ''   NB. dump all words on path
