@@ -7,6 +7,7 @@ NB.
 NB. created: 2024feb09
 NB. changes: -----------------------------------------------------
 NB. 24jul08 revised for j 9.6 (cocreate/coerase) changes
+NB. 25feb07 added checks for opening same dictionayr more than once
 
 cocurrent 'base'
 require 'jodtester'
@@ -91,6 +92,15 @@ er 3 od ''
 er 6 od tdict2
 '/' = ;{:1{rv_ajod_ did ~ 0
 
+NB. dictionaries should only appear once on the path
+NB. multiple openings are of no use and are best suppressed
+er 3 od ''
+er od tdict0
+er dpset 'CLEARPATH'
+er 6 od 4#<tdict0
+2 = # did 0
+er 3 od ''
+2 = # did od 4#<tdict0
 
 NB. -{TEST SUCCESSFUL}-
 ereopen 0

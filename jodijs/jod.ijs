@@ -67,9 +67,11 @@ JSON=:31
 IPYNB=:32
 LEAN=:33
 ZIG=:34
+RUST=:35
+CSRC=:36
 
 NB. macro text types
-MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8,PYTHON,SQL,JSON,IPYNB,LEAN,ZIG
+MACROTYPE=:JSCRIPT,LATEX,HTML,XML,TEXT,BYTE,MARKDOWN,UTF8,PYTHON,SQL,JSON,IPYNB,LEAN,ZIG,RUST,CSRC
 
 NB. object codes
 WORD=:0
@@ -248,7 +250,7 @@ NB. regular expression matching valid J names
 JNAME=:'[[:alpha:]][[:alnum:]_]*'
 
 NB. version, make and date
-JODVMD=:'1.1.3 - dev';4;'17 Jul 2024 10:36:06'
+JODVMD=:'1.1.3 - dev';27;'07 Feb 2025 10:39:56'
 
 NB. base J version - prior versions not supported by JOD
 JVERSION=:,6.01999999999999957
@@ -1702,7 +1704,7 @@ NB.   NB. make groups that are not in put dictionary
 NB.   NB. file is written to put dictionary script directory
 NB.   2 _1 make 'deepgroup'
 NB.
-NB.   NB. NIMP: check dump script hash
+NB.   NB. check dump script hash
 NB.   17 make '~JODDUMPS/joddev.ijs'
 
 makedump__MK y
@@ -1919,7 +1921,7 @@ case. 1 do.   NB. HARDCODE: magic numbers read/write codes
   if. isempty y do. ok /:~ dl
   else.
     NB. open read/write
-    y=. boxopen ,y
+    y=. ~.boxopen ,y
     NB. all dictionary names must be on master list
     if. *./y e. dl do. y opendict__ST 1;mdt else. jderr msg end.
   end.
@@ -1927,7 +1929,7 @@ case. 1 do.   NB. HARDCODE: magic numbers read/write codes
 case. 2 do.
 
   NB. open read/only
-  y=. boxopen ,y
+  y=. ~.boxopen ,y
   if. *./y e. dl do. y opendict__ST 2;mdt else. jderr msg end.
 
 case. 3 do.
@@ -1968,10 +1970,12 @@ case. 6 do.
   NB. closes current dictionaries and makes first (y) put
   if. isempty y do. jderr msg return. end.
   uv=. 3 od '' [ opd=. }. did 0
-  uv=. <;._1 ; {: 1 { rv did ~ mdt=. od ;0{boxopen y
-  if. uv -: ,a: do. mdt NB. empty path
-  NB. attempt to reopen original dicts on error
-  elseif. badrc uv=. od uv [ 3 od '' do. uv [ od opd 
+  uv=. <;._1 ; {: 1 { rv did ~ mdt=. od ;{:boxopen y
+  NB. if request is not a single dictionary open 
+  NB. entire path for last and prefix others 
+  if. 1 = L. y  do. uv=. (}: ,y),uv end.
+  if. uv -: ,a: do. mdt NB. empty path  
+  elseif. badrc uv=. od uv -. a: [ 3 od '' do. uv [ od opd 
   elseif.do. uv end. 
   
 case.do. jderr ERR001  NB. errmsg: invalid option(s)
