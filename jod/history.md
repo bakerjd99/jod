@@ -12,6 +12,26 @@ general/jod - change history
          NB. open all on (play) path and prefix (gps, docs) (gps) is put
          6 od ;:'gps docs play'
 
+    A handy verb `oep` has been added to the JOD profile for this.
+
+         NB. open all dictionaries on (joddev) path
+         oep 'joddev'
+
+ *  Extra blanks inserted after }} delimiters in embedded direct 
+    definitions are now reduced to one blank, for example:
+        
+         ddme=: 3 : 0
+         NB. embedded ddef
+         _2 ]\ {{ y #~ b +. _1 |. b=. '@' E. y }}         y,' '
+         )
+
+     is now rendered as:
+        
+         ddme=:3 : 0
+         NB. embedded ddef
+         _2 ]\ {{ y #~ b +. _1 |. b=. '@' E. y }} y,' '
+         )
+
  *  `make` now checks dump script contents against its hash.
 
          df=: make ''   NB. dump all words on path

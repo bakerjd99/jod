@@ -1103,6 +1103,9 @@ end.
 msg
 )
 
+NB. removes multiple blanks (char only)
+rebc=:] #~ [: -. '  '&E.
+
 NB. run list encoding from numeric list - see long document
 rlefrnl=:(1 ,~ 2&(~:/\)) ({. , #);.2 ]
 
@@ -1274,25 +1277,39 @@ if. nftab do. nms=. 0 {"1 y end.  NB. retain sorted names
 
 if. noex do.
   NB. no explanations and no LF's depends on caller
-  m=. (#y)#0
-elseif. +./m=. -.LF e.&> {:"1 y do.
+  m0=. (#y)#0
+elseif. +./m0=. -.LF e.&> {:"1 y do.
   NB. prefix any short explanations for single line definitions
-  m2=. m#{."1 y
+  m2=. m0#{."1 y
   if. badrc et=. obj getexplain__ST m2 do. et return. end.
   m2=. 0<#&> et=. {:"1 rv et
   et=. (<"0 m2) #&.> (<'NB. ') ,&.> et ,&.> LF
-  y=. (et ,&.> m#{."1 y) (<(I. m);0)} y
+  y=. (et ,&.> m0#{."1 y) (<(I. m0);0)} y
   NB. number of LF's between corresponding objects
-  m=. (>:2*-.m) + m (#^:_1) m2
-  m=. m + 2*firstone 1=m
+  m0=. (>:2*-.m0) + m0 (#^:_1) m2
+  m0=. m0 + 2*firstone 1=m0
 elseif.do.
   NB. 3 LF's between all multi-line defs HARDCODE
-  m=. (#y)#3
+  m0=. (#y)#3
 end.
 
 NB. construct J object scripts
-if. WORD=obj do. y=.jscriptdefs y else. y=. {:"1 y end.
+if. WORD=obj do.
+  NB. remove extra blanks inserted in direct definitions ignore
+  NB. nouns and only change words containing terminated direct definitions
+  b=. 0 < ;1 {"1 y
+  if. #dds=. I. b (#^:_1) +./@ ('}}'&E.)&> (I. b) { 2 {"1 y do.
+     NB. require 'regex' !(*)=. rxapply
+     ddbfx=. {{ '}}[ ]*' rebc rxapply y }}
+     NB. NIMP: alters commented text within ddefs 
+     NB. may change to ignore commented text if annoyed enough
+     y=. (ddbfx&.>(<dds;2){y) (<dds;2)} y
+  end.
+  y=.jscriptdefs y 
+else. 
+  y=. {:"1 y 
+end.
 
 NB. return formated (name,script) table or cl script
-if. nftab do. ok <nms ,. y else. ok ({.m)}.m jscript y end.
+if. nftab do. ok <nms ,. y else. ok ({.m0)}.m0 jscript y end.
 )
